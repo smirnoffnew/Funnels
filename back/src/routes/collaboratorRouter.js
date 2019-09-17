@@ -15,20 +15,32 @@ collaboratorRouter.post('/',
     verifyToken,
     lastActive,
     collaboratorController.createCollaborator);
+
 collaboratorRouter.patch('/:profileId/:funnelId',
     enshureToken,
     verifyToken,
     lastActive,
     collaboratorController.changeCollaboratorPermissions);
+
 collaboratorRouter.delete('/:profileId/:funnelId',
     enshureToken,
     verifyToken,
     lastActive,
     collaboratorController.deleteCollaborator);
+
 collaboratorRouter.post('/',
     enshureToken,
     verifyToken,
     lastActive,
     lastModified,
     collaboratorController.getAllFunnelsCollaborators);
+
+collaboratorRouter.get('/funnel/:funnelId',
+    enshureToken,
+    lastModified,
+    verifyToken,
+    lastActive,
+    collaboratorController.getAllCollaboratorsByFunnelId());
+
+
 module.exports = collaboratorRouter;

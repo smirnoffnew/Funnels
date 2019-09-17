@@ -153,4 +153,19 @@ module.exports = {
                     .status(500)
                     .json({error: err.message}));
     },
+
+    getAllCollaboratorsByFunnelId: async function(req, res) {
+        const funnelId = req.params.funnelId;
+
+        Funnel
+            .find({id:funnelId})
+            .populate({
+                model: 'Profile',
+                path: 'collaborators.profileId',
+            })
+            .exec()
+            .then(result => res.status(200).json(result))
+            .catch(err => res.status(500).json({error: err.message}));
+
+    }
 };
