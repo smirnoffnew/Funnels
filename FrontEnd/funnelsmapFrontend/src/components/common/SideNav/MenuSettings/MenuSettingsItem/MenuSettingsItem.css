@@ -1,0 +1,25 @@
+.menu-settings-item {
+	padding: 10px 20px;
+	box-sizing: border-box;
+	display: flex;
+  justify-content: space-between;
+  align-items: center;
+	width: 100%;
+	color: #9ca6af;
+	margin: 6px 0;
+  font-weight: normal;
+  font-size: 15px;
+}
+
+.menu-settings-item:hover {
+	text-decoration: none;
+}
+
+.menu-settings-item.menu-settings-item-active {
+  background: #3b4049;
+}
+
+.menu-settings-item.sub {
+	font-size: 1em;
+	padding-left: 50px;
+}

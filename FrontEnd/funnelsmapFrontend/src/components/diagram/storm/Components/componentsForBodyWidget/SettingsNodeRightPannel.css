@@ -1,0 +1,12 @@
+.radio-button-container{
+    margin-top: 20px; 
+}
+
+.arrow-tip-tracking{
+    position: relative;
+    display: flex;
+    bottom: 25px;
+    margin-right: 12px;
+    margin-left: auto;
+    cursor: pointer
+}

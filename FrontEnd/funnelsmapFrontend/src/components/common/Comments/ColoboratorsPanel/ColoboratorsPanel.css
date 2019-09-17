@@ -1,0 +1,18 @@
+.coloborators-container{
+    display: flex;
+    flex-wrap: wrap;  
+    background-color: #ecf1f2;
+    border-top: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.coloborators-text{
+    font-size: 16px;
+    align-self: center;
+    padding-left: 13px;
+    color: #999;
+}
+
+.coloborator{
+    width: calc((100% / 4) - (351px / 4));
+}

@@ -1,0 +1,57 @@
+.settings-payment-wrapper{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-left: 240px;
+  margin-top: 70px;
+}
+
+.subscription-payment-settings{
+  width: 180px !important;
+  margin: auto !important;
+  display: block !important;
+  margin-bottom: 20px !important;
+}
+
+.text-settings-payment{
+  font-size: 14px;
+  color: #212939;
+  font-family: 'Roboto';
+  font-weight: 300;
+}
+
+.input-payment-card-top{
+  background: 3% 52% / 6% 40% no-repeat url(
+   '../../../assets/credit-card.png'
+  );
+
+  padding-left: 59px !important;
+  width: 87% !important;
+  z-index: 22;
+}
+
+.input-payment-calendar{
+  background: 8% 54% / 9% 43% no-repeat url(
+   '../../../assets/calendar.png'
+  );
+  padding-left: 59px !important;
+  width: 37% !important;
+  z-index: 22;
+}
+
+.input-payment-card{
+  background: 6% 54% / 13% 40% no-repeat url(
+   '../../../assets/credit-card-2.png'
+  );
+  padding-left: 61px !important;
+  width: 35% !important;
+  z-index: 22;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  background-image: initial;
+  background-color: inherit;
+}

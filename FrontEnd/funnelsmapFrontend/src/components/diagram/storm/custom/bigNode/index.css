@@ -1,0 +1,64 @@
+.big-node-title {
+  z-index: 15;
+  font-size: 13px;
+  color: rgb(33, 41, 57);
+  font-weight: 500;
+  width: 115px;
+  margin-left: -13px;
+  margin-bottom: 20px;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.analytics-box{
+  padding-left: 10px;
+}
+
+.select-analytics-widget {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: -2px;
+  right: -135px;
+  width: 110px;
+  z-index: 1;
+  height: 115px;
+  border-radius: 5px;
+  box-shadow: 0 0 28px rgba(0,0,0,0.1);
+  background-color: #ffffff;
+  border: 1px solid #dce5ec;
+  justify-content: center;
+}
+
+.up-arrow-analytics:after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: -17px;
+  bottom: 37%;
+  width: 0;
+  height: 0;
+  border: 9px solid transparent;
+  border-bottom-color: white;
+  -webkit-transform: rotate(270deg);
+  transform: rotate(270deg);
+}
+
+.top-anal {
+  font-size: 11px;
+  color: #848f99;
+  font-family: "Roboto";
+  font-weight: 400;
+}
+
+.bottom-anal {
+  font-size: 15px;
+  color: #212939;
+  font-family: "Roboto";
+  font-weight: 700;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

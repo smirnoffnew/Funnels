@@ -1,0 +1,28 @@
+.user-img-preview{
+  
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.user-preview-empty{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #c1c7cc;
+    font-size: 24px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+    
+  .user-img-preview img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    font-size: 12px;
+  }

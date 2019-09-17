@@ -1,0 +1,37 @@
+.add-collaborators-img-body{
+  display: flex;
+}
+
+.add-collaborators-img-image{
+  width: 73.95%;
+  margin: auto;
+}
+
+.add-collaborators-img-right-panel-wrapper{
+  background: #212939;
+  height: 100vh;
+}
+
+.add-collaborators-img-right-panel{
+    padding: 50px;
+}
+
+.add-collaborators-img-text-first{
+  font-size: 18px;
+  line-height: 24px;
+  color: #ffffff;
+  font-family: "Roboto";
+  font-weight: 300;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.add-collaborators-img-text-second{
+  font-size: 11px;
+  line-height: 15px;
+  color: #ffffff;
+  font-family: "Roboto";
+  font-weight: 300;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}

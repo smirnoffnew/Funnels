@@ -1,0 +1,27 @@
+.select-horizontally-without-ports {
+  display: inline-block;
+  background: white;
+  flex-direction: column;
+  position: absolute;
+  z-index: 1;
+  border-radius: 5px;
+  box-shadow: 0 0 28px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border: 1px solid #dce5ec;
+  top: 0;
+  right: 0;
+}
+
+.node-panel-textarea-without-ports{
+  border-radius: 5px;
+  padding: 10px;
+  background: inherit;
+  border-color: #f6f7f8;
+  white-space: pre;
+  resize: none;
+}
+
+.node-panel-textarea-without-ports:focus{
+ border: 1px solid #F15C22
+}
+

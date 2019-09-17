@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="56" height="56" viewBox="0 0 56 56">
+  <defs>
+    <linearGradient id="linear-gradient" y1="0.5" x2="1.217" y2="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#e62d24"/>
+      <stop offset="1" stop-color="#fd8f21"/>
+    </linearGradient>
+  </defs>
+  <g id="Analytics" transform="translate(-73 -174)">
+    <rect id="bg" width="56" height="56" rx="4" transform="translate(73 174)" fill="url(#linear-gradient)"/>
+    <path id="статистика" d="M295.57,387.57h2.73v18h-2.73v-18Zm16.32,1.78h2.73V405.6h-2.73V389.35Zm-5.44,5h2.73v11.3h-2.73V394.3h0ZM301,392.14h2.73V405.6H301V392.14Z" transform="translate(-204.07 -195.071)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.13"/>
+  </g>
+</svg>

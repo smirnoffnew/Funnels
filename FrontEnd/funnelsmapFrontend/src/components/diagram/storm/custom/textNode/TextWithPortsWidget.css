@@ -1,0 +1,57 @@
+.select-horizontally-with-ports {
+  background: white;
+  display: inline-block;
+  flex-direction: column;
+  position: absolute;
+  z-index: 15;
+  border-radius: 5px;
+  box-shadow: 0 0 28px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border: 1px solid #dce5ec;
+  top: 0;
+  right: 0;
+}
+
+.node-panel-textarea-with-ports{
+  border-radius: 5px;
+  padding: 10px;
+  border-color: rgb(191, 207, 233);
+  white-space: pre;
+  resize: none;
+}
+
+.node-panel-textarea-with-ports:focus{
+  border: 1px solid #F15C22
+}
+
+.node-panel-textarea-with-ports-top{
+  top: -14px;
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.node-panel-textarea-with-ports-bottom{
+  bottom: -11px;
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.node-panel-textarea-with-ports-right{
+  right: -14px;
+  position: absolute;
+  z-index: 10;
+  top: 32px;
+}
+
+.node-panel-textarea-with-ports-left{
+  left: -14px;
+  position: absolute;
+  z-index: 10;
+  top: 32px;
+}

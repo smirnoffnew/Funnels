@@ -1,0 +1,14 @@
+.settings-user-wrapper{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-left: 240px;
+  margin-top: 70px;
+}
+
+.generate-link-user-settings{
+  width: 140px !important;
+  margin: auto !important;
+  display: block !important;
+  margin-bottom: 20px !important;
+}

@@ -1,0 +1,254 @@
+header {
+  height: 70px;
+  line-height: 70px;
+  background-color: white;
+  border-bottom: 1px solid #DCE5EC;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 240px;
+  z-index: 1;
+}
+
+header .logo {
+  margin-left: 20px;
+  float: left;
+}
+header nav {
+  float: right;
+}
+header nav ul {
+  margin: 0;
+  padding: 0;
+  float: right;
+  margin-right: 20px;
+}
+header nav ul li {
+  display: inline-block;
+  margin-left: 20px;
+}
+header nav ul li a {
+  color: black;
+}
+
+.header-buttons{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.btn-show-modal-create{
+  width: 150px !important;
+}
+
+.btn-sign-out{
+  width: 80px !important;
+}
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width:100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 100;
+}
+
+.modal-main {
+  position: fixed;
+  background: white;
+  width: 400px;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  border-radius: 5px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.display-block {
+  display: block;
+}
+
+.display-none {
+  display: none;
+}
+
+.close-modal{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  padding: 0;
+  border: none;
+  font: inherit;
+  /* color: inherit; */
+  background-color: transparent;
+  cursor: pointer;
+  transform: scale(1.4,1);
+  font-weight: 300;
+}
+
+.create-project-input{
+  display: flex;
+  flex-direction: column;
+  height: 50px;
+  justify-content: space-between;
+}
+
+.create-project-button-in-modal {
+  width: 130px !important;
+  margin: auto;
+  height: 40px !important;
+  margin-top: 0px !important;
+}
+
+.label{
+  color: #848F99;
+  font-size: 12px;
+  font-weight: normal;
+  height: 50px;
+}
+
+header label {
+  line-height: normal;
+}
+
+.label-create {
+  color: #3e3e3e;
+  font-size: 25px;
+  border-bottom: 1px solid #BFCFE9;
+  padding-bottom: 15px;
+}
+
+.label-input {
+  color: #848F99;
+  font-size: 12px;
+  font-weight: normal;
+  height: 22px;
+  margin-top: 20px;
+}
+
+.label-input-delete-project {
+  color: #848F99;
+  font-size: 12px;
+  font-weight: normal;
+  height: 22px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+
+.input-group {
+  margin-bottom: 13px;
+  color: red;
+  font-size: 14px;
+  margin-top: -10px;
+}
+
+
+.header-img-preview{
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.header-img-preview img{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  font-size: 12px;
+}
+
+.header-preview-empty{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #c1c7cc;
+  font-size: 24px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.header-select {
+  /* position: fixed; */
+  /* top: 0; */
+  /* left: 0; */
+  width:100%;
+  height: 100%;
+  /* background: rgba(0, 0, 0, 0.4); */
+  
+}
+
+.header-select-main {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 67px;
+  right: 15px;
+  width: 250px;
+  z-index: 1;
+  border-radius: 5px;
+  box-shadow: 0 0 28px rgba(0,0,0,0.1);
+  background-color: #ffffff;
+  border: 1px solid #dce5ec;
+  position: fixed;
+  z-index: 1000;
+}
+
+.header-display-block {
+  display: block;
+}
+
+.header-display-none {
+  display: none;
+}
+
+.header-select-label {
+    color: #848F99;
+    font-size: 12px;
+    font-weight: normal;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+
+
+
+
+.search-projects-bar{
+  margin-left: 15px;
+  margin-right: 25px;
+  display: flex;
+  align-items: center;
+}
+
+.search-projects{
+  width: 200px !important;
+  margin: 7px !important;
+  height: 40px !important;
+}
+
+@keyframes widthAnimationEnter {
+    from { width: 0px; }
+    to   { width: 200px; }
+}
+
+@keyframes widthAnimationLeave {
+    from { width: 200px; }
+    to   { width: 0px; }
+}

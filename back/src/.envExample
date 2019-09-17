@@ -1,0 +1,30 @@
+NODE_ENV
+
+LISTID=
+CAMPAING_ACCOUNT_NAME=
+CAMPAING_ACCOUNT_KEY=
+
+PORT=9000
+DB_CONN=
+
+SECRET=
+SECRET_LETTER =
+SECRET_COLLABORATOR =
+
+TOKEN_EXPIRES =
+TOKEN_EXPIRES_LETTER =
+
+PROJECT_LIMIT = 10
+FUNNEL_LIMIT = 10
+
+IMAGE_MAX_SIZE = 3 * 1024 * 1024
+IMAGE_STORE =/public/avatars/
+SCREENSHOT_STORE = public/screenshots/
+BACKGROUND_STORE = /public/funnelBackgrounds/
+IMAGE_STORE_PATH_PROD = http://funnelsmap.qbex.io/public/avatars/
+APP_PATH = /home/node/app/src
+
+DEV_EMAIL = funnelsmap@gmail.com
+DEV_EMAIL_PASSWORD = funnelsmap2019
+DEV_URL = http://localhost:4000
+PROD_URL = http://funnelsmap.qbex.io

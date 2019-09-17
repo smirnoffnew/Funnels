@@ -1,0 +1,298 @@
+
+/*FunnelItem.jsx, TemplateItem.jsx, ProjectItem.jsx*/
+.select {
+  width:100%;
+  height: 100%;
+}
+
+.select-main {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50px;
+  right: -100px;
+  width: 150px;
+  z-index: 1;
+  width: 157px;
+  border-radius: 5px;
+  box-shadow: 0 0 28px rgba(0,0,0,0.1);
+  background-color: #ffffff;
+  border: 1px solid #dce5ec;
+}
+
+.btn-select{
+  border: none;
+  font: inherit;
+  color: #848f99;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 3px;
+  text-align: left;
+  padding: 5px 15px 5px 15px;
+}
+
+.btn-select:hover{
+  color: #fd8f21;
+}
+
+.btn-select-copy{
+  padding: 15px 0px 12px 15px;
+}
+
+.btn-select-delete{
+  border-top: 1px solid #dce5ec;
+  padding: 15px;
+}
+
+.btn-select-share{
+  padding: 5px 0px 15px 15px;
+}
+
+.delete-modal-btn-wrapper{
+  display: flex;
+  width: 200px;
+  margin: auto;
+  justify-content: space-between;
+}
+
+.btn-delete-modal {
+  width: 90px !important;
+  height: 40px !important;
+  color: white;
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.label-choose-permission{
+  font-size: 12px;
+  margin: 0px 0px 7px 15px;
+  color: #848F99;
+  font-weight: normal;
+}
+
+.custom-select-wrapper{
+  margin-left: 15px;
+  margin-right: 15px;
+  color: #848F99;
+  font-size: 12px;
+}
+
+.funnels-checkbox{
+  max-height: 128px;
+  overflow: auto;
+  margin: 5px 15px 15px 15px;
+}
+
+.funnels-collaborators{
+  max-height: 110px;
+  overflow: auto;
+  margin: 5px 15px 15px 15px;
+}
+
+.button-change-permission{
+  border: none;
+  color: orange;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.button-remove-collaborator{
+  border: none;
+  color: red;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.custom-select{
+  font-size: 14px;
+  color: #444;
+  padding: 10px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+  border-radius: 5px;
+  background-color: #fff;
+  color: #848F99;
+  border: 1px solid #BFCFE9;
+}
+
+.custom-select:focus {
+  border: 1px solid #F15C22;
+}
+
+/* Set options to normal weight */
+.custom-select option {
+	font-weight: normal;
+}
+
+.custom-select:disabled:hover, .custom-select[aria-disabled=true] {
+	border-color: #aaa;
+}
+
+.created-link-wrapper{
+  white-space: pre;
+  margin: 15px;
+  border: 1px solid;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #BFCFE9;
+  color: #848F99;
+  font-size: 14px;
+}
+
+.created-link{
+  overflow: auto;
+}
+
+.collaborators-in-modal{
+  font-size: 12px;
+  width: 41px;
+  align-self: center;
+  white-space: pre;
+  margin: 0px 4px 0px 4px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.empty-collaborator-photo{
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  font-size: 21px;
+  text-align: center;
+  background-color: #c1c7cc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collaborator-photo{
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  font-size: 11px;
+  text-align: center;
+  background-color: #c1c7cc;
+  display: flex;
+  align-items: center;
+  object-fit: cover;
+}
+
+.funnels-collaborators-item{
+  display: flex;
+  width: max-content;
+  margin-bottom: 10px;
+}
+
+
+/* ProjectList.jsx and FunnelList.jsx and TemplateList.jsx*/
+
+.projects-wrapper{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 70px;
+  margin-right: 100px;
+}
+
+.project-wrapper{
+  position: relative;
+  height: 200px;
+  width: 220px;
+  background: #fff;
+  border-radius: 5px;
+  margin: 20px;
+  border: 1px solid #BFCFE9;
+}
+
+.options-project{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  border-radius: 6px;
+  background-color: #121824;
+  cursor: pointer;
+  font-weight: 300;
+  font-size: 12px;
+  padding: 5px;
+  color: #848f99;
+}
+
+.options-project:hover{
+  background-color: #dce5ec;
+  color: #212939;
+}
+
+.project-image{
+  height: 130px;
+  background: #212939;
+  border-radius: 5px 5px 0px 0px;
+  position: relative;
+}
+
+.project{
+  display: flex;
+  padding: 10px;
+  justify-content: center;
+  text-align: center;
+  border-top: 1px solid #BFCFE9;
+  font-size: 14px;
+}
+
+.list-limit{
+  position: absolute;
+  right: 20px;
+  top: 77px;
+  color: #848f99;
+  font-size: 13px;
+}
+
+.create-funnels{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  text-align: left;
+}
+
+.view-funnels{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  color: #848f99;
+  border-radius: 4px;
+  padding: 5px 10px 5px 10px;
+  white-space: pre;
+  border: 1px solid;
+  font-size: 14px;
+  background-color: #121824;
+}
+
+.view-funnels:hover{
+  background-image: linear-gradient(90deg, #f15c22 0%, #fd8f21 100%);
+  color: white;
+}

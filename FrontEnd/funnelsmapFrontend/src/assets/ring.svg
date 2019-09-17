@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="26.101" height="26.771" viewBox="0 0 26.101 26.771">
+  <g id="уведомления" transform="translate(-1871.899 -31)">
+    <g id="Group_62" data-name="Group 62" transform="translate(1871.899 32.609)">
+      <g id="Group_61" data-name="Group 61">
+        <path id="Path_614" data-name="Path 614" d="M175.207,404.514c0,.006,0,.012,0,.018a2.694,2.694,0,0,0,5.389,0c0-.006,0-.012,0-.018Z" transform="translate(-169.086 -382.064)" fill="#848f99"/>
+        <path id="Path_615" data-name="Path 615" d="M68.911,18.83,66.486,14.8V9.773A6.83,6.83,0,0,0,61.52,2.919V1.37a1.221,1.221,0,1,0-2.423,0V2.919a6.83,6.83,0,0,0-4.966,6.854V14.8l-2.425,4.03a1.542,1.542,0,0,0-.07,1.428A1.214,1.214,0,0,0,52.718,21H67.9a1.214,1.214,0,0,0,1.083-.738A1.542,1.542,0,0,0,68.911,18.83Z" transform="translate(-51.493)" fill="#848f99"/>
+      </g>
+    </g>
+    <circle id="Ellipse_14" data-name="Ellipse 14" cx="7.643" cy="7.643" r="7.643" transform="translate(1882.714 31)" fill="#fd8f21"/>
+    <text id="_3" data-name="3" transform="translate(1887.81 42.024)" fill="#fff" font-size="9" font-family="Roboto-Medium, Roboto" font-weight="500"><tspan x="0" y="0">3</tspan></text>
+  </g>
+</svg>

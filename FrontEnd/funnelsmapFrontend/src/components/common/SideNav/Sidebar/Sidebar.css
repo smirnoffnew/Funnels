@@ -1,0 +1,13 @@
+.sidebar {
+  background: #212939;
+  padding: 15px;
+  width: 240px;
+  box-sizing: border-box;
+  position: absolute;
+  height: 100vh;
+  position: fixed;
+}
+
+.logo {
+	width: 170px;
+}

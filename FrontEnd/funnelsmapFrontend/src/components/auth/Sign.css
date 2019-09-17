@@ -1,0 +1,464 @@
+.wrapper{
+  min-height: 100vh;
+  background-color: #212939;
+  color: #3e3e3e;
+}
+
+.container {
+  background-color: #F6F7F8;
+  padding: 30px 0 30px 0;
+  max-width: 440px;
+  border-radius: 8px;
+  margin: 20px auto 0 auto;
+}
+
+.form-container {
+  margin: auto;
+  width: 80%;
+}
+
+.input-group {
+  margin-bottom: 14px;
+  color: red;
+  font-size: 14px;
+  margin-top: -10px;
+}
+
+.input-group-email-green {
+  margin-bottom: 14px;
+  color: green;
+  font-size: 14px;
+  margin-top: -10px;
+}
+
+
+input[type=text], input[type=password] {
+  border-radius: 5px;
+  border: 1px solid #BFCFE9;
+  height: 43px;
+  width: 95%;
+  padding-left: 5%;
+  margin-bottom: 15px;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  border: 1px solid #F15C22;
+}
+
+.has-error input[type=text], .has-error input[type=password] {
+  border: 1px solid red;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: rgb(189, 192, 195);
+  font-weight: 100;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: rgb(189, 192, 195);
+  font-weight: 100;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: rgb(189, 192, 195);
+  font-weight: 100;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: rgb(189, 192, 195);
+  font-weight: 100;
+}
+
+.label{
+  color: #848F99;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.signin-logo{
+  display: flex;
+  margin: auto;
+  padding: 70px 0 70px 0;
+  width: 250px;
+}
+
+.top-text-first{
+  font-size: 27px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+}
+
+.top-text-second{
+  font-size: 15px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+}
+
+.top-text-second-questionnaire{
+  font-size: 24px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+}
+
+.top-text-third{
+  font-size: 14px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.top-text-fourth{
+  font-size: 14px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 35px;
+}
+
+.login-label{
+  display: flex;
+  justify-content: center;
+  font-size: 36px;
+}
+
+
+
+
+
+/* 
+.btn {
+  width: 100%;
+  height: 50px;
+  background: linear-gradient(84deg, #e62d24 0%, #fd8f21 100%);
+  color: white;
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.5s linear;
+}
+
+.btn:hover {
+  background: linear-gradient(263deg, #e62d24 0%, #fd8f21 100%);
+  transition: all 0.5s cubic-bezier(0.000, 0.000, 0.230, 1);
+} */
+
+
+
+
+
+.btn {
+  width: 100%;
+  height: 50px;
+  color: white;
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer;
+  /* margin-top: 20px; */
+  font-weight: 500;
+  font-size: 14px;
+  /* flex: 1 1 auto; */
+  /* text-align: center; */
+  transition: 0.5s;
+  background: linear-gradient(84deg, var(--c1, #f6d365), var(--c2, #fda085) 51%, var(--c1, #f6d365)) var(--x, 0)/ 200%;
+ /* text-shadow: 0px 0px 10px rgba(0,0,0,0.2);*/
+  /* box-shadow: 0 0 20px #eee; */
+  border-radius: 10px;
+ }
+
+ /* <- Magic Stuff Start */
+
+.btn:hover { --x: 100%; }
+
+.btn-1 {
+  --c1: #e62d24;
+  --c2: #fd8f21;
+}
+
+/* Magic Stuff End -> */
+
+
+.btn:active {
+  background: linear-gradient(263deg, #d6180f 0%, #F15C22 100%);
+}
+
+.form-password-forgot{
+  font-size: 14px;
+  margin-top: 20px;
+  display: flex;
+  color: #848F99 !important;
+  border-bottom: 2px dashed #848F99;
+  height: 18px;
+  width: max-content;
+  margin: 20px auto 0;
+}
+
+.form-password-forgot:hover {
+  color: #F15C22 !important;
+  border-bottom: 2px dashed #F15C22;
+}
+
+.form-password-forgot-button{
+  color: #848F99 !important;
+}
+
+.form-password-forgot-button:hover{
+  color: #F15C22 !important;
+}
+
+.form-bottom {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  width: 290px;
+  margin: 20px auto 0;
+  color: #fff;
+}
+
+.form-bottom p {
+  margin-bottom: 8px;
+}
+
+.form-bottom a {
+  color: white !important;
+  text-decoration: underline !important;
+}
+
+.form-bottom a:hover {
+  /* text-decoration: underline !important; */
+  color:  #F15C22 !important
+}
+
+.form-bottom-register {
+  text-align: center;
+  font-size: 14px;
+  padding-top: 20px;
+  color: #fff;
+}
+
+.form-bottom-register p {
+  margin-bottom: 8px;
+}
+
+.form-bottom-register a {
+  text-decoration: underline !important;
+  color: white !important;
+}
+
+.form-bottom-register a:hover {
+  /* text-decoration: underline !important; */
+  color:  #F15C22 !important
+}
+
+
+.form-error {
+  color: red;
+}
+
+.error-container {
+  background-color: red;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  overflow: hidden;
+}
+.error-container.signin-error {
+  margin-top: 44px;
+  color: red;
+  font-size: 14px;
+}
+
+
+
+
+
+.content {
+  text-align: left;
+  padding: 0 15px;
+}
+.content h3 {
+  margin: 20px 0;
+}
+
+.resend {
+  color: blue;
+  cursor: pointer;
+}
+.resend:hover {
+  text-decoration: underline;
+}
+
+.resended {
+  color: green;
+}
+
+.checkbox-wrapper-two{
+  display: flex;
+  width: 200px;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.checkbox-wrapper{
+
+}
+
+.checkbox-wrapper-four{
+  display: flex;
+}
+
+/* Customize the label (the container) */
+.container-checkbox {
+  display: flex;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #848F99;
+  font-size: 14px;
+  padding-top: 4px;
+}
+
+/* Hide the browser's default checkbox */
+.container-checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #fff;
+  border-radius: 4px;
+  border: .5px #f6f7f8;
+
+  background-color: #ffffff;
+  border: 1px solid #bfcfe9;
+}
+
+/* On mouse-over, add a grey background color */
+.container-checkbox:hover input ~ .checkmark {
+  /* background-color: #ccc; */
+  border: 1px solid #F15C22
+}
+
+/* When the checkbox is checked, add a blue background */
+.container-checkbox input:checked ~ .checkmark {
+  background-color: #F15C22;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container-checkbox input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container-checkbox .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.empty-space{
+  height: 50px;
+}
+
+.terms-policy{
+  color: #848f99;
+  padding-bottom: 20px;
+}
+
+.terms-policy a{
+   text-decoration: none !important;
+   color: #F15C22 !important;
+}
+
+
+
+
+
+
+
+.test {
+    /* margin-top: 25px; */
+    /* font-size: 21px; */
+    /* text-align: center; */
+
+    -webkit-animation: fadein .8s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein .8s; /* Firefox < 16 */
+        -ms-animation: fadein .8s; /* Internet Explorer */
+         -o-animation: fadein .8s; /* Opera < 12.1 */
+            animation: fadein .8s;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+
+/* .btn:hover { */
+  /* background: darken($red, 1.5%); */
+  /* background: linear-gradient(263deg, #e62d24 0%, #fd8f21 100%); */
+  /* border: 1px solid rgba(#000, .05); */
+  /* box-shadow: 1px 1px 2px rgba(#fff, .2); */
+  /* color: lighten($red, 18%);  */
+  /* text-decoration: none; */
+  /* text-shadow: -1px -1px 0 darken($red, 9.5%); */
+  /* transition: all 250ms linear; */
+/* } */
