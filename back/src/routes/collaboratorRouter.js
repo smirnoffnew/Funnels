@@ -40,7 +40,7 @@ collaboratorRouter.get('/funnel/:funnelId',
     lastModified,
     verifyToken,
     lastActive,
-    collaboratorController.getAllCollaboratorsByFunnelId());
+    collaboratorController.getAllCollaboratorsByFunnelId);
 
 
 module.exports = collaboratorRouter;

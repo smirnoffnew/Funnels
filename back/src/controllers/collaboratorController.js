@@ -158,7 +158,7 @@ module.exports = {
         const funnelId = req.params.funnelId;
 
         Funnel
-            .find({id:funnelId})
+            .find({"_id":funnelId})
             .populate({
                 model: 'Profile',
                 path: 'collaborators.profileId',
