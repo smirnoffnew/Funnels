@@ -43,3 +43,6 @@ db
 node_modules_docker
 
 .src/public/*
+back/src/public/avatars/*
+back/src/public/funnelBackgrounds/*
+back/src/public/screenshots/*
