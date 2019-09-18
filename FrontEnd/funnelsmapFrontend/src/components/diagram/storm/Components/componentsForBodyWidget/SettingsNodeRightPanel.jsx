@@ -9,6 +9,11 @@ const FINISHED = "FINISHED";
 const UNDER_DEVELOPMENT = "UNDER DEVELOPMENT";
 const DEFAULT = "DEFAULT";
 
+const SETTINGS_SECTION = "SETTINGS_SECTION";
+const TRACKING_BIG_NODE_SECTION = "TRACKING_BIG_NODE_SECTION";
+const TRACKING_SMALL_NODE_SECTION = "TRACKING_SMALL_NODE_SECTION";
+
+
 export default class SettingsNodeRightPanel extends React.Component {
   state = {
     labelNode: "",
@@ -18,32 +23,36 @@ export default class SettingsNodeRightPanel extends React.Component {
     copied: false,
     originalUrl: "",
     url: '',
-    isFinished: false,
+    sectionViews: {
+      settings: false,
+      trackingBigNode: false,
+      trackingSmallNode: false
+    },
     isUnderDevelopment: false,
-    isViewSettingsSection:true,
-    isViewTrackingSection:true
+    isFinished: false,
+
   };
 
 
 
   componentDidUpdate(prevProps) {
-        if (prevProps.developmentStatus !== this.props.developmentStatus) {
-          if (this.props.developmentStatus.status === DEFAULT) {
-            this.setState({
-              isFinished: false,
-              isUnderDevelopment: false
-            })
-          } if (this.props.developmentStatus.status === UNDER_DEVELOPMENT) {
-            this.setState({
-              isFinished: false,
-              isUnderDevelopment: true
-            })
-          } if (this.props.developmentStatus.status === FINISHED) {
-            this.setState({
-              isFinished: true,
-              isUnderDevelopment: false
-            })
-          }
+    if (prevProps.developmentStatus !== this.props.developmentStatus) {
+      if (this.props.developmentStatus.status === DEFAULT) {
+        this.setState({
+          isFinished: false,
+          isUnderDevelopment: false
+        })
+      } if (this.props.developmentStatus.status === UNDER_DEVELOPMENT) {
+        this.setState({
+          isFinished: false,
+          isUnderDevelopment: true
+        })
+      } if (this.props.developmentStatus.status === FINISHED) {
+        this.setState({
+          isFinished: true,
+          isUnderDevelopment: false
+        })
+      }
     }
   }
 
@@ -278,17 +287,43 @@ export default class SettingsNodeRightPanel extends React.Component {
 
   }
 
-  handleHideSettingSection = () => {
-    this.setState({isViewSettingsSection:!this.state.isViewSettingsSection});
+  changeViewSection = (section) => {
+    const { sectionViews } = this.state;
+    const { settings, trackingBigNode, trackingSmallNode } = sectionViews
+    switch (section) {
+      case SETTINGS_SECTION: {
+        this.setState({
+          sectionViews: {
+            ...sectionViews,
+            settings: !settings
+          }
+        })
+        return
+      }
+      case TRACKING_BIG_NODE_SECTION: {
+        this.setState({
+          sectionViews: {
+            ...sectionViews,
+            trackingBigNode: !trackingBigNode
+          }
+        })
+        return
+      }
+      case TRACKING_SMALL_NODE_SECTION: {
+        this.setState({
+          sectionViews: {
+            ...sectionViews,
+            trackingSmallNode: !trackingSmallNode
+          }
+        })
+        return
+      }
+      default: return
+    }
   }
 
-  
-
-  hendleHideTrackingSection = () => {
-    this.setState({isViewTrackingSection:!this.state.isViewTrackingSection});
-  }
   render() {
-    const {isViewSettingsSection} = this.state
+    const { settings, trackingBigNode, trackingSmallNode } = this.state.sectionViews
     return (
       <ModalNodeWidget
         show={this.props.work.showSettingsWidgetBoolean}
@@ -299,154 +334,161 @@ export default class SettingsNodeRightPanel extends React.Component {
           });
           this.saveDiagramThenCloseSettingModal(file);
         }}
-        handleHideSection={this.handleHideSettingSection}
-        isViewSettingsSection={this.state.isViewSettingsSection}
+        handleHideSection={() => this.changeViewSection(SETTINGS_SECTION)}
+        isViewSettingsSection={settings}
       >
         <label className="label-create-widget-settings">Settings</label>
         {this.state.copied && (
           <span className="label-input">Copied!</span>
         )}
-        
+
         {
-          isViewSettingsSection&&<div className="modal-content-wrapper">
-          {this.props.work.UTMLinkMessage && (
-            <div className={`input-group`}>
-              {this.props.work.UTMLinkMessage}
-            </div>
-          )}
-          <label htmlFor="Name" className="label-input">
-            Name
+          settings && <div className="modal-content-wrapper">
+            {this.props.work.UTMLinkMessage && (
+              <div className={`input-group`}>
+                {this.props.work.UTMLinkMessage}
+              </div>
+            )}
+            <label htmlFor="Name" className="label-input">
+              Name
           </label>
-          <textarea
-            className="node-panel-textarea-input"
-            style={{ height: 40 }}
-            id="Name"
-            placeholder="Label Name"
-            type="text"
-            value={
-              this.state.labelNode === '' ?
-
-                this.props.work.showSettingsWidgetModel &&
-                  this.props.work.showSettingsWidgetModel.extras.named === undefined ?
+            <textarea
+              className="node-panel-textarea-input"
+              style={{ height: 40 }}
+              id="Name"
+              placeholder="Label Name"
+              type="text"
+              value={
+                this.state.labelNode === '' ?
 
                   this.props.work.showSettingsWidgetModel &&
-                  // this.props.work.showSettingsWidgetModel.type :
-                  '' :
+                    this.props.work.showSettingsWidgetModel.extras.named === undefined ?
 
-                  this.props.work.showSettingsWidgetModel &&
-                  this.props.work.showSettingsWidgetModel.extras.named
+                    this.props.work.showSettingsWidgetModel &&
+                    // this.props.work.showSettingsWidgetModel.type :
+                    '' :
 
-                : this.state.labelNode
-            }
-            onChange={this.handleChangeNode}
-          />
-          <div className="radio-button-container">
-            <label
-              htmlFor="CheckBoxFinished"
-              className="container-checkbox"
-            >
-              Completed
+                    this.props.work.showSettingsWidgetModel &&
+                    this.props.work.showSettingsWidgetModel.extras.named
+
+                  : this.state.labelNode
+              }
+              onChange={this.handleChangeNode}
+            />
+            <div className="radio-button-container">
+              <label
+                htmlFor="CheckBoxFinished"
+                className="container-checkbox"
+              >
+                Completed
                 <input
-                id='CheckBoxFinished'
-                type="radio"
-                checked={this.state.isFinished}
-                // defaultChecked={false}
-                // onClick={this.handleChangeCheckbox}
-                onChange={() => null}
-                onClick={() => this.handleClickOnDevelopmentStage(FINISHED)}
-              />
-              <span className="checkmark"></span>
-            </label>
-            <label
-              htmlFor="CheckBoxUnderDevelopment"
-              className="container-checkbox"
-            >
-              Under development
+                  id='CheckBoxFinished'
+                  type="radio"
+                  checked={this.state.isFinished}
+                  // defaultChecked={false}
+                  // onClick={this.handleChangeCheckbox}
+                  onChange={() => null}
+                  onClick={() => this.handleClickOnDevelopmentStage(FINISHED)}
+                />
+                <span className="checkmark"></span>
+              </label>
+              <label
+                htmlFor="CheckBoxUnderDevelopment"
+                className="container-checkbox"
+              >
+                Under development
                 <input
-                id='CheckBoxUnderDevelopment'
-                type="radio"
-                checked={this.state.isUnderDevelopment}
-                // defaultChecked={false}
-                // onClick={this.handleChangeCheckbox}
-                onChange={() => null}
-                onClick={() => this.handleClickOnDevelopmentStage(UNDER_DEVELOPMENT)}
-              />
-              <span className="checkmark"></span>
-            </label>
+                  id='CheckBoxUnderDevelopment'
+                  type="radio"
+                  checked={this.state.isUnderDevelopment}
+                  // defaultChecked={false}
+                  // onClick={this.handleChangeCheckbox}
+                  onChange={() => null}
+                  onClick={() => this.handleClickOnDevelopmentStage(UNDER_DEVELOPMENT)}
+                />
+                <span className="checkmark"></span>
+              </label>
+            </div>
           </div>
-        </div>
 
         }
-     
-        
+
+
         {this.props.work.showTypeOfNode &&
           this.props.work.showTypeOfNode === "small" ? (
             <>
               <label className="label-create-widget-settings">Tracking</label>
-              <div className = {'arrow-tip-tracking'} onClick={this.hendleHideTrackingSection} style={{transform:`${this.state.isViewTrackingSection?"scale(1, -1)":" " }`}}>
-              <ArrowSelectSVG />
+              <div className={'arrow-tip-tracking'} onClick={() => this.changeViewSection(TRACKING_SMALL_NODE_SECTION)} style={{ transform: `${trackingSmallNode ? "scale(1, -1)" : " "}` }}>
+                <ArrowSelectSVG />
               </div>
-            
-  
-              <div style={{ padding: 15 }}>
-                <>
-                  <label htmlFor="UTMLink" className="label-input">
-                    Generate UTM link from Original link
-                </label>
-                  <input
-                    id="UTMLink"
-                    type="text"
-                    name="originalUrl"
-                    placeholder="ex.: https://www.google.com/"
-                    value={
-                      this.state.originalUrl === '' ?
+              
+                {
+                  trackingSmallNode && 
+                  <div style={{ padding: 15 }}>
+                  <>
 
-                        this.props.work.showSettingsWidgetModel &&
-                          this.props.work.showSettingsWidgetModel.extras.originalUrl === undefined ?
-
-                          '' :
+                    <label htmlFor="UTMLink" className="label-input">
+                      Generate UTM link from Original link
+              </label>
+                    <input
+                      id="UTMLink"
+                      type="text"
+                      name="originalUrl"
+                      placeholder="ex.: https://www.google.com/"
+                      value={
+                        this.state.originalUrl === '' ?
 
                           this.props.work.showSettingsWidgetModel &&
-                          this.props.work.showSettingsWidgetModel.extras.originalUrl
+                            this.props.work.showSettingsWidgetModel.extras.originalUrl === undefined ?
 
-                        : this.state.originalUrl
-                    }
-                    onChange={this.handleScriptChange}
-                  />
-                  {(this.state.url && this.state.url.length > 0) ||
-                    this.props.work.showSettingsWidgetModel.extras.url ? (
-                      <>
-                        <label htmlFor="U" className="label-input">
-                          Generated UTM link
-                    </label>
-                        <input
-                          type="text"
-                          name="U"
-                          ref={ref => this.utm = ref}
-                          value={
-                            this.state.url
-                              ? this.state.url
-                              : this.props.work.showSettingsWidgetModel.extras.url
-                          }
-                          onChange={() => { }}
-                        />
-                        <button
-                          className="btn-generate-utm"
-                          onClick={this.copyToClipboardUrl}
-                          style={{ float: "left" }}
-                        >
-                          Copy
-                    </button>
-                      </>
-                    ) : null}
-                  <button
-                    className="btn-generate-utm"
-                    onClick={() => this.handleCreateUTMLink()}
-                  >
-                    Generate
-                </button>
-                </>
-              </div>
+                            '' :
+
+                            this.props.work.showSettingsWidgetModel &&
+                            this.props.work.showSettingsWidgetModel.extras.originalUrl
+
+                          : this.state.originalUrl
+                      }
+                      onChange={this.handleScriptChange}
+                    />
+                    {(this.state.url && this.state.url.length > 0) ||
+                      this.props.work.showSettingsWidgetModel.extras.url ? (
+                        <>
+                          <label htmlFor="U" className="label-input">
+                            Generated UTM link
+                  </label>
+                          <input
+                            type="text"
+                            name="U"
+                            ref={ref => this.utm = ref}
+                            value={
+                              this.state.url
+                                ? this.state.url
+                                : this.props.work.showSettingsWidgetModel.extras.url
+                            }
+                            onChange={() => { }}
+                          />
+                          <button
+                            className="btn-generate-utm"
+                            onClick={this.copyToClipboardUrl}
+                            style={{ float: "left" }}
+                          >
+                            Copy
+                  </button>
+                        </>
+                      ) : null}
+                    <button
+                      className="btn-generate-utm"
+                      onClick={() => this.handleCreateUTMLink()}
+                    >
+                      Generate
+              </button>
+                  </>
+                  </div>
+                }
+              
+
+
+
               <button
                 className="btn-set-as-a-trigger"
                 onClick={this.handleToggleTriggerStyle}
@@ -465,7 +507,11 @@ export default class SettingsNodeRightPanel extends React.Component {
           ) : (
             <>
               <label className="label-create-widget-settings">Tracking</label>
-              <div style={{ padding: 15 }}>
+              <div className={'arrow-tip-tracking'} onClick={() => this.changeViewSection(TRACKING_BIG_NODE_SECTION)} style={{ transform: `${trackingBigNode ? "scale(1, -1)" : " "}` }}>
+                <ArrowSelectSVG />
+              </div>
+              {
+                trackingBigNode&&<> <div style={{ padding: 15 }}>
                 <>
                   <label htmlFor="UTMLink" className="label-input">
                     Generate UTM link from Original link
@@ -528,6 +574,7 @@ export default class SettingsNodeRightPanel extends React.Component {
                     Generate
                 </button>
                 </>
+
               </div>
 
               <div style={{ padding: 15 }}>
@@ -607,6 +654,10 @@ export default class SettingsNodeRightPanel extends React.Component {
                 </button>
                   )}
               </div>
+                
+                </>
+              }
+             
               <div className="buttons-set-wrapper">
                 <button
                   className="btn-set-as-a-trigger"
