@@ -4,7 +4,6 @@ import { ReactComponent as ArrowSelectSVG } from "../../../assets/arrow-up.svg";
 
 const ModalNodeWidget = ({ handleClose, show, children, style, close, handleHideSection, isViewSettingsSection }) => {
   const showHideClassName = show ? "display-block-node-widget" : "display-none";
-  console.log("trueOrfalse", isViewSettingsSection)
   return (
     <div className={showHideClassName}>
       <div

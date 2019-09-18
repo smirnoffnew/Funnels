@@ -35,6 +35,10 @@ export default function (state = initialState, action) {
     case 'GET_ALL_COLLABORATORS_FOR_FUNNELS_FAILURE':
       return { ...state, allCollaboratorsForFunnelsError: action.payload };
     ///////////////////////////////////////////////////////////////////////////
+    case 'GET_ALL_COLLABORATORS_OF_CURRENT_FUNNEL': {
+      let collaborators = action.collaborators&&action.collaborators.map(el => el.profileId)
+      return {...state, collaboratorsInfo:[...collaborators, action.funnelAuthor]}
+    }
 
     default: return state;
   }

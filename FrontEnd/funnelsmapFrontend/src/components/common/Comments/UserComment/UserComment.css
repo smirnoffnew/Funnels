@@ -7,7 +7,7 @@
 }
 .user-comment-text-block{
     background-color: #f6f7f8;
-    padding: 7px 7px 0;
+    padding: 9px 9px 0;
     vertical-align: top;
     max-width: 80%;
     height: 100%;
@@ -55,7 +55,7 @@
     background: #fff;
     border-radius: 6px;
     /* border: 1px solid #ddd; */
-    font-family: 'Roboto;', serif;
+    font-family: 'Roboto', serif;
     font-size: 14px;
     /* padding: 15px; */
   }
@@ -63,7 +63,7 @@
   .RichEditor-editor {
     /* border-top: 1px solid #ddd; */
     cursor: text;
-    font-size: 16px;
+    font-size: 14px;
     /* margin-top: 10px; */
   }
   
@@ -71,9 +71,6 @@
   .RichEditor-editor .public-DraftEditor-content {
     /* margin: 0 -15px -15px; */
     padding: 10px;
-  }
-  
-  .RichEditor-editor .public-DraftEditor-content {
     min-height: 70px;
   }
   

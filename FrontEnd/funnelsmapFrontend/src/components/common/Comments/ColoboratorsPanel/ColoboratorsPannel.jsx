@@ -3,19 +3,20 @@ import "./ColoboratorsPanel.css";
 import { UserIcon } from '../../UserIcon/UserIcon';
 import { API_URL } from '../../../../config';
 
-export const ColoboratorsPanel = ({coloborators = [{userName:'Ivan'},{userName:'Ivan'},{userName:'Ivan'},{userName:'Ivan'},{userName:'Ivan'},{userName:'Ivan'},{userName:'Ivan'},{userName:'Ivan'},{userName:'Ivan'},{userName:'Ivan'}]}) => {
+export const ColoboratorsPanel = ({collaborators = []}) => {
     return (
         <div className="coloborators-container">
             <div className="coloborators-text">
             Coloborators:
 </div>
             {
-                coloborators.map((user, index) => {
+                collaborators.lenth !== 0 &&collaborators.map((user, index) => {
                     return (
                         <div className="coloborator" key = {index}>
                             
-                            <UserIcon userName={user.userName}  
-                            userAvatarUrl={`${API_URL}${user.user_photoUrl?user.user_photoUrl:""}`} 
+                            <UserIcon 
+                            userName={user.accountName?user.accountName:"#"}  
+                            userAvatarUrl={`${API_URL}${user.photoUrl?user.photoUrl:""}`} 
                             style={{ transform: "scale(0.6)",
                             margin:'0px',
                             width: '50px',

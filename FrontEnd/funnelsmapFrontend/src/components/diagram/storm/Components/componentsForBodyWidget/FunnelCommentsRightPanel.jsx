@@ -9,7 +9,7 @@ import { UserComment } from "../../../../common/Comments/UserComment/UserComment
 import "./FunnelCommentsRightPanel.css"
 import { API_URL } from "../../../../../config";
 import { getNotificationTime } from "../../utils";
-import {getAllFunnelsCollaboration} from "../../../../../store/actions/collaborations"
+import {getAllCollaborators} from "../../../../../store/actions/collaborations"
 import { ColoboratorsPanel } from "../../../../common/Comments/ColoboratorsPanel/ColoboratorsPannel";
 
 
@@ -22,22 +22,15 @@ class FunnelCommentsRightPanel extends React.Component {
 
   componentDidMount() {
     this.props.getAllComment(this.props.funnelId);
-    this.props.getAllFunnelsCollaboration()
-    // this.props.getAllCollaboratorsForFunnels([
-    //   this.props.funnelId
-    // ]  );
-    
+    this.props.getAllCollaborators(this.props.funnelId)
   }
 
   showComments = () =>
     this.setState({
       showComments: true,
-      showMenu: false,
-      funnelNotes:
-        (this.props.work.diagram && this.props.work.diagram.funnelNotes) || []
     });
 
-  hideComments = () => this.setState({ showNotes: false });
+  hideComments = () => this.setState({ showComments: false });
 
   sendComment = (comment) => {
     const avatarUrl = JSON.parse(localStorage.getItem("userAvatar")).replace(`${API_URL}`, '');
@@ -138,7 +131,7 @@ class FunnelCommentsRightPanel extends React.Component {
               userName={localStorage.getItem("userFirstName")}
               userAvatarUrl={JSON.parse(localStorage.getItem("userAvatar"))}
               />
-              <ColoboratorsPanel />
+              <ColoboratorsPanel  collaborators = {this.props.collaboratorsInfo}/>
           </ModalFunnelWidget>
         </ClickOutside>
       </>
@@ -149,8 +142,9 @@ class FunnelCommentsRightPanel extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     funnelId: ownProps.work.match.params.funnelId,
-    comments: state.comments.comments
+    comments: state.comments.comments,
+    collaboratorsInfo: state.collaborations.collaboratorsInfo
   }
 }
 
-export default connect(mapStateToProps, { sendComment, getAllComment, getAllFunnelsCollaboration })(FunnelCommentsRightPanel)
+export default connect(mapStateToProps, { sendComment, getAllComment,  getAllCollaborators })(FunnelCommentsRightPanel)
