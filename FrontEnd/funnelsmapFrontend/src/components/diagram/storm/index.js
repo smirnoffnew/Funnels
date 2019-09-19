@@ -23,6 +23,8 @@ import {
   setPermission,
   getConversationInfoWithPromisefication,
   getConversionInfoForAllNodes,
+  showCommentsBoolean,
+  changeKeyDown
 } from '../../../store/actions/projects'
 
 import { getAllDevelopmentStages, changeStatusOfNode } from '../../../store/actions/developmentStages'
@@ -112,7 +114,6 @@ class App extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  // console.log('diagram', state.projects[`diagram${ownProps.match.params.funnelId}`])
   return {
     diagram: state.projects[`diagram${ownProps.match.params.funnelId}`],
     svg: state.projects.svgList,
@@ -128,6 +129,7 @@ function mapStateToProps(state, ownProps) {
     showSettingsWidgetEngine: state.projects.showSettingsWidgetEngine,
 
     showNotesWidgetBoolean: state.projects.showNotesWidgetBoolean,
+    showCommentsWidgetBoolean: state.projects.showCommentsWidgetBoolean,
     showNotesWidgetModel: state.projects.showNotesWidgetModel,
     showNotesWidgetEngine: state.projects.showNotesWidgetEngine,
     showTypeOfNode: state.projects.showTypeOfNode,
@@ -161,6 +163,9 @@ const mapDispatchToProps = dispatch => {
       dispatch(saveDiagramThenShowOrHideNotesModal(id, state, file, boolean, model, engine)),
 
     showAnalyticsBoolean: boolean => dispatch(showAnalyticsBoolean(boolean)),
+    showCommentsBoolean: boolean => dispatch(showCommentsBoolean(boolean)),
+
+    changeKeyDown: key => dispatch(changeKeyDown(key)),
 
     createUTMLinkWithPromisefication: (item1, item2, item3) => dispatch(createUTMLinkWithPromisefication(item1, item2, item3)),
     getConversationInfoWithPromisefication: (item1, item2) => dispatch(getConversationInfoWithPromisefication(item1, item2)),
@@ -169,6 +174,7 @@ const mapDispatchToProps = dispatch => {
     getConversionInfoForAllNodes: funnelId => dispatch(getConversionInfoForAllNodes(funnelId)),
     getAllDevelopmentStages: funnelId => dispatch(getAllDevelopmentStages(funnelId)),
     changeStatusOfNode: (item1, item2, item3) => dispatch(changeStatusOfNode(item1, item2, item3))
+   
   }
 }
 

@@ -9,15 +9,16 @@ import { UserComment } from "../../../../common/Comments/UserComment/UserComment
 import "./FunnelCommentsRightPanel.css"
 import { API_URL } from "../../../../../config";
 import { getNotificationTime } from "../../utils";
-import {getAllCollaborators} from "../../../../../store/actions/collaborations"
+import { getAllCollaborators } from "../../../../../store/actions/collaborations"
 import { ColoboratorsPanel } from "../../../../common/Comments/ColoboratorsPanel/ColoboratorsPannel";
-
+// import VisibilitySensor from "react-visibility-sensor"
 
 
 class FunnelCommentsRightPanel extends React.Component {
   state = {
     showComments: false,
-    comments: ""
+    comments: "",
+    isVisibleLastElement: true
   };
 
   componentDidMount() {
@@ -25,12 +26,37 @@ class FunnelCommentsRightPanel extends React.Component {
     this.props.getAllCollaborators(this.props.funnelId)
   }
 
-  showComments = () =>
+  componentDidUpdate(prevProps) {
+    this.autoScrollToDown()
+    if (!prevProps.work.showCommentsWidgetBoolean && this.props.work.showCommentsWidgetBoolean) {
+      this.props.getAllComment(this.props.funnelId)
+      this.props.getAllCollaborators(this.props.funnelId)
+    }
+
+  }
+
+
+
+  autoScrollToDown(bool) {
+    const hiddenElement = document.getElementById("box");
+    // if(this.state.isVisibleLastElement||bool){
+    hiddenElement.scrollIntoView({ block: "center", inline: "nearest" });
+    // }   
+  }
+
+  showComments = () => {
     this.setState({
       showComments: true,
     });
+    this.props.work.showCommentsBoolean(true)
+  }
 
-  hideComments = () => this.setState({ showComments: false });
+  hideComments = () => {
+    this.setState({
+      showComments: false
+    })
+    this.props.work.showCommentsBoolean(false)
+  };
 
   sendComment = (comment) => {
     const avatarUrl = JSON.parse(localStorage.getItem("userAvatar")).replace(`${API_URL}`, '');
@@ -67,6 +93,9 @@ class FunnelCommentsRightPanel extends React.Component {
               className="diagram-header-menu-button"
               onClick={this.showComments}
               title={"Funnel Notes"}
+              style={{
+                marginLeft: "16px"
+              }}
             >
               <FunnelCommentsSVG />
             </button>
@@ -74,9 +103,7 @@ class FunnelCommentsRightPanel extends React.Component {
         ) : null}
 
         <ClickOutside
-          onClickOutside={() => {
-            this.setState({ showComments: false });
-          }}
+          onClickOutside={this.hideComments}
         >
           <ModalFunnelWidget
             show={this.state.showComments}
@@ -85,12 +112,12 @@ class FunnelCommentsRightPanel extends React.Component {
               position: "absolute",
               top: 65,
               width: 500,
-              height: '100%'
+              height: "calc(100vh -67px)"
             }}
           >
             <label className="label-create-widget-settings">Comments</label>
             <div
-            
+
               style={{
                 padding: 15,
                 display: "flex",
@@ -111,27 +138,48 @@ class FunnelCommentsRightPanel extends React.Component {
 
               >
                 {this.props.comments &&
-                  this.props.comments.slice().reverse().map((item, index) => {
+                  this.props.comments.slice().map((item, index) => {
                     const isOwner = item.user_id === localStorage.getItem("userID") ? true : false
+
                     return <React.Fragment key={index} >
-                      <UserComment
-                        comment={item.comment}
-                        userName={item.user_accountName}
-                        userAvatarUrl={`${API_URL}${item.user_photoUrl}`}
-                        isOwner={isOwner}
-                        timeCreated={getNotificationTime(item.createdAt)}
-                      />
+                      {
+                        // (index + 1) === this.props.comments.length ?
+                        // <VisibilitySensor onChange={(isVisible) => {this.setState({isVisibleLastElement: isVisible})}}>
+                        <UserComment
+                          comment={item.comment}
+                          userName={item.user_accountName}
+                          userAvatarUrl={`${API_URL}${item.user_photoUrl}`}
+                          isOwner={isOwner}
+                          timeCreated={getNotificationTime(item.createdAt)}
+                        />
+                        // </VisibilitySensor>
+                        // :
+
+                        // <UserComment
+                        // comment={item.comment}
+                        // userName={item.user_accountName}
+                        // userAvatarUrl={`${API_URL}${item.user_photoUrl}`}
+                        // isOwner={isOwner}
+                        // timeCreated={getNotificationTime(item.createdAt)}
+                        // />
+
+                      }
+
+
                     </React.Fragment>
                   })
-                  }
+                }
+
+                <div id={"box"}> </div>
+
               </div>
             </div>
             <CommentPanel
               sendComment={this.sendComment}
               userName={localStorage.getItem("userFirstName")}
               userAvatarUrl={JSON.parse(localStorage.getItem("userAvatar"))}
-              />
-              <ColoboratorsPanel  collaborators = {this.props.collaboratorsInfo}/>
+            />
+            <ColoboratorsPanel collaborators={this.props.collaboratorsInfo} />
           </ModalFunnelWidget>
         </ClickOutside>
       </>
@@ -147,4 +195,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, { sendComment, getAllComment,  getAllCollaborators })(FunnelCommentsRightPanel)
+export default connect(mapStateToProps, { sendComment, getAllComment, getAllCollaborators })(FunnelCommentsRightPanel)

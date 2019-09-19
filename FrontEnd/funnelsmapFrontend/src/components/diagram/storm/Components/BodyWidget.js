@@ -28,6 +28,7 @@ import SaveBeforeExitModal from "./componentsForBodyWidget/SaveBeforeExitModal";
 import CreateTemplateModal from "./componentsForBodyWidget/CreateTemplateModal";
 import { API_URL } from "../../../../config";
 import FunnelCommentsRightPanel from "./componentsForBodyWidget/FunnelCommentsRightPanel";
+import { keyMonitor } from "../utils";
 
 const Select = ({ show, children, style }) => {
   const showHideClassName = show
@@ -255,6 +256,10 @@ export default class BodyWidget extends React.Component {
     this.props.app.getDiagramEngine().zoomToFit();
     document.getElementById("diagram-layer").click();
   };
+
+  componentDidMount(){
+    keyMonitor('Control', this.props.work.changeKeyDown, this.props.work.changeKeyDown)
+  }
 
   render() {
     this.props.work.permissionForCollaborator === "Edit" ?

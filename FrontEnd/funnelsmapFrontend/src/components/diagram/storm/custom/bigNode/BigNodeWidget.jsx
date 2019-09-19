@@ -10,7 +10,8 @@ import { ReactComponent as NotesSVG } from "../../../../../assets/selectForWidge
 import { ReactComponent as SettingsSVG } from "../../../../../assets/selectForWidget/settings.svg";
 import {
   saveDiagramThenShowOrHideSettingsModal,
-  saveDiagramThenShowOrHideNotesModal
+  saveDiagramThenShowOrHideNotesModal,
+  changeKeyDown
 } from "../../../../../store/actions/projects";
 import {
   cloneSelected,
@@ -19,7 +20,7 @@ import {
   showRightModal
 } from "../funcsForCustomNodeWidget";
 import "./index.css";
-import { getConversion } from "../../utils";
+import { getConversion, openLinkOnNewTab } from "../../utils";
 import { DevelopmentStage } from "../../../../common/DevelopmentStage/DevelopmentStage";
 
 const Select = ({ show, children }) => {
@@ -153,6 +154,12 @@ class BigNodeWidget extends React.Component {
   //   return Conversion
   // }
 
+  handleClicOnWidget = () =>  {
+    if (this.props.keyDown === "Control"&&this.props.engine.diagramModel.nodes[this.props.node.id].extras.originalUrl) {
+      openLinkOnNewTab(this.props.engine.diagramModel.nodes[this.props.node.id].extras.originalUrl, this.props.changeKeyDown(""))
+    }
+  }
+
   render() {
     return (
       <>
@@ -192,6 +199,7 @@ class BigNodeWidget extends React.Component {
             onMouseEnter={this.showModal}
             onMouseLeave={this.hideModal}
             onMouseMove={this.mouseMove}
+            onClick={this.handleClicOnWidget}
           />
 
           <ClickOutside
@@ -430,12 +438,16 @@ const mapStateToProps = state => {
     permissionForCollaborator: state.projects.permissionForCollaborator,
 
     conversionInfoForAllNodes: state.projects.conversionInfoForAllNodes,
-    developmentStatus: state.developmentStages.stages
+    developmentStatus: state.developmentStages.stages,
+
+    keyDown: state.projects.keyDown,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+
+    changeKeyDown: key => dispatch(changeKeyDown(key)),
     saveDiagramThenShowOrHideSettingsModal: (
       id,
       state,

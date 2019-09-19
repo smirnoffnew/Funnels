@@ -995,9 +995,28 @@ export const showAnalyticsBoolean = boolean => dispatch => {
   })
 }
 
+export const showCommentsBoolean = boolean => dispatch => {
+  dispatch({
+    type: 'CHANGE_SHOW_COMMENTS',
+    payload: {
+      boolean
+    }
+  })
+}
+
 export const setPermission = object => dispatch => {
   dispatch({
     type: 'SET_PERMISSION',
     payload: object
+  })
+}
+
+export const changeKeyDown = key => dispatch => {
+  // console.log("KEY", key)
+  dispatch({
+    type: 'CHANGE_KEY_IS_DOWN',
+    payload: {
+      key
+    }
   })
 }

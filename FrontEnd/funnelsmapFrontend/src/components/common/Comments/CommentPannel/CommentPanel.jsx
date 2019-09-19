@@ -2,7 +2,7 @@
 import React from 'react'
 import "./CommentPanel.css";
 import { UserIcon } from '../../UserIcon/UserIcon';
-import { EditorState, RichUtils, convertToRaw,  } from 'draft-js';
+import { EditorState, RichUtils, convertToRaw, } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
@@ -23,12 +23,14 @@ export const CommentPanel = ({ sendComment, userName, userAvatarUrl }) => {
             <UserIcon userName={userName} userAvatarUrl={userAvatarUrl} />
 
             <div className="text-input">
-                <RichEditor sendComment={sendComment}/>
+                <RichEditor sendComment={sendComment} />
 
             </div>
         </div>
     )
 }
+
+
 class RichEditor extends React.Component {
     constructor(props) {
         super(props);
@@ -76,14 +78,24 @@ class RichEditor extends React.Component {
         );
     }
 
-    
-    handleClickComment(editorState){
-        if (editorState) { 
-            if(Boolean(editorState.getCurrentContent().getPlainText().trim())!== false){
+
+    handleClickComment(editorState) {
+
+        // function cleanMessage(content){
+            // const contentMass = content.split('<p>')
+            // console.log("AA",contentMass," ",contentMass[contentMass.length - 1] === true )
+            // if(co ){
+            //     console.log("that string hav")
+            // }
+        // }
+       
+        if (editorState) {
+            // cleanMessage(draftToHtml(convertToRaw(editorState.getCurrentContent())))
+            if (Boolean(editorState.getCurrentContent().getPlainText().trim()) !== false) {
                 this.props.sendComment(draftToHtml(convertToRaw(editorState.getCurrentContent())))
-            } 
-            this.setState( { editorState: EditorState.createEmpty() })
-        } 
+            }
+            this.setState({ editorState: EditorState.createEmpty() })
+        }
     }
 
 
@@ -118,33 +130,33 @@ class RichEditor extends React.Component {
                 <div className={'RichEditor-block-utils'}>
                     <div className={'RichEditor-utils-text'}>
                         <InlineStyleControls
-                        editorState={editorState}
-                    sendComment={this.props.sendComment}
-                    onToggle={this.toggleInlineStyle}
-                    />
+                            editorState={editorState}
+                            sendComment={this.props.sendComment}
+                            onToggle={this.toggleInlineStyle}
+                        />
                         <BlockStyleControls
-                        editorState={editorState}
-                        onToggle={this.toggleBlockType}
-                    />
-                    <div className={'RichEditor-emoji-button'}>
-                        <EmojiSelect />
+                            editorState={editorState}
+                            onToggle={this.toggleBlockType}
+                        />
+                        <div className={'RichEditor-emoji-button'}>
+                            <EmojiSelect />
+                        </div>
                     </div>
-                </div>
-                <button
-                    className="btn btn-1"
-                    onClick={() => this.handleClickComment(editorState)}
-                    style={{
-                        height: 30,
-                        width: 100,
-                        margin: "5px 5px 5px auto",
-                        borderRadius: "6px",
-                        alignSelf: "flex-end"
-                    }}
-                >
-                    Comment
+                    <button
+                        className="btn btn-1"
+                        onClick={() => this.handleClickComment(editorState)}
+                        style={{
+                            height: 30,
+                            width: 100,
+                            margin: "5px 5px 5px auto",
+                            borderRadius: "6px",
+                            alignSelf: "flex-end"
+                        }}
+                    >
+                        Comment
               </button>
 
-            </div>
+                </div>
             </div >
         );
     }
@@ -190,9 +202,22 @@ class StyleButton extends React.Component {
     }
 }
 
+const unorderListItem = () => (
+    <svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" width="4.54mm" height="3.25mm" viewBox="0 0 12.88 10.5">
+  <path className="cls-1" style={{ fill: "#768093" }} d="M294.89,417.73a0.64,0.64,0,1,1,0-1.28h8.35a0.64,0.64,0,0,1,0,1.28h-8.35ZM291,424h2.33v2.37H291V424h0Zm0-4.06h2.33v2.37H291V420h0Zm0-4.07h2.33v2.37H291v-2.37h0Zm3.89,10a0.64,0.64,0,1,1,0-1.28h8.35a0.64,0.64,0,0,1,0,1.28h-8.35Zm0-4.06a0.64,0.64,0,1,1,0-1.28h8.35a0.64,0.64,0,0,1,0,1.28h-8.35Z" transform="translate(-291 -415.89)"/>
+</svg>
+)
+
+const orderListItem = () => (
+    <svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" width="4.14mm" height="3.25mm" viewBox="0 0 11.74 10.45">
+  <path className="cls-1" style={{ fill: "#768093" }} d="M295.25,417.88a0.65,0.65,0,0,1,0-1.28h7a0.65,0.65,0,0,1,0,1.28h-7Zm-1.8,7.81v0.65H291a1.69,1.69,0,0,1,.24-0.7,4.67,4.67,0,0,1,.78-0.87,4.93,4.93,0,0,0,.58-0.6,0.77,0.77,0,0,0,.14-0.43,0.49,0.49,0,0,0-.13-0.36,0.53,0.53,0,0,0-.69,0,0.68,0.68,0,0,0-.15.44l-0.7-.07a1.14,1.14,0,0,1,.39-0.83,1.31,1.31,0,0,1,.82-0.25,1.18,1.18,0,0,1,.85.29,1,1,0,0,1,.31.72,1.27,1.27,0,0,1-.09.47,1.89,1.89,0,0,1-.28.47,4.36,4.36,0,0,1-.46.47c-0.22.2-.36,0.34-0.42,0.4a1.18,1.18,0,0,0-.14.19h1.39ZM293,419.55h-0.7v-2.63a2.39,2.39,0,0,1-.9.53v-0.64a2,2,0,0,0,.59-0.34,1.29,1.29,0,0,0,.44-0.58H293v3.66h0Zm2.22,6.45a0.65,0.65,0,0,1,0-1.28h7a0.65,0.65,0,0,1,0,1.28h-7Zm0-4.06a0.65,0.65,0,0,1,0-1.28h7a0.65,0.65,0,0,1,0,1.28h-7Z" transform="translate(-291 -415.89)"/>
+</svg>
+
+)
+
 const BLOCK_TYPES = [
-    { label: '⋮', style: 'unordered-list-item' },
-    { label: '☰', style: 'ordered-list-item' },
+    { label: unorderListItem(), style: 'unordered-list-item' },
+    { label: orderListItem(), style: 'ordered-list-item' },
 ];
 
 const BlockStyleControls = (props) => {
@@ -204,9 +229,9 @@ const BlockStyleControls = (props) => {
         .getType();
     return (
         <div className="RichEditor-controls">
-            {BLOCK_TYPES.map((type) =>
+            {BLOCK_TYPES.map((type, index) =>
                 <StyleButton
-                    key={type.label}
+                    key={index}
                     active={type.style === blockType}
                     label={type.label}
                     onToggle={props.onToggle}
@@ -217,12 +242,31 @@ const BlockStyleControls = (props) => {
     );
 };
 
+const boldIcon = () => {
+    return (
+        <svg data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" width="3.11mm" height="3.12mm" viewBox="0 0 8.83 11.68">
+            <path className="cls-1" style={{ fill: "#768093" }} d="M292,427.57V415.89h4.38a5.43,5.43,0,0,1,2.15.35,2.75,2.75,0,0,1,1.26,1.09,2.85,2.85,0,0,1,.46,1.54,2.66,2.66,0,0,1-.41,1.41,2.9,2.9,0,0,1-1.22,1.07,3,3,0,0,1,1.63,1.06,2.83,2.83,0,0,1,.57,1.77,3.42,3.42,0,0,1-.35,1.53,3,3,0,0,1-.86,1.09,3.62,3.62,0,0,1-1.28.58,7.77,7.77,0,0,1-1.89.2H292Zm1.55-6.77h2.53a5.66,5.66,0,0,0,1.47-.14,1.64,1.64,0,0,0,.89-0.58,1.69,1.69,0,0,0,.3-1,1.86,1.86,0,0,0-.28-1,1.41,1.41,0,0,0-.8-0.61,6.66,6.66,0,0,0-1.78-.16h-2.34v3.54h0Zm0,5.4h2.91a6.62,6.62,0,0,0,1.06-.06,2.5,2.5,0,0,0,.89-0.32,1.7,1.7,0,0,0,.59-0.65,2,2,0,0,0,.23-1,1.94,1.94,0,0,0-.34-1.14,1.76,1.76,0,0,0-.93-0.68,5.72,5.72,0,0,0-1.71-.2h-2.7v4h0Z" transform="translate(-292 -415.89)" />
+        </svg>
+    )
+}
 
+const italicIcon = () => (
+    <svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" width="2.48mm" height="3.12mm" viewBox="0 0 7.02 11.68">
+        <polygon className="cls-1" style={{ fill: "#768093" }} points="1.93 10.13 3.72 1.55 1.89 1.55 1.89 0 4.05 0 5.6 0 7.02 0 7.02 1.55 5.28 1.55 3.48 10.13 5.13 10.13 5.13 11.68 3.15 11.68 1.6 11.68 0 11.68 0 10.13 1.93 10.13 1.93 10.13" />
+    </svg>
+)
+
+const underLineIcon = () => (
+    <svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" width="3.5mm" height="3.13mm" viewBox="0 0 9.93 11.72">
+  <path className="cls-1" style={{ fill: "#768093" }}  d="M299.51,415.89h1.31v5.68a6.78,6.78,0,0,1-.33,2.36,2.89,2.89,0,0,1-1.21,1.42,4.28,4.28,0,0,1-2.3.55,4.7,4.7,0,0,1-2.26-.48,2.71,2.71,0,0,1-1.25-1.38,6.6,6.6,0,0,1-.38-2.47v-5.68h1.31v5.68a5.55,5.55,0,0,0,.24,1.89,1.79,1.79,0,0,0,.82.94,2.81,2.81,0,0,0,1.41.33,2.7,2.7,0,0,0,2-.65,3.77,3.77,0,0,0,.61-2.51v-5.68h0ZM292,427h9.93v0.63H292V427h0Z" transform="translate(-292 -415.89)"/>
+</svg>
+
+)
 
 var INLINE_STYLES = [
-    { label: 'B', style: 'BOLD' },
-    { label: 'I', style: 'ITALIC' },
-    { label: 'U', style: 'UNDERLINE' },
+    { label: boldIcon(), style: 'BOLD' },
+    { label: italicIcon(), style: 'ITALIC' },
+    { label: underLineIcon(), style: 'UNDERLINE' },
 
 ];
 
@@ -230,9 +274,9 @@ const InlineStyleControls = (props) => {
     var currentStyle = props.editorState.getCurrentInlineStyle();
     return (
         <div className="RichEditor-controls">
-            {INLINE_STYLES.map(type =>
+            {INLINE_STYLES.map((type, index) =>
                 <StyleButton
-                    key={type.label}
+                    key={index}
                     active={currentStyle.has(type.style)}
                     label={type.label}
                     onToggle={props.onToggle}

@@ -7,12 +7,29 @@ import { signupUser, signupTester, validationUser } from '../../store/actions/au
 import './Sign.css'
 import logo from '../../assets/Logo_invert.png'
 
+function debounced(delay, fn) {
+  let timerId;
+  return function (...args) {
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+    timerId = setTimeout(() => {
+      fn(...args);
+      timerId = null;
+    }, delay);
+  }
+}
+
+
 class Signup extends React.Component {
 
   handleEmailFieldBlur = (e, props) => {
     this.props.handleBlur(e)
-    this.props.validationUser(this.props.values.email)
+    this.dHandler(this.props.values.email)
+    
   }
+  dHandler = debounced(200, this.props.validationUser);
+
 
   render() {
     const {
@@ -28,7 +45,7 @@ class Signup extends React.Component {
     } = this.props;
 
     let params = new URLSearchParams(this.props.router.location.search);
-
+    
     return (
       <div className='wrapper'>
         <img className='signin-logo' src={logo} alt='logo' />

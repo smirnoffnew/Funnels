@@ -10,7 +10,8 @@ import { ReactComponent as NotesSVG } from "../../../../../assets/selectForWidge
 import { ReactComponent as SettingsSVG } from "../../../../../assets/selectForWidget/settings.svg";
 import {
   saveDiagramThenShowOrHideSettingsModal,
-  saveDiagramThenShowOrHideNotesModal
+  saveDiagramThenShowOrHideNotesModal,
+  changeKeyDown
 } from "../../../../../store/actions/projects";
 import {
   cloneSelected,
@@ -20,6 +21,7 @@ import {
 } from "../funcsForCustomNodeWidget";
 import "./index.css";
 import { DevelopmentStage } from "../../../../common/DevelopmentStage/DevelopmentStage";
+import { openLinkOnNewTab } from "../../utils";
 
 const Select = ({ show, children }) => {
   const showHideClassName = show
@@ -52,30 +54,30 @@ class SmallNodeWidget extends React.Component {
   state = {
     show: false,
     handleGridTwo: false,
-    status:""
+    status: ""
   };
 
-  getDevelopmentStatus(funnelId, nodeId){
-    if(this.props.developmentStatus.length !== 0 ){
-      let statusAndnodeId = this.props.developmentStatus&&this.props.developmentStatus.find(el => el.nodeId === nodeId)
-      this.setState({status: statusAndnodeId?statusAndnodeId.status:"DEFAULT"})
+  getDevelopmentStatus(funnelId, nodeId) {
+    if (this.props.developmentStatus.length !== 0) {
+      let statusAndnodeId = this.props.developmentStatus && this.props.developmentStatus.find(el => el.nodeId === nodeId)
+      this.setState({ status: statusAndnodeId ? statusAndnodeId.status : "DEFAULT" })
     }
-   
+
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.getDevelopmentStatus(this.props.funnelId, this.props.node.id)
   }
 
-  componentDidUpdate(prevProps){
-    if(prevProps.showSettingsWidgetBoolean&&!this.props.showSettingsWidgetBoolean){
-      if(prevProps.showSettingsWidgetModel.id === prevProps.node.id){
+  componentDidUpdate(prevProps) {
+    if (prevProps.showSettingsWidgetBoolean && !this.props.showSettingsWidgetBoolean) {
+      if (prevProps.showSettingsWidgetModel.id === prevProps.node.id) {
         this.getDevelopmentStatus(this.props.funnelId, this.props.node.id)
       }
-    }if(prevProps.developmentStatus !== this.props.developmentStatus){
+    } if (prevProps.developmentStatus !== this.props.developmentStatus) {
       this.getDevelopmentStatus(this.props.funnelId, this.props.node.id)
     }
-    
+
   }
 
   showModal = () => {
@@ -105,6 +107,12 @@ class SmallNodeWidget extends React.Component {
     return obj[0] && obj[0].counterUrl && obj[0].counterUrl
       ? obj[0].counterUrl
       : "0 or no utm";
+  }
+
+  handleClicOnWidget = () =>  {
+    if (this.props.keyDown === "Control"&&this.props.engine.diagramModel.nodes[this.props.node.id].extras.originalUrl) {
+      openLinkOnNewTab(this.props.engine.diagramModel.nodes[this.props.node.id].extras.originalUrl, this.props.changeKeyDown(""))
+    }
   }
 
   render() {
@@ -146,6 +154,7 @@ class SmallNodeWidget extends React.Component {
             onMouseEnter={this.showModal}
             onMouseLeave={this.hideModal}
             onMouseMove={this.mouseMove}
+            onClick={this.handleClicOnWidget}
           />
           <ClickOutside
             onClickOutside={() => {
@@ -160,14 +169,14 @@ class SmallNodeWidget extends React.Component {
                   <div
                     className="analytics-box-horizontally"
                     title={this.props.conversionInfoForAllNodes &&
-                        this.getCounterUrl(
-                          this.props.conversionInfoForAllNodes,
-                          this.props.node.id
-                        )}
+                      this.getCounterUrl(
+                        this.props.conversionInfoForAllNodes,
+                        this.props.node.id
+                      )}
                   >
                     <p className="left-anal">Clicks:</p>
                     <p className="right-anal">
-                     {this.props.conversionInfoForAllNodes &&
+                      {this.props.conversionInfoForAllNodes &&
                         this.getCounterUrl(
                           this.props.conversionInfoForAllNodes,
                           this.props.node.id
@@ -177,82 +186,82 @@ class SmallNodeWidget extends React.Component {
                 </>
               </SelectAnalytics>
             ) : (
-              <Select
-                show={
-                  this.props.permissionForCollaborator === "Edit"
-                    ? this.state.show
-                    : false
-                }
-              >
-                <button
-                  className="btn-select-widget"
-                  onClick={() =>
-                    showRightModal(
-                      this.props.diagram.funnelName,
-                      this.props.diagram.funnelNotes,
-                      this.props.saveDiagramThenShowOrHideSettingsModal,
-                      this.props.funnelId,
-                      this.props.engine,
-                      this.props.node,
-                      "small"
-                    )
+                <Select
+                  show={
+                    this.props.permissionForCollaborator === "Edit"
+                      ? this.state.show
+                      : false
                   }
-                  title={"Settings"}
                 >
-                  <SettingsSVG/>
-                </button>
-                <button
-                  className="btn-select-widget"
-                  onClick={() =>
-                    showRightModal(
-                      this.props.diagram.funnelName,
-                      this.props.diagram.funnelNotes,
-                      this.props.saveDiagramThenShowOrHideNotesModal,
-                      this.props.funnelId,
-                      this.props.engine,
-                      this.props.node,
+                  <button
+                    className="btn-select-widget"
+                    onClick={() =>
+                      showRightModal(
+                        this.props.diagram.funnelName,
+                        this.props.diagram.funnelNotes,
+                        this.props.saveDiagramThenShowOrHideSettingsModal,
+                        this.props.funnelId,
+                        this.props.engine,
+                        this.props.node,
+                        "small"
+                      )
+                    }
+                    title={"Settings"}
+                  >
+                    <SettingsSVG />
+                  </button>
+                  <button
+                    className="btn-select-widget"
+                    onClick={() =>
+                      showRightModal(
+                        this.props.diagram.funnelName,
+                        this.props.diagram.funnelNotes,
+                        this.props.saveDiagramThenShowOrHideNotesModal,
+                        this.props.funnelId,
+                        this.props.engine,
+                        this.props.node,
 
 
-                    )
-                  }
-                  title={"Notes"}
-                >
-                  <NotesSVG />
-                </button>
-                <button
-                  className="btn-select-widget"
-                  onClick={() =>
-                    cloneSelected(
-                      this.props.diagram.funnelName,
-                      this.props.diagram.funnelNotes,
-                      this.props.engine,
-                      this.props.saveDiagramThenShowOrHideSettingsModal,
-                      this.props.funnelId,
-                      this.props.node
-                    )
-                  }
-                  title={"Copy"}
-                >
-                  <CopySVG />
-                </button>
-                <button
-                  className="btn-select-widget"
-                  onClick={() =>
-                    deleteNode(this.props.funnelId, this.props.node.id)
-                  }
-                  title={"Delete"}
-                >
-                  <DeleteSVG />
-                </button>
-                <button
-                  className="btn-select-widget"
-                  onClick={() => deleteAllLinks(this.props.engine)}
-                  title={"Delete All Links"}
-                >
-                  <DeleteAllLinksSVG />
-                </button>
-              </Select>
-            )}
+                      )
+                    }
+                    title={"Notes"}
+                  >
+                    <NotesSVG />
+                  </button>
+                  <button
+                    className="btn-select-widget"
+                    onClick={() =>
+                      cloneSelected(
+                        this.props.diagram.funnelName,
+                        this.props.diagram.funnelNotes,
+                        this.props.engine,
+                        this.props.saveDiagramThenShowOrHideSettingsModal,
+                        this.props.funnelId,
+                        this.props.node
+                      )
+                    }
+                    title={"Copy"}
+                  >
+                    <CopySVG />
+                  </button>
+                  <button
+                    className="btn-select-widget"
+                    onClick={() =>
+                      deleteNode(this.props.funnelId, this.props.node.id)
+                    }
+                    title={"Delete"}
+                  >
+                    <DeleteSVG />
+                  </button>
+                  <button
+                    className="btn-select-widget"
+                    onClick={() => deleteAllLinks(this.props.engine)}
+                    title={"Delete All Links"}
+                  >
+                    <DeleteAllLinksSVG />
+                  </button>
+                </Select>
+              )}
           </ClickOutside>
 
           <div
@@ -260,7 +269,7 @@ class SmallNodeWidget extends React.Component {
             style={{
               boxShadow: `0 0 28px ${
                 this.props.node.extras.triggerd ? "#5ab5ff" : "#fff"
-              }`
+                }`
             }}
           >
             <div style={{ padding: 5, width: 40, height: 40 }}>
@@ -316,7 +325,7 @@ class SmallNodeWidget extends React.Component {
               left: 143
             }}
           >
-            <DevelopmentStage status={this.state.status}/>
+            <DevelopmentStage status={this.state.status} />
           </div>
 
           <div
@@ -335,13 +344,14 @@ class SmallNodeWidget extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   return {
     diagram:
       state.projects[`diagram${state.router.location.pathname.substring(9)}`],
-
     showSettingsWidgetBoolean: state.projects.showSettingsWidgetBoolean,
     showSettingsWidgetModel: state.projects.showSettingsWidgetModel,
+
+    showSettingsWidgetEngine: state.projects.showSettingsWidgetEngine,
 
     showNotesWidgetBoolean: state.projects.showNotesWidgetBoolean,
     showNotesWidgetModel: state.projects.showNotesWidgetModel,
@@ -353,12 +363,15 @@ const mapStateToProps = state => {
     permissionForCollaborator: state.projects.permissionForCollaborator,
 
     conversionInfoForAllNodes: state.projects.conversionInfoForAllNodes,
-    developmentStatus: state.developmentStages.stages
+    developmentStatus: state.developmentStages.stages,
+
+    keyDown: state.projects.keyDown,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    changeKeyDown: key => dispatch(changeKeyDown(key)),
     saveDiagramThenShowOrHideSettingsModal: (
       id,
       state,

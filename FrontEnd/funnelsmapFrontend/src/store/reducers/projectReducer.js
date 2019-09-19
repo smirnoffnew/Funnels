@@ -12,9 +12,11 @@ import {
 
 const initialState = {
   showSettingsWidgetBoolean: false,
+  showCommentsWidgetBoolean: false,
   showAnalyticsBoolean: false,
   createProjectError: '',
-  permissionForCollaborator: "Edit"
+  permissionForCollaborator: "Edit",
+  keyDown:""
 }
 
 export default function (state = initialState, action) {
@@ -278,7 +280,14 @@ export default function (state = initialState, action) {
         conversionInfoForAllNodes: action.payload,
       };
     /////////////////////////////////////////////////////////////////////////// 
-    
+    case 'CHANGE_SHOW_COMMENTS':
+      return{
+        ...state, showCommentsWidgetBoolean: action.payload.boolean
+      }
+    case 'CHANGE_KEY_IS_DOWN':
+      return {
+        ...state, keyDown: action.payload.key
+      }
 
     default: return state;
   }

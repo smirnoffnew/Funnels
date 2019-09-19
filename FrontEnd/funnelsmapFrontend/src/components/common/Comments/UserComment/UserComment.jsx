@@ -8,7 +8,7 @@ export const UserComment = ({ userName, comment, isOwner = true, userAvatarUrl, 
             <div className="user-comment-user-info-block" style={{ flexDirection: `${isOwner ? "row-reverse" : " "}`, marginRight: `${isOwner ? "10px" : " "}` }}>
                 <UserIcon style={{ justifyContent: "left", margin: 0, transform: "scale(0.8)" }} userAvatarUrl={userAvatarUrl} userName={userName} />
                 <div className="user-comment-user-name">{userName}</div>
-                <div className="user-component-time-created" style = {{marginLeft:`${!isOwner? '16%': " "}`,marginRight:`${isOwner?'16%':" "}` }}>{timeCreated}</div>
+                <div className="user-component-time-created" style = {{marginLeft:`${!isOwner? '13%': " "}`,marginRight:`${isOwner?'13%':" "}` }}>{timeCreated}</div>
             </div>
             <div className="user-comment-block">
                 <div className="user-comment-text-arrow" style={{ marginLeft: `${isOwner ? "84%" : "10%"}`, transform: `${isOwner ? "scale(-1, 1)" : " "}` }}></div>

@@ -37,7 +37,7 @@ export default function (state = initialState, action) {
     ///////////////////////////////////////////////////////////////////////////
     case 'GET_ALL_COLLABORATORS_OF_CURRENT_FUNNEL': {
       let collaborators = action.collaborators&&action.collaborators.map(el => el.profileId)
-      return {...state, collaboratorsInfo:[...collaborators, action.funnelAuthor]}
+      return {...state, collaboratorsInfo:[...collaborators, action.funnelAuthor!== null&&action.funnelAuthor]}
     }
 
     default: return state;

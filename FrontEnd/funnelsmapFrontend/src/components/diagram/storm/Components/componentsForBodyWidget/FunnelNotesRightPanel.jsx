@@ -158,7 +158,7 @@ export default class FunnelNotesRightPanel extends React.Component {
 
               <div
                 style={{
-                  height: 600,
+                  height: "532px",
                   overflow: "auto"
                 }}
               >
