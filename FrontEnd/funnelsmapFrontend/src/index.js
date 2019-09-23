@@ -27,7 +27,8 @@ const store = createStore(
     ...allReducers,
     router: connectRouter(history),
   }),
-  applyMiddleware(thunk, middleware)
+  applyMiddleware(thunk, middleware),
+ 
 );
 
 const token = JSON.parse(localStorage.getItem('token'));

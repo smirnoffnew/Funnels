@@ -84,7 +84,7 @@ export function changeUserPassword(data) {
 
 export function changeUserAvatar(avatar) {
 
-  // console.log(avatar)
+  // console.log("avatar",avatar)
 
   const token = JSON.parse(localStorage.getItem('token'));
 
@@ -103,7 +103,7 @@ export function changeUserAvatar(avatar) {
     })
       .then(response => {
         if (response.data) {
-          // console.log(response.data)
+          // console.log("resp", response.data)
           dispatch({
             type: "SETTINGS_MESSAGE_AVATAR_SUCCESS",
             payload: response.data.message
@@ -120,7 +120,7 @@ export function changeUserAvatar(avatar) {
       })
       .catch(function (error) {
         if (error.response) {
-          // console.log(error.response)
+          // console.log("err",error.response)
           dispatch({
             type: "SETTINGS_MESSAGE_AVATAR_FAILURE",
             payload: error.response.data.message

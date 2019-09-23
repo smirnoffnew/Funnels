@@ -88,6 +88,8 @@ export function getAllCollaborators(funnelId) {
   return function (dispatch) {
     API.get(`collaborator/funnel/${funnelId}`)
       .then((response) => {
+        // console.log('colloborators', {collaborators: response.data[0].collaborators,
+        //   funnelAuthor: response.data[0].funnelAuthor})
         dispatch({
           type: 'GET_ALL_COLLABORATORS_OF_CURRENT_FUNNEL',
           collaborators: response.data[0].collaborators,

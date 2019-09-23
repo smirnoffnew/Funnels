@@ -99,6 +99,7 @@ export function debounced(delay, fn) {
 
 export function keyMonitor(key, fnOnDown, fnOnUp) {
   document.onkeydown = function checkKeycode(event) {
+    // console.log("key",event.key )
     if (event.key === key) {
       fnOnDown(event.key)
     }

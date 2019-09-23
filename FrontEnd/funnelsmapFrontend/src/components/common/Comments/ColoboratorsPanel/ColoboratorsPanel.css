@@ -4,7 +4,8 @@
     background-color: #ecf1f2;
     border-top: 1px solid #ddd;
     padding-bottom: 8px;
-    min-height: 30px;
+    /* min-height: 30px; */
+    min-height: 4%;
 }
 
 .coloborators-text{

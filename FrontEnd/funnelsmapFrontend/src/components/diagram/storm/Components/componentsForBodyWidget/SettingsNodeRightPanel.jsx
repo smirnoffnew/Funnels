@@ -24,12 +24,13 @@ export default class SettingsNodeRightPanel extends React.Component {
     originalUrl: "",
     url: '',
     sectionViews: {
-      settings: false,
-      trackingBigNode: false,
-      trackingSmallNode: false
+      settings: true,
+      trackingBigNode: true,
+      trackingSmallNode: true
     },
     isUnderDevelopment: false,
     isFinished: false,
+    sourceLinkNode:''
 
   };
 
@@ -160,6 +161,23 @@ export default class SettingsNodeRightPanel extends React.Component {
     );
   }
 
+
+  handleChangeNodeSourceLink = e => {
+    this.setState(
+      {
+        sourceLinkNode: e.target.value
+      },
+      () =>
+        (this.props.work.showSettingsWidgetModel.extras.setSourceLinkExtras &&
+          this.props.work.showSettingsWidgetModel.extras.setSourceLinkExtras(
+            this.state.sourceLinkNode
+          ))
+        ||
+        (this.props.work.showSettingsWidgetModel.setSourceLink &&
+          this.props.work.showSettingsWidgetModel.setSourceLink(this.state.sourceLinkNode))
+    );
+  }
+
   saveDiagramThenCloseSettingModal = file => {
     this.setState(
       {
@@ -183,6 +201,8 @@ export default class SettingsNodeRightPanel extends React.Component {
           originalUrl: "",
           scriptD: '',
           copied: false,
+          sourceLinkNode:''
+          
         });
       }
     );
@@ -326,6 +346,7 @@ export default class SettingsNodeRightPanel extends React.Component {
     const { settings, trackingBigNode, trackingSmallNode } = this.state.sectionViews
     return (
       <ModalNodeWidget
+        style={{height:'calc(100vh - 67px)',   overflow: 'auto'}}
         show={this.props.work.showSettingsWidgetBoolean}
         handleClose={() => {
           const name = randomString({ length: 10 });
@@ -352,9 +373,9 @@ export default class SettingsNodeRightPanel extends React.Component {
             <label htmlFor="Name" className="label-input">
               Name
           </label>
-            <textarea
+            <input
               className="node-panel-textarea-input"
-              style={{ height: 40 }}
+              style={{ height: 25, marginBottom: '-3px' }}
               id="Name"
               placeholder="Label Name"
               type="text"
@@ -374,6 +395,31 @@ export default class SettingsNodeRightPanel extends React.Component {
                   : this.state.labelNode
               }
               onChange={this.handleChangeNode}
+            />
+            <label htmlFor="Name" className="label-input">
+              Source link
+          </label>
+            <input
+              className="node-panel-textarea-input"
+              style={{ height: 25, marginBottom: '4px' }}
+              id="Link"
+              type="text"
+              value={
+                this.state.sourceLinkNode === '' ?
+
+                this.props.work.showSettingsWidgetModel &&
+                  this.props.work.showSettingsWidgetModel.extras.sourceLink === undefined ?
+
+                  this.props.work.showSettingsWidgetModel &&
+                  // this.props.work.showSettingsWidgetModel.type :
+                  '' :
+
+                  this.props.work.showSettingsWidgetModel &&
+                  this.props.work.showSettingsWidgetModel.extras.sourceLink
+
+                : this.state.sourceLinkNode
+              }
+              onChange={this.handleChangeNodeSourceLink}
             />
             <div className="radio-button-container">
               <label
@@ -421,10 +467,10 @@ export default class SettingsNodeRightPanel extends React.Component {
               <div className={'arrow-tip-tracking'} onClick={() => this.changeViewSection(TRACKING_SMALL_NODE_SECTION)} style={{ transform: `${trackingSmallNode ? "scale(1, -1)" : " "}` }}>
                 <ArrowSelectSVG />
               </div>
-              
-                {
-                  trackingSmallNode && 
-                  <div style={{ padding: 15 }}>
+
+              {
+                trackingSmallNode &&
+                <div style={{ padding: 15 }}>
                   <>
 
                     <label htmlFor="UTMLink" className="label-input">
@@ -483,9 +529,9 @@ export default class SettingsNodeRightPanel extends React.Component {
                       Generate
               </button>
                   </>
-                  </div>
-                }
-              
+                </div>
+              }
+
 
 
 
@@ -511,114 +557,114 @@ export default class SettingsNodeRightPanel extends React.Component {
                 <ArrowSelectSVG />
               </div>
               {
-                trackingBigNode&&<> <div style={{ padding: 15 }}>
-                <>
-                  <label htmlFor="UTMLink" className="label-input">
-                    Generate UTM link from Original link
+                trackingBigNode && <> <div style={{ padding: 15 }}>
+                  <>
+                    <label htmlFor="UTMLink" className="label-input">
+                      Generate UTM link from Original link
                 </label>
-                  <input
-                    id="UTMLink"
-                    type="text"
-                    name="originalUrl"
-                    placeholder="ex.: https://www.google.com/"
-                    value={
-                      // this.state.originalUrl === '' ?
+                    <input
+                      id="UTMLink"
+                      type="text"
+                      name="originalUrl"
+                      placeholder="ex.: https://www.google.com/"
+                      value={
+                        // this.state.originalUrl === '' ?
 
-                      //   this.props.work.showSettingsWidgetModel &&
-                      //     this.props.work.showSettingsWidgetModel.extras.originalUrl === undefined ?
+                        //   this.props.work.showSettingsWidgetModel &&
+                        //     this.props.work.showSettingsWidgetModel.extras.originalUrl === undefined ?
 
-                      //     '' :
+                        //     '' :
 
-                      //     this.props.work.showSettingsWidgetModel &&
-                      //     this.props.work.showSettingsWidgetModel.extras.originalUrl
+                        //     this.props.work.showSettingsWidgetModel &&
+                        //     this.props.work.showSettingsWidgetModel.extras.originalUrl
 
-                      //   : this.state.originalUrl
-                      (this.state.originalUrl ? this.state.originalUrl : this.props.work.showSettingsWidgetModel &&
-                        this.props.work.showSettingsWidgetModel.extras.originalUrl) || ""
-                      //______________________________________________________________________________________________________________________________CHANGE___________________________________
-                    }
-                    onChange={this.handleScriptChange}
-                  />
-                  {(this.state.url && this.state.url.length > 0) ||
-                    (this.props.work.showSettingsWidgetModel &&
-                      this.props.work.showSettingsWidgetModel.extras.url) ? (
-                      <>
-                        <label htmlFor="N" className="label-input">
-                          Generated UTM link
+                        //   : this.state.originalUrl
+                        (this.state.originalUrl ? this.state.originalUrl : this.props.work.showSettingsWidgetModel &&
+                          this.props.work.showSettingsWidgetModel.extras.originalUrl) || ""
+                        //______________________________________________________________________________________________________________________________CHANGE___________________________________
+                      }
+                      onChange={this.handleScriptChange}
+                    />
+                    {(this.state.url && this.state.url.length > 0) ||
+                      (this.props.work.showSettingsWidgetModel &&
+                        this.props.work.showSettingsWidgetModel.extras.url) ? (
+                        <>
+                          <label htmlFor="N" className="label-input">
+                            Generated UTM link
                     </label>
-                        <input
-                          type="text"
-                          name="N"
-                          ref={ref => this.utm = ref}
-                          value={
-                            this.state.url
-                              ? this.state.url
-                              : this.props.work.showSettingsWidgetModel &&
-                              this.props.work.showSettingsWidgetModel.extras.url
-                          }
-                          onChange={() => { }}
-                        />
-                        <button
-                          className="btn-generate-utm"
-                          onClick={this.copyToClipboardUrl}
-                          style={{ float: "left" }}
-                        >
-                          Copy
+                          <input
+                            type="text"
+                            name="N"
+                            ref={ref => this.utm = ref}
+                            value={
+                              this.state.url
+                                ? this.state.url
+                                : this.props.work.showSettingsWidgetModel &&
+                                this.props.work.showSettingsWidgetModel.extras.url
+                            }
+                            onChange={() => { }}
+                          />
+                          <button
+                            className="btn-generate-utm"
+                            onClick={this.copyToClipboardUrl}
+                            style={{ float: "left" }}
+                          >
+                            Copy
                     </button>
-                      </>
-                    ) : null}
-                  <button
-                    className="btn-generate-utm"
-                    onClick={() => this.handleCreateUTMLink()}
-                  >
-                    Generate
-                </button>
-                </>
-
-              </div>
-
-              <div style={{ padding: 15 }}>
-                <label htmlFor="GenerateScript" className="label-input">
-                  {this.state.scriptD ? "Generated script" : "Generate script"}
-                </label>
-                <textarea
-                  className="node-panel-textarea-input"
-                  style={{
-                    height: 120,
-                    marginBottom: 15
-                  }}
-                  id="GenerateScript"
-                  name="script"
-                  ref={ref => this.script = ref}
-                  type="text"
-                  value={
-                    this.state.scriptD ? this.state.scriptD : this.props.work.showSettingsWidgetModel ?
-                      this.props.work.showSettingsWidgetModel.extras.scriptd : " "
-                  }
-                  onChange={this.handleScriptChange}
-                />
-                {this.state.scriptD || (this.props.work.showSettingsWidgetModel &&
-                  this.props.work.showSettingsWidgetModel.extras.scriptd) ? (
-                    <>
-                      <button
-                        className="btn-generate-utm"
-                        onClick={this.copyToClipboardScript}
-                      >
-                        Copy
-                  </button>
-                    </>
-                  ) : (
+                        </>
+                      ) : null}
                     <button
                       className="btn-generate-utm"
-                      onClick={() => {
-                        this.setState({
-                          copied: false,
-                          scriptD: `<script> 
+                      onClick={() => this.handleCreateUTMLink()}
+                    >
+                      Generate
+                </button>
+                  </>
+
+                </div>
+
+                  <div style={{ padding: 15 }}>
+                    <label htmlFor="GenerateScript" className="label-input">
+                      {this.state.scriptD ? "Generated script" : "Generate script"}
+                    </label>
+                    <textarea
+                      className="node-panel-textarea-input"
+                      style={{
+                        height: 120,
+                        marginBottom: 15
+                      }}
+                      id="GenerateScript"
+                      name="script"
+                      ref={ref => this.script = ref}
+                      type="text"
+                      value={
+                        this.state.scriptD ? this.state.scriptD : this.props.work.showSettingsWidgetModel ?
+                          this.props.work.showSettingsWidgetModel.extras.scriptd : " "
+                      }
+                      onChange={this.handleScriptChange}
+                    />
+                    {this.state.scriptD || (this.props.work.showSettingsWidgetModel &&
+                      this.props.work.showSettingsWidgetModel.extras.scriptd) ? (
+                        <>
+                          <button
+                            className="btn-generate-utm"
+                            onClick={this.copyToClipboardScript}
+                          >
+                            Copy
+                  </button>
+                        </>
+                      ) : (
+                        <button
+                          className="btn-generate-utm"
+                          onClick={() => {
+                            this.setState({
+                              copied: false,
+                              scriptD: `<script> 
                           window.onload = function() { 
                             (() => {
                               if(!localStorage.getItem('${this.props.work
-                              .showSettingsWidgetModel &&
-                            this.props.work.showSettingsWidgetModel.id}',)){
+                                  .showSettingsWidgetModel &&
+                                this.props.work.showSettingsWidgetModel.id}',)){
                               fetch('${API_URL}/funnel/node/counter', {
                                 method: 'PATCH',
                                 headers: {
@@ -628,36 +674,36 @@ export default class SettingsNodeRightPanel extends React.Component {
                                 },
                                 body: JSON.stringify({
                                   nodeId: '${this.props.work
-                              .showSettingsWidgetModel &&
-                            this.props.work.showSettingsWidgetModel.id}',
+                                  .showSettingsWidgetModel &&
+                                this.props.work.showSettingsWidgetModel.id}',
                                   funnelId: '${this.props.work.funnelId}',
                                 })
                               }) .then(() => {  localStorage.setItem('${this.props.work
-                              .showSettingsWidgetModel &&
-                            this.props.work.showSettingsWidgetModel.id}', true);} )
+                                  .showSettingsWidgetModel &&
+                                this.props.work.showSettingsWidgetModel.id}', true);} )
                             };
                             })();
                           }; 
                         </script>`
-                        }, () => {
-                          (this.props.work.showSettingsWidgetModel.extras.setScriptExtras &&
-                            this.props.work.showSettingsWidgetModel.extras.setScriptExtras(
-                              this.state.scriptD
-                            ))
-                            ||
-                            (this.props.work.showSettingsWidgetModel.setScript &&
-                              this.props.work.showSettingsWidgetModel.setScript(this.state.scriptD));
-                        });
-                      }}
-                    >
-                      Generate
+                            }, () => {
+                              (this.props.work.showSettingsWidgetModel.extras.setScriptExtras &&
+                                this.props.work.showSettingsWidgetModel.extras.setScriptExtras(
+                                  this.state.scriptD
+                                ))
+                                ||
+                                (this.props.work.showSettingsWidgetModel.setScript &&
+                                  this.props.work.showSettingsWidgetModel.setScript(this.state.scriptD));
+                            });
+                          }}
+                        >
+                          Generate
                 </button>
-                  )}
-              </div>
-                
+                      )}
+                  </div>
+
                 </>
               }
-             
+
               <div className="buttons-set-wrapper">
                 <button
                   className="btn-set-as-a-trigger"

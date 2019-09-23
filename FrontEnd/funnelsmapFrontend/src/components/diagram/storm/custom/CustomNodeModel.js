@@ -44,6 +44,10 @@ export class CustomNodeModel extends NodeModel {
     this.extras.script = this.scriptd;
     this.extras.setScriptExtras = this.setScriptExtras;
     this.setScript = this.setScript;
+
+    this.extras.sourceLink  =  this.sourceLink
+    this.extras.setSourceLink = this.setSourceLinkExtras
+    this.setSourceLink = this.setSourceLink
   }
 
   setNameExtras(name) {
@@ -107,6 +111,12 @@ export class CustomNodeModel extends NodeModel {
   }
   setScript(script) {
     this.extras.scriptd = script;
+  }
+  setSourceLinkExtras(sourceLink){
+    this.sourceLink = sourceLink
+  } 
+  setSourceLink(sourceLink){
+    this.extras.sourceLink = sourceLink
   }
 
 }

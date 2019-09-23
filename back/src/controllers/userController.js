@@ -12,12 +12,16 @@ const AC = require('activecampaign-rest')
 
 module.exports = {
     signUp: async function (req, res) {
+
         const user = await new User({
             _id: new mongoose.Types.ObjectId(),
             ...req.body
         });
+
         console.log(user)
+
         await user.email.toLowerCase();
+
         user.save()
             .then(doc => {
                 const profile = new Profile({
@@ -29,15 +33,15 @@ module.exports = {
                     accountName: user.accountName,
                     description: req.body.description || null
                 });
+
                 profile.save()
                     .then(profile => {
                         const token = jwt.sign({profile,userId:doc._id}, process.env.SECRET, {expiresIn: process.env.TOKEN_EXPIRES});
-                        const activeCampaignApiClient = new activeCampaignApi.ApiClient({
+
+                        new activeCampaignApi.ApiClient({
                             accountName: process.env.CAMPAING_ACCOUNT_NAME,
                             key: process.env.CAMPAING_ACCOUNT_KEY
-                          });
-                           
-                        activeCampaignApiClient
+                        })
                         .call('contact_add', {}, 'POST', {
                             email: profile.email,
                             first_name: profile.firstName,
@@ -46,20 +50,21 @@ module.exports = {
                         })
                         .then(response => {
                             console.log(response);
+                            res.status(200).json({
+                                data: {
+                                    _id: profile._id,
+                                    firstName: profile.firstName,
+                                    limited:profile.limited,
+                                    email: profile.email,
+                                    description: profile.description,
+                                    photoUrl: profile.photoUrl,
+                                    accountName: profile.accountName
+                                },
+                                token: `Bearer ${token}`
+                            });
                         });
                         
-                        res.status(200).json({
-                            data: {
-                                _id: profile._id,
-                                firstName: profile.firstName,
-                                limited:profile.limited,
-                                email: profile.email,
-                                description: profile.description,
-                                photoUrl: profile.photoUrl,
-                                accountName: profile.accountName
-                            },
-                            token: `Bearer ${token}`
-                        });
+  
                     })
                     .catch(err => {
                         console.log(err);

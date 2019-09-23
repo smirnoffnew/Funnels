@@ -7,7 +7,7 @@ export const ColoboratorsPanel = ({ collaborators = [] }) => {
     return (
         <div className="coloborators-container">
             <div className="coloborators-text">
-                Coloborators
+            Followers
             </div>
             {
                 collaborators.length !== 0 && collaborators.map((user, index) => {

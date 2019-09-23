@@ -155,8 +155,9 @@ class BigNodeWidget extends React.Component {
   // }
 
   handleClicOnWidget = () =>  {
-    if (this.props.keyDown === "Control"&&this.props.engine.diagramModel.nodes[this.props.node.id].extras.originalUrl) {
-      openLinkOnNewTab(this.props.engine.diagramModel.nodes[this.props.node.id].extras.originalUrl, this.props.changeKeyDown(""))
+    if (this.props.keyDown === "Alt"&&this.props.engine.diagramModel.nodes[this.props.node.id].extras.sourceLink) {
+      // console.log("this.props.showSettingsWidget",this.props.engine.diagramModel.nodes[this.props.node.id].extras)
+      openLinkOnNewTab(this.props.engine.diagramModel.nodes[this.props.node.id].extras.sourceLink, this.props.changeKeyDown(""))
     }
   }
 

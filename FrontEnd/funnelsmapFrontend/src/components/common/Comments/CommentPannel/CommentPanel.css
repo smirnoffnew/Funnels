@@ -11,6 +11,8 @@
     width: 83%;
     border: 1px solid #ddd;
     border-radius: 5px;
+   
+    height: auto;
 }
 
 .text-input-textarea{
@@ -80,11 +82,20 @@
     margin-top: 5px;
   }
 
-  .RichEditor-emoji-button .draftJsEmojiPlugin__emojiSelectPopover__1J1s0{ position: absolute; top: 400px;}
-  .RichEditor-emoji-button .draftJsEmojiPlugin__emojiSelectButton__3sPol { border: none; margin-top: 2px; background-color: #fff;    margin-left: -5px}
+  .RichEditor-emoji-button .draftJsEmojiPlugin__emojiSelectPopover__1J1s0{ position: absolute; top: 400px;     right: 50px;}
+  .RichEditor-emoji-button .draftJsEmojiPlugin__emojiSelectButton__3sPol { border: none; margin-top: 2px; background-color: #fff;    margin-left: -1px}
   .RichEditor-emoji-button .draftJsEmojiPlugin__emojiSelectButton__3sPol:hover{  border: none; background: #fff }
-  .RichEditor-emoji-button .draftJsEmojiPlugin__emojiSelectButton__3sPol:active{ border: none;background: #fff; margin-left: -5px }
+  .RichEditor-emoji-button .draftJsEmojiPlugin__emojiSelectButton__3sPol:active{ border: none;background: #fff; margin-left: -1px }
   .RichEditor-emoji-button .draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu:hover{border: none;background: #fff }
-  .RichEditor-emoji-button .draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu{border: none;background: #fff; margin-left: -5px }
+  .RichEditor-emoji-button .draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu{border: none;background: #fff; margin-left: -1px }
+
+
   .RichEditor-controls .RichEditor-styleButton{margin-right: 6px;padding: 0;}
-  .draftJsEmojiPlugin__emojiSelectButton__3sPol, .draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu {height: 0px !important; color: #768093;line-height: 0.9em !important; font-size: 1.8em !important; width: 0px !important;}
+  .draftJsEmojiPlugin__emojiSelectButton__3sPol, .draftJsEmojiPlugin__emojiSelectButtonPressed__2Tezu {
+    height: 0px !important; 
+    color: #768093;
+    line-height: 0.9em !important; 
+    font-size: 1.8em !important; 
+    width: 0px !important;
+    margin-top: 2px;
+  }

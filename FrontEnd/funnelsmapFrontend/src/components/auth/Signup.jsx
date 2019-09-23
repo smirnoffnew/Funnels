@@ -26,7 +26,7 @@ class Signup extends React.Component {
   handleEmailFieldBlur = (e, props) => {
     this.props.handleBlur(e)
     this.dHandler(this.props.values.email)
-    
+
   }
   dHandler = debounced(200, this.props.validationUser);
 
@@ -45,7 +45,7 @@ class Signup extends React.Component {
     } = this.props;
 
     let params = new URLSearchParams(this.props.router.location.search);
-    
+
     return (
       <div className='wrapper'>
         <img className='signin-logo' src={logo} alt='logo' />
@@ -95,7 +95,8 @@ class Signup extends React.Component {
                 onChange={handleChange}
                 onBlur={this.handleEmailFieldBlur}
               />
-              {errors.email && touched.email && (
+              
+              {/* {errors.email && touched.email && (
                 <div className={`input-group ${errors.email && touched.email ? 'has-error' : ''}`}>{errors.email}</div>
               )}
               {this.props.emailValidationInfo === 'email is free' && (
@@ -103,6 +104,17 @@ class Signup extends React.Component {
               )}
               {this.props.emailValidationInfo === 'email already exists!' && (
                 <div className={`input-group`}>{this.props.emailValidationInfo}</div>
+              )} */}
+
+
+              { 
+              
+              errors.email && touched.email ? <div className={`input-group ${errors.email && touched.email ? 'has-error' : ''}`}>{errors.email}</div> : (
+                this.props.emailValidationInfo === 'email is free' ? 
+                  <div className={`input-group-email-green`}>{this.props.emailValidationInfo}</div>
+                 : (this.props.emailValidationInfo === 'email already exists!' ? 
+                  <div className={`input-group`}>{this.props.emailValidationInfo}</div>
+                 : "")
               )}
 
               <label htmlFor="password" className='label'>

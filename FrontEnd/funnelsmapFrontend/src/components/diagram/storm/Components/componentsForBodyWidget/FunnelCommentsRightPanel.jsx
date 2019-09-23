@@ -11,8 +11,8 @@ import { API_URL } from "../../../../../config";
 import { getNotificationTime } from "../../utils";
 import { getAllCollaborators } from "../../../../../store/actions/collaborations"
 import { ColoboratorsPanel } from "../../../../common/Comments/ColoboratorsPanel/ColoboratorsPannel";
-// import VisibilitySensor from "react-visibility-sensor"
-
+import domtoimage from "dom-to-image";
+import randomString from "random-string";
 
 class FunnelCommentsRightPanel extends React.Component {
   state = {
@@ -45,10 +45,31 @@ class FunnelCommentsRightPanel extends React.Component {
   }
 
   showComments = () => {
-    this.setState({
-      showComments: true,
-    });
-    this.props.work.showCommentsBoolean(true)
+ 
+    let diagram = document.getElementById("diagram-layer");
+    domtoimage
+      .toBlob(diagram)
+      .then(data => {
+        let name = randomString({ length: 10 });
+        var file = new File([data], name, { type: "image/svg" });
+        this.setState(
+          {
+            snackMsg: "next",
+            converted: this.props.app.serialization(
+              this.props.app.getDiagramEngine().getDiagramModel()
+            )
+          },
+          () => {
+            this.props.work.saveDiagram(this.props.work.funnelId, this.state, file);
+          })
+      }).then(() =>{
+        this.setState({
+          showComments: true,
+        }); 
+        this.props.work.showCommentsBoolean(true) 
+      }   )
+
+      
   }
 
   hideComments = () => {
@@ -122,8 +143,10 @@ class FunnelCommentsRightPanel extends React.Component {
                 padding: 15,
                 display: "flex",
                 flexDirection: "column",
-                minHeight: '61vh',
-                height: '75vh'
+                // minHeight: '61vh',
+                // height: '75vh',
+                height: '75%'
+
               }}
             >
 

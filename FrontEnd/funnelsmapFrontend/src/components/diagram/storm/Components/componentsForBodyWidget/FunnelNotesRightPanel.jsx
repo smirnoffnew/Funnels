@@ -11,13 +11,14 @@ export default class FunnelNotesRightPanel extends React.Component {
     note: ""
   };
 
-  showNotes = () =>
+  showNotes = () =>{
     this.setState({
       showNotes: true,
       showMenu: false,
       funnelNotes:
         (this.props.work.diagram && this.props.work.diagram.funnelNotes) || []
     });
+  }
   hideNotes = () => this.setState({ showNotes: false });
 
   handleChange = e =>

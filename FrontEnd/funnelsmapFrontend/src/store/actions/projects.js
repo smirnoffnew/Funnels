@@ -31,7 +31,7 @@ export function getAllProjects() {
       .catch(function (error) {
         if (error.response) {
           console.log(error.response)
-          if(error.response.status === 403){
+          if (error.response.status === 403) {
             localStorage.clear();
             dispatch({ type: 'UN_AUTH_USER' });
           }
@@ -120,18 +120,18 @@ export const createProjectWithPromisefication = projectName => dispatch => {
     API.post(`project`, {
       'projectName': projectName,
     })
-    .then(response => {
-      if (response.status === 200) {
-        resolve(response.data);
-      } else {
-        reject(new Error(response.statusText));
-      }
-    })
-    .catch(error => {
-      if (error.response) {
-        reject(error.response.data.error);
-      }
-    });
+      .then(response => {
+        if (response.status === 200) {
+          resolve(response.data);
+        } else {
+          reject(new Error(response.statusText));
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          reject(error.response.data.error);
+        }
+      });
   });
 }
 
@@ -140,18 +140,18 @@ export const createFunnelWithPromisefication = (projectName, projectId) => dispa
     API.post(`funnel/${projectId}`, {
       'funnelName': projectName,
     })
-    .then(response => {
-      if (response.status === 200) {
-        resolve(response.data);
-      } else {
-        reject(new Error(response.statusText));
-      }
-    })
-    .catch(error => {
-      if (error.response) {
-        reject(error.response.data.error);
-      }
-    });
+      .then(response => {
+        if (response.status === 200) {
+          resolve(response.data);
+        } else {
+          reject(new Error(response.statusText));
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          reject(error.response.data.error);
+        }
+      });
   });
 }
 
@@ -257,7 +257,7 @@ export function createLink(funnelsId, permissions) {
           payload: response.data.data
         })
         console.log("response", response.data.data)
-        ;
+          ;
         dispatch({ type: 'CREATE_LINK_SUCCESS' });
       })
       .catch(function (error) {
@@ -279,19 +279,19 @@ export const createUTMLinkWithPromisefication = (funnelId, nodeId, url) => dispa
       'funnelId': funnelId,
       'elementId': nodeId,
     })
-    .then(response => {
-      // console.log('response', response)
-      if (response.status === 200) {
-        resolve(response.data);
-      } else {
-        reject(new Error(response.statusText));
-      }
-    })
-    .catch(error => {
-      if (error.response) {
-        reject(error.response.data.error);
-      }
-    });
+      .then(response => {
+        // console.log('response', response)
+        if (response.status === 200) {
+          resolve(response.data);
+        } else {
+          reject(new Error(response.statusText));
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          reject(error.response.data.error);
+        }
+      });
   });
 }
 
@@ -302,20 +302,20 @@ export const getConversationInfoWithPromisefication = (funnelId, nodeId) => disp
       'funnelId': funnelId,
       'nodeId': nodeId,
     })
-    .then(response => {
-      // console.log('project.js response', response)
-      if (response.status === 200) {
-        // console.log(response.data)
-        resolve(response.data);
-      } else {
-        reject(new Error(response.statusText));
-      }
-    })
-    .catch(error => {
-      if (error.response) {
-        reject(error.response.data.error);
-      }
-    });
+      .then(response => {
+        // console.log('project.js response', response)
+        if (response.status === 200) {
+          // console.log(response.data)
+          resolve(response.data);
+        } else {
+          reject(new Error(response.statusText));
+        }
+      })
+      .catch(error => {
+        if (error.response) {
+          reject(error.response.data.error);
+        }
+      });
   });
 }
 
@@ -386,7 +386,7 @@ export function saveDiagramThenCreateTemplate(funnelId, diagramObj, image, templ
   let bodyFormData = new FormData();
   bodyFormData.append('funnelBackground', image);
   bodyFormData.append('funnelBody', JSON.stringify(diagramObj));
- 
+
   return function (dispatch) {
     axios({
       method: 'patch',
@@ -461,63 +461,9 @@ export const saveDiagramThenExit = (funnelId, diagramObj, image) => dispatch => 
     },
     data: bodyFormData
   })
-  .then(response => {
-    // console.log('saveDiagramThenExit response', JSON.parse(response.data.data.funnelBody))
-
-    let res1 = JSON.parse(response.data.data.funnelBody);
-    let res = {
-      converted: res1.converted,
-      snackMsg: 'next'
-    }
-    dispatch({
-      type: 'GET_DIAGRAM',
-      payload: {
-        funnelId,
-        res,
-      }
-    });
-    dispatch({
-      type: 'SAVE_DIAGRAM_SUCCESS',
-      payload: response.data.message
-    });
-    setTimeout(() => {
-      dispatch({ type: 'SAVE_DIAGRAM_SUCCESS_RESET' });
-    }, 50)
-    setTimeout(() => {
-      dispatch(push('/'));
-    }, 1000)
-
-  })
-  .catch(function (error) {
-    if (error.response) {
-      console.log(error.response)
-      dispatch({
-        type: 'CREATE_DIAGRAM_FAILURE',
-        payload: error.response.data.error
-      });
-    }
-  });
-}
-
-
-
-export function saveDiagram(funnelId, diagramObj, image) {
-  const token = JSON.parse(localStorage.getItem('token'));
-  let bodyFormData = new FormData();
-  bodyFormData.append('funnelBackground', image);
-  bodyFormData.append('funnelBody', JSON.stringify(diagramObj));
-  return function (dispatch) {
-    axios({
-      method: 'patch',
-      url: `${API_URL}/funnel/diagram/${funnelId}`,
-      headers: {
-        'authorization': token,
-        'Content-Type': 'form-data'
-      },
-      data: bodyFormData
-    })
     .then(response => {
-      // console.log('saveDiagram response', JSON.parse(response.data.data.funnelBody))
+      // console.log('saveDiagramThenExit response', JSON.parse(response.data.data.funnelBody))
+
       let res1 = JSON.parse(response.data.data.funnelBody);
       let res = {
         converted: res1.converted,
@@ -537,6 +483,10 @@ export function saveDiagram(funnelId, diagramObj, image) {
       setTimeout(() => {
         dispatch({ type: 'SAVE_DIAGRAM_SUCCESS_RESET' });
       }, 50)
+      setTimeout(() => {
+        dispatch(push('/'));
+      }, 1000)
+
     })
     .catch(function (error) {
       if (error.response) {
@@ -547,6 +497,56 @@ export function saveDiagram(funnelId, diagramObj, image) {
         });
       }
     });
+}
+
+
+
+export function saveDiagram(funnelId, diagramObj, image) {
+  const token = JSON.parse(localStorage.getItem('token'));
+  let bodyFormData = new FormData();
+  bodyFormData.append('funnelBackground', image);
+  bodyFormData.append('funnelBody', JSON.stringify(diagramObj));
+  return function (dispatch) {
+    axios({
+      method: 'patch',
+      url: `${API_URL}/funnel/diagram/${funnelId}`,
+      headers: {
+        'authorization': token,
+        'Content-Type': 'form-data'
+      },
+      data: bodyFormData
+    })
+      .then(response => {
+        // console.log('saveDiagram response', JSON.parse(response.data.data.funnelBody))
+        let res1 = JSON.parse(response.data.data.funnelBody);
+        let res = {
+          converted: res1.converted,
+          snackMsg: 'next'
+        }
+        dispatch({
+          type: 'GET_DIAGRAM',
+          payload: {
+            funnelId,
+            res,
+          }
+        });
+        dispatch({
+          type: 'SAVE_DIAGRAM_SUCCESS',
+          payload: response.data.message
+        });
+        setTimeout(() => {
+          dispatch({ type: 'SAVE_DIAGRAM_SUCCESS_RESET' });
+        }, 50)
+      })
+      .catch(function (error) {
+        if (error.response) {
+          console.log(error.response)
+          dispatch({
+            type: 'CREATE_DIAGRAM_FAILURE',
+            payload: error.response.data.error
+          });
+        }
+      });
   }
 }
 
@@ -823,23 +823,23 @@ export function sendImageToCollaborate(funnelId, image) {
       },
       data: bodyFormData
     })
-    .then(response => {
-      if (response.data) {
-        dispatch({
-          type: 'SEND_IMAGE_TO_COLLABORATE_LINK',
-          payload: response.data.link
-        });
-      }
-    })
-    .catch(function (error) {
-      if (error.response) {
-        console.log(error.response)
-        dispatch({
-          type: 'SEND_IMAGE_TO_COLLABORATE_LINK_FAILURE',
-          payload: error.response.data.error
-        });
-      }
-    });
+      .then(response => {
+        if (response.data) {
+          dispatch({
+            type: 'SEND_IMAGE_TO_COLLABORATE_LINK',
+            payload: response.data.link
+          });
+        }
+      })
+      .catch(function (error) {
+        if (error.response) {
+          console.log(error.response)
+          dispatch({
+            type: 'SEND_IMAGE_TO_COLLABORATE_LINK_FAILURE',
+            payload: error.response.data.error
+          });
+        }
+      });
   }
 }
 
@@ -885,6 +885,9 @@ export const saveDiagramThenShowOrHideSettingsModal = (funnelId, diagramObj, ima
   let bodyFormData = new FormData();
   bodyFormData.append('funnelBackground', image);
   bodyFormData.append('funnelBody', JSON.stringify(diagramObj));
+
+
+  console.log('bodyFormData',  bodyFormData)
 
   axios({
     method: 'patch',
@@ -950,7 +953,7 @@ export const saveDiagramThenShowOrHideNotesModal = (funnelId, diagramObj, image,
   })
     .then(response => {
 
-      
+
 
       // console.log('saveDiagramThenShowOrHideNotesModal response', JSON.parse(response.data.data.funnelBody))
 
@@ -984,7 +987,7 @@ export const saveDiagramThenShowOrHideNotesModal = (funnelId, diagramObj, image,
         });
       }
     });
-} 
+}
 
 export const showAnalyticsBoolean = boolean => dispatch => {
   dispatch({

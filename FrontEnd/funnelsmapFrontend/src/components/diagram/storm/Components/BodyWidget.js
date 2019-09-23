@@ -257,8 +257,8 @@ export default class BodyWidget extends React.Component {
     document.getElementById("diagram-layer").click();
   };
 
-  componentDidMount(){
-    keyMonitor('Control', this.props.work.changeKeyDown, this.props.work.changeKeyDown)
+  componentDidMount() {
+    keyMonitor('Alt', this.props.work.changeKeyDown, this.props.work.changeKeyDown)
   }
 
   render() {
@@ -375,15 +375,17 @@ export default class BodyWidget extends React.Component {
                           <ArrowSelectSVG />
                         </div>
                       </button>
+
                       <FunnelCommentsRightPanel
                         work={this.props.work}
                         app={this.props.app}
                       />
+
                       <FunnelNotesRightPanel
                         work={this.props.work}
                         app={this.props.app}
                       />
-
+                      
                       <div className="diagram-header-instruction-buttons">
                         <button
                           className="diagram-header-instruction-button"
