@@ -4,6 +4,7 @@ import randomString from "random-string";
 import ModalFunnelWidget from "../../../../common/ModalFunnelWidget";
 import ClickOutside from "../../../../common/ClickOutside";
 import { ReactComponent as FunnelNotesSVG } from "../../../../../assets/FunnelNotes.svg";
+import { NotesStatusIcon } from "../../../../common/NotesStatus/NotesStatus";
 
 export default class FunnelNotesRightPanel extends React.Component {
   state = {
@@ -51,11 +52,24 @@ export default class FunnelNotesRightPanel extends React.Component {
 
   delete = index => {
     this.state.funnelNotes.splice(index, 1);
-    document.getElementById("diagram-layer").click();
+    document.getElementById("label-create-widget-settings").click();
   };
 
+  handleSaveToDB = () => {
+    let diagram = document.getElementById("diagram-layer");
+    domtoimage
+      .toBlob(diagram)
+      .then(data => {
+        let name = randomString({ length: 10 });
+        var file = new File([data], name, { type: "image/svg" });
+        this.saveDiagramHandle(file);
+      })
+      .catch(function(error) {
+        console.error("oops, something went wrong!", error);
+      });
+  }
+
   render() {
-    // console.log(this.props.work.diagram && this.props.work.diagram.funnelNotes)
     return (
       <>
         {this.props.work.pathname.includes("diagram") ? (
@@ -68,6 +82,22 @@ export default class FunnelNotesRightPanel extends React.Component {
             >
               <FunnelNotesSVG />
             </button>
+           {((this.props.work.diagram&&
+            this.props.work.diagram.funnelNotes&& 
+            this.props.work.diagram.funnelNotes.length !== 0)||
+            (
+            this.state.funnelNotes&&
+            this.state.funnelNotes.length !== 0) )
+            &&
+            <div style={{    
+              position: 'absolute',
+              top: '12px',
+              right: '100px',
+              transform: 'scale(0.9)'
+              }}>
+            <NotesStatusIcon/>
+            </div>
+            }
           </>
         ) : null}
 
@@ -84,7 +114,7 @@ export default class FunnelNotesRightPanel extends React.Component {
               top: 65
             }}
           >
-            <label className="label-create-widget-settings">Funnel Notes</label>
+            <label  id="label-create-widget-settings" className="label-create-widget-settings">Funnel Notes</label>
             <div
               style={{
                 padding: 15,
@@ -128,19 +158,7 @@ export default class FunnelNotesRightPanel extends React.Component {
               <button
                 className="btn btn-1 create-project-button-in-modal"
                 style={{ display: "block" }}
-                onClick={() => {
-                  let diagram = document.getElementById("diagram-layer");
-                  domtoimage
-                    .toBlob(diagram)
-                    .then(data => {
-                      let name = randomString({ length: 10 });
-                      var file = new File([data], name, { type: "image/svg" });
-                      this.saveDiagramHandle(file);
-                    })
-                    .catch(function(error) {
-                      console.error("oops, something went wrong!", error);
-                    });
-                }}
+                onClick={this.handleSaveToDB}
               >
                 Save
               </button>

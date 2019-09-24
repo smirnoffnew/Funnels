@@ -22,6 +22,7 @@ import {
 import "./index.css";
 import { getConversion, openLinkOnNewTab } from "../../utils";
 import { DevelopmentStage } from "../../../../common/DevelopmentStage/DevelopmentStage";
+import {  NotesStatusIconGroup } from "../../../../common/NotesStatus/NotesStatus";
 
 const Select = ({ show, children }) => {
   const showHideClassName = show
@@ -55,27 +56,27 @@ class BigNodeWidget extends React.Component {
     handleGridTwo: false
   };
 
-  getDevelopmentStatus(funnelId, nodeId){
-    if(this.props.developmentStatus.length !== 0 ){
-      let statusAndnodeId = this.props.developmentStatus&&this.props.developmentStatus.find(el => el.nodeId === nodeId)
-      this.setState({status: statusAndnodeId?statusAndnodeId.status:"DEFAULT"})
+  getDevelopmentStatus(funnelId, nodeId) {
+    if (this.props.developmentStatus.length !== 0) {
+      let statusAndnodeId = this.props.developmentStatus && this.props.developmentStatus.find(el => el.nodeId === nodeId)
+      this.setState({ status: statusAndnodeId ? statusAndnodeId.status : "DEFAULT" })
     }
-   
+
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.getDevelopmentStatus(this.props.funnelId, this.props.node.id)
   }
 
-  componentDidUpdate(prevProps){
-    if(prevProps.showSettingsWidgetBoolean&&!this.props.showSettingsWidgetBoolean){
-      if(prevProps.showSettingsWidgetModel.id === prevProps.node.id){
+  componentDidUpdate(prevProps) {
+    if (prevProps.showSettingsWidgetBoolean && !this.props.showSettingsWidgetBoolean) {
+      if (prevProps.showSettingsWidgetModel.id === prevProps.node.id) {
         this.getDevelopmentStatus(this.props.funnelId, this.props.node.id)
       }
-    }if(prevProps.developmentStatus !== this.props.developmentStatus){
+    } if (prevProps.developmentStatus !== this.props.developmentStatus) {
       this.getDevelopmentStatus(this.props.funnelId, this.props.node.id)
     }
-    
+
   }
 
   showModal = () => {
@@ -154,8 +155,8 @@ class BigNodeWidget extends React.Component {
   //   return Conversion
   // }
 
-  handleClicOnWidget = () =>  {
-    if (this.props.keyDown === "Alt"&&this.props.engine.diagramModel.nodes[this.props.node.id].extras.sourceLink) {
+  handleClicOnWidget = () => {
+    if (this.props.keyDown === "Alt" && this.props.engine.diagramModel.nodes[this.props.node.id].extras.sourceLink) {
       // console.log("this.props.showSettingsWidget",this.props.engine.diagramModel.nodes[this.props.node.id].extras)
       openLinkOnNewTab(this.props.engine.diagramModel.nodes[this.props.node.id].extras.sourceLink, this.props.changeKeyDown(""))
     }
@@ -297,7 +298,11 @@ class BigNodeWidget extends React.Component {
                     }
                     title={"Notes"}
                   >
-                    <NotesSVG />
+                    {this.props.node.extras.notesd &&
+                      this.props.node.extras.notesd.length !== 0 ?
+                      <NotesStatusIconGroup /> : <NotesSVG />
+
+                    }
                   </button>
                   <button
                     className="btn-select-widget"

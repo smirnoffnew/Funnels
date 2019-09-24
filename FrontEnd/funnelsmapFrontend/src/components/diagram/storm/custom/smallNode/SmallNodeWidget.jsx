@@ -22,6 +22,7 @@ import {
 import "./index.css";
 import { DevelopmentStage } from "../../../../common/DevelopmentStage/DevelopmentStage";
 import { openLinkOnNewTab } from "../../utils";
+import {  NotesStatusIconGroup } from "../../../../common/NotesStatus/NotesStatus";
 
 const Select = ({ show, children }) => {
   const showHideClassName = show
@@ -109,8 +110,8 @@ class SmallNodeWidget extends React.Component {
       : "0 or no utm";
   }
 
-  handleClicOnWidget = () =>  {
-    if (this.props.keyDown === "Alt"&&this.props.engine.diagramModel.nodes[this.props.node.id].extras.sourceLink) {
+  handleClicOnWidget = () => {
+    if (this.props.keyDown === "Alt" && this.props.engine.diagramModel.nodes[this.props.node.id].extras.sourceLink) {
       // console.log("this.props.showSettingsWidget",this.props.engine.diagramModel.nodes[this.props.node.id].extras)
       openLinkOnNewTab(this.props.engine.diagramModel.nodes[this.props.node.id].extras.sourceLink, this.props.changeKeyDown(""))
     }
@@ -227,7 +228,12 @@ class SmallNodeWidget extends React.Component {
                     }
                     title={"Notes"}
                   >
-                    <NotesSVG />
+             
+                    {this.props.node.extras.notesd &&
+                      this.props.node.extras.notesd.length !== 0 ?
+                      <NotesStatusIconGroup/>:<NotesSVG />
+                    }
+
                   </button>
                   <button
                     className="btn-select-widget"

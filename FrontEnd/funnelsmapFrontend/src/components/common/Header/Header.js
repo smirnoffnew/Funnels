@@ -87,12 +87,14 @@ class Header extends Component {
   };
 
   handleCreateFunnel = () => {
+    // debugger
     this.props
       .createFunnelWithPromisefication(
         this.state.funnelName,
         this.props.projectId
       )
       .then(response => {
+        // debugger
         let res = response.data;
         let projectId = this.props.projectId;
         this.props.dispatch({

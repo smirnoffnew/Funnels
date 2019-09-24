@@ -32,6 +32,10 @@ const funnelScheme = new Schema({
     funnelBackground:{
         type:String,
         default:""
+    },
+    funnelNotes: {
+        type:String,
+        required: false
     }
 
 }, { versionKey: false });

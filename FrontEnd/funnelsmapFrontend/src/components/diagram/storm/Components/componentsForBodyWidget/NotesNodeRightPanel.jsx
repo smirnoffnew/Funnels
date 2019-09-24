@@ -121,6 +121,7 @@ export default class NotesNodeRightPanel extends React.Component {
   };
 
   render() {
+    
     return (
       <ModalNodeWidget
         show={this.props.work.showNotesWidgetBoolean}

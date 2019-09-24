@@ -15,7 +15,7 @@ import 'draft-js-emoji-plugin/lib/plugin.css';
 
 const emojiButton = () => (
     <svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" width="4mm" height="4.14mm" viewBox="0 0 16.96 16.96">
-  <path class="cls-1" style={{ fill: "#768093" }} d="M296.48,412.89a8.48,8.48,0,1,1-6,2.48,8.45,8.45,0,0,1,6-2.48h0Zm5,3.49a7.06,7.06,0,1,0,2.07,5,7,7,0,0,0-2.07-5h0Zm-9.25,7.81a0.71,0.71,0,0,1,1-1,4.74,4.74,0,0,0,3.21,1.44,5.33,5.33,0,0,0,3.4-1.46,0.71,0.71,0,1,1,.91,1.08,6.68,6.68,0,0,1-4.31,1.8,6.1,6.1,0,0,1-4.17-1.82h0Zm1.55-6.09a1.07,1.07,0,1,1-1.08,1.07,1.08,1.08,0,0,1,1.08-1.07h0Zm5.41,0a1.07,1.07,0,1,1-1.08,1.07,1.08,1.08,0,0,1,1.08-1.07h0Z" transform="translate(-288 -412.89)"/>
+  <path className="cls-1" style={{ fill: "#768093" }} d="M296.48,412.89a8.48,8.48,0,1,1-6,2.48,8.45,8.45,0,0,1,6-2.48h0Zm5,3.49a7.06,7.06,0,1,0,2.07,5,7,7,0,0,0-2.07-5h0Zm-9.25,7.81a0.71,0.71,0,0,1,1-1,4.74,4.74,0,0,0,3.21,1.44,5.33,5.33,0,0,0,3.4-1.46,0.71,0.71,0,1,1,.91,1.08,6.68,6.68,0,0,1-4.31,1.8,6.1,6.1,0,0,1-4.17-1.82h0Zm1.55-6.09a1.07,1.07,0,1,1-1.08,1.07,1.08,1.08,0,0,1,1.08-1.07h0Zm5.41,0a1.07,1.07,0,1,1-1.08,1.07,1.08,1.08,0,0,1,1.08-1.07h0Z" transform="translate(-288 -412.89)"/>
 </svg>
 )
 
@@ -98,6 +98,7 @@ class RichEditor extends React.Component {
        
         if (editorState) {
             // cleanMessage(draftToHtml(convertToRaw(editorState.getCurrentContent())))
+            console.log("draftToHtml(convertToRaw(editorState.getCurrentContent()))", draftToHtml(convertToRaw(editorState.getCurrentContent())))
             if (Boolean(editorState.getCurrentContent().getPlainText().trim()) !== false) {
                 this.props.sendComment(draftToHtml(convertToRaw(editorState.getCurrentContent())))
             }
@@ -127,7 +128,7 @@ class RichEditor extends React.Component {
                         editorState={editorState}
                         handleKeyCommand={this.handleKeyCommand}
                         onChange={this.onChange}
-                        onTab={this.onTab}
+                        keyBindingFn={this.onTab}
                         ref="editor"
                         spellCheck={true}
                         plugins={[emojiPlugin]}

@@ -600,13 +600,11 @@ export const resetMessageUpdateDiagram = () => dispatch => {
 }
 
 export function createNewProjectWithTemplate(templateId, projectName, funnelId) {
-  // console.log(templateId, projectName)
   return function (dispatch) {
     API.post(`funnel/template/${templateId}`, {
       'projectName': projectName
     })
       .then(response => {
-        // console.log(response.data)
         dispatch({
           type: 'CREATE_NEW_PROJECT_WITH_TEMPLATE_SUCCESS',
           payload: response.data.message
@@ -634,17 +632,9 @@ export function createNewProjectWithTemplate(templateId, projectName, funnelId) 
 }
 
 export function getDiagram(funnelId) {
-  // console.log('getDiagram funnelId: ', funnelId)
   return function (dispatch) {
     API.get(`funnel/diagram/${funnelId}`)
       .then(response => {
-        // console.log('getDiagram response: ', response.data.data))
-
-        // const uno = JSON.parse(response.data.data.funnelBody)
-        // const dos = JSON.parse(uno.converted)
-        // console.log('getDiagram response', JSON.parse(response.data.data.funnelBody))
-
-
         let res = {}
         if (response.data.data.funnelBody) {
           res = JSON.parse(response.data.data.funnelBody);
@@ -879,15 +869,9 @@ export const showSettingsModalOnlyBoolean = (boolean) => dispatch => {
 export const saveDiagramThenShowOrHideSettingsModal = (funnelId, diagramObj, image, boolean, model, engine, typeOfNode) => dispatch => {
   const token = JSON.parse(localStorage.getItem('token'));
 
-  // console.log('diagramObj', diagramObj)
-
-
   let bodyFormData = new FormData();
   bodyFormData.append('funnelBackground', image);
   bodyFormData.append('funnelBody', JSON.stringify(diagramObj));
-
-
-  console.log('bodyFormData',  bodyFormData)
 
   axios({
     method: 'patch',
@@ -899,8 +883,7 @@ export const saveDiagramThenShowOrHideSettingsModal = (funnelId, diagramObj, ima
     data: bodyFormData
   })
     .then(response => {
-      // console.log('saveDiagramThenShowOrHideSettingsModal response', response.data)
-
+   
       let res1 = JSON.parse(response.data.data.funnelBody);
       let res = {
         converted: res1.converted,

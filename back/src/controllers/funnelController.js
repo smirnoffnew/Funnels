@@ -363,6 +363,7 @@ module.exports = {
 
             // let url = `https://funnelsmapbackend.qbex.io/funnel/node/${random}`;
             let url = `http://localhost:9001/funnel/node/${random}`;
+            // let url =`https://api.funnelsmap.com/funnel/node/${random}`;
             let originalUrl = req.body.url
 
             let response = await NodeCounter.findOneAndUpdate({ funnelId: req.body.funnelId, nodeId: req.body.elementId },
