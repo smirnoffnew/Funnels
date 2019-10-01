@@ -268,11 +268,7 @@ export default class BodyWidget extends React.Component {
       this.props.app.getDiagramEngine().getDiagramModel().setLocked(true)
     return (
       <>
-        <SettingsNodeRightPanel work={this.props.work} app={this.props.app}
-          developmentStatus={this.props.developmentStatus}
-          changeStatusOfNode={this.props.changeStatusOfNode}
-
-        />
+        <SettingsNodeRightPanel work={this.props.work} app={this.props.app} />
         <NotesNodeRightPanel work={this.props.work} app={this.props.app} />
 
         <div className="message-diagram">

@@ -18,3 +18,20 @@ API.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+export const requestPromise = req => dispatch => (
+  new Promise((resolve, reject) => {
+    req.then(response => {
+      if (response.status === 200) {
+        resolve(response.data);
+      } else {
+        reject(new Error(response.statusText));
+      }
+    })
+    .catch(error => {
+      if (error.response) {
+        reject(error.response.data.error);
+      }
+    });
+  })
+)

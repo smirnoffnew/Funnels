@@ -27,19 +27,15 @@ import {
   changeKeyDown
 } from '../../../store/actions/projects'
 
-import { getAllDevelopmentStages, changeStatusOfNode } from '../../../store/actions/developmentStages'
-
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       snackMsg: 'prev',
-      developmentStatus: "DEFAULT"
     };
   }
 
   componentDidMount() {
-    this.props.getAllDevelopmentStages(this.props.funnelId);
     this.props.getDiagram(this.props.funnelId);
     this.props.getTemplate(this.props.funnelId);
     this.props.getSVG();
@@ -72,15 +68,6 @@ class App extends React.Component {
           : this.props.setPermission("Edit")
       }
     }
-    if (((!prevProps.showSettingsWidgetBoolean && this.props.showSettingsWidgetBoolean) && this.props.showSettingsWidgetModel) && this.props.developmentStatus.length !== 0) {
-      let statusAndnodeId = this.props.developmentStatus && this.props.developmentStatus.find(el => el.nodeId === this.props.showSettingsWidgetModel.id)
-      this.setState({
-        statusAndnodeId: { 
-          status: statusAndnodeId ? statusAndnodeId.status : "DEFAULT" ,
-          nodeId: statusAndnodeId ? statusAndnodeId.nodeId : "non"
-        }
-      })
-    }
     else return null
   }
 
@@ -104,11 +91,7 @@ class App extends React.Component {
       this.props.svg && this.props.svg,
     );
     return (
-      <BodyWidget app={app} work={this.props}
-        developmentStatus={this.state.statusAndnodeId}
-        changeStatusOfNode={this.props.changeStatusOfNode}
-
-      />
+      <BodyWidget app={app} work={this.props} />
     );
   }
 }
@@ -137,7 +120,6 @@ function mapStateToProps(state, ownProps) {
     UTMLinkMessage: state.projects.createUTMLinkMessage,
 
     permissionForCollaborator: state.projects.permissionForCollaborator,
-    developmentStatus: state.developmentStages.stages
   };
 }
 
@@ -172,9 +154,7 @@ const mapDispatchToProps = dispatch => {
     dispatch: item => dispatch(item),
     setPermission: item1 => dispatch(setPermission(item1)),
     getConversionInfoForAllNodes: funnelId => dispatch(getConversionInfoForAllNodes(funnelId)),
-    getAllDevelopmentStages: funnelId => dispatch(getAllDevelopmentStages(funnelId)),
-    changeStatusOfNode: (item1, item2, item3) => dispatch(changeStatusOfNode(item1, item2, item3))
-   
+    
   }
 }
 

@@ -17,7 +17,13 @@ const ModalNodeWidget = ({ handleClose, show, children, style, close, handleHide
           // onClick={handleClose}
           title={"click to close modal"}
         >
-          <div className="arrow-for-select" onClick={handleHideSection} style={{transform:`${isViewSettingsSection?"scale(1, -1)":" " }`}}>
+          <div 
+            className="arrow-for-select" 
+            onClick={handleHideSection} 
+            style={{
+              transform:`${isViewSettingsSection ? " " : "scale(1, -1)" }`
+            }}
+          >
             <ArrowSelectSVG />
           </div>
         </button>

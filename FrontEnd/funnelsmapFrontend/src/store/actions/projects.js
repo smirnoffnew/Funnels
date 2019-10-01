@@ -9,7 +9,7 @@ import {
   DELETE_PROJECT_FAILURE,
 } from './types/index';
 import { API_URL } from '../../config'
-import { API } from './instance'
+import { API, requestPromise } from './instance'
 
 
 export function getAllProjects() {
@@ -93,67 +93,27 @@ export function deleteProjectByUserId(id) {
   }
 }
 
-// export function deleteProjectByUserId(nodeId, funnelId) {
-//   return function (dispatch) {
-//     API.delete(`funnel/node/delete/${nodeId}/${funnelId}`)
-//       .then(() => {
-//         // dispatch({
-//         //   type: DELETE_PROJECT,
-//         //   payload: id
-//         // });
-//         // dispatch({ type: DELETE_PROJECT_SUCCESS });
-//       })
-//       .catch(function (error) {
-//         if (error.response) {
-//           console.log(error.response)
-//           // dispatch({
-//           //   type: DELETE_PROJECT_FAILURE,
-//           //   payload: error.response.data.error
-//           // });
-//         }
-//       });
-//   }
-// }
-
-export const createProjectWithPromisefication = projectName => dispatch => {
-  return new Promise((resolve, reject) => {
+export const createProjectWithPromisefication = (
+  projectName 
+) => (
+  requestPromise(
     API.post(`project`, {
       'projectName': projectName,
     })
-      .then(response => {
-        if (response.status === 200) {
-          resolve(response.data);
-        } else {
-          reject(new Error(response.statusText));
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          reject(error.response.data.error);
-        }
-      });
-  });
-}
+  )
+)
 
-export const createFunnelWithPromisefication = (projectName, projectId) => dispatch => {
-  return new Promise((resolve, reject) => {
+export const createFunnelWithPromisefication = (
+  projectName, 
+  projectId
+) => (
+  requestPromise(
     API.post(`funnel/${projectId}`, {
       'funnelName': projectName,
     })
-      .then(response => {
-        if (response.status === 200) {
-          resolve(response.data);
-        } else {
-          reject(new Error(response.statusText));
-        }
-      })
-      .catch(error => {
-        if (error.response) {
-          reject(error.response.data.error);
-        }
-      });
-  });
-}
+  )
+)
+ 
 
 export function getAllFunnels(projectId) {
   return function (dispatch) {

@@ -12,7 +12,7 @@ export function sendComment(userId, funnelId, comment) {
             "comment": comment.comment,
         })
             .then(response => {
-              
+
                 if (response.status === 200) {
                     dispatch({
                         type: SEND_MESSAGE_SUCCESS,

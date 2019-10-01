@@ -56,29 +56,6 @@ class BigNodeWidget extends React.Component {
     handleGridTwo: false
   };
 
-  getDevelopmentStatus(funnelId, nodeId) {
-    if (this.props.developmentStatus.length !== 0) {
-      let statusAndnodeId = this.props.developmentStatus && this.props.developmentStatus.find(el => el.nodeId === nodeId)
-      this.setState({ status: statusAndnodeId ? statusAndnodeId.status : "DEFAULT" })
-    }
-
-  }
-
-  componentDidMount() {
-    this.getDevelopmentStatus(this.props.funnelId, this.props.node.id)
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.showSettingsWidgetBoolean && !this.props.showSettingsWidgetBoolean) {
-      if (prevProps.showSettingsWidgetModel.id === prevProps.node.id) {
-        this.getDevelopmentStatus(this.props.funnelId, this.props.node.id)
-      }
-    } if (prevProps.developmentStatus !== this.props.developmentStatus) {
-      this.getDevelopmentStatus(this.props.funnelId, this.props.node.id)
-    }
-
-  }
-
   showModal = () => {
     this.setState({
       show: true,
@@ -155,7 +132,7 @@ class BigNodeWidget extends React.Component {
   //   return Conversion
   // }
 
-  handleClicOnWidget = () => {
+  handleClickOnWidget = () => {
     if (this.props.keyDown === "Alt" && this.props.engine.diagramModel.nodes[this.props.node.id].extras.sourceLink) {
       // console.log("this.props.showSettingsWidget",this.props.engine.diagramModel.nodes[this.props.node.id].extras)
       openLinkOnNewTab(this.props.engine.diagramModel.nodes[this.props.node.id].extras.sourceLink, this.props.changeKeyDown(""))
@@ -201,7 +178,7 @@ class BigNodeWidget extends React.Component {
             onMouseEnter={this.showModal}
             onMouseLeave={this.hideModal}
             onMouseMove={this.mouseMove}
-            onClick={this.handleClicOnWidget}
+            onClick={this.handleClickOnWidget}
           />
 
           <ClickOutside
@@ -360,6 +337,23 @@ class BigNodeWidget extends React.Component {
             style={{
               position: "absolute",
               zIndex: 10,
+              top: -8,
+              left: 80
+            }}
+          >
+            <DevelopmentStage 
+              status={
+                this.props.node.extras && 
+                this.props.node.extras.status &&
+                this.props.node.extras.status
+              } 
+            />
+          </div>
+
+          <div
+            style={{
+              position: "absolute",
+              zIndex: 10,
               top: 55,
               left: -13
             }}
@@ -378,16 +372,6 @@ class BigNodeWidget extends React.Component {
             <PortWidget name="top" node={this.props.node} />
           </div>
 
-          <div
-            style={{
-              position: "absolute",
-              zIndex: 10,
-              top: -8,
-              left: 80
-            }}
-          >
-            <DevelopmentStage status={this.state.status} />
-          </div>
           <div
             style={{
               position: "absolute",
@@ -444,7 +428,8 @@ const mapStateToProps = state => {
     permissionForCollaborator: state.projects.permissionForCollaborator,
 
     conversionInfoForAllNodes: state.projects.conversionInfoForAllNodes,
-    developmentStatus: state.developmentStages.stages,
+
+
 
     keyDown: state.projects.keyDown,
   };

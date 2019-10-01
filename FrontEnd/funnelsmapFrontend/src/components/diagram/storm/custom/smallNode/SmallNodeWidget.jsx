@@ -55,31 +55,7 @@ class SmallNodeWidget extends React.Component {
   state = {
     show: false,
     handleGridTwo: false,
-    status: ""
   };
-
-  getDevelopmentStatus(funnelId, nodeId) {
-    if (this.props.developmentStatus.length !== 0) {
-      let statusAndnodeId = this.props.developmentStatus && this.props.developmentStatus.find(el => el.nodeId === nodeId)
-      this.setState({ status: statusAndnodeId ? statusAndnodeId.status : "DEFAULT" })
-    }
-
-  }
-
-  componentDidMount() {
-    this.getDevelopmentStatus(this.props.funnelId, this.props.node.id)
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.showSettingsWidgetBoolean && !this.props.showSettingsWidgetBoolean) {
-      if (prevProps.showSettingsWidgetModel.id === prevProps.node.id) {
-        this.getDevelopmentStatus(this.props.funnelId, this.props.node.id)
-      }
-    } if (prevProps.developmentStatus !== this.props.developmentStatus) {
-      this.getDevelopmentStatus(this.props.funnelId, this.props.node.id)
-    }
-
-  }
 
   showModal = () => {
     this.setState({
@@ -291,6 +267,24 @@ class SmallNodeWidget extends React.Component {
               <p className="small-model-text">{this.props.node.type}</p>
             </div>
           </div>
+
+          <div
+            style={{
+              position: "absolute",
+              zIndex: 10,
+              top: -8,
+              left: 143
+            }}
+          >
+            <DevelopmentStage 
+              status={
+                this.props.node.extras && 
+                this.props.node.extras.status &&
+                this.props.node.extras.status
+              }
+            />
+          </div>
+
           <div
             style={{
               position: "absolute",
@@ -328,17 +322,6 @@ class SmallNodeWidget extends React.Component {
             style={{
               position: "absolute",
               zIndex: 10,
-              top: -8,
-              left: 143
-            }}
-          >
-            <DevelopmentStage status={this.state.status} />
-          </div>
-
-          <div
-            style={{
-              position: "absolute",
-              zIndex: 10,
               top: 49,
               left: 75
             }}
@@ -370,7 +353,6 @@ const mapStateToProps = (state, ownProps) => {
     permissionForCollaborator: state.projects.permissionForCollaborator,
 
     conversionInfoForAllNodes: state.projects.conversionInfoForAllNodes,
-    developmentStatus: state.developmentStages.stages,
 
     keyDown: state.projects.keyDown,
   };

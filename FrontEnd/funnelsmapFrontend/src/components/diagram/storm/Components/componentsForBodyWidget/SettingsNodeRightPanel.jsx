@@ -145,6 +145,60 @@ export default class SettingsNodeRightPanel extends React.Component {
     this.saveDiagramHandle(file);
   };
 
+  handleChangeStatusNodeOnFinished = () => {
+    this.setState(
+      prev => {
+        return {
+          isFinished: !prev.isFinished,
+          isUnderDevelopment: false,
+        };
+      },
+      () => {
+        (this.props.work.showSettingsWidgetModel.extras.setStatusExtras &&
+          this.props.work.showSettingsWidgetModel.extras.setStatusExtras(
+            this.state.isFinished ? FINISHED : ''
+          ))
+          ||
+          (this.props.work.showSettingsWidgetModel.setStatus &&
+            this.props.work.showSettingsWidgetModel.setStatus(
+              this.state.isFinished ? FINISHED : ''
+            ));
+      }
+    );
+    const name = randomString({ length: 10 });
+    const file = new File([], name, {
+      type: "image/svg"
+    });
+    this.saveDiagramHandle(file);
+  };
+
+  handleChangeStatusNodeOnUnderDevelopment = () => {
+    this.setState(
+      prev => {
+        return {
+          isFinished: false,
+          isUnderDevelopment: !prev.isUnderDevelopment,
+        };
+      },
+      () => {
+        (this.props.work.showSettingsWidgetModel.extras.setStatusExtras &&
+          this.props.work.showSettingsWidgetModel.extras.setStatusExtras(
+            this.state.isUnderDevelopment ? UNDER_DEVELOPMENT : ''
+          ))
+          ||
+          (this.props.work.showSettingsWidgetModel.setStatus &&
+            this.props.work.showSettingsWidgetModel.setStatus(
+              this.state.isUnderDevelopment ? UNDER_DEVELOPMENT : ''
+            ));
+      }
+    );
+    const name = randomString({ length: 10 });
+    const file = new File([], name, {
+      type: "image/svg"
+    });
+    this.saveDiagramHandle(file);
+  };
+
   handleChangeNode = e => {
     this.setState(
       {
@@ -160,7 +214,6 @@ export default class SettingsNodeRightPanel extends React.Component {
           this.props.work.showSettingsWidgetModel.setName(this.state.labelNode))
     );
   }
-
 
   handleChangeNodeSourceLink = e => {
     this.setState(
@@ -202,7 +255,6 @@ export default class SettingsNodeRightPanel extends React.Component {
           scriptD: '',
           copied: false,
           sourceLinkNode:''
-          
         });
       }
     );
@@ -278,35 +330,6 @@ export default class SettingsNodeRightPanel extends React.Component {
       });
   };
 
-  setDevelopmentStage(status) {
-    this.props.changeStatusOfNode(this.props.work.funnelId, this.props.work.showSettingsWidgetModel.id, status)
-  }
-
-  handleClickOnDevelopmentStage(status) {
-    if (status === FINISHED) {
-      this.setState({ isUnderDevelopment: false, isFinished: this.state.isFinished ? false : true },
-        () => {
-          if (!this.state.isUnderDevelopment && !this.state.isFinished) {
-            this.setDevelopmentStage("");
-          } else {
-            this.setDevelopmentStage(FINISHED);
-          }
-        }
-      )
-    } if (status === UNDER_DEVELOPMENT) {
-      this.setState({ isUnderDevelopment: this.state.isUnderDevelopment ? false : true, isFinished: false },
-        () => {
-          if (!this.state.isUnderDevelopment && !this.state.isFinished) {
-            this.setDevelopmentStage("");
-          } else {
-            this.setDevelopmentStage(UNDER_DEVELOPMENT);
-          }
-        }
-      )
-    }
-
-  }
-
   changeViewSection = (section) => {
     const { sectionViews } = this.state;
     const { settings, trackingBigNode, trackingSmallNode } = sectionViews
@@ -346,7 +369,7 @@ export default class SettingsNodeRightPanel extends React.Component {
     const { settings, trackingBigNode, trackingSmallNode } = this.state.sectionViews
     return (
       <ModalNodeWidget
-        style={{height:'calc(100vh - 67px)',   overflow: 'auto'}}
+        style={{height:'calc(100vh - 67px)', overflow: 'auto'}}
         show={this.props.work.showSettingsWidgetBoolean}
         handleClose={() => {
           const name = randomString({ length: 10 });
@@ -398,7 +421,7 @@ export default class SettingsNodeRightPanel extends React.Component {
             />
             <label htmlFor="Name" className="label-input">
               Source link
-          </label>
+            </label>
             <input
               className="node-panel-textarea-input"
               style={{ height: 25, marginBottom: '4px' }}
@@ -430,11 +453,12 @@ export default class SettingsNodeRightPanel extends React.Component {
                 <input
                   id='CheckBoxFinished'
                   type="radio"
-                  checked={this.state.isFinished}
-                  // defaultChecked={false}
-                  // onClick={this.handleChangeCheckbox}
+                  checked={
+                    this.props.work.showSettingsWidgetModel &&
+                    this.props.work.showSettingsWidgetModel.extras.status === 'FINISHED'
+                  }
                   onChange={() => null}
-                  onClick={() => this.handleClickOnDevelopmentStage(FINISHED)}
+                  onClick={() => this.handleChangeStatusNodeOnFinished()}
                 />
                 <span className="checkmark"></span>
               </label>
@@ -446,11 +470,12 @@ export default class SettingsNodeRightPanel extends React.Component {
                 <input
                   id='CheckBoxUnderDevelopment'
                   type="radio"
-                  checked={this.state.isUnderDevelopment}
-                  // defaultChecked={false}
-                  // onClick={this.handleChangeCheckbox}
+                  checked={
+                    this.props.work.showSettingsWidgetModel &&
+                    this.props.work.showSettingsWidgetModel.extras.status === 'UNDER DEVELOPMENT'
+                  }
                   onChange={() => null}
-                  onClick={() => this.handleClickOnDevelopmentStage(UNDER_DEVELOPMENT)}
+                  onClick={() => this.handleChangeStatusNodeOnUnderDevelopment()}
                 />
                 <span className="checkmark"></span>
               </label>
@@ -464,10 +489,15 @@ export default class SettingsNodeRightPanel extends React.Component {
           this.props.work.showTypeOfNode === "small" ? (
             <>
               <label className="label-create-widget-settings">Tracking</label>
-              <div className={'arrow-tip-tracking'} onClick={() => this.changeViewSection(TRACKING_SMALL_NODE_SECTION)} style={{ transform: `${trackingSmallNode ? "scale(1, -1)" : " "}` }}>
+              <div 
+                className={'arrow-tip-tracking'} 
+                onClick={() => this.changeViewSection(TRACKING_SMALL_NODE_SECTION)} 
+                style={{ 
+                  transform: `${trackingSmallNode ? " " : "scale(1, -1)"}` 
+                }}
+              >
                 <ArrowSelectSVG />
               </div>
-
               {
                 trackingSmallNode &&
                 <div style={{ padding: 15 }}>
@@ -475,7 +505,7 @@ export default class SettingsNodeRightPanel extends React.Component {
 
                     <label htmlFor="UTMLink" className="label-input">
                       Generate UTM link from Original link
-              </label>
+                    </label>
                     <input
                       id="UTMLink"
                       type="text"
@@ -501,7 +531,7 @@ export default class SettingsNodeRightPanel extends React.Component {
                         <>
                           <label htmlFor="U" className="label-input">
                             Generated UTM link
-                  </label>
+                          </label>
                           <input
                             type="text"
                             name="U"
@@ -519,7 +549,7 @@ export default class SettingsNodeRightPanel extends React.Component {
                             style={{ float: "left" }}
                           >
                             Copy
-                  </button>
+                          </button>
                         </>
                       ) : null}
                     <button
@@ -527,13 +557,10 @@ export default class SettingsNodeRightPanel extends React.Component {
                       onClick={() => this.handleCreateUTMLink()}
                     >
                       Generate
-              </button>
+                    </button>
                   </>
                 </div>
               }
-
-
-
 
               <button
                 className="btn-set-as-a-trigger"
@@ -548,12 +575,18 @@ export default class SettingsNodeRightPanel extends React.Component {
                   <SelectSVG />
                 }
                 Set as a trigger
-            </button>
+              </button>
             </>
           ) : (
             <>
               <label className="label-create-widget-settings">Tracking</label>
-              <div className={'arrow-tip-tracking'} onClick={() => this.changeViewSection(TRACKING_BIG_NODE_SECTION)} style={{ transform: `${trackingBigNode ? "scale(1, -1)" : " "}` }}>
+              <div 
+                className={'arrow-tip-tracking'} 
+                onClick={() => this.changeViewSection(TRACKING_BIG_NODE_SECTION)} 
+                style={{ 
+                  transform: `${trackingBigNode ? " " : "scale(1, -1)"}` 
+                }}
+              >
                 <ArrowSelectSVG />
               </div>
               {
@@ -561,7 +594,7 @@ export default class SettingsNodeRightPanel extends React.Component {
                   <>
                     <label htmlFor="UTMLink" className="label-input">
                       Generate UTM link from Original link
-                </label>
+                    </label>
                     <input
                       id="UTMLink"
                       type="text"
@@ -591,7 +624,7 @@ export default class SettingsNodeRightPanel extends React.Component {
                         <>
                           <label htmlFor="N" className="label-input">
                             Generated UTM link
-                    </label>
+                          </label>
                           <input
                             type="text"
                             name="N"
@@ -610,7 +643,7 @@ export default class SettingsNodeRightPanel extends React.Component {
                             style={{ float: "left" }}
                           >
                             Copy
-                    </button>
+                          </button>
                         </>
                       ) : null}
                     <button
@@ -651,7 +684,7 @@ export default class SettingsNodeRightPanel extends React.Component {
                             onClick={this.copyToClipboardScript}
                           >
                             Copy
-                  </button>
+                          </button>
                         </>
                       ) : (
                         <button
@@ -697,7 +730,7 @@ export default class SettingsNodeRightPanel extends React.Component {
                           }}
                         >
                           Generate
-                </button>
+                        </button>
                       )}
                   </div>
 
@@ -714,8 +747,8 @@ export default class SettingsNodeRightPanel extends React.Component {
                     this.props.work.showSettingsWidgetModel.extras.triggerd &&
                     <SelectSVG />
                   }
-                  Set as a trigger
-              </button>
+                    Set as a trigger
+                </button>
                 <button
                   className="btn-set-as-a-goal"
                   onClick={this.handleToggleGoalStyle}
@@ -725,8 +758,8 @@ export default class SettingsNodeRightPanel extends React.Component {
                     this.props.work.showSettingsWidgetModel.extras.goald &&
                     <SelectSVG />
                   }
-                  Set as a goal
-              </button>
+                    Set as a goal
+                </button>
               </div>
             </>
           )}
