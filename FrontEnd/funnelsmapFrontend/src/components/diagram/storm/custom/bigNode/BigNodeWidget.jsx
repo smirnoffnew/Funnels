@@ -8,6 +8,7 @@ import { ReactComponent as DeleteAllLinksSVG } from "../../../../../assets/selec
 import { ReactComponent as DeleteSVG } from "../../../../../assets/selectForWidget/delete.svg";
 import { ReactComponent as NotesSVG } from "../../../../../assets/selectForWidget/notes.svg";
 import { ReactComponent as SettingsSVG } from "../../../../../assets/selectForWidget/settings.svg";
+import { ReactComponent as AddButtonSVG } from "../../../../../assets/AddButton.svg";
 import {
   saveDiagramThenShowOrHideSettingsModal,
   saveDiagramThenShowOrHideNotesModal,
@@ -20,9 +21,10 @@ import {
   showRightModal
 } from "../funcsForCustomNodeWidget";
 import "./index.css";
-import { getConversion, openLinkOnNewTab } from "../../utils";
+import { openLinkOnNewTab } from "../../utils";
 import { DevelopmentStage } from "../../../../common/DevelopmentStage/DevelopmentStage";
-import {  NotesStatusIconGroup } from "../../../../common/NotesStatus/NotesStatus";
+import { NotesStatusIconGroup } from "../../../../common/NotesStatus/NotesStatus";
+import { setConversionCompound } from "../../../../../store/actions/conversion";
 
 const Select = ({ show, children }) => {
   const showHideClassName = show
@@ -53,7 +55,13 @@ const SelectAnalytics = ({ show, children }) => {
 class BigNodeWidget extends React.Component {
   state = {
     show: false,
-    handleGridTwo: false
+    handleGridTwo: false,
+
+    advancedConversion: {},
+
+    conversion1: 0,
+    conversion2: 0,
+    conversion3: 0,
   };
 
   showModal = () => {
@@ -82,7 +90,7 @@ class BigNodeWidget extends React.Component {
       });
     return obj[0] && obj[0].counterUrl && obj[0].counterUrl
       ? obj[0].counterUrl
-      : "0 or no utm";
+      : 0;
   }
 
   getCounterNode(array, value) {
@@ -93,49 +101,100 @@ class BigNodeWidget extends React.Component {
       });
     return obj[0] && obj[0].counterNode && obj[0].counterNode
       ? obj[0].counterNode
-      : "0 or no script";
+      : 0;
   }
 
-  // searchCurretnNodeAndUrl() {
-  //   if (this.props.conversionInfoForAllNodes) {
-  //     const ifoForAllNodes = this.props.conversionInfoForAllNodes;
-  //     if (ifoForAllNodes.find(el => el.nodeId === this.props.node.id)) {
-  //       const countUrl = ifoForAllNodes.find(el => el.nodeId === this.props.node.id).counterUrl || 0;
-  //       const countNode = ifoForAllNodes.find(el => el.nodeId === this.props.node.id).counterNode || 0;
-  //       return {
-  //         countUrl,
-  //         countNode
-  //       }
-  //     }
-  //   }
-  //   return {
-  //     countUrl: 0,
-  //     countNode: 0
-  //   }
-  // }
-
-  // getConversion() {
-  //   let Conversion = "0%"
-  //   if (this.props.conversionInfoForAllNodes && this.props.conversionInfoForAllNodes[0]&&this.props.funnelLinks!== " ") {
-  //     const links = this.props.funnelLinks.filter(element => this.props.node.id === element.target)
-  //     const counterUrlmass = this.props.conversionInfoForAllNodes.map(element => {
-  //       if (links.find(elem => elem.source === element.nodeId)) {
-  //         return element.counterUrl
-  //       }
-  //       return 0
-  //     })
-  //     const currentCounterUrl = this.searchCurretnNodeAndUrl().countUrl
-  //     const clickCount = counterUrlmass.reduce((accumulator, currentValue) => accumulator + currentValue)+ currentCounterUrl;
-  //       let Conversion = clickCount?((this.searchCurretnNodeAndUrl().countNode / clickCount) * 100):0;
-  //     return Conversion&&Conversion.toFixed(2) + "%" 
-  //   }
-  //   return Conversion
-  // }
+  getConversion = () => {
+    return Number.parseInt(
+      this.props.conversionInfoForAllNodes &&
+      this.getCounterUrl(
+        this.props.conversionInfoForAllNodes,
+        this.props.node.id
+      )
+    ) > 0
+      ? (
+        (Number.parseInt(
+          this.props.conversionInfoForAllNodes &&
+            this.getCounterNode(
+              this.props.conversionInfoForAllNodes,
+              this.props.node.id
+            )
+            ? this.props.conversionInfoForAllNodes &&
+            this.getCounterNode(
+              this.props.conversionInfoForAllNodes,
+              this.props.node.id
+            )
+            : 0
+        ) /
+          Number.parseInt(
+            this.props.conversionInfoForAllNodes &&
+            this.getCounterUrl(
+              this.props.conversionInfoForAllNodes,
+              this.props.node.id
+            )
+          )) *
+        100
+      ).toFixed(2) + "%"
+      : "none"
+  }
 
   handleClickOnWidget = () => {
-    if (this.props.keyDown === "Alt" && this.props.engine.diagramModel.nodes[this.props.node.id].extras.sourceLink) {
-      // console.log("this.props.showSettingsWidget",this.props.engine.diagramModel.nodes[this.props.node.id].extras)
-      openLinkOnNewTab(this.props.engine.diagramModel.nodes[this.props.node.id].extras.sourceLink, this.props.changeKeyDown(""))
+    if (
+      this.props.keyDown === "Alt" &&
+      this.props.engine.diagramModel.nodes[this.props.node.id].extras.sourceLink
+    ) {
+      openLinkOnNewTab(
+        this.props.engine.diagramModel.nodes[this.props.node.id].extras.sourceLink,
+        this.props.changeKeyDown("")
+      )
+    }
+  }
+
+  getRevonew = (price, clickNodes) => {
+    const revonew = (+price && +clickNodes) ? price * clickNodes : 0
+    return revonew + ' $'
+  }
+
+  getAdvancedConversion = nameOfAdvancedConversion => {
+    if (this.props.conversionInfoForAllNodes) {
+      return this.props.node.extras.conversions &&
+        this.props.node.extras.conversions.map(item => {
+          if (item.to.id === this.props.node.id) {
+            if (item.from.type === 'utm') {
+              if (item.to.type === nameOfAdvancedConversion) {
+                const counterUTMFrom = this.getCounterUrl(
+                  this.props.conversionInfoForAllNodes,
+                  item.from.id
+                )
+                const counterPageTo = this.getCounterNode(
+                  this.props.conversionInfoForAllNodes,
+                  this.props.node.id
+                )
+                const advancedConversion = (counterPageTo / counterUTMFrom) * 100
+
+                return advancedConversion.toFixed(2) + "%"
+              }
+              return null
+            }
+            if (item.from.type === 'pageVisited') {
+              if (item.to.type === nameOfAdvancedConversion) {
+                const counterPageFrom = this.getCounterNode(
+                  this.props.conversionInfoForAllNodes,
+                  item.from.id
+                )
+                const counterPageTo = this.getCounterNode(
+                  this.props.conversionInfoForAllNodes,
+                  this.props.node.id
+                )
+                const advancedConversion = counterPageFrom - counterPageTo
+
+                return advancedConversion
+              }
+              return null
+            }
+          }
+          return null
+        })
     }
   }
 
@@ -173,6 +232,7 @@ class BigNodeWidget extends React.Component {
             </>
           ) : null}
 
+
           <div
             className="big-area-for-hover"
             onMouseEnter={this.showModal}
@@ -189,53 +249,244 @@ class BigNodeWidget extends React.Component {
             onMouseLeave={this.hideModal}
           >
             {this.props.showAnalyticsBoolean ? (
-              <SelectAnalytics show={true}>
-                <>
-                  <div
-                    className="analytics-box"
-                    title={this.props.conversionInfoForAllNodes &&
-                      this.getCounterUrl(
-                        this.props.conversionInfoForAllNodes,
-                        this.props.node.id
-                      )}
-                  >
-                    <p className="top-anal">Clicks:</p>
-                    <p className="bottom-anal">
-                      {this.props.conversionInfoForAllNodes &&
-                        this.getCounterUrl(
-                          this.props.conversionInfoForAllNodes,
-                          this.props.node.id
-                        )}
-                    </p>
+              <>
+                <SelectAnalytics show={true}>
+                  <div style={{
+                    display: 'flex'
+                  }}>
+                    <div>
+                      <div
+                        className="analytics-box"
+                        title={this.props.conversionInfoForAllNodes &&
+                          this.getCounterUrl(
+                            this.props.conversionInfoForAllNodes,
+                            this.props.node.id
+                          )}
+                      >
+                        <div style={{
+                          display: 'block'
+                        }}>
+                          <p className="top-anal">Clicks</p>
+                          <p className="bottom-anal">
+                            {this.props.conversionInfoForAllNodes &&
+                              this.getCounterUrl(
+                                this.props.conversionInfoForAllNodes,
+                                this.props.node.id
+                              )}
+                          </p>
+                        </div>
+                        <div
+                          className='conversion-port-on-node'
+                          onMouseDown={() => {
+                            const id = this.props.node.id
+                            this.setState({
+                              advancedConversion: {
+                                id,
+                                type: 'utm'
+                              }
+                            }, () => {
+                              this.props.setConversionCompound(this.state.advancedConversion)
+                            })
+                          }}
+                        >
+                          <PortWidget
+                            name="clickOnLink"
+                            node={this.props.node}
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        className="analytics-box"
+                        title={this.props.conversionInfoForAllNodes &&
+                          this.getCounterNode(
+                            this.props.conversionInfoForAllNodes,
+                            this.props.node.id
+                          )}
+                      >
+                        <div style={{
+                          display: 'block'
+                        }}>
+                          <p className="top-anal">Active on page</p>
+                          <p className="bottom-anal">
+                            {this.props.conversionInfoForAllNodes &&
+                              this.getCounterNode(
+                                this.props.conversionInfoForAllNodes,
+                                this.props.node.id
+                              )}
+                          </p>
+                        </div>
+                        <div
+                          className='conversion-port-on-node'
+                          onMouseDown={() => {
+                            const id = this.props.node.id
+                            this.setState({
+                              advancedConversion: {
+                                id,
+                                type: 'pageVisited'
+                              }
+                            }, () => {
+                              this.props.setConversionCompound(this.state.advancedConversion)
+                            })
+                          }}
+                        >
+                          <PortWidget
+                            name="activeOnPage"
+                            node={this.props.node}
+                          />
+                        </div>
+                      </div>
+
+                      <div
+                        className="analytics-box"
+                        style={{ borderBottom: '1px solid #dce5ec' }}
+                      >
+                        <div style={{
+                          display: 'block'
+                        }}>
+                          <p className="top-anal">Revonew</p>
+                          <p className="bottom-anal">
+                            {
+                              this.props.conversionInfoForAllNodes &&
+                              this.getRevonew(
+                                +this.props.node.extras.price,
+                                this.getCounterNode(
+                                  this.props.conversionInfoForAllNodes,
+                                  this.props.node.id
+                                )
+                              )
+                            }
+                          </p>
+                        </div>
+                      </div>
+
+                      <div
+                        className="analytics-box"
+                      // title={"644/22%"}
+                      >
+                        <div style={{
+                          display: 'block'
+                        }}>
+                          <p className="top-anal">Conversion:</p>
+                          <p className="bottom-anal">
+                            {this.getConversion()}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: '97px',
+                          right: '-5px',
+                          cursor: 'pointer'
+                        }}
+                        title={'add conversion block'}
+                      >
+                        <AddButtonSVG
+                          onClick={() => { }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className='super-conversion-block'>
+
+                      <div className='advanced-conversion-block'>
+                        <div className='conversion-wrapper'>
+                          <div className='top-anal'>
+                            Conversion1:
+                          </div>
+                          <div className='bottom-anal'>
+                            {this.getAdvancedConversion('Conversion1')}
+                          </div>
+                        </div>
+                        <div
+                          className='conversion-port'
+                          onMouseUp={() => {
+                            this.props.node.setConversions &&
+                              this.props.node.setConversions(
+                                {
+                                  from: this.props.advancedConversion,
+                                  to: {
+                                    id: this.props.node.id,
+                                    type: 'Conversion1'
+                                  }
+                                }
+                              )
+                          }}
+                        >
+                          <PortWidget name="conversion1" node={this.props.node} />
+                        </div>
+                      </div>
+
+                      <div className='advanced-conversion-block'>
+                        <div className='conversion-wrapper'>
+                          <div className='top-anal'>
+                            Conversion2:
+                          </div>
+                          <div className='bottom-anal'>
+                            {this.getAdvancedConversion('Conversion2')}
+                          </div>
+                        </div>
+                        <div
+                          className='conversion-port'
+                          onMouseUp={() => {
+                            this.props.node.setConversions &&
+                              this.props.node.setConversions(
+                                {
+                                  from: this.props.advancedConversion,
+                                  to: {
+                                    id: this.props.node.id,
+                                    type: 'Conversion2'
+                                  }
+                                }
+                              )
+                          }}
+                        >
+                          <PortWidget name="conversion2" node={this.props.node} />
+                        </div>
+                      </div>
+
+                      <div className='advanced-conversion-block'>
+                        <div className='conversion-wrapper'>
+                          <div className='top-anal'>
+                            Conversion3:
+                          </div>
+                          <div className='bottom-anal'>
+                            {this.getAdvancedConversion('Conversion3')}
+                          </div>
+                        </div>
+                        <div
+                          className='conversion-port'
+                          onMouseUp={() => {
+                            this.props.node.setConversions &&
+                              this.props.node.setConversions(
+                                {
+                                  from: this.props.advancedConversion,
+                                  to: {
+                                    id: this.props.node.id,
+                                    type: 'Conversion3'
+                                  }
+                                }
+                              )
+                          }}
+                        >
+                          <PortWidget name="conversion3" node={this.props.node} />
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'none' }} >
+                        <PortWidget name="top" node={this.props.node} />
+                        <PortWidget name="bottom" node={this.props.node} />
+                        <PortWidget name="left" node={this.props.node} />
+                        <PortWidget name="right" node={this.props.node} />
+                      </div>
+
+                    </div>
+
                   </div>
-                  <div
-                    className="analytics-box"
-                    title={this.props.conversionInfoForAllNodes &&
-                      this.getCounterNode(
-                        this.props.conversionInfoForAllNodes,
-                        this.props.node.id
-                      )}
-                  >
-                    <p className="top-anal">Active on page:</p>
-                    <p className="bottom-anal">
-                      {this.props.conversionInfoForAllNodes &&
-                        this.getCounterNode(
-                          this.props.conversionInfoForAllNodes,
-                          this.props.node.id
-                        )}
-                    </p>
-                  </div>
-                  <div
-                    className="analytics-box"
-                  // title={"644/22%"}
-                  >
-                    <p className="top-anal">Conversion:</p>
-                    <p className="bottom-anal">
-                      {getConversion(this.props.conversionInfoForAllNodes, this.props.funnelLinks, this.props.node.id)}
-                    </p>
-                  </div>
-                </>
-              </SelectAnalytics>
+                </SelectAnalytics>
+              </>
             ) : (
                 <Select
                   show={
@@ -341,12 +592,12 @@ class BigNodeWidget extends React.Component {
               left: 80
             }}
           >
-            <DevelopmentStage 
+            <DevelopmentStage
               status={
-                this.props.node.extras && 
+                this.props.node.extras &&
                 this.props.node.extras.status &&
                 this.props.node.extras.status
-              } 
+              }
             />
           </div>
 
@@ -355,7 +606,9 @@ class BigNodeWidget extends React.Component {
               position: "absolute",
               zIndex: 10,
               top: 55,
-              left: -13
+              left: -13,
+              // opacity: this.props.hideConversionLinkBoolean && '0'
+              display: this.props.hideConversionLinkBoolean && 'none'
             }}
           >
             <PortWidget name="left" node={this.props.node} />
@@ -366,7 +619,8 @@ class BigNodeWidget extends React.Component {
               position: "absolute",
               zIndex: 10,
               top: -13,
-              left: 38
+              left: 38,
+              display: this.props.hideConversionLinkBoolean && 'none'
             }}
           >
             <PortWidget name="top" node={this.props.node} />
@@ -377,7 +631,9 @@ class BigNodeWidget extends React.Component {
               position: "absolute",
               zIndex: 10,
               top: 55,
-              left: 90
+              left: 90,
+              // opacity: this.props.hideConversionLinkBoolean && '0'
+              display: this.props.hideConversionLinkBoolean && 'none'
             }}
           >
 
@@ -389,24 +645,37 @@ class BigNodeWidget extends React.Component {
               position: "absolute",
               zIndex: 10,
               top: 119,
-              left: 38
+              left: 38,
+              // opacity: this.props.hideConversionLinkBoolean && '0'
+              display: this.props.hideConversionLinkBoolean && 'none'
             }}
           >
             <PortWidget name="bottom" node={this.props.node} />
           </div>
+
+          <div
+            style={{
+              display: 'none'
+            }}
+          >
+            <PortWidget name="conversion1" node={this.props.node} />
+            <PortWidget name="conversion2" node={this.props.node} />
+            <PortWidget name="conversion3" node={this.props.node} />
+
+            <PortWidget name="clickOnLink" node={this.props.node} />
+            <PortWidget name="activeOnPage" node={this.props.node} />
+
+
+          </div>
+
         </div>
+
+
+
       </>
+
     );
   }
-}
-
-const getLinks = (state) => {
-  if (state.projects[`diagram${state.router.location.pathname.substring(9)}`]) {
-    const body = state.projects[`diagram${state.router.location.pathname.substring(9)}`];
-    const Links = body.converted && JSON.parse(body.converted).links;
-    return Links || " "
-  }
-  return " "
 }
 
 const mapStateToProps = state => {
@@ -421,7 +690,6 @@ const mapStateToProps = state => {
     showNotesWidgetModel: state.projects.showNotesWidgetModel,
 
     funnelId: state.router.location.pathname.substring(9),
-    funnelLinks: getLinks(state),
     svgList: state.projects.svgList,
 
     showAnalyticsBoolean: state.projects.showAnalyticsBoolean,
@@ -429,15 +697,15 @@ const mapStateToProps = state => {
 
     conversionInfoForAllNodes: state.projects.conversionInfoForAllNodes,
 
-
-
     keyDown: state.projects.keyDown,
+    hideConversionLinkBoolean: state.conversion.hideConversionLinkBoolean,
+    advancedConversion: state.conversion.advancedConversion,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-
+    setConversionCompound: advancedConversion => dispatch(setConversionCompound(advancedConversion)),
     changeKeyDown: key => dispatch(changeKeyDown(key)),
     saveDiagramThenShowOrHideSettingsModal: (
       id,

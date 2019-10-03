@@ -1,24 +1,7 @@
-import * as React from "react";
-import {
-  DefaultPortModel,
-  DefaultLinkModel,
-  DefaultLinkFactory,
-} from "storm-react-diagrams";
+import React from "react";
+import { connect } from 'react-redux'
 
-export class AdvancedLinkModel extends DefaultLinkModel {
-  constructor() {
-    super("advanced");
-    this.width = 2;
-  }
-}
-
-export class AdvancedPortModel extends DefaultPortModel {
-  createLinkModel() {
-    return new AdvancedLinkModel();
-  }
-}
-
-export class AdvancedLinkSegment extends React.Component {
+class AdvancedLinkSegment extends React.Component {
   constructor(props) {
     super(props);
     this.progress = props.inversed ? 100 : 0;
@@ -87,15 +70,6 @@ export class AdvancedLinkSegment extends React.Component {
 
       this.circleDelete.setAttribute("cx", point.x - 10);
       this.circleDelete.setAttribute("cy", point.y - 10);
-
-      //       this.circleDelete1.setAttribute("cx", point.x - 10);
-      // this.circleDelete1.setAttribute("cy", point.y - 10);
-
-      //       this.circleDelete2.setAttribute("cx", point.x);
-      // this.circleDelete2.setAttribute("cy", point.y);
-      
-      //       this.circleDelete3.setAttribute("cx", point.x - 80);
-      // this.circleDelete3.setAttribute("cy", point.y - 850);
     })
   }
 
@@ -146,15 +120,19 @@ export class AdvancedLinkSegment extends React.Component {
   }
 
   render() {
-    const { path, model, selected } = this.props;
+    const { path, model, /*selected*/ } = this.props;
 
-    // console.log(this.state.buttonVisible)
+    // console.log('hideConversionLinkBoolean', this.props.hideConversionLinkBoolean)
+
+    // console.log('AdvancedLinkSegment')
     return (
       <>
         <path
           ref={ref => this.path = ref}
           strokeWidth={model.width}
-          stroke={selected ? `rgba(	97, 102, 110, 1)` : `rgba(	97, 102, 110, 0.5)`}
+          // stroke={selected ? `rgba(	97, 102, 110, 1)` : `rgba(	97, 102, 110, 0.5)`}
+
+          stroke={this.props.hideConversionLinkBoolean ? 'blue' : 'rgba(97, 102, 110, 0.7)'}
           strokeDasharray="5,5"
           d={path}
         />
@@ -172,7 +150,7 @@ export class AdvancedLinkSegment extends React.Component {
         <circle
           ref={ref => this.circle = ref}
           r={3}
-          fill="orange"
+          fill={this.props.hideConversionLinkBoolean ? 'blue' : '#fd8f21'}
         />
 
         {     
@@ -190,14 +168,12 @@ export class AdvancedLinkSegment extends React.Component {
             //       onMouseEnter={this.onMouseEnter}
             //       onMouseLeave={this.onMouseLeave}
             //     />
-            //     {/* <ellipse 
-            //       // transform="rotate(-45, 57, 55)"
-            //       transform="translate(-30,0)"
-            //       // transform="skewX(45)"
+            //     <ellipse 
+            //       transform="rotate(-45, 57, 55)"
             //       fill="red"
 
-            //       rx="3" 
-            //       ry="21" 
+            //       // rx="3" 
+            //       // ry="21" 
 
             //       // cx="55" 
             //       // cy="150" 
@@ -205,16 +181,13 @@ export class AdvancedLinkSegment extends React.Component {
             //       ref={ref => this.circleDelete2 = ref}
             //       onMouseEnter={this.onMouseEnter}
             //       onMouseLeave={this.onMouseLeave}
-            //     /> */}
+            //     />
             //     <ellipse 
-            //       // transform="rotate(45, 187, 55)"
-            //       // transform="translate(10,0)"
-            //       // transform="skewX(-45)"
-            //       transform="rotate(45)"
+            //       transform="rotate(45, 187, 55)"
             //       fill="red"
 
-            //       rx="3" 
-            //       ry="21" 
+            //       // rx="3" 
+            //       // ry="21" 
             //       // cx="190"
             //       // cy="150" 
 
@@ -239,7 +212,7 @@ export class AdvancedLinkSegment extends React.Component {
             null
         }
 
-        <circle ref={ref => this.circleTarget = ref} r="6" fill="#fd8f21" />
+        <circle ref={ref => this.circleTarget = ref} r="6" fill={this.props.hideConversionLinkBoolean ? 'blue' : '#fd8f21'} />
         <circle ref={ref => this.circleTarget2 = ref} r="2" fill="#fff" />
 
       </>
@@ -247,42 +220,12 @@ export class AdvancedLinkSegment extends React.Component {
   }
 }
 
-export class AdvancedLinkFactory extends DefaultLinkFactory {
-  constructor() {
-    super();
-    this.type = "advanced";
-  }
-
-  getNewInstance(initialConfig) {
-    return new AdvancedLinkModel();
-  }
-
-  getDirection(source, target) {
-    const difX = source.x - target.x
-    const difY = source.y - target.y
-    const isHorisontal = Math.abs(difX) > Math.abs(difY);
-
-    return isHorisontal ? difX > 0 : difY > 0;
-  }
-
-  generateLinkSegment(model, widget, selected, path) {
-    return (
-        <g>
-          <AdvancedLinkSegment
-            engine={widget.props.diagramEngine}
-            model={model}
-            path={path}
-            selected={selected}
-            inversed={
-              model.sourcePort && model.targetPort ?
-                this.getDirection(model.sourcePort, model.targetPort)
-                : null
-            }
-          />
-        </g>
-    );
-  }
+function mapStateToProps(state) {
+  return {
+    hideConversionLinkBoolean: state.conversion.hideConversionLinkBoolean
+  };
 }
 
-
-
+export default connect(
+  mapStateToProps
+)(AdvancedLinkSegment)

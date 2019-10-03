@@ -13,6 +13,9 @@
 
 .analytics-box{
   padding-left: 10px;
+  padding-top: 5px;
+  display: flex;
+  align-items: center;
 }
 
 .select-analytics-widget {
@@ -24,7 +27,7 @@
   right: -135px;
   width: 110px;
   z-index: 1;
-  height: 115px;
+  height: auto;
   border-radius: 5px;
   box-shadow: 0 0 28px rgba(0,0,0,0.1);
   background-color: #ffffff;
@@ -51,6 +54,7 @@
   color: #848f99;
   font-family: "Roboto";
   font-weight: 400;
+  white-space: pre;
 }
 
 .bottom-anal {
@@ -61,4 +65,34 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.super-conversion-block{
+  margin-left: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-left: 40px;
+}
+
+.conversion-port{
+  display: block;
+}
+
+.conversion-port-on-node {
+  right: -16px;
+  position: absolute;
+  z-index: 100;
+}
+
+.conversion-wrapper{
+  display: block;
+}
+
+.advanced-conversion-block{
+  display: flex;
+  align-items: center;
+  margin-left: 25px;
+  height: 40px;
 }

@@ -24,8 +24,9 @@ import {
   getConversationInfoWithPromisefication,
   getConversionInfoForAllNodes,
   showCommentsBoolean,
-  changeKeyDown
+  changeKeyDown,
 } from '../../../store/actions/projects'
+import { hideConversionLink } from "../../../store/actions/conversion";
 
 class App extends React.Component {
   constructor(props) {
@@ -154,7 +155,8 @@ const mapDispatchToProps = dispatch => {
     dispatch: item => dispatch(item),
     setPermission: item1 => dispatch(setPermission(item1)),
     getConversionInfoForAllNodes: funnelId => dispatch(getConversionInfoForAllNodes(funnelId)),
-    
+
+    hideConversionLink: boolean => dispatch(hideConversionLink(boolean)),
   }
 }
 

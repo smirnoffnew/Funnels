@@ -8,6 +8,14 @@ export class CustomNodeModel extends NodeModel {
     this.addPort(new CustomPortModel(name, "left"));
     this.addPort(new CustomPortModel(name, "bottom"));
     this.addPort(new CustomPortModel(name, "right"));
+   
+
+    this.addPort(new CustomPortModel(name, "clickOnLink"));
+    this.addPort(new CustomPortModel(name, "activeOnPage"));
+
+    this.addPort(new CustomPortModel(name, "conversion1"));
+    this.addPort(new CustomPortModel(name, "conversion2"));
+    this.addPort(new CustomPortModel(name, "conversion3"));
 
     this.extras.name = this.named;
     this.extras.setNameExtras = this.setNameExtras;
@@ -52,6 +60,15 @@ export class CustomNodeModel extends NodeModel {
     this.extras.status  =  this.status
     this.extras.setStatus = this.setStatusExtras
     this.setStatus = this.setStatus
+
+    this.extras.price  =  this.price
+    this.extras.setPriceExtras = this.setPriceExtras
+    this.setPrice = this.setPrice
+
+    this.extras.conversions = this.conversions
+    this.conversions = this.conversions
+    this.extras.setConversionsExtras = this.setConversionsExtras
+    this.setConversions = this.setConversions
   }
 
   setNameExtras(name) {
@@ -129,6 +146,31 @@ export class CustomNodeModel extends NodeModel {
   } 
   setStatus(status){
     this.extras.status = status
+  }
+
+  setPriceExtras(price){
+    this.price = price
+  } 
+  setPrice(price){
+    this.extras.price = price
+  }
+
+  setConversions(conversions){
+    if(this.extras.conversions !== undefined){
+      this.extras.conversions = [
+        ...this.extras.conversions,
+        conversions
+      ]
+    }
+    else{
+      this.extras.conversions = [
+        conversions
+      ]
+    }
+    
+  } 
+  setConversionsExtras(conversions){
+    this.extras.conversions = conversions
   }
 
 }

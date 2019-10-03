@@ -22,7 +22,8 @@ import {
 import "./index.css";
 import { DevelopmentStage } from "../../../../common/DevelopmentStage/DevelopmentStage";
 import { openLinkOnNewTab } from "../../utils";
-import {  NotesStatusIconGroup } from "../../../../common/NotesStatus/NotesStatus";
+import { NotesStatusIconGroup } from "../../../../common/NotesStatus/NotesStatus";
+import { setConversionCompound } from "../../../../../store/actions/conversion";
 
 const Select = ({ show, children }) => {
   const showHideClassName = show
@@ -83,13 +84,18 @@ class SmallNodeWidget extends React.Component {
       });
     return obj[0] && obj[0].counterUrl && obj[0].counterUrl
       ? obj[0].counterUrl
-      : "0 or no utm";
+      : 0;
   }
 
-  handleClicOnWidget = () => {
-    if (this.props.keyDown === "Alt" && this.props.engine.diagramModel.nodes[this.props.node.id].extras.sourceLink) {
-      // console.log("this.props.showSettingsWidget",this.props.engine.diagramModel.nodes[this.props.node.id].extras)
-      openLinkOnNewTab(this.props.engine.diagramModel.nodes[this.props.node.id].extras.sourceLink, this.props.changeKeyDown(""))
+  handleClickOnWidget = () => {
+    if (
+      this.props.keyDown === "Alt" &&
+      this.props.engine.diagramModel.nodes[this.props.node.id].extras.sourceLink
+    ) {
+      openLinkOnNewTab(
+        this.props.engine.diagramModel.nodes[this.props.node.id].extras.sourceLink,
+        this.props.changeKeyDown("")
+      )
     }
   }
 
@@ -132,7 +138,7 @@ class SmallNodeWidget extends React.Component {
             onMouseEnter={this.showModal}
             onMouseLeave={this.hideModal}
             onMouseMove={this.mouseMove}
-            onClick={this.handleClicOnWidget}
+            onClick={this.handleClickOnWidget}
           />
           <ClickOutside
             onClickOutside={() => {
@@ -144,23 +150,51 @@ class SmallNodeWidget extends React.Component {
             {this.props.showAnalyticsBoolean ? (
               <SelectAnalytics show={true}>
                 <>
-                  <div
-                    className="analytics-box-horizontally"
-                    title={this.props.conversionInfoForAllNodes &&
-                      this.getCounterUrl(
-                        this.props.conversionInfoForAllNodes,
-                        this.props.node.id
-                      )}
-                  >
+                  <div className="analytics-box-horizontally" >
                     <p className="left-anal">Clicks:</p>
-                    <p className="right-anal">
+                    <div className="right-anal">
                       {this.props.conversionInfoForAllNodes &&
                         this.getCounterUrl(
                           this.props.conversionInfoForAllNodes,
                           this.props.node.id
                         )}
-                    </p>
+                      <div
+                        style={{
+                          position: "absolute",
+                          zIndex: 10,
+                          bottom: '50%',
+                          transform: 'translate(-50%, 50%)',
+                          left: '106%'
+                        }}
+                        onMouseDown={() => {
+                          const id = this.props.node.id
+                          this.setState({
+                            advancedConversion: {
+                              id,
+                              type: 'utm'
+                            }
+                          }, () => {
+                            this.props.setConversionCompound(this.state.advancedConversion)
+                          })
+                        }}
+                      >
+                        <PortWidget name="clickOnLink" node={this.props.node} />
+                      </div>
+                    </div>
                   </div>
+
+                  <div style={{ display: 'none' }} >
+                    <PortWidget name="top" node={this.props.node} />
+                    <PortWidget name="bottom" node={this.props.node} />
+                    <PortWidget name="left" node={this.props.node} />
+                    <PortWidget name="right" node={this.props.node} />
+
+                    <PortWidget name="activeOnPage" node={this.props.node} />
+                    <PortWidget name="conversion1" node={this.props.node} />
+                    <PortWidget name="conversion2" node={this.props.node} />
+                    <PortWidget name="conversion3" node={this.props.node} />
+                  </div>
+
                 </>
               </SelectAnalytics>
             ) : (
@@ -198,18 +232,14 @@ class SmallNodeWidget extends React.Component {
                         this.props.funnelId,
                         this.props.engine,
                         this.props.node,
-
-
                       )
                     }
                     title={"Notes"}
                   >
-             
                     {this.props.node.extras.notesd &&
                       this.props.node.extras.notesd.length !== 0 ?
-                      <NotesStatusIconGroup/>:<NotesSVG />
+                      <NotesStatusIconGroup /> : <NotesSVG />
                     }
-
                   </button>
                   <button
                     className="btn-select-widget"
@@ -276,9 +306,9 @@ class SmallNodeWidget extends React.Component {
               left: 143
             }}
           >
-            <DevelopmentStage 
+            <DevelopmentStage
               status={
-                this.props.node.extras && 
+                this.props.node.extras &&
                 this.props.node.extras.status &&
                 this.props.node.extras.status
               }
@@ -290,7 +320,8 @@ class SmallNodeWidget extends React.Component {
               position: "absolute",
               zIndex: 10,
               top: 19,
-              left: -15
+              left: -15,
+              display: this.props.hideConversionLinkBoolean && 'none'
             }}
           >
             <PortWidget name="left" node={this.props.node} />
@@ -301,7 +332,8 @@ class SmallNodeWidget extends React.Component {
               position: "absolute",
               zIndex: 10,
               top: -14,
-              left: 75
+              left: 75,
+              display: this.props.hideConversionLinkBoolean && 'none'
             }}
           >
             <PortWidget name="top" node={this.props.node} />
@@ -312,7 +344,8 @@ class SmallNodeWidget extends React.Component {
               position: "absolute",
               zIndex: 10,
               top: 19,
-              left: 152
+              left: 152,
+              display: this.props.hideConversionLinkBoolean && 'none'
             }}
           >
             <PortWidget name="right" node={this.props.node} />
@@ -323,10 +356,19 @@ class SmallNodeWidget extends React.Component {
               position: "absolute",
               zIndex: 10,
               top: 49,
-              left: 75
+              left: 75,
+              display: this.props.hideConversionLinkBoolean && 'none'
             }}
           >
             <PortWidget name="bottom" node={this.props.node} />
+          </div>
+
+          <div style={{ display: 'none' }} >
+            <PortWidget name="clickOnLink" node={this.props.node} />
+            <PortWidget name="activeOnPage" node={this.props.node} />
+            <PortWidget name="conversion1" node={this.props.node} />
+            <PortWidget name="conversion2" node={this.props.node} />
+            <PortWidget name="conversion3" node={this.props.node} />
           </div>
         </div>
       </>
@@ -334,7 +376,7 @@ class SmallNodeWidget extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
   return {
     diagram:
       state.projects[`diagram${state.router.location.pathname.substring(9)}`],
@@ -355,11 +397,13 @@ const mapStateToProps = (state, ownProps) => {
     conversionInfoForAllNodes: state.projects.conversionInfoForAllNodes,
 
     keyDown: state.projects.keyDown,
+    hideConversionLinkBoolean: state.conversion.hideConversionLinkBoolean,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    setConversionCompound: advancedConversion => dispatch(setConversionCompound(advancedConversion)),
     changeKeyDown: key => dispatch(changeKeyDown(key)),
     saveDiagramThenShowOrHideSettingsModal: (
       id,

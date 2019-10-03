@@ -2,7 +2,7 @@ import * as _ from "lodash";
 import { PointModel } from "storm-react-diagrams";
 import randomString from "random-string";
 import { CustomNodeModel } from "./CustomNodeModel";
-import { AdvancedLinkModel } from "./customLink";
+import { AdvancedLinkModel } from "./customLink/customLink";
 import { API } from '../../../../store/actions/instance'
 
 

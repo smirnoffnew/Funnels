@@ -1,6 +1,6 @@
 import * as _ from "lodash";
 import { PortModel } from "storm-react-diagrams";
-import { AdvancedLinkModel } from "./customLink";
+import { AdvancedLinkModel } from "./customLink/customLink";
 
 
 export class CustomPortModel extends PortModel {

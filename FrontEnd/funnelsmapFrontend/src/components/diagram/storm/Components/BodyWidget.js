@@ -18,7 +18,8 @@ import TemplatesButton from "../../../../assets/TemplatesButton.svg";
 import { ReactComponent as ArrowSelectSVG } from "../../../../assets/ArrowSelect.svg";
 import { ReactComponent as ShareFunnelSVG } from "../../../../assets/instructions.svg";
 import { ReactComponent as AnalyticsSVG } from '../../../../assets/Analytics.svg'
-import { ReactComponent as AnalyticsSelectedSVG } from '../../../../assets/AnalyticsSelected.svg'
+import { ReactComponent as AnalyticsSelectedSVG } from '../../../../assets/AnalyticsSelected.svg';
+import { ReactComponent as EditSelectedSVG } from '../../../../assets/EditSelected.svg'
 import LupaSVG from "../../../../assets/lupa.svg";
 import FunnelOptionsRightPanel from "./componentsForBodyWidget/FunnelOptionsRightPanel";
 import FunnelNotesRightPanel from "./componentsForBodyWidget/FunnelNotesRightPanel";
@@ -56,6 +57,7 @@ export default class BodyWidget extends React.Component {
     inverseZoom: false,
     allowCanvasZoom: true,
     toggleAnalytics: false,
+    conversionIsView: false
   };
 
   saveDiagramHandle = file => {
@@ -104,6 +106,38 @@ export default class BodyWidget extends React.Component {
     }, () => {
       this.props.work.showAnalyticsBoolean(this.state.toggleAnalytics)
       this.props.work.getConversionInfoForAllNodes(this.props.work.funnelId)
+      if (this.state.toggleAnalytics === true) {
+        domtoimage
+          .toBlob(this.diagramRef)
+          .then(data => {
+            let name = randomString({ length: 10 });
+            var file = new File([data], name, {
+              type: "image/svg"
+            });
+            this.saveDiagramHandle(file);
+            this.hideSelect();
+          })
+          .catch(function (error) {
+            console.error("oops, something went wrong!", error);
+          });
+      }    
+    })
+
+    this.changeConverseLinksVisible(!this.state.toggleAnalytics)
+
+    if(this.state.toggleAnalytics){
+      window.location.reload()
+    }
+  }
+
+  handleToggleEdit = () => {
+    this.setState(prev => {
+      return {
+        toggleEdit: !prev.toggleEdit,
+      }
+    }, () => {
+      this.props.work.showAnalyticsBoolean(this.state.toggleAnalytics)
+      // this.props.work.getConversionInfoForAllNodes(this.props.work.funnelId)
       if (this.state.toggleAnalytics === true) {
         domtoimage
           .toBlob(this.diagramRef)
@@ -258,7 +292,14 @@ export default class BodyWidget extends React.Component {
   };
 
   componentDidMount() {
-    keyMonitor('Alt', this.props.work.changeKeyDown, this.props.work.changeKeyDown)
+    keyMonitor('Alt', this.props.work.changeKeyDown, this.props.work.changeKeyDown);
+  }
+
+  changeConverseLinksVisible = boolean => {
+    this.props.work.hideConversionLink(boolean)
+
+    document.getElementById("diagram-layer").click();
+    this.forceUpdate();
   }
 
   render() {
@@ -292,6 +333,24 @@ export default class BodyWidget extends React.Component {
                   ? <AnalyticsSelectedSVG />
                   : <AnalyticsSVG />
               }
+            </div>
+            <div
+              className='edit-button'
+              title='Edit'
+              onClick={() => {
+                this.setState({
+                  conversionIsView: !this.state.conversionIsView
+                }, () => {
+                  this.changeConverseLinksVisible(this.state.conversionIsView);
+                })
+              }}
+            >
+            {
+              this.state.toggleAnalytics
+                ?  <EditSelectedSVG />
+                : ""
+            }
+             
             </div>
 
             {this.props.work.link ? (
@@ -381,7 +440,7 @@ export default class BodyWidget extends React.Component {
                         work={this.props.work}
                         app={this.props.app}
                       />
-                      
+
                       <div className="diagram-header-instruction-buttons">
                         <button
                           className="diagram-header-instruction-button"
@@ -656,10 +715,10 @@ export default class BodyWidget extends React.Component {
             <div id="diagram">
               <div
                 id="diagram-layer"
-                ref={ref => (this.diagramRef = ref)}
+                ref={ref => this.diagramRef = ref}
                 onDrop={event => {
                   try {
-                    var data = JSON.parse(
+                    const data = JSON.parse(
                       event.dataTransfer.getData("storm-diagram-node")
                     );
                     const node = this.nodeFactory(data);
@@ -682,7 +741,7 @@ export default class BodyWidget extends React.Component {
                   event.preventDefault();
                 }}
                 onWheel={event => {
-                  var diagramModel = this.props.app
+                  const diagramModel = this.props.app
                     .getDiagramEngine()
                     .getDiagramModel();
                   event.preventDefault();

@@ -16,7 +16,7 @@ const initialState = {
   showAnalyticsBoolean: false,
   createProjectError: '',
   permissionForCollaborator: "Edit",
-  keyDown:""
+  keyDown: "",
 }
 
 export default function (state = initialState, action) {
@@ -200,10 +200,10 @@ export default function (state = initialState, action) {
     ///////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////////////
-    case 'GET_DIAGRAM':{
+    case 'GET_DIAGRAM': {
       return { ...state, [`diagram${action.payload.funnelId}`]: action.payload.res };
     }
-       
+
     case 'GET_DIAGRAM_SUCCESS':
       return { ...state, getDiagramError: '' };
     case 'GET_DIAGRAM_FAILURE':
@@ -264,7 +264,7 @@ export default function (state = initialState, action) {
       };
     /////////////////////////////////////////////////////////////////////////// 
 
-      
+
     ///////////////////////////////////////////////////////////////////////////
     case 'SET_PERMISSION':
       return {
@@ -281,7 +281,7 @@ export default function (state = initialState, action) {
       };
     /////////////////////////////////////////////////////////////////////////// 
     case 'CHANGE_SHOW_COMMENTS':
-      return{
+      return {
         ...state, showCommentsWidgetBoolean: action.payload.boolean
       }
     case 'CHANGE_KEY_IS_DOWN':

@@ -3,7 +3,7 @@ import * as RJD from "storm-react-diagrams";
 //import custom link, port and factory
 import { NodeFactory } from "./custom/NodeFactory";
 import { PortFactory } from "./custom/PortFactory";
-import { AdvancedLinkFactory } from "./custom/customLink";
+import { AdvancedLinkFactory } from "./custom/customLink/customLink";
 
 // import the custom models
 import { CustomPortModel } from "./custom/CustomPortModel";
@@ -99,9 +99,9 @@ export default class Application {
       })
 
       this.allElements = this.allElements.concat(
-        this.elementsPages, 
-        this.elementsTraffic, 
-        this.elementsEmailMarketing, 
+        this.elementsPages,
+        this.elementsTraffic,
+        this.elementsEmailMarketing,
         this.elementsEvents,
         this.elementsText,
       );
@@ -124,7 +124,7 @@ export default class Application {
   createElements(configElements, engine) {
     return configElements.forEach(item => {
       engine.registerPortFactory(new PortFactory(
-        item.name, 
+        item.name,
         () => new item.port(item.name)
       ));
       engine.registerNodeFactory(new NodeFactory(

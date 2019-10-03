@@ -5,6 +5,8 @@ import { ReactComponent as SelectSVG } from "../../../../../assets/select.svg";
 import { API_URL } from "../../../../../config";
 import { ReactComponent as ArrowSelectSVG } from "../../../../../assets/arrow-up.svg";
 import "./SettingsNodeRightPannel.css"
+import get from 'lodash/get'
+
 const FINISHED = "FINISHED";
 const UNDER_DEVELOPMENT = "UNDER DEVELOPMENT";
 const DEFAULT = "DEFAULT";
@@ -30,7 +32,8 @@ export default class SettingsNodeRightPanel extends React.Component {
     },
     isUnderDevelopment: false,
     isFinished: false,
-    sourceLinkNode:''
+    sourceLinkNode: '',
+    price:''
 
   };
 
@@ -231,6 +234,23 @@ export default class SettingsNodeRightPanel extends React.Component {
     );
   }
 
+  handleChangeNodePrice = e => {
+    if(+e.target.value||e.target.value==="")
+    this.setState(
+      {
+        price: e.target.value
+      },
+      () =>
+        (this.props.work.showSettingsWidgetModel.extras.setPriceExtras &&
+          this.props.work.showSettingsWidgetModel.extras.setPriceExtras(
+            this.state.price
+          ))
+        ||
+        (this.props.work.showSettingsWidgetModel.setPrice &&
+          this.props.work.showSettingsWidgetModel.setPrice(this.state.price))
+    );
+  }
+
   saveDiagramThenCloseSettingModal = file => {
     this.setState(
       {
@@ -367,6 +387,7 @@ export default class SettingsNodeRightPanel extends React.Component {
 
   render() {
     const { settings, trackingBigNode, trackingSmallNode } = this.state.sectionViews
+    const isGoal = get(this.props, 'work.showSettingsWidgetModel.extras.goald', false)
     return (
       <ModalNodeWidget
         style={{height:'calc(100vh - 67px)', overflow: 'auto'}}
@@ -393,12 +414,12 @@ export default class SettingsNodeRightPanel extends React.Component {
                 {this.props.work.UTMLinkMessage}
               </div>
             )}
-            <label htmlFor="Name" className="label-input">
+            <label htmlFor="Name" className="label-input" >
               Name
-          </label>
+            </label>
             <input
               className="node-panel-textarea-input"
-              style={{ height: 25, marginBottom: '-3px' }}
+              style={{ height: 25, marginBottom: '0px' }}
               id="Name"
               placeholder="Label Name"
               type="text"
@@ -419,31 +440,61 @@ export default class SettingsNodeRightPanel extends React.Component {
               }
               onChange={this.handleChangeNode}
             />
-            <label htmlFor="Name" className="label-input">
+            <label htmlFor="Sourcelink" className="label-input" style={{ marginTop: '15px' }}>
               Source link
             </label>
             <input
               className="node-panel-textarea-input"
-              style={{ height: 25, marginBottom: '4px' }}
+              style={{ height: 25, marginBottom: '0px' }}
               id="Link"
               type="text"
               value={
                 this.state.sourceLinkNode === '' ?
 
-                this.props.work.showSettingsWidgetModel &&
-                  this.props.work.showSettingsWidgetModel.extras.sourceLink === undefined ?
-
                   this.props.work.showSettingsWidgetModel &&
-                  // this.props.work.showSettingsWidgetModel.type :
-                  '' :
+                    this.props.work.showSettingsWidgetModel.extras.sourceLink === undefined ?
 
-                  this.props.work.showSettingsWidgetModel &&
-                  this.props.work.showSettingsWidgetModel.extras.sourceLink
+                    this.props.work.showSettingsWidgetModel &&
+                    // this.props.work.showSettingsWidgetModel.type :
+                    '' :
 
-                : this.state.sourceLinkNode
+                    this.props.work.showSettingsWidgetModel &&
+                    this.props.work.showSettingsWidgetModel.extras.sourceLink
+
+                  : this.state.sourceLinkNode
               }
               onChange={this.handleChangeNodeSourceLink}
             />
+
+            {isGoal &&
+              <>
+                <label htmlFor="Price" className="label-input" style={{ marginTop: '15px' }}>
+                  Price
+                 </label>
+                <input
+                  className="node-panel-textarea-input"
+                  style={{ height: 25, marginBottom: '4px' }}
+                  id="Link"
+                  type="text"
+                  value={
+                    this.state.price === '' ?
+
+                      this.props.work.showSettingsWidgetModel &&
+                        this.props.work.showSettingsWidgetModel.extras.price === undefined ?
+
+                        this.props.work.showSettingsWidgetModel &&
+                        // this.props.work.showSettingsWidgetModel.type :
+                        '' :
+
+                        this.props.work.showSettingsWidgetModel &&
+                        this.props.work.showSettingsWidgetModel.extras.price
+
+                      : this.state.price
+                  }
+                  onChange={this.handleChangeNodePrice}
+                />
+              </>
+            }
             <div className="radio-button-container">
               <label
                 htmlFor="CheckBoxFinished"
@@ -562,7 +613,7 @@ export default class SettingsNodeRightPanel extends React.Component {
                 </div>
               }
 
-              <button
+              {/* <button
                 className="btn-set-as-a-trigger"
                 onClick={this.handleToggleTriggerStyle}
                 style={{
@@ -575,7 +626,7 @@ export default class SettingsNodeRightPanel extends React.Component {
                   <SelectSVG />
                 }
                 Set as a trigger
-              </button>
+              </button> */}
             </>
           ) : (
             <>
@@ -738,7 +789,7 @@ export default class SettingsNodeRightPanel extends React.Component {
               }
 
               <div className="buttons-set-wrapper">
-                <button
+                {/* <button
                   className="btn-set-as-a-trigger"
                   onClick={this.handleToggleTriggerStyle}
                 >
@@ -748,17 +799,27 @@ export default class SettingsNodeRightPanel extends React.Component {
                     <SelectSVG />
                   }
                     Set as a trigger
-                </button>
+                </button> */}
                 <button
                   className="btn-set-as-a-goal"
                   onClick={this.handleToggleGoalStyle}
                 >
-                  {
-                    this.props.work.showSettingsWidgetModel &&
-                    this.props.work.showSettingsWidgetModel.extras.goald &&
-                    <SelectSVG />
-                  }
+                  <span style={{
+                    position: 'absolute',
+                    float: 'left',
+                    marginLeft: 15,
+                  }}>
+                    {
+                      this.props.work.showSettingsWidgetModel &&
+                      this.props.work.showSettingsWidgetModel.extras.goald &&
+                      <SelectSVG />
+                    }
+                  </span>
+                  <span style={{
+                    margin: '0 auto'
+                  }}>
                     Set as a goal
+                  </span>
                 </button>
               </div>
             </>
