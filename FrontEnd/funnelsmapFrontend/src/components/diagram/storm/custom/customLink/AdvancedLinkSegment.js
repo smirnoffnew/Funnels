@@ -112,11 +112,12 @@ class AdvancedLinkSegment extends React.Component {
   }
 
   simulateKey(keyCode, type) {
-    var evtName = (typeof (type) === "string") ? "key" + type : "keydown";
-    var event = document.createEvent("HTMLEvents");
+    const evtName = (typeof (type) === "string") ? "key" + type : "keydown";
+    const event = document.createEvent("HTMLEvents");
     event.initEvent(evtName, true, false);
     event.keyCode = keyCode;
     document.dispatchEvent(event);
+    document.getElementById("diagram-layer").click();
   }
 
   render() {

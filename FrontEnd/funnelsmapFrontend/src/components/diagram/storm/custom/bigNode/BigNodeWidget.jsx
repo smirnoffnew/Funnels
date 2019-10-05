@@ -21,7 +21,7 @@ import {
   showRightModal
 } from "../funcsForCustomNodeWidget";
 import "./index.css";
-import { openLinkOnNewTab } from "../../utils";
+import { openLinkOnNewTab, isEmpty } from "../../utils";
 import { DevelopmentStage } from "../../../../common/DevelopmentStage/DevelopmentStage";
 import { NotesStatusIconGroup } from "../../../../common/NotesStatus/NotesStatus";
 import { setConversionCompound } from "../../../../../store/actions/conversion";
@@ -397,7 +397,22 @@ class BigNodeWidget extends React.Component {
                             Conversion1:
                           </div>
                           <div className='bottom-anal'>
-                            {this.getAdvancedConversion('Conversion1')}
+                            {
+                              !isEmpty(this.props.node.ports['conversion1'].links) ?
+                                this.getAdvancedConversion('Conversion1') :
+                                this.props.node.extras.conversions &&
+                                this.props.node.extras.conversions.forEach((item, index) => {
+                                  if (
+                                    item.to.id === this.props.node.id && 
+                                    item.to.type === 'Conversion1'
+                                  ) {
+                                    this.props.node.extras.conversions.splice(
+                                      index, 
+                                      1
+                                    )
+                                  }
+                                })
+                            }
                           </div>
                         </div>
                         <div
@@ -425,7 +440,22 @@ class BigNodeWidget extends React.Component {
                             Conversion2:
                           </div>
                           <div className='bottom-anal'>
-                            {this.getAdvancedConversion('Conversion2')}
+                            {
+                              !isEmpty(this.props.node.ports['conversion2'].links) ?
+                                this.getAdvancedConversion('Conversion2') : 
+                                this.props.node.extras.conversions &&
+                                this.props.node.extras.conversions.forEach((item, index) => {
+                                  if (
+                                    item.to.id === this.props.node.id && 
+                                    item.to.type === 'Conversion2'
+                                  ) {
+                                    this.props.node.extras.conversions.splice(
+                                      index, 
+                                      1
+                                    )
+                                  }
+                                })
+                            }
                           </div>
                         </div>
                         <div
@@ -453,7 +483,22 @@ class BigNodeWidget extends React.Component {
                             Conversion3:
                           </div>
                           <div className='bottom-anal'>
-                            {this.getAdvancedConversion('Conversion3')}
+                            {
+                              !isEmpty(this.props.node.ports['conversion3'].links) ?
+                                this.getAdvancedConversion('Conversion3') : 
+                                this.props.node.extras.conversions &&
+                                this.props.node.extras.conversions.forEach((item, index) => {
+                                  if (
+                                    item.to.id === this.props.node.id && 
+                                    item.to.type === 'Conversion3'
+                                  ) {
+                                    this.props.node.extras.conversions.splice(
+                                      index, 
+                                      1
+                                    )
+                                  }
+                                })
+                            }
                           </div>
                         </div>
                         <div
