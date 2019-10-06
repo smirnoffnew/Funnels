@@ -5,22 +5,20 @@ import { CustomNodeModel } from "./CustomNodeModel";
 import { AdvancedLinkModel } from "./customLink/customLink";
 import { API } from '../../../../store/actions/instance'
 
-
-const simulateKey = (keyCode, type) => {
-  var evtName = typeof type === "string" ? "key" + type : "keydown";
-  var event = document.createEvent("HTMLEvents");
-  event.initEvent(evtName, true, false);
-  event.keyCode = keyCode;
-  document.dispatchEvent(event);
-}
-
-export const deleteNode = (funnelId, nodeId) => {
-  simulateKey(46, "up");
-  API.delete(`funnel/node/delete/${nodeId}/${funnelId}`).then(() => console.log())
+export const deleteNode = (engine, funnelId, nodeId) => {
+  _.forEach(engine.getDiagramModel().getSelectedItems(), item => {
+    if (item instanceof CustomNodeModel) {
+      API.delete(`funnel/node/delete/${nodeId}/${funnelId}`).then(() => console.log())
+      item.remove()
+    }
+    if (item instanceof PointModel) {
+      item.remove()
+    }
+  });
+  document.getElementById("diagram-layer").click();
 };
 
 export const deleteAllLinks = engine => {
-
   _.forEach(engine.getDiagramModel().getSelectedItems(), item => {
     if (item instanceof PointModel) {
       // console.log("delete", engine)

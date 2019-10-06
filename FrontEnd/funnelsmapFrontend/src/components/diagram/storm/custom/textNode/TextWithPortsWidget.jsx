@@ -161,7 +161,11 @@ class TextNodeWidget extends React.Component {
             </button>
             <button
               className="btn-select-widget"
-              onClick={deleteNode}
+              onClick={() => deleteNode(
+                this.props.engine, 
+                this.props.funnelId, 
+                this.props.node.id
+              )}
               title={"Delete"}
             >
               <DeleteSVG />
@@ -188,6 +192,15 @@ class TextNodeWidget extends React.Component {
         <div className='node-panel-textarea-with-ports-left'>
           <PortWidget name="left" node={this.props.node} />
         </div>
+
+
+        <div style={{ display: 'none' }} >
+            <PortWidget name="clickOnLink" node={this.props.node} />
+            <PortWidget name="activeOnPage" node={this.props.node} />
+            <PortWidget name="conversion1" node={this.props.node} />
+            <PortWidget name="conversion2" node={this.props.node} />
+            <PortWidget name="conversion3" node={this.props.node} />
+          </div>
       </div>
     );
   }

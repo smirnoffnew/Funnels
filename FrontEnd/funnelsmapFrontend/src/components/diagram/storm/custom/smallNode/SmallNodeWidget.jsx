@@ -259,8 +259,12 @@ class SmallNodeWidget extends React.Component {
                   </button>
                   <button
                     className="btn-select-widget"
-                    onClick={() =>
-                      deleteNode(this.props.funnelId, this.props.node.id)
+                    onClick={() => 
+                      deleteNode(
+                        this.props.engine, 
+                        this.props.funnelId, 
+                        this.props.node.id
+                      )
                     }
                     title={"Delete"}
                   >

@@ -160,7 +160,11 @@ class TextWithOutPortsWidget extends React.Component {
               </button>
               <button
                 className="btn-select-widget"
-                onClick={deleteNode}
+                onClick={() => deleteNode(
+                  this.props.engine, 
+                  this.props.funnelId, 
+                  this.props.node.id
+                )}
                 title={"Delete"}
               >
                 <DeleteSVG />
@@ -168,11 +172,16 @@ class TextWithOutPortsWidget extends React.Component {
             </Select>
           </ClickOutside>
 
-          <div style={{ display: 'none' }}>
+          <div style={{ display: 'none' }} >
             <PortWidget name="top" node={this.props.node} />
             <PortWidget name="bottom" node={this.props.node} />
-            <PortWidget name="right" node={this.props.node} />
             <PortWidget name="left" node={this.props.node} />
+            <PortWidget name="right" node={this.props.node} />
+            <PortWidget name="clickOnLink" node={this.props.node} />
+            <PortWidget name="activeOnPage" node={this.props.node} />
+            <PortWidget name="conversion1" node={this.props.node} />
+            <PortWidget name="conversion2" node={this.props.node} />
+            <PortWidget name="conversion3" node={this.props.node} />
           </div>
         </div>
       </>

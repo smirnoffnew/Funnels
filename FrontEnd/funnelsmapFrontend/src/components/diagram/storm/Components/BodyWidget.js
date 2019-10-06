@@ -790,7 +790,7 @@ export default class BodyWidget extends React.Component {
                 }}
               >
                 <RJD.DiagramWidget
-                  deleteKeys={[46]}
+                  deleteKeys={[]}
                   // smartRouting={true}
                   allowCanvasZoom={false}
                   // allowCanvasTranslation={false}

@@ -596,7 +596,11 @@ class BigNodeWidget extends React.Component {
                   <button
                     className="btn-select-widget"
                     onClick={() =>
-                      deleteNode(this.props.funnelId, this.props.node.id)
+                      deleteNode(
+                        this.props.engine, 
+                        this.props.funnelId, 
+                        this.props.node.id
+                      )
                     }
                     title={"Delete"}
                   >
