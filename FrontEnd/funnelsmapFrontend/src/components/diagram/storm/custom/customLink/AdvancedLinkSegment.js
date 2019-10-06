@@ -123,9 +123,50 @@ class AdvancedLinkSegment extends React.Component {
   render() {
     const { path, model, /*selected*/ } = this.props;
 
-    // console.log('hideConversionLinkBoolean', this.props.hideConversionLinkBoolean)
+    if(this.props.hideConversionLinkBoolean){
+      if(
+        (this.props.model.targetPort && 
+        this.props.model.targetPort.position && 
+        this.props.model.targetPort.position) === 'conversion1' ||
 
-    // console.log('AdvancedLinkSegment')
+        (this.props.model.targetPort && 
+        this.props.model.targetPort.position && 
+        this.props.model.targetPort.position) === 'conversion2' ||
+
+        (this.props.model.targetPort && 
+        this.props.model.targetPort.position && 
+        this.props.model.targetPort.position) === 'conversion3'
+
+      ){
+        this.props.model.width = 2
+      }
+      else {
+        this.props.model.width = 0
+      }
+    }
+    else {
+      if(
+        (this.props.model.targetPort && 
+        this.props.model.targetPort.position && 
+        this.props.model.targetPort.position) === 'conversion1' ||
+
+        (this.props.model.targetPort && 
+        this.props.model.targetPort.position && 
+        this.props.model.targetPort.position) === 'conversion2' ||
+
+        (this.props.model.targetPort && 
+        this.props.model.targetPort.position && 
+        this.props.model.targetPort.position) === 'conversion3'
+
+      ){
+        this.props.model.width = 0
+      }
+      else {
+        this.props.model.width = 2
+      }
+    }
+
+
     return (
       <>
         <path
@@ -154,7 +195,7 @@ class AdvancedLinkSegment extends React.Component {
           fill={this.props.hideConversionLinkBoolean ? 'blue' : '#fd8f21'}
         />
 
-        {     
+        {
           this.state.buttonVisible ?
 
             // <svg>
@@ -197,7 +238,7 @@ class AdvancedLinkSegment extends React.Component {
             //       onMouseLeave={this.onMouseLeave}
             //     />
             // </svg>
-      
+
 
             <circle
               className={'circle-delete'}
@@ -209,12 +250,20 @@ class AdvancedLinkSegment extends React.Component {
               onMouseEnter={this.onMouseEnter}
               onMouseLeave={this.onMouseLeave}
             />
-            : 
+            :
             null
         }
 
-        <circle ref={ref => this.circleTarget = ref} r="6" fill={this.props.hideConversionLinkBoolean ? 'blue' : '#fd8f21'} />
-        <circle ref={ref => this.circleTarget2 = ref} r="2" fill="#fff" />
+        <circle 
+          ref={ref => this.circleTarget = ref} 
+          r={6}
+          fill={this.props.hideConversionLinkBoolean ? 'blue' : '#fd8f21'} 
+        />
+        <circle 
+          ref={ref => this.circleTarget2 = ref} 
+          r={2}
+          fill="#fff" 
+        />
 
       </>
     );
