@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from 'react-redux'
+import { deleteLink } from "../funcsForCustomNodeWidget";
 
 class AdvancedLinkSegment extends React.Component {
   constructor(props) {
@@ -109,15 +110,6 @@ class AdvancedLinkSegment extends React.Component {
         this.animateCircle(length, step);
       });
     }
-  }
-
-  simulateKey(keyCode, type) {
-    const evtName = (typeof (type) === "string") ? "key" + type : "keydown";
-    const event = document.createEvent("HTMLEvents");
-    event.initEvent(evtName, true, false);
-    event.keyCode = keyCode;
-    document.dispatchEvent(event);
-    document.getElementById("diagram-layer").click();
   }
 
   render() {
@@ -242,7 +234,11 @@ class AdvancedLinkSegment extends React.Component {
 
             <circle
               className={'circle-delete'}
-              onClick={() => this.simulateKey(46, "up")}
+              onClick={() => 
+                deleteLink(
+                  this.props.engine
+                )
+              }
               r={8}
               fill="red"
 

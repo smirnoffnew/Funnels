@@ -18,6 +18,15 @@ export const deleteNode = (engine, funnelId, nodeId) => {
   document.getElementById("diagram-layer").click();
 };
 
+export const deleteLink = engine => {
+  _.forEach(engine.getDiagramModel().getSelectedItems(), item => {
+    if (item instanceof AdvancedLinkModel) {
+      item.remove()
+    }
+  });
+  document.getElementById("diagram-layer").click();
+};
+
 export const deleteAllLinks = engine => {
   _.forEach(engine.getDiagramModel().getSelectedItems(), item => {
     if (item instanceof PointModel) {
