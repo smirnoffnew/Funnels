@@ -162,9 +162,10 @@ class SmallNodeWidget extends React.Component {
                         style={{
                           position: "absolute",
                           zIndex: 10,
-                          bottom: '50%',
+                          bottom: '-25%',
                           transform: 'translate(-50%, 50%)',
-                          left: '106%'
+                          left: '53%',
+                          opacity: this.props.hideConversionLinkBoolean ? 1 : 0
                         }}
                         onMouseDown={() => {
                           const id = this.props.node.id
@@ -184,10 +185,10 @@ class SmallNodeWidget extends React.Component {
                   </div>
 
                   <div style={{ display: 'none' }} >
-                    <PortWidget name="top" node={this.props.node} />
+                    {/* <PortWidget name="top" node={this.props.node} />
                     <PortWidget name="bottom" node={this.props.node} />
                     <PortWidget name="left" node={this.props.node} />
-                    <PortWidget name="right" node={this.props.node} />
+                    <PortWidget name="right" node={this.props.node} /> */}
 
                     <PortWidget name="activeOnPage" node={this.props.node} />
                     <PortWidget name="conversion1" node={this.props.node} />
@@ -325,7 +326,6 @@ class SmallNodeWidget extends React.Component {
               zIndex: 10,
               top: 19,
               left: -15,
-              display: this.props.hideConversionLinkBoolean && 'none'
             }}
           >
             <PortWidget name="left" node={this.props.node} />
@@ -337,7 +337,6 @@ class SmallNodeWidget extends React.Component {
               zIndex: 10,
               top: -14,
               left: 75,
-              display: this.props.hideConversionLinkBoolean && 'none'
             }}
           >
             <PortWidget name="top" node={this.props.node} />
@@ -349,7 +348,6 @@ class SmallNodeWidget extends React.Component {
               zIndex: 10,
               top: 19,
               left: 152,
-              display: this.props.hideConversionLinkBoolean && 'none'
             }}
           >
             <PortWidget name="right" node={this.props.node} />
@@ -361,14 +359,12 @@ class SmallNodeWidget extends React.Component {
               zIndex: 10,
               top: 49,
               left: 75,
-              display: this.props.hideConversionLinkBoolean && 'none'
             }}
           >
             <PortWidget name="bottom" node={this.props.node} />
           </div>
 
           <div style={{ display: 'none' }} >
-            <PortWidget name="clickOnLink" node={this.props.node} />
             <PortWidget name="activeOnPage" node={this.props.node} />
             <PortWidget name="conversion1" node={this.props.node} />
             <PortWidget name="conversion2" node={this.props.node} />

@@ -13,6 +13,24 @@ export class CustomNodeModel extends NodeModel {
     this.addPort(new CustomPortModel(name, "clickOnLink"));
     this.addPort(new CustomPortModel(name, "activeOnPage"));
 
+    
+    // this.extras.conversionsContainer &&
+    // this.extras.conversionsContainer.forEach(item => (
+    //   // console.log('item', item)
+
+    //   this.addPort(new CustomPortModel(name, item))
+    //   //  <PortWidget 
+    //   //    key={index}
+    //   //    name={item}
+    //   //    node={this.props.node} 
+    //   //  />
+    // ))
+
+    // this.addPort(new CustomPortModel(name, "conversion"));
+   
+
+
+
     this.addPort(new CustomPortModel(name, "conversion1"));
     this.addPort(new CustomPortModel(name, "conversion2"));
     this.addPort(new CustomPortModel(name, "conversion3"));
@@ -69,6 +87,13 @@ export class CustomNodeModel extends NodeModel {
     this.conversions = this.conversions
     this.extras.setConversionsExtras = this.setConversionsExtras
     this.setConversions = this.setConversions
+
+    this.extras.conversionsContainer = this.conversionsContainer
+    this.conversionsContainer = this.conversionsContainer
+    this.extras.setConversionsContainerExtras = this.setConversionsContainerExtras
+    this.setConversionsContainer = this.setConversionsContainer
+
+    
   }
 
   setNameExtras(name) {
@@ -171,6 +196,24 @@ export class CustomNodeModel extends NodeModel {
   } 
   setConversionsExtras(conversions){
     this.extras.conversions = conversions
+  }
+
+  setConversionsContainer(conversionsContainer){
+    if(this.extras.conversionsContainer !== undefined){
+      this.extras.conversionsContainer = [
+        ...this.extras.conversionsContainer,
+        conversionsContainer
+      ]
+    }
+    else{
+      this.extras.conversionsContainer = [
+        conversionsContainer
+      ]
+    }
+    
+  } 
+  setConversionsContainerExtras(conversionsContainer){
+    this.extras.conversionsContainer = conversionsContainer
   }
 
 }

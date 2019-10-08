@@ -108,7 +108,25 @@ export default class Application {
 
       this.createElements(this.allElements, this.engine)
 
-      props ? this.deSerialization(this.engine, props) : this.newModel()
+      if (props) {
+        const oldProps = JSON.parse(props)
+
+        oldProps.nodes.map(node => {
+          const typeOfNode = node.ports[0].type
+          node.ports.map(port => {
+            if (port.type === undefined) {
+              port.type = typeOfNode
+            }
+          })
+        })
+        try {
+          props ? this.deSerialization(this.engine, JSON.stringify(oldProps)) : this.newModel()
+        }
+        catch (e) {
+          console.log(e)
+        }
+      }
+
     }
 
   }
@@ -169,6 +187,7 @@ export default class Application {
   }
 
   deSerialization(engine, str) {
+    console.log('str', str)
     const model2 = new RJD.DiagramModel();
     // model2.setGridSize(10);
     // model2.addListener({

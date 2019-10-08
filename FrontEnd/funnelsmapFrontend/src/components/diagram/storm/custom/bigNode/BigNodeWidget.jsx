@@ -21,10 +21,12 @@ import {
   showRightModal
 } from "../funcsForCustomNodeWidget";
 import "./index.css";
-import { openLinkOnNewTab, isEmpty } from "../../utils";
+import { openLinkOnNewTab, /*isEmpty*/ } from "../../utils";
 import { DevelopmentStage } from "../../../../common/DevelopmentStage/DevelopmentStage";
 import { NotesStatusIconGroup } from "../../../../common/NotesStatus/NotesStatus";
 import { setConversionCompound } from "../../../../../store/actions/conversion";
+// import ModalPortal from "../../../../common/ModalPortal/ModalPortal";
+import AdvancedConversion from "../AdvancedConversion/AdvancedConversion";
 
 const Select = ({ show, children }) => {
   const showHideClassName = show
@@ -56,12 +58,7 @@ class BigNodeWidget extends React.Component {
   state = {
     show: false,
     handleGridTwo: false,
-
-    advancedConversion: {},
-
-    conversion1: 0,
-    conversion2: 0,
-    conversion3: 0,
+    advancedConversionCompound: {},
   };
 
   showModal = () => {
@@ -155,52 +152,11 @@ class BigNodeWidget extends React.Component {
     return revonew + ' $'
   }
 
-  getAdvancedConversion = nameOfAdvancedConversion => {
-    if (this.props.conversionInfoForAllNodes) {
-      return this.props.node.extras.conversions &&
-        this.props.node.extras.conversions.map(item => {
-          if (item.to.id === this.props.node.id) {
-            if (item.from.type === 'utm') {
-              if (item.to.type === nameOfAdvancedConversion) {
-                const counterUTMFrom = this.getCounterUrl(
-                  this.props.conversionInfoForAllNodes,
-                  item.from.id
-                )
-                const counterPageTo = this.getCounterNode(
-                  this.props.conversionInfoForAllNodes,
-                  this.props.node.id
-                )
-                const advancedConversion = (counterPageTo / counterUTMFrom) * 100
-
-                return advancedConversion.toFixed(2) + "%"
-              }
-              return null
-            }
-            if (item.from.type === 'pageVisited') {
-              if (item.to.type === nameOfAdvancedConversion) {
-                const counterPageFrom = this.getCounterNode(
-                  this.props.conversionInfoForAllNodes,
-                  item.from.id
-                )
-                const counterPageTo = this.getCounterNode(
-                  this.props.conversionInfoForAllNodes,
-                  this.props.node.id
-                )
-                const advancedConversion = counterPageFrom - counterPageTo
-
-                return advancedConversion
-              }
-              return null
-            }
-          }
-          return null
-        })
-    }
-  }
-
   render() {
+    console.log('this.props.node.extras.conversionsContainer', this.props.node.extras.conversionsContainer)
     return (
       <>
+
         <div className="big-node-title">
           {this.props.node.extras.named
             ? this.props.node.extras.named
@@ -280,13 +236,16 @@ class BigNodeWidget extends React.Component {
                           onMouseDown={() => {
                             const id = this.props.node.id
                             this.setState({
-                              advancedConversion: {
+                              advancedConversionCompound: {
                                 id,
                                 type: 'utm'
                               }
                             }, () => {
-                              this.props.setConversionCompound(this.state.advancedConversion)
+                              this.props.setConversionCompound(this.state.advancedConversionCompound)
                             })
+                          }}
+                          style={{
+                            opacity: this.props.hideConversionLinkBoolean ? 1 : 0
                           }}
                         >
                           <PortWidget
@@ -321,13 +280,16 @@ class BigNodeWidget extends React.Component {
                           onMouseDown={() => {
                             const id = this.props.node.id
                             this.setState({
-                              advancedConversion: {
+                              advancedConversionCompound: {
                                 id,
                                 type: 'pageVisited'
                               }
                             }, () => {
-                              this.props.setConversionCompound(this.state.advancedConversion)
+                              this.props.setConversionCompound(this.state.advancedConversionCompound)
                             })
+                          }}
+                          style={{
+                            opacity: this.props.hideConversionLinkBoolean ? 1 : 0
                           }}
                         >
                           <PortWidget
@@ -377,156 +339,62 @@ class BigNodeWidget extends React.Component {
                       <div
                         style={{
                           position: 'absolute',
-                          top: '97px',
-                          right: '-5px',
-                          cursor: 'pointer'
+                          right: '43%',
+                          cursor: 'pointer',
+                          display: this.props.hideConversionLinkBoolean ? 'block' : 'none'
                         }}
                         title={'add conversion block'}
                       >
                         <AddButtonSVG
-                          onClick={() => { }}
+                          onClick={() => { 
+                            if(
+                              this.props.node.extras.conversionsContainer &&
+                              this.props.node.extras.conversionsContainer.includes('conversion3',2)){
+                              document.getElementById("diagram-layer").click();
+                            }
+                            else if(
+                              this.props.node.extras.conversionsContainer &&
+                              this.props.node.extras.conversionsContainer.includes('conversion2',1)){
+                              this.props.node.setConversionsContainer &&
+                              this.props.node.setConversionsContainer('conversion3')
+                              document.getElementById("diagram-layer").click();
+                            }
+                            else if(
+                              this.props.node.extras.conversionsContainer &&
+                              this.props.node.extras.conversionsContainer.includes('conversion1',0)){
+                              this.props.node.setConversionsContainer &&
+                              this.props.node.setConversionsContainer('conversion2')
+                              document.getElementById("diagram-layer").click();
+                            }
+                            else {
+                              this.props.node.setConversionsContainer &&
+                              this.props.node.setConversionsContainer('conversion1')
+                              document.getElementById("diagram-layer").click();
+                            }
+                          }}
                         />
                       </div>
                     </div>
 
-                    <div className='super-conversion-block'>
-
-                      <div className='advanced-conversion-block'>
-                        <div className='conversion-wrapper'>
-                          <div className='top-anal'>
-                            Conversion1:
-                          </div>
-                          <div className='bottom-anal'>
-                            {
-                              !isEmpty(this.props.node.ports['conversion1'].links) ?
-                                this.getAdvancedConversion('Conversion1') :
-                                this.props.node.extras.conversions &&
-                                this.props.node.extras.conversions.forEach((item, index) => {
-                                  if (
-                                    item.to.id === this.props.node.id && 
-                                    item.to.type === 'Conversion1'
-                                  ) {
-                                    this.props.node.extras.conversions.splice(
-                                      index, 
-                                      1
-                                    )
-                                  }
-                                })
-                            }
-                          </div>
-                        </div>
-                        <div
-                          className='conversion-port'
-                          onMouseUp={() => {
-                            this.props.node.setConversions &&
-                              this.props.node.setConversions(
-                                {
-                                  from: this.props.advancedConversion,
-                                  to: {
-                                    id: this.props.node.id,
-                                    type: 'Conversion1'
-                                  }
-                                }
-                              )
-                          }}
-                        >
-                          <PortWidget name="conversion1" node={this.props.node} />
-                        </div>
-                      </div>
-
-                      <div className='advanced-conversion-block'>
-                        <div className='conversion-wrapper'>
-                          <div className='top-anal'>
-                            Conversion2:
-                          </div>
-                          <div className='bottom-anal'>
-                            {
-                              !isEmpty(this.props.node.ports['conversion2'].links) ?
-                                this.getAdvancedConversion('Conversion2') : 
-                                this.props.node.extras.conversions &&
-                                this.props.node.extras.conversions.forEach((item, index) => {
-                                  if (
-                                    item.to.id === this.props.node.id && 
-                                    item.to.type === 'Conversion2'
-                                  ) {
-                                    this.props.node.extras.conversions.splice(
-                                      index, 
-                                      1
-                                    )
-                                  }
-                                })
-                            }
-                          </div>
-                        </div>
-                        <div
-                          className='conversion-port'
-                          onMouseUp={() => {
-                            this.props.node.setConversions &&
-                              this.props.node.setConversions(
-                                {
-                                  from: this.props.advancedConversion,
-                                  to: {
-                                    id: this.props.node.id,
-                                    type: 'Conversion2'
-                                  }
-                                }
-                              )
-                          }}
-                        >
-                          <PortWidget name="conversion2" node={this.props.node} />
-                        </div>
-                      </div>
-
-                      <div className='advanced-conversion-block'>
-                        <div className='conversion-wrapper'>
-                          <div className='top-anal'>
-                            Conversion3:
-                          </div>
-                          <div className='bottom-anal'>
-                            {
-                              !isEmpty(this.props.node.ports['conversion3'].links) ?
-                                this.getAdvancedConversion('Conversion3') : 
-                                this.props.node.extras.conversions &&
-                                this.props.node.extras.conversions.forEach((item, index) => {
-                                  if (
-                                    item.to.id === this.props.node.id && 
-                                    item.to.type === 'Conversion3'
-                                  ) {
-                                    this.props.node.extras.conversions.splice(
-                                      index, 
-                                      1
-                                    )
-                                  }
-                                })
-                            }
-                          </div>
-                        </div>
-                        <div
-                          className='conversion-port'
-                          onMouseUp={() => {
-                            this.props.node.setConversions &&
-                              this.props.node.setConversions(
-                                {
-                                  from: this.props.advancedConversion,
-                                  to: {
-                                    id: this.props.node.id,
-                                    type: 'Conversion3'
-                                  }
-                                }
-                              )
-                          }}
-                        >
-                          <PortWidget name="conversion3" node={this.props.node} />
-                        </div>
-                      </div>
-
-                      <div style={{ display: 'none' }} >
-                        <PortWidget name="top" node={this.props.node} />
-                        <PortWidget name="bottom" node={this.props.node} />
-                        <PortWidget name="left" node={this.props.node} />
-                        <PortWidget name="right" node={this.props.node} />
-                      </div>
-
+                    <div 
+                      className='super-conversion-block'
+                      style={{
+                        opacity: this.props.hideConversionLinkBoolean ? 1 : 0
+                      }}
+                    >
+                      {
+                        this.props.node.extras.conversionsContainer &&
+                        this.props.node.extras.conversionsContainer.map((item, index) => (
+                          <AdvancedConversion
+                            key={index}
+                            conversionName={item}
+                            index={index}
+                            node={this.props.node}
+                            advancedConversion={this.props.advancedConversion}
+                            conversionInfoForAllNodes={this.props.conversionInfoForAllNodes}
+                           />
+                        ))
+                      }
                     </div>
 
                   </div>
@@ -656,8 +524,6 @@ class BigNodeWidget extends React.Component {
               zIndex: 10,
               top: 55,
               left: -13,
-              // opacity: this.props.hideConversionLinkBoolean && '0'
-              display: this.props.hideConversionLinkBoolean && 'none'
             }}
           >
             <PortWidget name="left" node={this.props.node} />
@@ -669,7 +535,6 @@ class BigNodeWidget extends React.Component {
               zIndex: 10,
               top: -13,
               left: 38,
-              display: this.props.hideConversionLinkBoolean && 'none'
             }}
           >
             <PortWidget name="top" node={this.props.node} />
@@ -681,8 +546,6 @@ class BigNodeWidget extends React.Component {
               zIndex: 10,
               top: 55,
               left: 90,
-              // opacity: this.props.hideConversionLinkBoolean && '0'
-              display: this.props.hideConversionLinkBoolean && 'none'
             }}
           >
 
@@ -695,8 +558,6 @@ class BigNodeWidget extends React.Component {
               zIndex: 10,
               top: 119,
               left: 38,
-              // opacity: this.props.hideConversionLinkBoolean && '0'
-              display: this.props.hideConversionLinkBoolean && 'none'
             }}
           >
             <PortWidget name="bottom" node={this.props.node} />
@@ -713,8 +574,6 @@ class BigNodeWidget extends React.Component {
 
             <PortWidget name="clickOnLink" node={this.props.node} />
             <PortWidget name="activeOnPage" node={this.props.node} />
-
-
           </div>
 
         </div>

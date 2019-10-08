@@ -19,7 +19,7 @@ import { ReactComponent as ArrowSelectSVG } from "../../../../assets/ArrowSelect
 import { ReactComponent as ShareFunnelSVG } from "../../../../assets/instructions.svg";
 import { ReactComponent as AnalyticsSVG } from '../../../../assets/Analytics.svg'
 import { ReactComponent as AnalyticsSelectedSVG } from '../../../../assets/AnalyticsSelected.svg';
-import { ReactComponent as EditSelectedSVG } from '../../../../assets/EditSelected.svg'
+import { ReactComponent as EditSVG } from '../../../../assets/EditSelected.svg'
 import LupaSVG from "../../../../assets/lupa.svg";
 import FunnelOptionsRightPanel from "./componentsForBodyWidget/FunnelOptionsRightPanel";
 import FunnelNotesRightPanel from "./componentsForBodyWidget/FunnelNotesRightPanel";
@@ -122,8 +122,6 @@ export default class BodyWidget extends React.Component {
           });
       }    
     })
-
-    this.changeConverseLinksVisible(!this.state.toggleAnalytics)
 
     if(this.state.toggleAnalytics){
       window.location.reload()
@@ -344,13 +342,21 @@ export default class BodyWidget extends React.Component {
                   this.changeConverseLinksVisible(this.state.conversionIsView);
                 })
               }}
+              style={{
+                background:
+                  this.state.conversionIsView
+                    ? this.state.backgroundActive
+                    : this.state.backgroundDefault,
+                borderRadius: 4,
+                with: 56,
+                height: 56,
+              }}
             >
-            {
-              this.state.toggleAnalytics
-                ?  <EditSelectedSVG />
-                : ""
-            }
-             
+              {
+                this.state.toggleAnalytics ?
+                  <EditSVG />
+                  : ""
+              }
             </div>
 
             {this.props.work.link ? (
@@ -391,14 +397,14 @@ export default class BodyWidget extends React.Component {
                             .getDiagramModel()
                             .zoom.toFixed(0)}
                           %
-                    </div>
+                        </div>
                         <div className="zoom-buttons-wrapper">
                           <button
                             className="zoom-button-plus"
                             onClick={this.scalePlus}
                           >
                             +
-                      </button>
+                          </button>
                           <button
                             className="zoom-button-minus"
                             onClick={this.scaleMinus}
@@ -419,14 +425,14 @@ export default class BodyWidget extends React.Component {
                         onClick={() => this.zoomToFit()}
                       >
                         Zoom to Fit
-                  </button>
+                      </button>
 
                       <button
                         className="btn btn-1 diagram-header-button-save"
                         onClick={this.showSelect}
                       >
                         SAVE
-                    <div className="arrow-for-select">
+                      <div className="arrow-for-select">
                           <ArrowSelectSVG />
                         </div>
                       </button>

@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="56" height="56" viewBox="0 0 56 56">
-  <defs>
+  <!-- <defs>
     <linearGradient id="linear-gradient" y1="0.5" x2="1.217" y2="0.5" gradientUnits="objectBoundingBox">
       <stop offset="0" stop-color="#e62d24"/>
       <stop offset="1" stop-color="#fd8f21"/>
     </linearGradient>
-  </defs>
+  </defs> -->
   <g id="Edit" transform="translate(-73 -174)">
-    <path id="bg" d="M0,0H56a0,0,0,0,1,0,0V52a4,4,0,0,1-4,4H4a4,4,0,0,1-4-4V0A0,0,0,0,1,0,0Z" transform="translate(73 174)" fill="url(#linear-gradient)"/>
+    <path id="bg" d="M0,0H56a0,0,0,0,1,0,0V52a4,4,0,0,1-4,4H4a4,4,0,0,1-4-4V0A0,0,0,0,1,0,0Z" transform="translate(73 174)" fill="none"/>
     <g id="edit-2" data-name="edit" transform="translate(91 191.739)">
       <path id="Path_1207" data-name="Path 1207" d="M19.115,50.1a.516.516,0,0,0-.516.516v4.58a1.549,1.549,0,0,1-1.547,1.547H2.579a1.549,1.549,0,0,1-1.547-1.547V41.751A1.549,1.549,0,0,1,2.579,40.2h4.58a.516.516,0,1,0,0-1.032H2.579A2.582,2.582,0,0,0,0,41.751V55.193a2.582,2.582,0,0,0,2.579,2.579H17.052a2.582,2.582,0,0,0,2.579-2.579v-4.58a.516.516,0,0,0-.516-.516Zm0,0" transform="translate(0 -36.904)" fill="#fff"/>
       <path id="Path_1208" data-name="Path 1208" d="M122.037.941a2.321,2.321,0,0,0-3.283,0l-9.2,9.2a.516.516,0,0,0-.132.227l-1.21,4.369a.516.516,0,0,0,.635.635l4.369-1.21a.516.516,0,0,0,.227-.132l9.2-9.2a2.324,2.324,0,0,0,0-3.283Zm-11.361,9.538,7.531-7.532,2.429,2.429L113.1,12.907Zm-.485.974,1.941,1.941-2.684.744ZM121.912,4.1l-.547.547-2.429-2.429.547-.547a1.289,1.289,0,0,1,1.823,0l.605.605A1.291,1.291,0,0,1,121.912,4.1Zm0,0" transform="translate(-102.61)" fill="#fff"/>

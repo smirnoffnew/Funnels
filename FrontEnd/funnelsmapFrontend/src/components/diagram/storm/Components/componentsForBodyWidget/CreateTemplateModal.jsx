@@ -42,7 +42,7 @@ export default class CreateTemplateModal extends React.Component {
 
           <label htmlFor="Name" className='label-input'>
             Name
-        </label>
+          </label>
           <input
             id="Name"
             placeholder="Template Name"
