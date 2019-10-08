@@ -45,7 +45,7 @@ const getAdvancedConversion = (
                   conversionInfoForAllNodes,
                   node.id
                 )
-                if(counterUTMFrom === 0 || counterUTMFrom === 0){
+                if(counterUTMFrom === 0 || counterPageTo === 0){
                   return 'none'
                 }
                 const advancedConversion = (counterPageTo / counterUTMFrom) * 100
