@@ -111,11 +111,26 @@ export default class Application {
       if (props) {
         const oldProps = JSON.parse(props)
 
+        // console.log('oldProps', oldProps)
+
         oldProps.nodes.map(node => {
           const typeOfNode = node.ports[0].type
+          if(node.type === 'Text With Ports'){
+            node.type = 'Text Panel'
+          }
+          if(node.type === 'Text Without Ports'){
+            node.type = 'Text Area'
+          }
           node.ports.map(port => {
+            // console.log('port.type', port.type)
             if (port.type === undefined) {
               port.type = typeOfNode
+            }
+            if(port.type === 'Text With Ports'){
+              port.type = 'Text Panel'
+            }
+            if(port.type === 'Text Without Ports'){
+              port.type = 'Text Area'
             }
           })
         })
@@ -187,7 +202,7 @@ export default class Application {
   }
 
   deSerialization(engine, str) {
-    console.log('str', str)
+    // console.log('str', JSON.parse(str))
     const model2 = new RJD.DiagramModel();
     // model2.setGridSize(10);
     // model2.addListener({
