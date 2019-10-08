@@ -158,29 +158,6 @@ class SmallNodeWidget extends React.Component {
                           this.props.conversionInfoForAllNodes,
                           this.props.node.id
                         )}
-                      <div
-                        style={{
-                          position: "absolute",
-                          zIndex: 10,
-                          bottom: '-25%',
-                          transform: 'translate(-50%, 50%)',
-                          left: '53%',
-                          opacity: this.props.hideConversionLinkBoolean ? 1 : 0
-                        }}
-                        onMouseDown={() => {
-                          const id = this.props.node.id
-                          this.setState({
-                            advancedConversion: {
-                              id,
-                              type: 'utm'
-                            }
-                          }, () => {
-                            this.props.setConversionCompound(this.state.advancedConversion)
-                          })
-                        }}
-                      >
-                        <PortWidget name="clickOnLink" node={this.props.node} />
-                      </div>
                     </div>
                   </div>
 
@@ -362,6 +339,30 @@ class SmallNodeWidget extends React.Component {
             }}
           >
             <PortWidget name="bottom" node={this.props.node} />
+          </div>
+
+          <div
+            style={{
+              position: "absolute",
+              zIndex: 10,
+              bottom: '-115%',
+              transform: 'translate(-50%, 50%)',
+              left: '53%',
+              opacity: this.props.hideConversionLinkBoolean ? 1 : 0
+            }}
+            onMouseDown={() => {
+              const id = this.props.node.id
+              this.setState({
+                advancedConversion: {
+                  id,
+                  type: 'utm'
+                }
+              }, () => {
+                this.props.setConversionCompound(this.state.advancedConversion)
+              })
+            }}
+          >
+            <PortWidget name="clickOnLink" node={this.props.node} />
           </div>
 
           <div style={{ display: 'none' }} >
