@@ -202,6 +202,17 @@ class SmallNodeWidget extends React.Component {
                   </button>
                   <button
                     className="btn-select-widget"
+                    style={{
+                      paddingTop:
+                        this.props.node.extras.notesd &&
+                        this.props.node.extras.notesd.length !== 0 && 0,
+                      width: 
+                        this.props.node.extras.notesd &&
+                        this.props.node.extras.notesd.length !== 0 && 27,
+                      height: 
+                        this.props.node.extras.notesd &&
+                        this.props.node.extras.notesd.length !== 0 && 28
+                    }}
                     onClick={() =>
                       showRightModal(
                         this.props.diagram.funnelName,
