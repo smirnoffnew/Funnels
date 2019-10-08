@@ -28,7 +28,7 @@ export const NotesStatusIconGroup = () => {
                     </g>
                 </g>
                 <g id="галка" transform="translate(-1 1)">
-                    <circle id="Ellipse_79" data-name="Ellipse 79" cx="6.266" cy="6.266" r="6.266" transform="translate(1239.031 131.5) rotate(90)" fill="#f15c22" />
+                    <circle id="Ellipse_79" data-name="Ellipse 79" cx="6.266" cy="6.266" r="5" transform="translate(1239.031 131.5) rotate(90)" fill="#f15c22" />
                     <path id="Path_1189" data-name="Path 1189" d="M0,1.19,1.829,3.019,4.848,0" transform="translate(1234.184 135.658) rotate(90)" fill="none" stroke="#fff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" />
                 </g>
             </g>

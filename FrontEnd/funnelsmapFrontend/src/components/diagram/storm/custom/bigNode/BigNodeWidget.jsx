@@ -427,6 +427,11 @@ class BigNodeWidget extends React.Component {
                   </button>
                   <button
                     className="btn-select-widget"
+                    style={{
+                      paddingRight: 
+                        this.props.node.extras.notesd &&
+                        this.props.node.extras.notesd.length !== 0 && 0
+                    }}
                     onClick={() =>
                       showRightModal(
                         this.props.diagram.funnelName,
