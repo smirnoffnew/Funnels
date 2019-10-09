@@ -132,9 +132,9 @@ class AdvancedLinkSegment extends React.Component {
 
     // console.log('this.props.path', this.props.path)
 
-    const newPath = this.props.path
+    // const newPath = this.props.path
 
-    console.log('newPath', newPath)
+    // console.log('newPath', newPath)
 
     if(this.props.hideConversionLinkBoolean){
       if(

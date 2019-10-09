@@ -24,8 +24,7 @@
   flex-direction: column;
   position: absolute;
   top: -2px;
-  right: -135px;
-  width: 110px;
+  width: 112px;
   z-index: 1;
   height: auto;
   border-radius: 5px;
@@ -33,6 +32,7 @@
   background-color: #ffffff;
   border: 1px solid #dce5ec;
   justify-content: center;
+  left: 113px;
 }
 
 .up-arrow-analytics:after {
@@ -68,19 +68,7 @@
 }
 
 .super-conversion-block{
-  /* margin-left: 40px; */
-  /* display: flex; */
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  /* margin-left: 40px; */
-  /* margin-right: 20px; */
-  border-radius: 5px;
-  box-shadow: 0 0 28px rgba(0,0,0,0.1);
-  background-color: #ffffff;
-  /* border: 1px solid #dce5ec; */
-  position: absolute;
-  left: 110px;
+  margin-left: 16px;
 }
 
 .conversion-port{

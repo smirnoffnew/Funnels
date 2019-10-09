@@ -1,7 +1,9 @@
 import React from 'react';
-import './AdvancedConversion.css'
 import { PortWidget } from "storm-react-diagrams";
+import * as _ from "lodash";
 import { isEmpty } from '../../utils';
+import './AdvancedConversion.css'
+import { AdvancedLinkModel } from '../customLink/customLink';
 
 const getCounterUrl = (array, value) => {
   const obj =
@@ -50,7 +52,7 @@ const getAdvancedConversion = (
                 }
                 const advancedConversion = (counterPageTo / counterUTMFrom) * 100
 
-                return counterUTMFrom + '/' + advancedConversion.toFixed(2) + "%"
+                return counterPageTo + '/' + advancedConversion.toFixed(2) + "%"
               }
               return null
             }
@@ -106,6 +108,32 @@ const AdvancedConversion = ({ conversionName, index, node, advancedConversion, c
           title='delete'
           onClick={() => {
           node.extras.conversionsContainer.splice(index, 1)
+
+          node.extras.conversions &&
+          node.extras.conversions.forEach((item, index) => {
+            if (
+              item.to.id === node.id && 
+              item.to.type === conversionName
+            ) {
+              node.extras.conversions.splice(
+                index, 
+                1
+              )
+            }
+          })
+
+          // console.log(
+          //   'node.ports[conversionName.toLowerCase()] ', 
+          //   node.ports[conversionName.toLowerCase()].links
+          // )
+
+          _.forEach(node.ports[conversionName.toLowerCase()].links, item => {
+            if (item instanceof AdvancedLinkModel) {
+              item.remove()
+            }
+          });
+
+
           document.getElementById("diagram-layer").click();
         }}>X</div>
       </div>

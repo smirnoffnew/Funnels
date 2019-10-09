@@ -41,13 +41,21 @@ const Select = ({ show, children }) => {
   );
 };
 
-const SelectAnalytics = ({ show, children }) => {
+const SelectAnalytics = ({ show, conversion, hide, children }) => {
   const showHideClassName = show
     ? "select-modal-node-widget display-block"
     : "select-modal-node-widget display-none";
+
+  // console.log('conversion', conversion)
+
   return (
     <div className={showHideClassName}>
-      <section className="select-analytics-widget up-arrow-analytics">
+      <section 
+        className="select-analytics-widget up-arrow-analytics"
+        style={{
+          width: hide && conversion ? 200 : 100
+        }}
+      >
         {children}
       </section>
     </div>
@@ -153,7 +161,7 @@ class BigNodeWidget extends React.Component {
   }
 
   render() {
-    console.log('this', this.props.node.extras.conversionsContainer && this.props.node.extras.conversionsContainer.length)
+    // console.log('this', this.props.node.extras.conversionsContainer && this.props.node.extras.conversionsContainer.length)
     return (
       <>
 
@@ -206,7 +214,11 @@ class BigNodeWidget extends React.Component {
           >
             {this.props.showAnalyticsBoolean ? (
               <>
-                <SelectAnalytics show={true}>
+                <SelectAnalytics 
+                  show={true}
+                  conversion={this.props.node.extras.conversionsContainer.length > 0 ? true : false } 
+                  hide={this.props.hideConversionLinkBoolean}
+                >
                   <div style={{
                     display: 'flex'
                   }}>
@@ -353,7 +365,7 @@ class BigNodeWidget extends React.Component {
                       <div
                         style={{
                           position: 'absolute',
-                          right: '43%',
+                          left: 45,
                           bottom: -10,
                           cursor: 'pointer',
                           display: this.props.hideConversionLinkBoolean ? 'block' : 'none'

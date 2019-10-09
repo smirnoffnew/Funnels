@@ -57,7 +57,8 @@ export default class BodyWidget extends React.Component {
     inverseZoom: false,
     allowCanvasZoom: true,
     toggleAnalytics: false,
-    conversionIsView: false
+    conversionIsView: false,
+    srdLinkLayerSwitch: false,
   };
 
   saveDiagramHandle = file => {
@@ -377,6 +378,30 @@ export default class BodyWidget extends React.Component {
                 </button>
               </>
             ) : null}
+
+            <button
+              className='btn btn-1'
+              style={{
+                width: 100,
+                height: 40,
+                borderRadius: 7,
+                marginRight: 10
+              }}
+              onClick={() => {
+                this.setState(prev =>({
+                  srdLinkLayerSwitch: !prev.srdLinkLayerSwitch
+                }), () => {
+                  if(this.state.srdLinkLayerSwitch){
+                    document.getElementsByClassName('srd-link-layer')[0].style.zIndex = 1
+                  }
+                  else{
+                    document.getElementsByClassName('srd-link-layer')[0].style.zIndex = 0
+                  }
+                })
+              }}
+            >
+              link layer switch {this.state.srdLinkLayerSwitch ? `'on'` : `'off'`}
+            </button>
 
             {this.props.work.pathname.includes("diagram") ? (
               <>
