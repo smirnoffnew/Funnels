@@ -153,7 +153,7 @@ class BigNodeWidget extends React.Component {
   }
 
   render() {
-    // console.log('this.props.node.extras.conversionsContainer', this.props.node.extras.conversionsContainer)
+    console.log('this', this.props.node.extras.conversionsContainer && this.props.node.extras.conversionsContainer.length)
     return (
       <>
 
@@ -245,7 +245,10 @@ class BigNodeWidget extends React.Component {
                             })
                           }}
                           style={{
-                            opacity: this.props.hideConversionLinkBoolean ? 1 : 0
+                            opacity: this.props.hideConversionLinkBoolean ? 1 : 0,
+                            display: 
+                              this.props.node.extras.conversionsContainer && 
+                              this.props.node.extras.conversionsContainer.length > 0 ? 'none' : 'block'
                           }}
                         >
                           <PortWidget
@@ -289,7 +292,10 @@ class BigNodeWidget extends React.Component {
                             })
                           }}
                           style={{
-                            opacity: this.props.hideConversionLinkBoolean ? 1 : 0
+                            opacity: this.props.hideConversionLinkBoolean ? 1 : 0,
+                            display: 
+                              this.props.node.extras.conversionsContainer && 
+                              this.props.node.extras.conversionsContainer.length > 0 ? 'none' : 'block',
                           }}
                         >
                           <PortWidget
@@ -301,7 +307,10 @@ class BigNodeWidget extends React.Component {
 
                       <div
                         className="analytics-box"
-                        style={{ borderBottom: '1px solid #dce5ec' }}
+                        style={{ 
+                          borderBottom: '1px solid #dce5ec',
+                          display: this.props.node.extras.goald ? 'block' : 'none'
+                        }}
                       >
                         <div style={{
                           display: 'block'
@@ -330,7 +339,12 @@ class BigNodeWidget extends React.Component {
                           display: 'block'
                         }}>
                           <p className="top-anal">Conversion:</p>
-                          <p className="bottom-anal">
+                          <p 
+                            className="bottom-anal"
+                            style={{
+                              paddingBottom: 5
+                            }}
+                          >
                             {this.getConversion()}
                           </p>
                         </div>
@@ -340,6 +354,7 @@ class BigNodeWidget extends React.Component {
                         style={{
                           position: 'absolute',
                           right: '43%',
+                          bottom: -10,
                           cursor: 'pointer',
                           display: this.props.hideConversionLinkBoolean ? 'block' : 'none'
                         }}

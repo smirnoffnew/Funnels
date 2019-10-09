@@ -162,11 +162,6 @@ class SmallNodeWidget extends React.Component {
                   </div>
 
                   <div style={{ display: 'none' }} >
-                    {/* <PortWidget name="top" node={this.props.node} />
-                    <PortWidget name="bottom" node={this.props.node} />
-                    <PortWidget name="left" node={this.props.node} />
-                    <PortWidget name="right" node={this.props.node} /> */}
-
                     <PortWidget name="activeOnPage" node={this.props.node} />
                     <PortWidget name="conversion1" node={this.props.node} />
                     <PortWidget name="conversion2" node={this.props.node} />

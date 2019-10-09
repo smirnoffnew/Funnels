@@ -17,20 +17,35 @@ class AdvancedLinkSegment extends React.Component {
     this.circle.setAttribute("opacity", 0)
 
     this.callback = () => {
-      if (!this.circleTarget || !this.pathForHover) {
+      if (!this.circleSource || !this.circleTarget || !this.pathForHover) {
         return;
       }
-      let progress;
+      let progressTarget;
+      let progressSource;
+      
 
       if (this.props.inversed) {
-        progress = 0;
+        progressTarget = 0;
+        progressSource = 100;
       } else {
-        progress = 100;
+        progressTarget = 100;
+        progressSource = 0;
       }
 
       let pointTarget = this.pathForHover.getPointAtLength(
-        Number.parseInt((this.pathForHover.getTotalLength() * (progress / 100.0)).toFixed())
+        Number.parseInt((this.pathForHover.getTotalLength() * (progressTarget / 100.0)).toFixed())
       );
+
+      let pointSource = this.pathForHover.getPointAtLength(
+        Number.parseInt((this.pathForHover.getTotalLength() * (progressSource / 100) ).toFixed())
+      );
+
+      // console.log('pointTarget', pointTarget)
+      // console.log('pointSource', pointSource)
+
+      this.circleSource.setAttribute("cx", pointSource.x);
+      this.circleSource.setAttribute("cy", pointSource.y);
+
       this.circleTarget.setAttribute("cx", pointTarget.x);
       this.circleTarget.setAttribute("cy", pointTarget.y);
 
@@ -115,7 +130,11 @@ class AdvancedLinkSegment extends React.Component {
   render() {
     const { path, model, /*selected*/ } = this.props;
 
-    // console.log('this.props.model', this.props.model)
+    // console.log('this.props.path', this.props.path)
+
+    const newPath = this.props.path
+
+    console.log('newPath', newPath)
 
     if(this.props.hideConversionLinkBoolean){
       if(
@@ -250,6 +269,26 @@ class AdvancedLinkSegment extends React.Component {
             :
             null
         }
+
+        <circle 
+          ref={ref => this.circleSource = ref} 
+          r={6}
+          fill={
+            this.props.hideConversionLinkBoolean ? 
+              this.props.model.sourcePort && 
+              this.props.model.sourcePort.position && 
+              this.props.model.sourcePort.position.includes('clickOnLink') ||
+              this.props.model.sourcePort.position.includes('activeOnPage') ?
+              'blue' :
+              '#fd8f21'
+            : 
+            this.props.model.sourcePort && 
+              this.props.model.sourcePort.position && 
+              this.props.model.sourcePort.position.includes('clickOnLink') ?
+              '#F6F7F8' :
+              '#fd8f21'
+          }
+        />
 
         <circle 
           ref={ref => this.circleTarget = ref} 

@@ -9,31 +9,6 @@
 
   <body>
     <div id="app"></div>
-
-
-    <script> 
-      window.onload = function() { 
-        (() => {
-          if(!localStorage.getItem('4507068b-12d3-44eb-b320-00d115fbd2cf',)){
-          fetch('http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/funnel/node/counter', {
-            method: 'PATCH',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'Cache-Control': 'only-if-cached'
-            },
-            body: JSON.stringify({
-              nodeId: '4507068b-12d3-44eb-b320-00d115fbd2cf',
-              funnelId: '5d95da3fa6f47c002c04c06b',
-            })
-          }) .then(() => {  localStorage.setItem('4507068b-12d3-44eb-b320-00d115fbd2cf', true);} )
-        };
-        })();
-      }; 
-    </script>
-
-
-
   </body>
 
 </html>

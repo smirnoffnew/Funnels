@@ -46,11 +46,11 @@ const getAdvancedConversion = (
                   node.id
                 )
                 if(counterUTMFrom === 0 || counterPageTo === 0){
-                  return 'none'
+                  return counterUTMFrom + '/none'
                 }
                 const advancedConversion = (counterPageTo / counterUTMFrom) * 100
 
-                return advancedConversion.toFixed(2) + "%"
+                return counterUTMFrom + '/' + advancedConversion.toFixed(2) + "%"
               }
               return null
             }
@@ -92,17 +92,22 @@ const AdvancedConversion = ({ conversionName, index, node, advancedConversion, c
           display: 'flex'
         }}
       >
+
+        {conversionName}
+
         <div 
           style={{
             cursor: 'pointer',
-            marginRight: 5
+            // marginRight: 5,
+            color: '#3e3e3e',
+            fontSize: 8,
+            paddingLeft: 5
           }} 
           title='delete'
           onClick={() => {
           node.extras.conversionsContainer.splice(index, 1)
           document.getElementById("diagram-layer").click();
         }}>X</div>
-        {conversionName}
       </div>
       <div className='bottom-anal'>
         {
@@ -135,6 +140,7 @@ const AdvancedConversion = ({ conversionName, index, node, advancedConversion, c
         right: -16,
         position: 'absolute',
         zIndex: 100,
+        // pointerEvents: 'none'
       }}
       onMouseUp={() => {
         node.setConversions &&
