@@ -216,7 +216,9 @@ class BigNodeWidget extends React.Component {
               <>
                 <SelectAnalytics 
                   show={true}
-                  conversion={this.props.node.extras.conversionsContainer.length > 0 ? true : false } 
+                  conversion={
+                    this.props.node.extras.conversionsContainer &&
+                    this.props.node.extras.conversionsContainer.length > 0 ? true : false } 
                   hide={this.props.hideConversionLinkBoolean}
                 >
                   <div style={{
