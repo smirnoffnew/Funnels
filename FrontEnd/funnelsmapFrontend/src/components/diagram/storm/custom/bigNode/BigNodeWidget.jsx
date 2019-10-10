@@ -140,7 +140,7 @@ class BigNodeWidget extends React.Component {
           )) *
         100
       ).toFixed(2) + "%"
-      : "none"
+      : "0"
   }
 
   handleClickOnWidget = () => {
@@ -408,7 +408,10 @@ class BigNodeWidget extends React.Component {
                     <div 
                       className='super-conversion-block'
                       style={{
-                        opacity: this.props.hideConversionLinkBoolean ? 1 : 0
+                        opacity: this.props.hideConversionLinkBoolean ? 1 : 0,
+                        borderLeft: 
+                          this.props.node.extras.conversionsContainer &&
+                          this.props.node.extras.conversionsContainer.length > 0 && '1px solid rgb(220, 229, 236)'
                       }}
                     >
                       {
