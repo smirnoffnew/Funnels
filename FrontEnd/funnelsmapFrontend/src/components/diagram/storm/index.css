@@ -301,7 +301,11 @@
 }
 
 .srd-default-link__point{
-  fill: orange !important;
+  /* fill: orange !important; */
+}
+
+.srd-default-link--point-selected{
+  fill: rgba(255,255,255,0.5);
 }
 
 .link-segment__circle{
