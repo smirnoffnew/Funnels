@@ -49,6 +49,20 @@
   transform: rotate(270deg);
 }
 
+.up-arrow-analytics-reverse:after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 37%;
+  width: 0;
+  height: 0;
+  border: 9px solid transparent;
+  border-bottom-color: white;
+  -webkit-transform: rotate(270deg);
+  transform: rotate(90deg);
+  right: -17px;
+}
+
 .top-anal {
   font-size: 11px;
   color: #848f99;
@@ -68,7 +82,8 @@
 }
 
 .super-conversion-block{
-  margin-left: 16px;
+  /* margin-left: 16px; */
+  /* margin-left: -100px; */
 }
 
 .conversion-port{

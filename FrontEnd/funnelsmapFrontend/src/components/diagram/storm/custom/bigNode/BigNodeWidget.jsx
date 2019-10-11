@@ -51,9 +51,18 @@ const SelectAnalytics = ({ show, conversion, hide, children }) => {
   return (
     <div className={showHideClassName}>
       <section 
-        className="select-analytics-widget up-arrow-analytics"
+        className={
+          `select-analytics-widget 
+            ${
+              hide && conversion ? 
+              ' up-arrow-analytics-reverse' :
+              ' up-arrow-analytics'
+            }
+          `
+        }
         style={{
-          width: hide && conversion ? 200 : 100
+          width: hide && conversion ? 200 : 100,
+          left: hide && conversion ? -230 : 113,
         }}
       >
         {children}
@@ -224,6 +233,39 @@ class BigNodeWidget extends React.Component {
                   <div style={{
                     display: 'flex'
                   }}>
+
+                    <div 
+                      className='super-conversion-block'
+                      style={{
+                        marginLeft: 
+                          this.props.hideConversionLinkBoolean && 
+                          this.props.node.extras.conversionsContainer &&
+                          this.props.node.extras.conversionsContainer.length > 0 ? 
+                            0 : !this.props.hideConversionLinkBoolean &&
+                                this.props.node.extras.conversionsContainer &&
+                                this.props.node.extras.conversionsContainer.length > 0 ? -100 : 0,
+                        opacity: 
+                          this.props.hideConversionLinkBoolean ? 1 : 0,
+                        borderRight: 
+                          this.props.node.extras.conversionsContainer &&
+                          this.props.node.extras.conversionsContainer.length > 0 && '1px solid rgb(220, 229, 236)'
+                      }}
+                    >
+                      {
+                        this.props.node.extras.conversionsContainer &&
+                        this.props.node.extras.conversionsContainer.map((item, index) => (
+                          <AdvancedConversion
+                            key={index}
+                            conversionName={item}
+                            index={index}
+                            node={this.props.node}
+                            advancedConversion={this.props.advancedConversion}
+                            conversionInfoForAllNodes={this.props.conversionInfoForAllNodes}
+                           />
+                        ))
+                      }
+                    </div>
+
                     <div>
                       <div
                         className="analytics-box"
@@ -322,7 +364,6 @@ class BigNodeWidget extends React.Component {
                       <div
                         className="analytics-box"
                         style={{ 
-                          borderBottom: '1px solid #dce5ec',
                           display: this.props.node.extras.goald ? 'block' : 'none'
                         }}
                       >
@@ -347,10 +388,12 @@ class BigNodeWidget extends React.Component {
 
                       <div
                         className="analytics-box"
-                      // title={"644/22%"}
+                        style={{
+                          borderTop: '1px solid #dce5ec',
+                        }}
                       >
                         <div style={{
-                          display: 'block'
+                          display: 'block',
                         }}>
                           <p className="top-anal">Conversion:</p>
                           <p 
@@ -404,31 +447,6 @@ class BigNodeWidget extends React.Component {
                         />
                       </div>
                     </div>
-
-                    <div 
-                      className='super-conversion-block'
-                      style={{
-                        opacity: this.props.hideConversionLinkBoolean ? 1 : 0,
-                        borderLeft: 
-                          this.props.node.extras.conversionsContainer &&
-                          this.props.node.extras.conversionsContainer.length > 0 && '1px solid rgb(220, 229, 236)'
-                      }}
-                    >
-                      {
-                        this.props.node.extras.conversionsContainer &&
-                        this.props.node.extras.conversionsContainer.map((item, index) => (
-                          <AdvancedConversion
-                            key={index}
-                            conversionName={item}
-                            index={index}
-                            node={this.props.node}
-                            advancedConversion={this.props.advancedConversion}
-                            conversionInfoForAllNodes={this.props.conversionInfoForAllNodes}
-                           />
-                        ))
-                      }
-                    </div>
-
                   </div>
                 </SelectAnalytics>
               </>

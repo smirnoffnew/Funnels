@@ -165,7 +165,7 @@ const AdvancedConversion = ({ conversionName, index, node, advancedConversion, c
     <div
       className='conversion-port'
       style={{
-        right: -16,
+        left: -16,
         position: 'absolute',
         zIndex: 100,
         // pointerEvents: 'none'
