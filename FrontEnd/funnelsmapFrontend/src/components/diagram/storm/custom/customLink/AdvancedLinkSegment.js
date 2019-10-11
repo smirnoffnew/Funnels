@@ -22,7 +22,7 @@ class AdvancedLinkSegment extends React.Component {
       }
       let progressTarget;
       let progressSource;
-      
+
 
       if (this.props.inversed) {
         progressTarget = 0;
@@ -37,7 +37,7 @@ class AdvancedLinkSegment extends React.Component {
       );
 
       let pointSource = this.pathForHover.getPointAtLength(
-        Number.parseInt((this.pathForHover.getTotalLength() * (progressSource / 100) ).toFixed())
+        Number.parseInt((this.pathForHover.getTotalLength() * (progressSource / 100.0)).toFixed())
       );
 
       // console.log('pointTarget', pointTarget)
@@ -130,18 +130,24 @@ class AdvancedLinkSegment extends React.Component {
   render() {
     const { path, model, /*selected*/ } = this.props;
 
-    // console.log('this.props.path', this.props.path)
-
-    // const newPath = this.props.path
-
+    //---blank for Quadratic Bezier Curves----
+    // console.log('oldPath', this.props.path)
+    // const oldPath = this.props.path
+    // const newArray = oldPath.split(' ');
+    // const first = newArray[0]
+    // const last = newArray[newArray.length - 1]
+    // let la = last[0] + last[1] + last[2]
+    // let fi = first[1] + first[2] + first[3]
+    // const newPath = first + ` Q${+la/2},${+fi*2} ` + last
     // console.log('newPath', newPath)
+    //----------------------------------------
 
-    if(this.props.hideConversionLinkBoolean){
-      if(
-        (this.props.model.targetPort && 
-        this.props.model.targetPort.position && 
-        this.props.model.targetPort.position.includes('conversion'))
-      ){
+    if (this.props.hideConversionLinkBoolean) {
+      if (
+        (this.props.model.targetPort &&
+          this.props.model.targetPort.position &&
+          this.props.model.targetPort.position.includes('conversion'))
+      ) {
         this.props.model.width = 2
       }
       else {
@@ -149,18 +155,17 @@ class AdvancedLinkSegment extends React.Component {
       }
     }
     else {
-      if(
-        (this.props.model.targetPort && 
-        this.props.model.targetPort.position && 
-        this.props.model.targetPort.position.includes('conversion'))
-      ){
+      if (
+        (this.props.model.targetPort &&
+          this.props.model.targetPort.position &&
+          this.props.model.targetPort.position.includes('conversion'))
+      ) {
         this.props.model.width = 0
       }
       else {
         this.props.model.width = 2
       }
     }
-
 
     return (
       <>
@@ -170,16 +175,27 @@ class AdvancedLinkSegment extends React.Component {
           // stroke={selected ? `rgba(	97, 102, 110, 1)` : `rgba(	97, 102, 110, 0.5)`}
 
           stroke={
-            this.props.hideConversionLinkBoolean ? 
-              this.props.model.targetPort && 
-              this.props.model.targetPort.position && 
-              this.props.model.targetPort.position.includes('conversion') ?
-              'blue' :
-              'rgba(97, 102, 110, 0.2)'
-            : 'rgba(97, 102, 110, 0.7)'
+            this.props.hideConversionLinkBoolean ?
+              this.props.model.targetPort &&
+                this.props.model.targetPort.position &&
+                this.props.model.targetPort.position.includes('conversion') ?
+                'blue' :
+                'rgba(97, 102, 110, 0.2)'
+              : 'rgba(97, 102, 110, 0.7)'
           }
           strokeDasharray="5,5"
+
           d={path}
+
+          // d={
+          //   this.props.hideConversionLinkBoolean ?
+          //     this.props.model.targetPort &&
+          //       this.props.model.targetPort.position &&
+          //       this.props.model.targetPort.position.includes('conversion') ?
+          //       newPath :
+          //       path
+          //     : path
+          // }
         />
 
         <path
@@ -196,14 +212,14 @@ class AdvancedLinkSegment extends React.Component {
           ref={ref => this.circle = ref}
           r={3}
           fill={
-            this.props.hideConversionLinkBoolean ? 
-              this.props.model.targetPort && 
-              this.props.model.targetPort.position && 
-              this.props.model.targetPort.position.includes('conversion') ?
-              'blue' :
+            this.props.hideConversionLinkBoolean ?
+              this.props.model.targetPort &&
+                this.props.model.targetPort.position &&
+                this.props.model.targetPort.position.includes('conversion') ?
+                'blue' :
+                '#fd8f21'
+              :
               '#fd8f21'
-            : 
-            '#fd8f21'
           }
         />
 
@@ -254,7 +270,7 @@ class AdvancedLinkSegment extends React.Component {
 
             <circle
               className={'circle-delete'}
-              onClick={() => 
+              onClick={() =>
                 deleteLink(
                   this.props.engine
                 )
@@ -270,62 +286,62 @@ class AdvancedLinkSegment extends React.Component {
             null
         }
 
-        <circle 
-          ref={ref => this.circleSource = ref} 
+        <circle
+          ref={ref => this.circleSource = ref}
           r={6}
           fill={
-            this.props.hideConversionLinkBoolean ? 
-              this.props.model.sourcePort && 
-              this.props.model.sourcePort.position && 
-              this.props.model.sourcePort.position.includes('clickOnLink') ||
-              this.props.model.sourcePort.position.includes('activeOnPage') ?
-              'blue' :
-              '#fd8f21'
-            : 
-            this.props.model.sourcePort && 
-              this.props.model.sourcePort.position && 
-              this.props.model.sourcePort.position.includes('clickOnLink') ?
-              '#F6F7F8' :
-              '#fd8f21'
+            this.props.hideConversionLinkBoolean ?
+              this.props.model.sourcePort &&
+                this.props.model.sourcePort.position &&
+                this.props.model.sourcePort.position.includes('clickOnLink') ||
+                this.props.model.sourcePort.position.includes('activeOnPage') ?
+                'blue' :
+                '#fd8f21'
+              :
+              this.props.model.sourcePort &&
+                this.props.model.sourcePort.position &&
+                this.props.model.sourcePort.position.includes('clickOnLink') ?
+                '#F6F7F8' :
+                '#fd8f21'
           }
         />
 
-        <circle 
-          ref={ref => this.circleTarget = ref} 
+        <circle
+          ref={ref => this.circleTarget = ref}
           r={6}
           fill={
-            this.props.hideConversionLinkBoolean ? 
-              this.props.model.targetPort && 
-              this.props.model.targetPort.position && 
-              this.props.model.targetPort.position.includes('conversion') ?
-              'blue' :
-              '#fd8f21'
-            : 
-            this.props.model.targetPort && 
-              this.props.model.targetPort.position && 
-              this.props.model.targetPort.position.includes('conversion') ?
-              '#F6F7F8' :
-              '#fd8f21'
+            this.props.hideConversionLinkBoolean ?
+              this.props.model.targetPort &&
+                this.props.model.targetPort.position &&
+                this.props.model.targetPort.position.includes('conversion') ?
+                'blue' :
+                '#fd8f21'
+              :
+              this.props.model.targetPort &&
+                this.props.model.targetPort.position &&
+                this.props.model.targetPort.position.includes('conversion') ?
+                '#F6F7F8' :
+                '#fd8f21'
           }
         />
-        <circle 
-          ref={ref => this.circleTarget2 = ref} 
+        <circle
+          ref={ref => this.circleTarget2 = ref}
           r={2}
           fill={
-            this.props.hideConversionLinkBoolean ? 
-              this.props.model.targetPort && 
-              this.props.model.targetPort.position && 
-              this.props.model.targetPort.position.includes('conversion') ?
-              '#fff' :
-              '#fff'
-            : 
-            this.props.model.targetPort && 
-              this.props.model.targetPort.position && 
-              this.props.model.targetPort.position.includes('conversion') ?
-              '#F6F7F8' :
-              '#fff'
+            this.props.hideConversionLinkBoolean ?
+              this.props.model.targetPort &&
+                this.props.model.targetPort.position &&
+                this.props.model.targetPort.position.includes('conversion') ?
+                '#fff' :
+                '#fff'
+              :
+              this.props.model.targetPort &&
+                this.props.model.targetPort.position &&
+                this.props.model.targetPort.position.includes('conversion') ?
+                '#F6F7F8' :
+                '#fff'
           }
-          // fill="#fff" 
+        // fill="#fff" 
         />
 
         {/* <use id="use" xlink:href="#shape2" /> */}
