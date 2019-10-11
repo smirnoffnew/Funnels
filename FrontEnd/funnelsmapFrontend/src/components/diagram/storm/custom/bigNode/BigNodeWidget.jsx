@@ -149,7 +149,7 @@ class BigNodeWidget extends React.Component {
           )) *
         100
       ).toFixed(2) + "%"
-      : "0"
+      : "0%"
   }
 
   handleClickOnWidget = () => {
