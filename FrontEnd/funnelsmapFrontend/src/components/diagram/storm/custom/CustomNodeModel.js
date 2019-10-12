@@ -204,6 +204,7 @@ export class CustomNodeModel extends NodeModel {
         ...this.extras.conversionsContainer,
         conversionsContainer
       ]
+      this.extras.conversionsContainer.sort()
     }
     else{
       this.extras.conversionsContainer = [

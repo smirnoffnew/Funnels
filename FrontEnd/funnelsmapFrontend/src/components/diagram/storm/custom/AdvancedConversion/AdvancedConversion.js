@@ -95,16 +95,10 @@ const AdvancedConversion = ({ conversionName, index, node, advancedConversion, c
         }}
       >
 
-        {conversionName}
+        {conversionName.replace('conversion', 'Conversion ')}
 
         <div 
-          style={{
-            cursor: 'pointer',
-            // marginRight: 5,
-            color: '#3e3e3e',
-            fontSize: 8,
-            paddingLeft: 5
-          }} 
+          className='conversion-delete'
           title='delete'
           onClick={() => {
           node.extras.conversionsContainer.splice(index, 1)

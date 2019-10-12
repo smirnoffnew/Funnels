@@ -300,7 +300,8 @@ class AdvancedLinkSegment extends React.Component {
               :
               this.props.model.sourcePort &&
                 this.props.model.sourcePort.position &&
-                this.props.model.sourcePort.position.includes('clickOnLink') ?
+                this.props.model.sourcePort.position.includes('clickOnLink') ||
+                this.props.model.sourcePort.position.includes('activeOnPage') ?
                 '#F6F7F8' :
                 '#fd8f21'
           }

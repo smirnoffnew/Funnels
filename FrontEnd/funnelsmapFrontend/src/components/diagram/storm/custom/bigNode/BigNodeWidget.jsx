@@ -41,28 +41,37 @@ const Select = ({ show, children }) => {
   );
 };
 
-const SelectAnalytics = ({ show, conversion, hide, children }) => {
+const SelectAnalyticsRight = ({ show, children }) => {
   const showHideClassName = show
     ? "select-modal-node-widget display-block"
     : "select-modal-node-widget display-none";
-
-  // console.log('conversion', conversion)
 
   return (
     <div className={showHideClassName}>
       <section 
         className={
-          `select-analytics-widget 
-            ${
-              hide && conversion ? 
-              ' up-arrow-analytics-reverse' :
-              ' up-arrow-analytics'
-            }
-          `
+          'select-analytics-widget up-arrow-analytics'
+        }
+      >
+        {children}
+      </section>
+    </div>
+  );
+};
+
+const SelectAnalyticsLeft = ({ show, children }) => {
+  const showHideClassName = show
+    ? "select-modal-node-widget display-block"
+    : "select-modal-node-widget display-none";
+
+  return (
+    <div className={showHideClassName}>
+      <section 
+        className={
+          'select-analytics-widget up-arrow-analytics-reverse'
         }
         style={{
-          width: hide && conversion ? 200 : 100,
-          left: hide && conversion ? -230 : 113,
+          left: -140
         }}
       >
         {children}
@@ -164,13 +173,18 @@ class BigNodeWidget extends React.Component {
     }
   }
 
-  getRevonew = (price, clickNodes) => {
-    const revonew = (+price && +clickNodes) ? price * clickNodes : 0
-    return revonew + ' $'
+  getRevenue = (price, clickNodes) => {
+    const revenue = (+price && +clickNodes) ? price * clickNodes : 0
+    return revenue + ' $'
   }
 
   render() {
-    // console.log('this', this.props.node.extras.conversionsContainer && this.props.node.extras.conversionsContainer.length)
+    
+    console.log( 
+      this.props.hideConversionLinkBoolean,
+      this.props.showAnalyticsBoolean
+    )
+
     return (
       <>
 
@@ -223,33 +237,15 @@ class BigNodeWidget extends React.Component {
           >
             {this.props.showAnalyticsBoolean ? (
               <>
-                <SelectAnalytics 
-                  show={true}
-                  conversion={
-                    this.props.node.extras.conversionsContainer &&
-                    this.props.node.extras.conversionsContainer.length > 0 ? true : false } 
-                  hide={this.props.hideConversionLinkBoolean}
-                >
-                  <div style={{
-                    display: 'flex'
-                  }}>
 
+              {                   
+                this.props.node.extras.conversionsContainer &&
+                this.props.node.extras.conversionsContainer.length > 0 &&
+                <SelectAnalyticsLeft show={
+                  this.props.hideConversionLinkBoolean
+                } >
                     <div 
                       className='super-conversion-block'
-                      style={{
-                        marginLeft: 
-                          this.props.hideConversionLinkBoolean && 
-                          this.props.node.extras.conversionsContainer &&
-                          this.props.node.extras.conversionsContainer.length > 0 ? 
-                            0 : !this.props.hideConversionLinkBoolean &&
-                                this.props.node.extras.conversionsContainer &&
-                                this.props.node.extras.conversionsContainer.length > 0 ? -100 : 0,
-                        opacity: 
-                          this.props.hideConversionLinkBoolean ? 1 : 0,
-                        borderRight: 
-                          this.props.node.extras.conversionsContainer &&
-                          this.props.node.extras.conversionsContainer.length > 0 && '1px solid rgb(220, 229, 236)'
-                      }}
                     >
                       {
                         this.props.node.extras.conversionsContainer &&
@@ -265,8 +261,23 @@ class BigNodeWidget extends React.Component {
                         ))
                       }
                     </div>
+                </SelectAnalyticsLeft>                        
+              }
 
-                    <div>
+
+                <SelectAnalyticsRight
+                  show={true}
+                >
+                  <div style={{
+                    display: 'flex'
+                  }}>
+
+
+                    <div
+                      style={{
+                        width: '100%'
+                      }}
+                    >
                       <div
                         className="analytics-box"
                         title={this.props.conversionInfoForAllNodes &&
@@ -302,9 +313,6 @@ class BigNodeWidget extends React.Component {
                           }}
                           style={{
                             opacity: this.props.hideConversionLinkBoolean ? 1 : 0,
-                            display: 
-                              this.props.node.extras.conversionsContainer && 
-                              this.props.node.extras.conversionsContainer.length > 0 ? 'none' : 'block'
                           }}
                         >
                           <PortWidget
@@ -349,9 +357,6 @@ class BigNodeWidget extends React.Component {
                           }}
                           style={{
                             opacity: this.props.hideConversionLinkBoolean ? 1 : 0,
-                            display: 
-                              this.props.node.extras.conversionsContainer && 
-                              this.props.node.extras.conversionsContainer.length > 0 ? 'none' : 'block',
                           }}
                         >
                           <PortWidget
@@ -370,11 +375,11 @@ class BigNodeWidget extends React.Component {
                         <div style={{
                           display: 'block'
                         }}>
-                          <p className="top-anal">Revonew</p>
+                          <p className="top-anal">Revenue</p>
                           <p className="bottom-anal">
                             {
                               this.props.conversionInfoForAllNodes &&
-                              this.getRevonew(
+                              this.getRevenue(
                                 +this.props.node.extras.price,
                                 this.getCounterNode(
                                   this.props.conversionInfoForAllNodes,
@@ -413,7 +418,11 @@ class BigNodeWidget extends React.Component {
                           left: 45,
                           bottom: -10,
                           cursor: 'pointer',
-                          display: this.props.hideConversionLinkBoolean ? 'block' : 'none'
+                          display: 
+                            !this.props.hideConversionLinkBoolean ? 'none' :
+                              this.props.node.extras.conversionsContainer === undefined ||
+                              this.props.node.extras.conversionsContainer &&
+                              this.props.node.extras.conversionsContainer.length <= 2 ? 'block' : 'none'
                         }}
                         title={'add conversion block'}
                       >
@@ -448,7 +457,7 @@ class BigNodeWidget extends React.Component {
                       </div>
                     </div>
                   </div>
-                </SelectAnalytics>
+                </SelectAnalyticsRight>
               </>
             ) : (
                 <Select

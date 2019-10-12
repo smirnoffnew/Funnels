@@ -10,6 +10,16 @@ export class CustomPortModel extends PortModel {
 		this.position = pos;
 	}
 
+	canLinkToPort(port) {
+		if (port instanceof CustomPortModel) {
+			// console.log('this', this)
+			if(this.name.includes('conversion')){
+				return false
+			}
+		}
+		return true;
+	}
+
 	serialize() {
 		return _.merge(super.serialize(), {
 			position: this.position

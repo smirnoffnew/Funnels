@@ -379,7 +379,7 @@ export default class BodyWidget extends React.Component {
               </>
             ) : null}
 
-            <button
+            {/* <button
               className='btn btn-1'
               style={{
                 width: 100,
@@ -401,7 +401,7 @@ export default class BodyWidget extends React.Component {
               }}
             >
               link layer switch {this.state.srdLinkLayerSwitch ? `'on'` : `'off'`}
-            </button>
+            </button> */}
 
             {this.props.work.pathname.includes("diagram") ? (
               <>
