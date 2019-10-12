@@ -30,7 +30,7 @@ export class CustomNodeModel extends NodeModel {
    
 
 
-
+    this.addPort(new CustomPortModel(name, 'conversionDefault'));
     this.addPort(new CustomPortModel(name, "conversion1"));
     this.addPort(new CustomPortModel(name, "conversion2"));
     this.addPort(new CustomPortModel(name, "conversion3"));

@@ -21,12 +21,12 @@ import {
   showRightModal
 } from "../funcsForCustomNodeWidget";
 import "./index.css";
-import { openLinkOnNewTab, /*isEmpty*/ } from "../../utils";
+import { openLinkOnNewTab, isEmpty, /*isEmpty*/ } from "../../utils";
 import { DevelopmentStage } from "../../../../common/DevelopmentStage/DevelopmentStage";
 import { NotesStatusIconGroup } from "../../../../common/NotesStatus/NotesStatus";
 import { setConversionCompound } from "../../../../../store/actions/conversion";
 // import ModalPortal from "../../../../common/ModalPortal/ModalPortal";
-import AdvancedConversion from "../AdvancedConversion/AdvancedConversion";
+import AdvancedConversion, { getAdvancedConversion } from "../AdvancedConversion/AdvancedConversion";
 
 const Select = ({ show, children }) => {
   const showHideClassName = show
@@ -48,7 +48,7 @@ const SelectAnalyticsRight = ({ show, children }) => {
 
   return (
     <div className={showHideClassName}>
-      <section 
+      <section
         className={
           'select-analytics-widget up-arrow-analytics'
         }
@@ -66,7 +66,7 @@ const SelectAnalyticsLeft = ({ show, children }) => {
 
   return (
     <div className={showHideClassName}>
-      <section 
+      <section
         className={
           'select-analytics-widget up-arrow-analytics-reverse'
         }
@@ -179,11 +179,11 @@ class BigNodeWidget extends React.Component {
   }
 
   render() {
-    
-    console.log( 
-      this.props.hideConversionLinkBoolean,
-      this.props.showAnalyticsBoolean
-    )
+
+    // console.log( 
+    //   this.props.node.ports['conversionDefault'] && 
+    //   this.props.node.ports['conversionDefault'].links
+    // )
 
     return (
       <>
@@ -238,13 +238,13 @@ class BigNodeWidget extends React.Component {
             {this.props.showAnalyticsBoolean ? (
               <>
 
-              {                   
-                this.props.node.extras.conversionsContainer &&
-                this.props.node.extras.conversionsContainer.length > 0 &&
-                <SelectAnalyticsLeft show={
-                  this.props.hideConversionLinkBoolean
-                } >
-                    <div 
+                {
+                  this.props.node.extras.conversionsContainer &&
+                  this.props.node.extras.conversionsContainer.length > 0 &&
+                  <SelectAnalyticsLeft show={
+                    this.props.hideConversionLinkBoolean
+                  } >
+                    <div
                       className='super-conversion-block'
                     >
                       {
@@ -257,12 +257,12 @@ class BigNodeWidget extends React.Component {
                             node={this.props.node}
                             advancedConversion={this.props.advancedConversion}
                             conversionInfoForAllNodes={this.props.conversionInfoForAllNodes}
-                           />
+                          />
                         ))
                       }
                     </div>
-                </SelectAnalyticsLeft>                        
-              }
+                  </SelectAnalyticsLeft>
+                }
 
 
                 <SelectAnalyticsRight
@@ -368,7 +368,7 @@ class BigNodeWidget extends React.Component {
 
                       <div
                         className="analytics-box"
-                        style={{ 
+                        style={{
                           display: this.props.node.extras.goald ? 'block' : 'none'
                         }}
                       >
@@ -395,20 +395,65 @@ class BigNodeWidget extends React.Component {
                         className="analytics-box"
                         style={{
                           borderTop: '1px solid #dce5ec',
+                          paddingBottom: 4
                         }}
                       >
                         <div style={{
                           display: 'block',
                         }}>
                           <p className="top-anal">Conversion:</p>
-                          <p 
-                            className="bottom-anal"
+                          <div className='bottom-anal'>
+                            {
+                              this.props.node.ports['conversionDefault'] &&
+                                this.props.node.ports['conversionDefault'].links &&
+                                !isEmpty(this.props.node.ports['conversionDefault'].links) ?
+                                getAdvancedConversion(
+                                  'conversionDefault',
+                                  this.props.conversionInfoForAllNodes,
+                                  this.props.node
+                                ) :
+                                (this.props.node.extras.conversions &&
+                                  this.props.node.extras.conversions.forEach((item, index) => {
+                                    if (
+                                      item.to.id === this.props.node.id &&
+                                      item.to.type === 'conversionDefault'
+                                    ) {
+                                      this.props.node.extras.conversions.splice(
+                                        index,
+                                        1
+                                      )
+                                    }
+                                  }), '0%')
+                            }
+                          </div>
+                          <div
+                            className='conversion-port'
                             style={{
-                              paddingBottom: 5
+                              bottom: 10,
+                              right: -16,
+                              position: 'absolute',
+                              zIndex: 100,
+                              opacity:
+                                this.props.hideConversionLinkBoolean ? 1 : 0,
+                            }}
+                            onMouseUp={() => {
+                              this.props.node.setConversions &&
+                                this.props.node.setConversions(
+                                  {
+                                    from: this.props.advancedConversion,
+                                    to: {
+                                      id: this.props.node.id,
+                                      type: 'conversionDefault'
+                                    }
+                                  }
+                                )
                             }}
                           >
-                            {this.getConversion()}
-                          </p>
+                            <PortWidget
+                              name={'conversionDefault'}
+                              node={this.props.node}
+                            />
+                          </div>
                         </div>
                       </div>
 
@@ -418,38 +463,38 @@ class BigNodeWidget extends React.Component {
                           left: 45,
                           bottom: -10,
                           cursor: 'pointer',
-                          display: 
+                          display:
                             !this.props.hideConversionLinkBoolean ? 'none' :
                               this.props.node.extras.conversionsContainer === undefined ||
-                              this.props.node.extras.conversionsContainer &&
-                              this.props.node.extras.conversionsContainer.length <= 2 ? 'block' : 'none'
+                                this.props.node.extras.conversionsContainer &&
+                                this.props.node.extras.conversionsContainer.length <= 2 ? 'block' : 'none'
                         }}
                         title={'add conversion block'}
                       >
                         <AddButtonSVG
-                          onClick={() => { 
-                            if(
+                          onClick={() => {
+                            if (
                               this.props.node.extras.conversionsContainer &&
-                              this.props.node.extras.conversionsContainer.includes('conversion3',2)){
+                              this.props.node.extras.conversionsContainer.includes('conversion3', 2)) {
                               document.getElementById("diagram-layer").click();
                             }
-                            else if(
+                            else if (
                               this.props.node.extras.conversionsContainer &&
-                              this.props.node.extras.conversionsContainer.includes('conversion2',1)){
+                              this.props.node.extras.conversionsContainer.includes('conversion2', 1)) {
                               this.props.node.setConversionsContainer &&
-                              this.props.node.setConversionsContainer('conversion3')
+                                this.props.node.setConversionsContainer('conversion3')
                               document.getElementById("diagram-layer").click();
                             }
-                            else if(
+                            else if (
                               this.props.node.extras.conversionsContainer &&
-                              this.props.node.extras.conversionsContainer.includes('conversion1',0)){
+                              this.props.node.extras.conversionsContainer.includes('conversion1', 0)) {
                               this.props.node.setConversionsContainer &&
-                              this.props.node.setConversionsContainer('conversion2')
+                                this.props.node.setConversionsContainer('conversion2')
                               document.getElementById("diagram-layer").click();
                             }
                             else {
                               this.props.node.setConversionsContainer &&
-                              this.props.node.setConversionsContainer('conversion1')
+                                this.props.node.setConversionsContainer('conversion1')
                               document.getElementById("diagram-layer").click();
                             }
                           }}
@@ -487,7 +532,7 @@ class BigNodeWidget extends React.Component {
                   <button
                     className="btn-select-widget"
                     style={{
-                      paddingRight: 
+                      paddingRight:
                         this.props.node.extras.notesd &&
                         this.props.node.extras.notesd.length !== 0 && 0
                     }}
@@ -529,8 +574,8 @@ class BigNodeWidget extends React.Component {
                     className="btn-select-widget"
                     onClick={() =>
                       deleteNode(
-                        this.props.engine, 
-                        this.props.funnelId, 
+                        this.props.engine,
+                        this.props.funnelId,
                         this.props.node.id
                       )
                     }
@@ -632,6 +677,7 @@ class BigNodeWidget extends React.Component {
               display: 'none'
             }}
           >
+            <PortWidget name="conversionDefault" node={this.props.node} />
             <PortWidget name="conversion1" node={this.props.node} />
             <PortWidget name="conversion2" node={this.props.node} />
             <PortWidget name="conversion3" node={this.props.node} />

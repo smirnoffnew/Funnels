@@ -197,6 +197,7 @@ class TextNodeWidget extends React.Component {
         <div style={{ display: 'none' }} >
             <PortWidget name="clickOnLink" node={this.props.node} />
             <PortWidget name="activeOnPage" node={this.props.node} />
+            <PortWidget name="conversionDefault" node={this.props.node} />
             <PortWidget name="conversion1" node={this.props.node} />
             <PortWidget name="conversion2" node={this.props.node} />
             <PortWidget name="conversion3" node={this.props.node} />

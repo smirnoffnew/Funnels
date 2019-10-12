@@ -27,7 +27,7 @@ const getCounterNode = (array, value) => {
     : 0;
 }
 
-const getAdvancedConversion = (
+export const getAdvancedConversion = (
   nameOfAdvancedConversion,
   conversionInfoForAllNodes,
   node
@@ -48,12 +48,14 @@ const getAdvancedConversion = (
                   node.id
                 )
                 if(counterUTMFrom === 0 || counterPageTo === 0){
+                  console.log('object')
                   return counterPageTo + '/0%'
                 }
                 const advancedConversion = (counterPageTo / counterUTMFrom) * 100
 
                 return counterPageTo + '/' + advancedConversion.toFixed(2) + "%"
               }
+              console.log('object')
               return null
             }
             if (item.from.type === 'pageVisited') {
@@ -70,9 +72,11 @@ const getAdvancedConversion = (
 
                 return advancedConversion
               }
+              console.log('object')
               return null
             }
           }
+          console.log('object')
           return null
         })
     }
@@ -115,19 +119,11 @@ const AdvancedConversion = ({ conversionName, index, node, advancedConversion, c
               )
             }
           })
-
-          // console.log(
-          //   'node.ports[conversionName.toLowerCase()] ', 
-          //   node.ports[conversionName.toLowerCase()].links
-          // )
-
           _.forEach(node.ports[conversionName.toLowerCase()].links, item => {
             if (item instanceof AdvancedLinkModel) {
               item.remove()
             }
           });
-
-
           document.getElementById("diagram-layer").click();
         }}>X</div>
       </div>
@@ -162,7 +158,6 @@ const AdvancedConversion = ({ conversionName, index, node, advancedConversion, c
         left: -16,
         position: 'absolute',
         zIndex: 100,
-        // pointerEvents: 'none'
       }}
       onMouseUp={() => {
         node.setConversions &&
