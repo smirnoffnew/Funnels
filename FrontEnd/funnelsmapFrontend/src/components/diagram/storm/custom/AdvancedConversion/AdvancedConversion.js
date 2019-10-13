@@ -66,7 +66,7 @@ export const getAdvancedConversion = (
                   conversionInfoForAllNodes,
                   node.id
                 )
-                if(counterUTMFrom === 0 || counterPageTo === 0){
+                if(counterPageFrom === 0 || counterPageTo === 0){
                   return counterPageTo + '/0%'
                 }
 
