@@ -48,14 +48,12 @@ export const getAdvancedConversion = (
                   node.id
                 )
                 if(counterUTMFrom === 0 || counterPageTo === 0){
-                  console.log('object')
                   return counterPageTo + '/0%'
                 }
                 const advancedConversion = (counterPageTo / counterUTMFrom) * 100
 
                 return counterPageTo + '/' + advancedConversion.toFixed(2) + "%"
               }
-              console.log('object')
               return null
             }
             if (item.from.type === 'pageVisited') {
@@ -72,11 +70,9 @@ export const getAdvancedConversion = (
 
                 return advancedConversion
               }
-              console.log('object')
               return null
             }
           }
-          console.log('object')
           return null
         })
     }
@@ -85,7 +81,7 @@ export const getAdvancedConversion = (
   }
 }
 
-const AdvancedConversion = ({ conversionName, index, node, advancedConversion, conversionInfoForAllNodes }) => {
+const AdvancedConversion = ({ hideConversionLinkBoolean, conversionName, index, node, advancedConversion, conversionInfoForAllNodes }) => {
   // const showHideClassName = show ? "modal display-block" : "modal display-none";
 
   return (
@@ -103,6 +99,9 @@ const AdvancedConversion = ({ conversionName, index, node, advancedConversion, c
 
         <div 
           className='conversion-delete'
+          style={{
+            display: hideConversionLinkBoolean ? 'block' : 'none',
+          }}
           title='delete'
           onClick={() => {
           node.extras.conversionsContainer.splice(index, 1)
@@ -158,6 +157,7 @@ const AdvancedConversion = ({ conversionName, index, node, advancedConversion, c
         left: -16,
         position: 'absolute',
         zIndex: 100,
+        opacity: hideConversionLinkBoolean ? 1 : 0,
       }}
       onMouseUp={() => {
         node.setConversions &&

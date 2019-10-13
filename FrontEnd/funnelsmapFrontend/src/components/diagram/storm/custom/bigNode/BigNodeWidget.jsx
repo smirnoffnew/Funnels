@@ -181,8 +181,8 @@ class BigNodeWidget extends React.Component {
   render() {
 
     // console.log( 
-    //   this.props.node.ports['conversionDefault'] && 
-    //   this.props.node.ports['conversionDefault'].links
+    //   this.props.showAnalyticsBoolean,
+    //   this.props.hideConversionLinkBoolean
     // )
 
     return (
@@ -242,7 +242,8 @@ class BigNodeWidget extends React.Component {
                   this.props.node.extras.conversionsContainer &&
                   this.props.node.extras.conversionsContainer.length > 0 &&
                   <SelectAnalyticsLeft show={
-                    this.props.hideConversionLinkBoolean
+                    // this.props.hideConversionLinkBoolean
+                    true
                   } >
                     <div
                       className='super-conversion-block'
@@ -252,6 +253,7 @@ class BigNodeWidget extends React.Component {
                         this.props.node.extras.conversionsContainer.map((item, index) => (
                           <AdvancedConversion
                             key={index}
+                            hideConversionLinkBoolean={this.props.hideConversionLinkBoolean}
                             conversionName={item}
                             index={index}
                             node={this.props.node}

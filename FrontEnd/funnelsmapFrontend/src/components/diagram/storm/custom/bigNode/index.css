@@ -87,12 +87,16 @@
 
 .conversion-port{
   display: block;
+  background: rgba(25,25,255, 0.5);
+  border-radius: 50%;
 }
 
 .conversion-port-on-node {
   right: -16px;
   position: absolute;
   z-index: 100;
+  background: rgba(25,25,255, 0.5);
+  border-radius: 50%;
 }
 
 .conversion-wrapper{

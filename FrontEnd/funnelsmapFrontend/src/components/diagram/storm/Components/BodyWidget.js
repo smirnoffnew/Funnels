@@ -77,8 +77,6 @@ export default class BodyWidget extends React.Component {
     );
   }
 
-
-
   saveTemplateHandle = () =>
     this.setState(
       {
@@ -107,12 +105,12 @@ export default class BodyWidget extends React.Component {
     }, () => {
       this.props.work.showAnalyticsBoolean(this.state.toggleAnalytics)
       this.props.work.getConversionInfoForAllNodes(this.props.work.funnelId)
-      if (this.state.toggleAnalytics === true) {
+
         domtoimage
           .toBlob(this.diagramRef)
           .then(data => {
-            let name = randomString({ length: 10 });
-            var file = new File([data], name, {
+            const name = randomString({ length: 10 });
+            const file = new File([data], name, {
               type: "image/svg"
             });
             this.saveDiagramHandle(file);
@@ -121,40 +119,13 @@ export default class BodyWidget extends React.Component {
           .catch(function (error) {
             console.error("oops, something went wrong!", error);
           });
-      }    
+      
     })
 
-    if(this.state.toggleAnalytics){
-      window.location.reload()
+    if (this.state.toggleAnalytics) {
+      this.changeConverseLinksVisible(false)
     }
   }
-
-  handleToggleEdit = () => {
-    this.setState(prev => {
-      return {
-        toggleEdit: !prev.toggleEdit,
-      }
-    }, () => {
-      this.props.work.showAnalyticsBoolean(this.state.toggleAnalytics)
-      // this.props.work.getConversionInfoForAllNodes(this.props.work.funnelId)
-      if (this.state.toggleAnalytics === true) {
-        domtoimage
-          .toBlob(this.diagramRef)
-          .then(data => {
-            let name = randomString({ length: 10 });
-            var file = new File([data], name, {
-              type: "image/svg"
-            });
-            this.saveDiagramHandle(file);
-            this.hideSelect();
-          })
-          .catch(function (error) {
-            console.error("oops, something went wrong!", error);
-          });
-      }
-    })
-  }
-
 
   button = (name, icon, className, title) => {
     return (
@@ -296,6 +267,20 @@ export default class BodyWidget extends React.Component {
 
   changeConverseLinksVisible = boolean => {
     this.props.work.hideConversionLink(boolean)
+
+    domtoimage
+      .toBlob(this.diagramRef)
+      .then(data => {
+        let name = randomString({ length: 10 });
+        var file = new File([data], name, {
+          type: "image/svg"
+        });
+        this.saveDiagramHandle(file);
+        this.hideSelect();
+      })
+      .catch(function (error) {
+        console.error("oops, something went wrong!", error);
+      });
 
     document.getElementById("diagram-layer").click();
     this.forceUpdate();
