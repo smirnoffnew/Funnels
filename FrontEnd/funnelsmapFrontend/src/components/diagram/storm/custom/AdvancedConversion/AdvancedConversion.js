@@ -5,6 +5,7 @@ import { isEmpty } from '../../utils';
 import './AdvancedConversion.css'
 import { AdvancedLinkModel } from '../customLink/customLink';
 
+
 const getCounterUrl = (array, value) => {
   const obj =
     array &&
@@ -27,12 +28,12 @@ const getCounterNode = (array, value) => {
     : 0;
 }
 
-export const getAdvancedConversion = (
+const getConversions = (
   nameOfAdvancedConversion,
   conversionInfoForAllNodes,
-  node
- ) => {
-  try{
+  node,
+) => {
+  try {
     if (conversionInfoForAllNodes) {
       return node.extras.conversions &&
         node.extras.conversions.map(item => {
@@ -43,16 +44,11 @@ export const getAdvancedConversion = (
                   conversionInfoForAllNodes,
                   item.from.id
                 )
-                const counterPageTo = getCounterNode(
-                  conversionInfoForAllNodes,
-                  node.id
-                )
-                if(counterUTMFrom === 0 || counterPageTo === 0){
-                  return counterPageTo + '/0%'
-                }
-                const advancedConversion = (counterPageTo / counterUTMFrom) * 100
 
-                return counterPageTo + '/' + advancedConversion.toFixed(2) + "%"
+                return {
+                  count: counterUTMFrom,
+                  portId: item.from.portId
+                }
               }
               return null
             }
@@ -62,20 +58,11 @@ export const getAdvancedConversion = (
                   conversionInfoForAllNodes,
                   item.from.id
                 )
-                const counterPageTo = getCounterNode(
-                  conversionInfoForAllNodes,
-                  node.id
-                )
-                if(counterPageFrom === 0 || counterPageTo === 0){
-                  return counterPageTo + '/0%'
+
+                return {
+                  count: counterPageFrom,
+                  portId: item.from.portId
                 }
-
-                // const advancedConversion = counterPageFrom - counterPageTo
-                // return advancedConversion
-
-                const advancedConversion = (counterPageTo / counterPageFrom) * 100
-
-                return counterPageTo + '/' + advancedConversion.toFixed(2) + "%"
               }
               return null
             }
@@ -88,104 +75,155 @@ export const getAdvancedConversion = (
   }
 }
 
-const AdvancedConversion = ({ hideConversionLinkBoolean, conversionName, index, node, advancedConversion, conversionInfoForAllNodes }) => {
-  // const showHideClassName = show ? "modal display-block" : "modal display-none";
+export const getAdvancedConversion = (
+  conversionName,
+  conversionInfoForAllNodes,
+  node,
+) => {
+  let fd = getConversions(
+    conversionName,
+    conversionInfoForAllNodes,
+    node,
+  )
+  if (fd) {
+    fd = fd.filter(x => {
+      return x !== undefined && x !== null;
+    });
+    const sourcePortsArr = node.ports[conversionName].links &&
+      Object.values(node.ports[conversionName].links).map(item => {
+        return item.sourcePort.id
+      });
+    const result = fd.filter(u => sourcePortsArr.includes(u.portId));
+    const uniqueArray = result.filter((thing, index) => {
+      return index === result.findIndex(obj => {
+        return JSON.stringify(obj) === JSON.stringify(thing);
+      });
+    });
+    const initialValue = 0;
+    const total = uniqueArray.reduce(
+      (acc, curr) => acc + curr.count,
+      initialValue
+    );
+    if (conversionInfoForAllNodes) {
+      const counterPageTo = getCounterNode(
+        conversionInfoForAllNodes,
+        node.id
+      )
+      const advancedConversion = (counterPageTo / total) * 100
+      if (total === 0) {
+        return counterPageTo + '/0%'
+      }
+
+      return counterPageTo + '/' + advancedConversion.toFixed(2) + "%"
+    }
+  }
+}
+
+const AdvancedConversion = ({
+  hideConversionLinkBoolean,
+  conversionName,
+  index,
+  node,
+  advancedConversion,
+  conversionInfoForAllNodes
+}) => {
 
   return (
     <div className='advanced-conversion-block'>
-    <div className='conversion-wrapper'>
-      
-      <div 
-        className='top-anal'
+      <div className='conversion-wrapper'>
+        <div
+          className='top-anal'
+          style={{
+            display: 'flex'
+          }}
+        >
+          {conversionName.replace('conversion', 'Conversion ')}
+
+          <div
+            className='conversion-delete'
+            style={{
+              display: hideConversionLinkBoolean ? 'block' : 'none',
+            }}
+            title='delete'
+            onClick={() => {
+              node.extras.conversionsContainer.splice(index, 1)
+
+              node.extras.conversions &&
+                node.extras.conversions.forEach((item, index) => {
+                  if (
+                    item.to.id === node.id &&
+                    item.to.type === conversionName
+                  ) {
+                    node.extras.conversions.splice(
+                      index,
+                      1
+                    )
+                  }
+                })
+              _.forEach(node.ports[conversionName].links, item => {
+                if (item instanceof AdvancedLinkModel) {
+                  item.remove()
+                }
+              });
+              document.getElementById("diagram-layer").click();
+            }}>X</div>
+        </div>
+        <div
+          className='bottom-anal'
+        >
+          {
+            node.ports[conversionName] &&
+              node.ports[conversionName].links &&
+              !isEmpty(node.ports[conversionName].links) ?
+              getAdvancedConversion(
+                conversionName,
+                conversionInfoForAllNodes,
+                node,
+              )
+              :
+              node.extras.conversions &&
+              node.extras.conversions.forEach((item, index) => {
+                if (
+                  item.to.id === node.id &&
+                  item.to.type === conversionName
+                ) {
+                  node.extras.conversions.splice(
+                    index,
+                    1
+                  )
+                }
+              })
+          }
+        </div>
+      </div>
+      <div
+        className='conversion-port'
         style={{
-          display: 'flex'
+          left: -16,
+          position: 'absolute',
+          zIndex: 100,
+          opacity: hideConversionLinkBoolean ? 1 : 0,
+        }}
+        onMouseUp={() => {
+          node.setConversions &&
+            node.setConversions(
+              {
+                from: advancedConversion,
+                to: {
+                  id: node.id,
+                  type: conversionName
+                }
+              }
+            )
         }}
       >
-
-        {conversionName.replace('conversion', 'Conversion ')}
-
-        <div 
-          className='conversion-delete'
-          style={{
-            display: hideConversionLinkBoolean ? 'block' : 'none',
-          }}
-          title='delete'
-          onClick={() => {
-          node.extras.conversionsContainer.splice(index, 1)
-
-          node.extras.conversions &&
-          node.extras.conversions.forEach((item, index) => {
-            if (
-              item.to.id === node.id && 
-              item.to.type === conversionName
-            ) {
-              node.extras.conversions.splice(
-                index, 
-                1
-              )
-            }
-          })
-          _.forEach(node.ports[conversionName.toLowerCase()].links, item => {
-            if (item instanceof AdvancedLinkModel) {
-              item.remove()
-            }
-          });
-          document.getElementById("diagram-layer").click();
-        }}>X</div>
-      </div>
-      <div className='bottom-anal'>
-        {
-          node.ports[conversionName.toLowerCase()] && 
-          node.ports[conversionName.toLowerCase()].links && 
-          !isEmpty(node.ports[conversionName.toLowerCase()].links) ?
-            getAdvancedConversion(
-              conversionName,
-              conversionInfoForAllNodes,
-              node
-            ) :
-            node.extras.conversions &&
-            node.extras.conversions.forEach((item, index) => {
-              if (
-                item.to.id === node.id && 
-                item.to.type === conversionName
-              ) {
-                node.extras.conversions.splice(
-                  index, 
-                  1
-                )
-              }
-            })
-        }
+        <PortWidget
+          name={conversionName}
+          node={node}
+        />
       </div>
     </div>
-    <div
-      className='conversion-port'
-      style={{
-        left: -16,
-        position: 'absolute',
-        zIndex: 100,
-        opacity: hideConversionLinkBoolean ? 1 : 0,
-      }}
-      onMouseUp={() => {
-        node.setConversions &&
-          node.setConversions(
-            {
-              from: advancedConversion,
-              to: {
-                id: node.id,
-                type: conversionName
-              }
-            }
-          )
-      }}
-    >
-      <PortWidget 
-        name={conversionName.toLowerCase()} 
-        node={node} 
-      />
-    </div>
-  </div>
   );
-};
+}
 
 export default AdvancedConversion;

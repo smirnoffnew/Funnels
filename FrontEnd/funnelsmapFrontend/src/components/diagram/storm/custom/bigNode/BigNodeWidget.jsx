@@ -307,7 +307,8 @@ class BigNodeWidget extends React.Component {
                             this.setState({
                               advancedConversionCompound: {
                                 id,
-                                type: 'utm'
+                                type: 'utm',
+                                portId: this.props.node.ports.clickOnLink.id
                               }
                             }, () => {
                               this.props.setConversionCompound(this.state.advancedConversionCompound)
@@ -351,7 +352,8 @@ class BigNodeWidget extends React.Component {
                             this.setState({
                               advancedConversionCompound: {
                                 id,
-                                type: 'pageVisited'
+                                type: 'pageVisited',
+                                portId: this.props.node.ports.activeOnPage.id
                               }
                             }, () => {
                               this.props.setConversionCompound(this.state.advancedConversionCompound)
@@ -468,8 +470,8 @@ class BigNodeWidget extends React.Component {
                           display:
                             !this.props.hideConversionLinkBoolean ? 'none' :
                               this.props.node.extras.conversionsContainer === undefined ||
-                                this.props.node.extras.conversionsContainer &&
-                                this.props.node.extras.conversionsContainer.length <= 2 ? 'block' : 'none'
+                                (this.props.node.extras.conversionsContainer &&
+                                this.props.node.extras.conversionsContainer.length <= 2) ? 'block' : 'none'
                         }}
                         title={'add conversion block'}
                       >

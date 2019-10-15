@@ -355,14 +355,17 @@ class SmallNodeWidget extends React.Component {
               bottom: '-115%',
               transform: 'translate(-50%, 50%)',
               left: '53%',
-              opacity: this.props.hideConversionLinkBoolean ? 1 : 0
+              opacity: this.props.hideConversionLinkBoolean ? 1 : 0,
+              background: 'rgba(25,25,255, 0.5)',
+              borderRadius: '50%'
             }}
             onMouseDown={() => {
               const id = this.props.node.id
               this.setState({
                 advancedConversion: {
                   id,
-                  type: 'utm'
+                  type: 'utm',
+                  portId: this.props.node.ports.clickOnLink.id,
                 }
               }, () => {
                 this.props.setConversionCompound(this.state.advancedConversion)

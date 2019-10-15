@@ -106,24 +106,28 @@ export default class BodyWidget extends React.Component {
       this.props.work.showAnalyticsBoolean(this.state.toggleAnalytics)
       this.props.work.getConversionInfoForAllNodes(this.props.work.funnelId)
 
-        domtoimage
-          .toBlob(this.diagramRef)
-          .then(data => {
-            const name = randomString({ length: 10 });
-            const file = new File([data], name, {
-              type: "image/svg"
-            });
-            this.saveDiagramHandle(file);
-            this.hideSelect();
-          })
-          .catch(function (error) {
-            console.error("oops, something went wrong!", error);
+      domtoimage
+        .toBlob(this.diagramRef)
+        .then(data => {
+          const name = randomString({ length: 10 });
+          const file = new File([data], name, {
+            type: "image/svg"
           });
-      
+          this.saveDiagramHandle(file);
+          this.hideSelect();
+        })
+        .catch(function (error) {
+          console.error("oops, something went wrong!", error);
+        });
+
     })
 
     if (this.state.toggleAnalytics) {
-      this.changeConverseLinksVisible(false)
+      this.setState({
+        conversionIsView: false
+      },() => {
+        this.changeConverseLinksVisible(this.state.conversionIsView)
+      })
     }
   }
 
