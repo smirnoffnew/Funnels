@@ -47,6 +47,8 @@ const getConversions = (
                 )
 
                 let portId
+                item.from.portId !== undefined ? 
+                portId = item.from.portId :
                 allNodes.map(elem => {
                   if (item.from.id === elem.id) {
                     elem.ports.map(el => {
@@ -72,6 +74,8 @@ const getConversions = (
                 )
 
                 let portId
+                item.from.portId !== undefined ? 
+                portId = item.from.portId :
                 allNodes.map(elem => {
                   if (item.from.id === elem.id) {
                     elem.ports.map(el => {

@@ -308,6 +308,7 @@ class BigNodeWidget extends React.Component {
                               advancedConversionCompound: {
                                 id,
                                 type: 'utm',
+                                portId: this.props.node.ports.clickOnLink.id
                               }
                             }, () => {
                               this.props.setConversionCompound(this.state.advancedConversionCompound)
@@ -352,6 +353,7 @@ class BigNodeWidget extends React.Component {
                               advancedConversionCompound: {
                                 id,
                                 type: 'pageVisited',
+                                portId: this.props.node.ports.activeOnPage.id
                               }
                             }, () => {
                               this.props.setConversionCompound(this.state.advancedConversionCompound)
