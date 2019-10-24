@@ -123,12 +123,9 @@ module.exports = {
             .orFail( () => new Error('error, Profiles not found') )
             .then(profile => res
                 .status(200)
-                .json({myPartners: [profile.myPartners.find(item => req.params.partnerId === String(item._id))]})
+                .json({myPartners: [profile.myPartners.find(item => req.params.partnerId === item._id.toString())]})
             )
-            .catch(err => res
-                .status(400)
-                .json({ error: err.message })
-            )
+            .catch(err => res.status(400).json({ error: err.message }))
 
     },
 
@@ -144,10 +141,7 @@ module.exports = {
                 return profile.save()
             })
             .then(updatedProfile => res.status(200).json({myPartners: updatedProfile.myPartners}))
-            .catch(err => res
-                .status(400)
-                .json({ error: err.message })
-            )
+            .catch(err => res.status(400).json({ error: err.message }))
 
     },
 
@@ -158,14 +152,11 @@ module.exports = {
             .populate({model: 'Profile', path: 'myPartners.partnerProfile'})
             .orFail( () => new Error('error, Profiles not found') )
             .then(profile => {
-                    profile.myPartners = profile.myPartners.filter(item => String(req.params.partnerId) !== String(item._id));
+                    profile.myPartners = profile.myPartners.filter(item => req.params.partnerId !== item._id.toString());
                     return profile.save()
             })
             .then(updatedProfile => res.status(200).json({myPartners: updatedProfile.myPartners}))
-            .catch(err => res
-                .status(400)
-                .json({ error: err.message })
-            )
+            .catch(err => res.status(400).json({ error: err.message }))
 
     }
 };
