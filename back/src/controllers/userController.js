@@ -13,18 +13,20 @@ const AC = require('activecampaign-rest')
 module.exports = {
     signUp: async function (req, res) {
 
-        const user = await new User({
+        let user = {};
+        let profile = {};
+        let token = {};
+
+        user = await new User({
             _id: new mongoose.Types.ObjectId(),
             ...req.body
         });
 
-        console.log(user)
-
         await user.email.toLowerCase();
 
-        user.save()
-            .then(doc => {
-                const profile = new Profile({
+        user
+            .save()
+            .then(user => new Profile({
                     _id: new mongoose.Types.ObjectId(),
                     password: user.password,
                     limited: user.limited,
@@ -32,46 +34,37 @@ module.exports = {
                     firstName: user.firstName,
                     accountName: user.accountName,
                     description: req.body.description || null
+                })
+            )
+            .then( profile => profile.save() )
+            .then(savedProfile => {
+                profile = savedProfile;
+                token = jwt.sign({profile, userId: user._id}, process.env.SECRET, {expiresIn: '99999d'});
+
+                return new activeCampaignApi.ApiClient({
+                    accountName: process.env.CAMPAING_ACCOUNT_NAME,
+                    key: process.env.CAMPAING_ACCOUNT_KEY
+                })
+                .call('contact_add', {}, 'POST', {
+                    email: profile.email,
+                    first_name: profile.firstName,
+                    tags: profile.description,
+                    'p[15]': process.env.LISTID
+                })
+            })
+            .then(response => {
+                return res.status(200).json({
+                    data: {
+                        _id: profile._id,
+                        firstName: profile.firstName,
+                        limited:profile.limited,
+                        email: profile.email,
+                        description: profile.description,
+                        photoUrl: profile.photoUrl,
+                        accountName: profile.accountName
+                    },
+                    token: `Bearer ${token}`
                 });
-
-                profile.save()
-                    .then(profile => {
-                        const token = jwt.sign({profile,userId:doc._id}, process.env.SECRET, {expiresIn: process.env.TOKEN_EXPIRES});
-
-                        new activeCampaignApi.ApiClient({
-                            accountName: process.env.CAMPAING_ACCOUNT_NAME,
-                            key: process.env.CAMPAING_ACCOUNT_KEY
-                        })
-                        .call('contact_add', {}, 'POST', {
-                            email: profile.email,
-                            first_name: profile.firstName,
-                            tags: profile.description,
-                            'p[15]': process.env.LISTID
-                        })
-                        .then(response => {
-                            console.log(response);
-                            res.status(200).json({
-                                data: {
-                                    _id: profile._id,
-                                    firstName: profile.firstName,
-                                    limited:profile.limited,
-                                    email: profile.email,
-                                    description: profile.description,
-                                    photoUrl: profile.photoUrl,
-                                    accountName: profile.accountName
-                                },
-                                token: `Bearer ${token}`
-                            });
-                        });
-                        
-  
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        res.status(500).json({
-                            errors: err,
-                        });
-                    })
             })
             .catch(err => {
                 console.log(err);
@@ -79,14 +72,19 @@ module.exports = {
             })
     },
     signIn: async function (req, res) {
+
         await req.body.email.toLowerCase();
+
         const emailFromUser = await validateEmail(req.body.email);
+
         if (emailFromUser) {
-            User.findOne({email: req.body.email})
+            User
+                .findOne({email: req.body.email})
                 .exec()
                 .then(user => {
 
                         if (user && bcrypt.compareSync(req.body.password, user.password)) {
+
                                 Profile.findOne({email: req.body.email})
                                 .exec()
                                 .then(profile => {
@@ -119,6 +117,7 @@ module.exports = {
                                         })
                                    
                                     if (profile) {
+
                                         const token = jwt.sign({profile,userId:user._id}, process.env.SECRET, {expiresIn: process.env.TOKEN_EXPIRES});
 
                                         res.status(200).json({
@@ -133,6 +132,7 @@ module.exports = {
                                             token: `Bearer ${token}`
                                         })
                                     } else {
+
                                         const profile = new Profile({
                                             _id: new mongoose.Types.ObjectId(),
                                             password: user.password,
@@ -140,6 +140,7 @@ module.exports = {
                                             firstName: user.firstName,
                                             accountName: user.accountName
                                         });
+
                                         profile.save()
                                             .then(profile => {
                                                 const token = jwt.sign({profile,userId:user._id}, process.env.SECRET, {expiresIn: process.env.TOKEN_EXPIRES});
@@ -170,7 +171,7 @@ module.exports = {
                     res.status(500).json({error: err.message});
                 });
         } else {
-            res.status(400).json({message: "email isnt correct"});
+            res.status(400).json({message: "email is not correct"});
         }
 
     },

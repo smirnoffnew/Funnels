@@ -5,6 +5,23 @@ const validator = require('../libs/validators.js');
 
 let textValidator = [validator.alphaValidator, validator.nameValidator];
 
+const partnerScheme = new Schema({
+    partnerProfile: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Profile',
+        required: true,
+    },
+    token: {
+        type: String,
+        required: true,
+        default: "View Only"
+    },
+    permissions: {
+        type: String,
+        default: "View Only"
+    },
+}, { versionKey: false });
+
 const profileScheme = new Schema({
     password: {
         type: String,
@@ -58,6 +75,10 @@ const profileScheme = new Schema({
 
         }
     ],
+    myPartners: {
+        type: [partnerScheme],
+        default: []
+    }
 
 
 

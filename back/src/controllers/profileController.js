@@ -1,6 +1,8 @@
 const fs = require("fs");
+const mongoose = require("mongoose");
 const Profile = require('../models/profile.js');
 const User = require('../models/user.js');
+const Partner = require('../models/partner.js');
 const activeCampaignApi = require('activecampaign-api');
 
 
@@ -66,19 +68,104 @@ module.exports = {
             });
 
     },
-    // getAvatarUser: async function (req, res) {
+    createPartner: async (req, res) => {
 
-    //     try {
+        let userProfile;
+        let newPartner;
 
-    //         let response = await Profile.findOne({_id: req.authData.profile._id});
+        try {
+            userProfile = await Profile
+                .findOne({_id: mongoose.Types.ObjectId(req.authData.profile._id)})
+                .populate({model: 'Profile', path: 'myPartners.partnerProfile'});
 
-    //         res.status(200).json({photoUrl: response.photoUrl})
-            
-    //     } catch (error) {
-    //         res
-    //             .status(500)
-    //             .json({error: err.message});
-    //     }
+            userProfile ? void(0) : res.status(500).json({error: 'error, Profile not found'});
+            newPartner = await new Partner(
+                {
+                    ...req.body,
+                    partnerProfile: mongoose.Types.ObjectId(req.body.partnerProfile)
+                }
+            );
+            userProfile.myPartners = userProfile.myPartners ? userProfile.myPartners : [];
+            userProfile.myPartners.push(newPartner);
 
-    // },
+        } catch(err) {
+            res.status(500).json({error: err.message});
+        }
+
+
+        userProfile
+            .save()
+            .then(updatedProfile => {
+                return Profile
+                        .findOne({_id: updatedProfile._id})
+                        .populate({model: 'Profile', path: 'myPartners.partnerProfile'});
+
+            })
+            .then(updatedProfile => res.status(200).json({myPartners: updatedProfile.myPartners}))
+            .catch(err => res.status(500).json({error: err.message}));
+    },
+
+    getAllPartners: async (req, res) => {
+
+        Profile
+            .findById(req.authData.profile._id)
+            .populate({model: 'Profile', path: 'myPartners.partnerProfile'})
+            .orFail( () => new Error('error, Profiles not found') )
+            .then(profile => res.status(200).json({myPartners: profile.myPartners}))
+            .catch(err => res.status(400).json({ error: err.message }));
+    },
+
+    getSinglePartner: async (req, res) => {
+
+        Profile
+            .findById(req.authData.profile._id)
+            .populate({model: 'Profile', path: 'myPartners.partnerProfile'})
+            .orFail( () => new Error('error, Profiles not found') )
+            .then(profile => res
+                .status(200)
+                .json({myPartners: [profile.myPartners.find(item => req.params.partnerId === String(item._id))]})
+            )
+            .catch(err => res
+                .status(400)
+                .json({ error: err.message })
+            )
+
+    },
+
+    updatePartnersPermissions: async (req, res) => {
+
+        Profile
+            .findById(req.authData.profile._id)
+            .populate({model: 'Profile', path: 'myPartners.partnerProfile'})
+            .orFail( () => new Error('error, Profiles not found') )
+            .then(profile => {
+                const objIndex = profile.myPartners.findIndex( item => item._id.toString() === req.params.partnerId);
+                profile.myPartners[objIndex].permissions = req.body.permissions ? req.body.permissions : "View Only";
+                return profile.save()
+            })
+            .then(updatedProfile => res.status(200).json({myPartners: updatedProfile.myPartners}))
+            .catch(err => res
+                .status(400)
+                .json({ error: err.message })
+            )
+
+    },
+
+    deleteSinglePartner: async (req, res) => {
+
+        Profile
+            .findById(req.authData.profile._id)
+            .populate({model: 'Profile', path: 'myPartners.partnerProfile'})
+            .orFail( () => new Error('error, Profiles not found') )
+            .then(profile => {
+                    profile.myPartners = profile.myPartners.filter(item => String(req.params.partnerId) !== String(item._id));
+                    return profile.save()
+            })
+            .then(updatedProfile => res.status(200).json({myPartners: updatedProfile.myPartners}))
+            .catch(err => res
+                .status(400)
+                .json({ error: err.message })
+            )
+
+    }
 };

@@ -20,10 +20,32 @@ profileRouter.patch('/avatar',
     lastActive,
     multerImage.single('avatar'),
     profileController.changeUsersAvatar);
-// profileRouter.get('/avatar',
-//     enshureToken,
-//     verifyToken,
-//     profileController.getAvatarUser    
-// )
+
+/*partners*/
+profileRouter.post('/partners',
+    enshureToken,
+    verifyToken,
+    lastActive,
+    profileController.createPartner);
+profileRouter.get('/partners',
+    enshureToken,
+    verifyToken,
+    lastActive,
+    profileController.getAllPartners);
+profileRouter.get('/partners/:partnerId',
+    enshureToken,
+    verifyToken,
+    lastActive,
+    profileController.getSinglePartner);
+profileRouter.patch('/partners/:partnerId',
+    enshureToken,
+    verifyToken,
+    lastActive,
+    profileController.updatePartnersPermissions);
+profileRouter.delete('/partners/:partnerId',
+    enshureToken,
+    verifyToken,
+    lastActive,
+    profileController.deleteSinglePartner);
 
 module.exports = profileRouter;
