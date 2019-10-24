@@ -365,7 +365,7 @@ class SmallNodeWidget extends React.Component {
                 advancedConversion: {
                   id,
                   type: 'utm',
-                  portId: this.props.node.ports.clickOnLink.id,
+                  portId: this.props.node.ports.clickOnLink.id
                 }
               }, () => {
                 this.props.setConversionCompound(this.state.advancedConversion)

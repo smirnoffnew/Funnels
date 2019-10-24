@@ -32,6 +32,7 @@ const getConversions = (
   nameOfAdvancedConversion,
   conversionInfoForAllNodes,
   node,
+  allNodes
 ) => {
   try {
     if (conversionInfoForAllNodes) {
@@ -45,9 +46,22 @@ const getConversions = (
                   item.from.id
                 )
 
+                let portId
+                item.from.portId !== undefined ? 
+                portId = item.from.portId :
+                allNodes.map(elem => {
+                  if (item.from.id === elem.id) {
+                    elem.ports.map(el => {
+                      if(el.name === "clickOnLink"){
+                        portId = el.id
+                      }
+                    })
+                  } 
+                })
+
                 return {
                   count: counterUTMFrom,
-                  portId: item.from.portId
+                  portId
                 }
               }
               return null
@@ -59,9 +73,22 @@ const getConversions = (
                   item.from.id
                 )
 
+                let portId
+                item.from.portId !== undefined ? 
+                portId = item.from.portId :
+                allNodes.map(elem => {
+                  if (item.from.id === elem.id) {
+                    elem.ports.map(el => {
+                      if(el.name === "activeOnPage"){
+                        portId = el.id
+                      }
+                    })
+                  } 
+                })
+
                 return {
                   count: counterPageFrom,
-                  portId: item.from.portId
+                  portId
                 }
               }
               return null
@@ -79,11 +106,13 @@ export const getAdvancedConversion = (
   conversionName,
   conversionInfoForAllNodes,
   node,
+  allNodes
 ) => {
   let fd = getConversions(
     conversionName,
     conversionInfoForAllNodes,
     node,
+    allNodes
   )
   if (fd) {
     fd = fd.filter(x => {
@@ -125,7 +154,8 @@ const AdvancedConversion = ({
   index,
   node,
   advancedConversion,
-  conversionInfoForAllNodes
+  conversionInfoForAllNodes,
+  allNodes,
 }) => {
 
   return (
@@ -179,6 +209,7 @@ const AdvancedConversion = ({
                 conversionName,
                 conversionInfoForAllNodes,
                 node,
+                allNodes
               )
               :
               node.extras.conversions &&

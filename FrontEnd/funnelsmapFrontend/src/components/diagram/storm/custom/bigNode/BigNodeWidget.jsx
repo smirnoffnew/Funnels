@@ -181,8 +181,7 @@ class BigNodeWidget extends React.Component {
   render() {
 
     // console.log( 
-    //   this.props.showAnalyticsBoolean,
-    //   this.props.hideConversionLinkBoolean
+    //   this.props.diagram && JSON.parse(this.props.diagram.converted).nodes
     // )
 
     return (
@@ -259,6 +258,7 @@ class BigNodeWidget extends React.Component {
                             node={this.props.node}
                             advancedConversion={this.props.advancedConversion}
                             conversionInfoForAllNodes={this.props.conversionInfoForAllNodes}
+                            allNodes={this.props.diagram && JSON.parse(this.props.diagram.converted).nodes}
                           />
                         ))
                       }
@@ -414,7 +414,8 @@ class BigNodeWidget extends React.Component {
                                 getAdvancedConversion(
                                   'conversionDefault',
                                   this.props.conversionInfoForAllNodes,
-                                  this.props.node
+                                  this.props.node,
+                                  this.props.diagram && JSON.parse(this.props.diagram.converted).nodes
                                 ) :
                                 (this.props.node.extras.conversions &&
                                   this.props.node.extras.conversions.forEach((item, index) => {
