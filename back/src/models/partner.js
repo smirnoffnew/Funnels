@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const uniqueValidator = require('mongoose-unique-validator');
 
 const partnerScheme = new Schema({
     partnerProfile: {
@@ -11,7 +10,7 @@ const partnerScheme = new Schema({
     token: {
         type: String,
         required: true,
-        default: "View Only"
+        default: ""
     },
     permissions: {
         type: String,
@@ -19,5 +18,4 @@ const partnerScheme = new Schema({
     },
 }, { versionKey: false });
 
-partnerScheme.plugin(uniqueValidator);
-module.exports = mongoose.model(' ', partnerScheme);
+module.exports = mongoose.model('Partner', partnerScheme);

@@ -69,42 +69,7 @@ module.exports = {
             });
 
     },
-    createPartner: async (req, res) => {
 
-        let userProfile;
-        let newPartner;
-
-        try {
-            userProfile = await Profile
-                .findOne({_id: mongoose.Types.ObjectId(req.authData.profile._id)})
-                .populate({model: 'Profile', path: 'myPartners.partnerProfile'});
-
-            userProfile ? void(0) : res.status(500).json({error: 'error, Profile not found'});
-            newPartner = await new Partner(
-                {
-                    ...req.body,
-                    partnerProfile: mongoose.Types.ObjectId(req.body.partnerProfile)
-                }
-            );
-            userProfile.myPartners = userProfile.myPartners ? userProfile.myPartners : [];
-            userProfile.myPartners.push(newPartner);
-
-        } catch(err) {
-            res.status(500).json({error: err.message});
-        }
-
-
-        userProfile
-            .save()
-            .then(updatedProfile => {
-                return Profile
-                        .findOne({_id: updatedProfile._id})
-                        .populate({model: 'Profile', path: 'myPartners.partnerProfile'});
-
-            })
-            .then(updatedProfile => res.status(200).json({myPartners: updatedProfile.myPartners}))
-            .catch(err => res.status(500).json({error: err.message}));
-    },
 
     getAllPartners: async (req, res) => {
 
@@ -163,16 +128,75 @@ module.exports = {
 
     createUrlForPartner: async (req, res) => {
 
-        new PartnerToken({ownerToken: req.body.token, permissions: req.body.permissions})
-            .save()
-            .then( partnerToken => res
-                .status(200)
-                .json({data: Boolean(req.authData.profile.limited) === true ?
-                        `No authority to partner` :
-                        `${process.env.PROD_URL}/add-partner/${partnerToken._id}`}
-                )
+        new PartnerToken({
+            ownerToken: req.body.token,
+            ownerProfileId: req.body.ownerProfileId,
+            permissions: req.body.permissions
+        })
+        .save()
+        .then( partnerToken => res
+            .status(200)
+            .json({data: Boolean(req.authData.profile.limited) === true ?
+                    `No authority to partner` :
+                    `${process.env.PROD_URL}/add-partner/${partnerToken._id}`}
             )
-            .catch(err => res.status(500).json({ error: err.message }));
+        )
+        .catch(err => res.status(500).json({ error: err.message }));
 
+    },
+
+    createPartnerByLink: async function (req, res) {
+
+        const partnerTokenId = req.body.partnerTokenId;
+        const partnerProfileId = req.authData.profile._id;
+
+        let existPartnerToken;
+        let profile;
+
+        Profile
+            .findById(partnerProfileId)
+            .orFail( () => new Error('error, your profile not found') )
+            .then(() => PartnerToken
+                .findOne({_id: mongoose.Types.ObjectId(partnerTokenId)})
+                .orFail( () => new Error('error, PartnerToken not found') )
+            )
+            .then(partnerToken => {
+                existPartnerToken = partnerToken;
+                return Profile
+                    .findOne({_id: mongoose.Types.ObjectId(existPartnerToken.ownerProfileId)})
+                    .populate({model: 'Profile', path: 'myPartners.partnerProfile'})
+                    .orFail( () => new Error('error, Owner Profile not found') )
+            })
+            .then(ownerProfile => {
+                const newPartner = new Partner(
+                    {
+                        token: existPartnerToken.ownerToken,
+                        permissions: existPartnerToken.permissions,
+                        partnerProfile: mongoose.Types.ObjectId(existPartnerToken.ownerProfileId)
+                    }
+                );
+
+                ownerProfile.myPartners = ownerProfile.myPartners ? ownerProfile.myPartners : [];
+                ownerProfile.myPartners.push(newPartner);
+                return ownerProfile.save()
+            })
+            .then(updatedProfile => {
+                profile = updatedProfile;
+                return PartnerToken.deleteOne({_id: mongoose.Types.ObjectId(partnerTokenId)})
+            })
+            .then(() => res.status(200).json({myOwners: profile.myOwners}))
+            .catch(err => res.status(400).json({error: err.message}));
+
+    },
+
+    getAllOwners: async function (req, res) {
+        const partnerProfileId = req.authData.profile._id;
+        Profile
+            .find()
+            .elemMatch("myPartners", {partnerProfile: mongoose.Types.ObjectId(partnerProfileId) })
+            .then((result) => res.status(200).json({result}))
+            .catch(err => res.status(400).json({error: err.message}));
     }
+
+
 };

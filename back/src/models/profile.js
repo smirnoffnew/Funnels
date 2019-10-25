@@ -14,7 +14,7 @@ const partnerScheme = new Schema({
     token: {
         type: String,
         required: true,
-        default: "View Only"
+        default: ""
     },
     permissions: {
         type: String,
@@ -79,8 +79,6 @@ const profileScheme = new Schema({
         type: [partnerScheme],
         default: []
     }
-
-
 
 
 }, {versionKey: false});

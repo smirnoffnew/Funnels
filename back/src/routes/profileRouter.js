@@ -22,11 +22,6 @@ profileRouter.patch('/avatar',
     profileController.changeUsersAvatar);
 
 /*partners*/
-profileRouter.post('/partners',
-    enshureToken,
-    verifyToken,
-    lastActive,
-    profileController.createPartner);
 profileRouter.get('/partners',
     enshureToken,
     verifyToken,
@@ -47,11 +42,26 @@ profileRouter.delete('/partners/:partnerId',
     verifyToken,
     lastActive,
     profileController.deleteSinglePartner);
+
+/*owners*/
+profileRouter.get('/owners',
+    enshureToken,
+    verifyToken,
+    lastActive,
+    profileController.getAllOwners);
+
+
+/*partners links*/
 profileRouter.post('/partners/link',
     enshureToken,
     verifyToken,
     lastActive,
     profileController.createUrlForPartner);
+profileRouter.post('/partners/add-me-like-partner',
+    enshureToken,
+    verifyToken,
+    lastActive,
+    profileController.createPartnerByLink);
 
 
 module.exports = profileRouter;
