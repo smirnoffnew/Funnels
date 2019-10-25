@@ -47,5 +47,11 @@ profileRouter.delete('/partners/:partnerId',
     verifyToken,
     lastActive,
     profileController.deleteSinglePartner);
+profileRouter.post('/partners/link',
+    enshureToken,
+    verifyToken,
+    lastActive,
+    profileController.createUrlForPartner);
+
 
 module.exports = profileRouter;

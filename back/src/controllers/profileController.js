@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Profile = require('../models/profile.js');
 const User = require('../models/user.js');
 const Partner = require('../models/partner.js');
+const PartnerToken = require('../models/partnerToken.js');
 const activeCampaignApi = require('activecampaign-api');
 
 
@@ -157,6 +158,21 @@ module.exports = {
             })
             .then(updatedProfile => res.status(200).json({myPartners: updatedProfile.myPartners}))
             .catch(err => res.status(400).json({ error: err.message }))
+
+    },
+
+    createUrlForPartner: async (req, res) => {
+
+        new PartnerToken({ownerToken: req.body.token, permissions: req.body.permissions})
+            .save()
+            .then( partnerToken => res
+                .status(200)
+                .json({data: Boolean(req.authData.profile.limited) === true ?
+                        `No authority to partner` :
+                        `${process.env.PROD_URL}/add-partner/${partnerToken._id}`}
+                )
+            )
+            .catch(err => res.status(500).json({ error: err.message }));
 
     }
 };
