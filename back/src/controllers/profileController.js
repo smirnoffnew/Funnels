@@ -130,7 +130,6 @@ module.exports = {
 
         new PartnerToken({
             ownerToken: req.body.token,
-            ownerProfileId: req.body.ownerProfileId,
             permissions: req.body.permissions
         })
         .save()
@@ -172,7 +171,7 @@ module.exports = {
                     {
                         token: existPartnerToken.ownerToken,
                         permissions: existPartnerToken.permissions,
-                        partnerProfile: mongoose.Types.ObjectId(existPartnerToken.ownerProfileId)
+                        partnerProfile: mongoose.Types.ObjectId(partnerProfileId)
                     }
                 );
 

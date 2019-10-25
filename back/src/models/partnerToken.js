@@ -11,13 +11,7 @@ const partnerTokenScheme = new Schema({
     ownerToken: {
         type: String,
         required: true,
-    },
-
-    ownerProfileId: {
-        type: String,
-        required: true,
-    },
-
+    }
 
 }, { versionKey: false });
 
