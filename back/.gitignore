@@ -41,4 +41,4 @@ package-lock.json
 # docker folders mapping
 node_modules_docker
 
-
+.src/public/*
