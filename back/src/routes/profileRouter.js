@@ -57,7 +57,7 @@ profileRouter.post('/partners/link',
     verifyToken,
     lastActive,
     profileController.createUrlForPartner);
-profileRouter.post('/partners/add-me-like-partner',
+profileRouter.get('/partners/add-me-like-partner/:partnerTokenId',
     enshureToken,
     verifyToken,
     lastActive,

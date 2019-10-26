@@ -128,9 +128,12 @@ module.exports = {
 
     createUrlForPartner: async (req, res) => {
 
+        const partnerProfileId = req.authData.profile._id;
+
         new PartnerToken({
-            ownerToken: req.body.token,
-            permissions: req.body.permissions
+            ownerToken: req.headers.authorization,
+            permissions: req.body.permissions,
+            ownerProfileId: partnerProfileId
         })
         .save()
         .then( partnerToken => res
@@ -144,29 +147,33 @@ module.exports = {
 
     },
 
+
     createPartnerByLink: async function (req, res) {
 
-        const partnerTokenId = req.body.partnerTokenId;
         const partnerProfileId = req.authData.profile._id;
-
+        const partnerTokenId = req.params.partnerTokenId;
         let existPartnerToken;
         let profile;
 
         Profile
             .findById(partnerProfileId)
-            .orFail( () => new Error('error, your profile not found') )
+
+            .orFail( () => new Error('error, Your profile not found') )
+
             .then(() => PartnerToken
                 .findOne({_id: mongoose.Types.ObjectId(partnerTokenId)})
-                .orFail( () => new Error('error, PartnerToken not found') )
+                .orFail( () => new Error('error, Partner token not found') )
             )
+
             .then(partnerToken => {
                 existPartnerToken = partnerToken;
                 return Profile
                     .findOne({_id: mongoose.Types.ObjectId(existPartnerToken.ownerProfileId)})
-                    .populate({model: 'Profile', path: 'myPartners.partnerProfile'})
-                    .orFail( () => new Error('error, Owner Profile not found') )
+                    .orFail( () => new Error('error, Owner profile not found') )
             })
+
             .then(ownerProfile => {
+
                 const newPartner = new Partner(
                     {
                         token: existPartnerToken.ownerToken,
@@ -175,15 +182,28 @@ module.exports = {
                     }
                 );
 
-                ownerProfile.myPartners = ownerProfile.myPartners ? ownerProfile.myPartners : [];
-                ownerProfile.myPartners.push(newPartner);
+                const isThisPartnerExist = ownerProfile.myPartners.findIndex( item => item.partnerProfile.toString() === partnerProfileId);
+
+                if(isThisPartnerExist === -1){
+                    ownerProfile.myPartners = ownerProfile.myPartners ? ownerProfile.myPartners : [];
+                    ownerProfile.myPartners.push(newPartner);
+                } else {
+                    throw new Error('error, you are already added like a partner')
+                }
+
                 return ownerProfile.save()
             })
-            .then(updatedProfile => {
-                profile = updatedProfile;
+
+            .then(updatedOwnersProfile => {
+                profile = updatedOwnersProfile;
+                profile.myPartners = profile.myPartners.filter(item => item.partnerProfile.toString() === partnerProfileId);
                 return PartnerToken.deleteOne({_id: mongoose.Types.ObjectId(partnerTokenId)})
             })
-            .then(() => res.status(200).json({myOwners: profile.myOwners}))
+
+            .then(() => res.status(200).json({
+                ownersProfile: profile,
+                message: 'now you added like a partner'
+            }))
             .catch(err => res.status(400).json({error: err.message}));
 
     },
@@ -191,9 +211,18 @@ module.exports = {
     getAllOwners: async function (req, res) {
         const partnerProfileId = req.authData.profile._id;
         Profile
-            .find()
-            .elemMatch("myPartners", {partnerProfile: mongoose.Types.ObjectId(partnerProfileId) })
-            .then((result) => res.status(200).json({result}))
+            .find({
+                "myPartners": {
+                    "$elemMatch" : {
+                        partnerProfile: mongoose.Types.ObjectId(partnerProfileId)
+                    },
+                }
+            })
+            .select(["firstName","accountName","email","myPartners"])
+            .then((result) => res.status(200).json({
+                owners: result.map( item =>
+                    ({ ...item._doc, myPartners: item.myPartners.filter(i => i.partnerProfile.toString() === partnerProfileId)}))
+            }))
             .catch(err => res.status(400).json({error: err.message}));
     }
 

@@ -3,6 +3,11 @@ const Schema = mongoose.Schema;
 
 const partnerTokenScheme = new Schema({
 
+    ownerProfileId: {
+        type: String,
+        required: true,
+    },
+
     permissions: {
         type: String,
         required: true,
