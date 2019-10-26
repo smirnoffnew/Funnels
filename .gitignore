@@ -42,4 +42,5 @@ package-lock.json
 node_modules_docker
 
 .src/public/*
+.back/src/public/*
 .idea
