@@ -185,8 +185,8 @@ export function addPartner(tokenPartner) {
           type: 'ADD_PARTNER_MESSAGE',
           payload: response.data.message
         });
-        console.log('zaebis', response.data)
-        dispatch(push('/'));
+        // console.log('zaebis', response.data)
+        dispatch(push('/projects'));
       })
       .catch(function (error) {
         if (error.response) {

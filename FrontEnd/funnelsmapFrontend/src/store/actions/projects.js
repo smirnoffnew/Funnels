@@ -444,7 +444,7 @@ export const saveDiagramThenExit = (funnelId, diagramObj, image) => dispatch => 
         dispatch({ type: 'SAVE_DIAGRAM_SUCCESS_RESET' });
       }, 50)
       setTimeout(() => {
-        dispatch(push('/'));
+        dispatch(push('/projects'));
       }, 1000)
 
     })

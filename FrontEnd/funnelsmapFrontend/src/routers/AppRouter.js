@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
+import { Redirect } from 'react-router-dom'
 import { PrivateRoute } from '../components/RequireAuth';
 import { PrivateRouteAddCollaborator } from '../components/PrivateRouteAddCollaborator';
 import ProjectList from '../components/dashboard/projects/ProjectList';
@@ -21,8 +22,17 @@ import Diagram from '../components/diagram/storm';
 import { PrivateRouteAddPartner } from '../components/PrivateRouteAddPartner';
 import AddPartner from '../components/dashboard/projects/addCollaborators/AddPartner';
 
+
 const AppRouter = () => (
   <>
+
+    {
+      window.location.pathname === '/' &&
+      <Redirect to={{
+        pathname: '/projects'
+      }} />
+    }
+
     <Route path="/sign-in" component={Signin} />
     <Route path="/sign-up" component={Signup} />
     <Route path="/sign-up-testers" component={Signup} />
@@ -37,7 +47,7 @@ const AppRouter = () => (
     <PrivateRouteAddPartner path="/add-partner/:token" component={AddPartner} />
     <Route path="/add-collaborators-image" component={AddCollaboratorsImage} />
 
-    <PrivateRoute exact={true} path="/" component={ProjectList} />
+    <PrivateRoute exact={true} path="/projects" component={ProjectList} />
     <PrivateRoute path="/collaborations" component={Collaborations} />
     <PrivateRoute path='/funnels/:projectId' component={FunnelList} />
     <PrivateRoute path='/diagram/:funnelId' component={Diagram} />

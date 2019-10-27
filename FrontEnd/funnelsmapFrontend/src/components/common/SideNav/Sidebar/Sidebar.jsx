@@ -7,7 +7,7 @@ import "./Sidebar.css";
 const Sidebar = () => {
 	return(
 		<aside className='sidebar'>
-			<Link to="/">
+			<Link to="/projects">
 				<img className='logo' src={logo} alt="Funnelsmap" />
 			</Link>
 			<Menu />

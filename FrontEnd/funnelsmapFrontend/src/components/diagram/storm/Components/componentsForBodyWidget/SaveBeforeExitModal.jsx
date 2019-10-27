@@ -85,7 +85,7 @@ export default class SaveBeforeExitModal extends React.Component {
           </button>
 
             <NavLink
-              to={'/'}
+              to={'/projects'}
               className='btn btn-1 create-project-button-in-modal'
               style={{
                 color: '#fff',

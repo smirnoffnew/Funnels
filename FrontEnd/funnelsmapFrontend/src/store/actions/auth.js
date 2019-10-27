@@ -180,7 +180,7 @@ export function signinUser(props) {
             dispatch(push(params.get('add-partner')));
           }
           else {
-            dispatch(push('/'));
+            dispatch(push('/projects'));
           }
 
         }
@@ -282,7 +282,7 @@ export function questionnaireUser(props, signUpData, limited) {
           dispatch(push(route));
         }
         else {
-          dispatch(push('/'));
+          dispatch(push('/projects'));
         }
 
         localStorage.removeItem('signUpData');

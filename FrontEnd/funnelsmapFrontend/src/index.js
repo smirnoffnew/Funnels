@@ -1,16 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { 
-  createStore, 
-  applyMiddleware, 
-  combineReducers 
+import {
+  createStore,
+  applyMiddleware,
+  combineReducers
 } from 'redux';
 import thunk from 'redux-thunk';
-import { 
-  ConnectedRouter, 
-  routerMiddleware, 
-  connectRouter 
+import {
+  ConnectedRouter,
+  routerMiddleware,
+  connectRouter
 } from 'connected-react-router'
 import { createBrowserHistory } from "history";
 import AppRouter from './routers/AppRouter';
@@ -28,7 +28,7 @@ const store = createStore(
     router: connectRouter(history),
   }),
   applyMiddleware(thunk, middleware),
- 
+
 );
 
 const token = JSON.parse(localStorage.getItem('token'));

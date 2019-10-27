@@ -12,7 +12,7 @@ import { ReactComponent as HelpdeskSVG } from '../../../../assets/Helpdesk.svg';
 const Menu = () => {
   return (
     <div className='menu'>
-      <MenuItem exact={true} to="/" name="Projects" icon={<ProjectSVG />} />
+      <MenuItem exact={true} to="/projects" name="Projects" icon={<ProjectSVG />} />
       <MenuItem exact={true} to="/templates" name="Templates" icon={<TemplatesSVG />} />
       <MenuItem exact={false} to="/collaborations" name="Collaborations" icon={<CollaborationsSVG />} />
       <MenuItemLink href="https://funnelsmap.com/helpdesk/" target='_blank' name="Helpdesk" icon={<HelpdeskSVG />} />

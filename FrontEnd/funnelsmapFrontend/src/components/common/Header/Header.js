@@ -84,7 +84,7 @@ class Header extends Component {
         });
         this.props.dispatch({ type: "CLEAR_CREATE_PROJECT_ERROR" });
         this.hideModal();
-        this.props.dispatch(push("/"));
+        this.props.dispatch(push("/projects"));
       })
       .catch(error => {
         this.props.dispatch({
@@ -358,7 +358,7 @@ class Header extends Component {
                   onClick={() => {
                     if (localStorage.getItem('token2')) {
                       localStorage.removeItem('token2')
-                      this.props.dispatch(push('/'))
+                      this.props.dispatch(push('/projects'))
                       window.location.reload()
                     }
                   }}
@@ -386,7 +386,7 @@ class Header extends Component {
                             `"` + owner.myPartners[0].token + `"` !== localStorage.getItem('token2')) {
                             const token2 = `"${owner.myPartners && owner.myPartners[0].token}"`
                             localStorage.setItem('token2', token2)
-                            this.props.dispatch(push('/'))
+                            this.props.dispatch(push('/projects'))
                             window.location.reload()
                           }
                         }}
