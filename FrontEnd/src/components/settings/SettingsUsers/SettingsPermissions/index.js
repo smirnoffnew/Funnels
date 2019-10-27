@@ -150,7 +150,7 @@ const formikEnhancer = withFormik({
     setPermissions: '',
   }),
   handleSubmit: (payload, { props, setSubmitting }) => {
-    console.log('setPermissions', payload)
+    // console.log('setPermissions', payload)
     props.dispatch({ type: 'GENERATED_LINK_TO_ADD_USER_RESET' });
     props.generatingLinkToAddUser(payload)
     setSubmitting(false);

@@ -38,7 +38,7 @@ export function getAllPartners() {
   return function (dispatch) {
     API.get(`profile/partners`)
       .then(response => {
-        console.log('getAllPartners: ', response.data)
+        // console.log('getAllPartners: ', response.data)
 
         dispatch({
           type: 'RESET_ALL_USERS'
@@ -92,7 +92,7 @@ export function changePermissionForUser(data, id) {
     changePermissions
   } = data;
 
-  console.log('changePermissionForUser',data, id)
+  // console.log('changePermissionForUser',data, id)
   return function (dispatch) {
     API.patch(`profile/partners/${id}`, {
       'permissions': changePermissions,
@@ -131,14 +131,14 @@ export function generatingLinkToAddUser(data) {
   const {
     setPermissions
   } = data
-  console.log('setPermissions', setPermissions)
+  // console.log('setPermissions', setPermissions)
   return function (dispatch) {
     API.post(`profile/partners/link`, {
       // 'token': JSON.parse(localStorage.getItem('token')),
       'permissions': setPermissions
     })
       .then(response => {
-        console.log('generatingLinkToAddUser: ', response.data)
+        // console.log('generatingLinkToAddUser: ', response.data)
         dispatch({
           type: 'GENERATION_LINK_TO_ADD_USER_MESSAGE',
           payload: response.data.message
@@ -155,7 +155,7 @@ export function generatingLinkToAddUser(data) {
       })
       .catch(function (error) {
         if (error.response) {
-          console.log(error.response)
+          // console.log(error.response)
           dispatch({
             type: 'GENERATION_LINK_TO_ADD_USER_MESSAGE',
             payload: error.response.data.error

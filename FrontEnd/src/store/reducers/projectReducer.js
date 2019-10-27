@@ -20,7 +20,7 @@ const initialState = {
 }
 
 export default function (state = initialState, action) {
-  console.log(state.permissionForCollaborator)
+  // console.log(state.permissionForCollaborator)
   switch (action.type) {
     ///////////////////////////////////////////////////////////////////////////
     case 'RESET_ALL_PROJECTS':

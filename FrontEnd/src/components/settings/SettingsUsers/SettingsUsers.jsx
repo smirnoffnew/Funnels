@@ -67,11 +67,6 @@ class SettingsUsers extends Component {
 
 
   render() {
-    this.props.usersList &&
-    this.props.usersList.map(user => {
-      console.log('user', user)
-    })
-
     return (
       <Layout title="Users">
 
@@ -240,7 +235,7 @@ class SettingsUsers extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log('state linkToAddUser', state)
+  // console.log('state linkToAddUser', state)
   return {
     linkToAddUser: state.users.linkToAddUser,
     usersList: state.users.usersList,

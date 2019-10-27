@@ -164,7 +164,7 @@ export function signinUser(props) {
     })
       .then(response => {
         if (response.data) {
-          console.log(response.data)
+          // console.log(response.data)
           localStorage.setItem('token', JSON.stringify(response.data.token));
           localStorage.setItem('userAvatar', JSON.stringify(API_URL + response.data.data.photoUrl));
           localStorage.setItem('userFirstName', response.data.data.firstName);
