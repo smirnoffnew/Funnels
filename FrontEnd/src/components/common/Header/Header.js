@@ -10,7 +10,7 @@ import {
 } from "../../../store/actions/projects";
 import { signOutUser } from "../../../store/actions/auth";
 import Modal from "../Modal/Modal";
-import { API_URL } from "../../../config";
+import API_URL from "../../../config";
 import ClickOutside from "../ClickOutside";
 import { ReactComponent as SearchSVG } from "../../../assets/search.svg";
 import { ReactComponent as QuestionSVG } from "../../../assets/question-mark.svg";

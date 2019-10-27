@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { addCollaborator } from '../../../../store/actions/collaborations'
-import { API_URL } from '../../../../config'
+import API_URL from '../../../../config'
 import logo from '../../../../assets/Logo_invert.png'
 import { ReactComponent as CollaborateSVG } from '../../../../assets/collaborate.svg';
 import './AddCollaboratorsImage.css'

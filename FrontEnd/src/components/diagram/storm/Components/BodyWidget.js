@@ -27,7 +27,7 @@ import SettingsNodeRightPanel from "./componentsForBodyWidget/SettingsNodeRightP
 import NotesNodeRightPanel from "./componentsForBodyWidget/NotesNodeRightPanel";
 import SaveBeforeExitModal from "./componentsForBodyWidget/SaveBeforeExitModal";
 import CreateTemplateModal from "./componentsForBodyWidget/CreateTemplateModal";
-import { API_URL } from "../../../../config";
+import API_URL from "../../../../config";
 import FunnelCommentsRightPanel from "./componentsForBodyWidget/FunnelCommentsRightPanel";
 import { keyMonitor } from "../utils";
 

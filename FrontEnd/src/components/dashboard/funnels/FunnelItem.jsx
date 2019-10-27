@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from "react-router-dom";
 import ClickOutside from '../../common/ClickOutside'
 import Modal from '../../common/Modal/Modal'
-import { API_URL } from '../../../config'
+import API_URL from '../../../config'
 import '../index.css'
 
 class FunnelItem extends React.Component {

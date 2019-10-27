@@ -15,7 +15,7 @@ import {
   getAllCollaboratorsForFunnels,
   resetAllCollaboratorsForFunnels
 } from "../../../store/actions/collaborations";
-import { API_URL } from "../../../config";
+import API_URL from "../../../config";
 import "../index.css";
 
 class ProjectItem extends React.Component {

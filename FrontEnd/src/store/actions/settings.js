@@ -1,6 +1,6 @@
 import { API } from './instance'
 import axios from 'axios'
-import { API_URL } from '../../config'
+import API_URL from '../../config'
 
 export function changeUserName(data) {
   const {

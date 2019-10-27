@@ -11,7 +11,7 @@ import { CustomNodeModel } from "./custom/CustomNodeModel";
 import BigNodeWidget from "./custom/bigNode/BigNodeWidget";
 import SmallNodeWidget from "./custom/smallNode/SmallNodeWidget";
 import TextNodeWidget from "./custom/textNode/TextWithPortsWidget";
-import { API_URL } from '../../../config'
+import API_URL from '../../../config'
 import TextWithOutPortsWidget from "./custom/textNode/TextWithOutPortsWidget";
 
 export default class Application {

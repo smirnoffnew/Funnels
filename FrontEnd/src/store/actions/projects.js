@@ -8,7 +8,7 @@ import {
   DELETE_PROJECT_SUCCESS,
   DELETE_PROJECT_FAILURE,
 } from './types/index';
-import { API_URL } from '../../config'
+import API_URL from '../../config'
 import { API, requestPromise } from './instance'
 
 

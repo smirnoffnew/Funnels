@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import "./UserIcon.css";
-import { API_URL } from '../../../config';
+import API_URL from '../../../config';
 import { followOnImageError } from '../../diagram/storm/utils';
 
 

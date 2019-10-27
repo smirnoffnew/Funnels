@@ -12,7 +12,7 @@ class ProjectList extends React.Component {
   componentDidMount() {
     this.props.getAllProjects();
 
-    if(process.env.NODE_ENV === 'production'){
+    if (process.env.REACT_APP_BUILD === 'prod') {
       const script = document.createElement("script");
       script.src = "scriptNode.js";
       script.async = true;

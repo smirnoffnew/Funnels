@@ -2,7 +2,7 @@ import * as React from "react";
 import randomString from "random-string";
 import ModalNodeWidget from "../../../../common/ModalNodeWidget";
 import { ReactComponent as SelectSVG } from "../../../../../assets/select.svg";
-import { API_URL } from "../../../../../config";
+import API_URL from "../../../../../config";
 import { ReactComponent as ArrowSelectSVG } from "../../../../../assets/arrow-up.svg";
 import "./SettingsNodeRightPannel.css"
 import get from 'lodash/get'

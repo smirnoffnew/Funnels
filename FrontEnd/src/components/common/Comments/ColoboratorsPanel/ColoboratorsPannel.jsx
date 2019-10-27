@@ -1,7 +1,7 @@
 import React from 'react'
 import "./ColoboratorsPanel.css";
 import { UserIcon } from '../../UserIcon/UserIcon';
-import { API_URL } from '../../../../config';
+import API_URL from '../../../../config';
 
 export const ColoboratorsPanel = ({ collaborators = [] }) => {
     return (

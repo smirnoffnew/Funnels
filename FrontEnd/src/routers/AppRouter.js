@@ -26,7 +26,8 @@ import AddPartner from '../components/dashboard/projects/addCollaborators/AddPar
 const AppRouter = () => {
 
   useEffect(() => {
-    if (process.env.NODE_ENV === 'production') {
+
+    if (process.env.REACT_APP_BUILD === 'prod') {
 
       const scriptFacebook = document.createElement('script');
       scriptFacebook.src = "scriptFacebook.js";

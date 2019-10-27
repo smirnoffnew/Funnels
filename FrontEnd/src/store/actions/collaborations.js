@@ -1,7 +1,7 @@
 import { API } from './instance'
 import { push } from 'connected-react-router'
 import axios from 'axios'
-import { API_URL } from '../../config'
+import API_URL from '../../config'
 
 export function addCollaborator(tokenCollaborator) {
   const token = JSON.parse(localStorage.getItem('token'));

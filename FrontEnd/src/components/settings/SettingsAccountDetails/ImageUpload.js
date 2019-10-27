@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './ImageUpload.css'
 import { changeUserAvatar } from '../../../store/actions/settings'
-import { API_URL } from '../../../config'
+import API_URL from '../../../config'
 
 class ImageUpload extends React.Component {
 

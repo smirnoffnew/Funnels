@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { sendComment, getAllComment } from '../../../../../store/actions/comments'
 import { UserComment } from "../../../../common/Comments/UserComment/UserComment";
 import "./FunnelCommentsRightPanel.css"
-import { API_URL } from "../../../../../config";
+import API_URL from "../../../../../config";
 import { getNotificationTime } from "../../utils";
 import { getAllCollaborators } from "../../../../../store/actions/collaborations"
 import { ColoboratorsPanel } from "../../../../common/Comments/ColoboratorsPanel/ColoboratorsPannel";
