@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import { Redirect } from 'react-router-dom'
 import { PrivateRoute } from '../components/RequireAuth';
@@ -23,49 +23,71 @@ import { PrivateRouteAddPartner } from '../components/PrivateRouteAddPartner';
 import AddPartner from '../components/dashboard/projects/addCollaborators/AddPartner';
 
 
-const AppRouter = () => (
-  <>
+const AppRouter = () => {
 
-    {
-      window.location.pathname === '/' &&
-      <Redirect to={{
-        pathname: '/projects'
-      }} />
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'production') {
+
+      const scriptFacebook = document.createElement('script');
+      scriptFacebook.src = "scriptFacebook.js";
+      scriptFacebook.async = true;
+      document.body.appendChild(scriptFacebook);
+
+      const scriptDiffuser = document.createElement('script');
+      scriptDiffuser.src = "scriptDiffuser.js";
+      scriptDiffuser.async = true;
+      document.body.appendChild(scriptDiffuser);
+
+      return () => {
+        document.body.removeChild(scriptFacebook);
+        document.body.removeChild(scriptDiffuser);
+      }
     }
+  })
 
-    <Route path="/sign-in" component={Signin} />
-    <Route path="/sign-up" component={Signup} />
-    <Route path="/sign-up-testers" component={Signup} />
+  return (
+    <>
+      {
+        window.location.pathname === '/' &&
+        <Redirect to={{
+          pathname: '/projects'
+        }} />
+      }
 
-    <Route path="/password-forgot-step-1" component={PasswordForgot1} />
-    <Route path="/password-forgot-step-2" component={PasswordForgot2} />
-    <Route path="/password-forgot-step-3" component={PasswordForgot3} />
+      <Route path="/sign-in" component={Signin} />
+      <Route path="/sign-up" component={Signup} />
+      <Route path="/sign-up-testers" component={Signup} />
 
-    <Route path="/questionnaire" component={Questionnaire} />
+      <Route path="/password-forgot-step-1" component={PasswordForgot1} />
+      <Route path="/password-forgot-step-2" component={PasswordForgot2} />
+      <Route path="/password-forgot-step-3" component={PasswordForgot3} />
 
-    <PrivateRouteAddCollaborator path="/add-collaborators/:token" component={AddCollaborators} />
-    <PrivateRouteAddPartner path="/add-partner/:token" component={AddPartner} />
-    <Route path="/add-collaborators-image" component={AddCollaboratorsImage} />
+      <Route path="/questionnaire" component={Questionnaire} />
 
-    <PrivateRoute exact={true} path="/projects" component={ProjectList} />
-    <PrivateRoute path="/collaborations" component={Collaborations} />
-    <PrivateRoute path='/funnels/:projectId' component={FunnelList} />
-    <PrivateRoute path='/diagram/:funnelId' component={Diagram} />
-    <PrivateRoute path='/template/:funnelId' component={Diagram} />
-    <PrivateRoute path='/templates' component={TemplatesList} />
+      <PrivateRouteAddCollaborator path="/add-collaborators/:token" component={AddCollaborators} />
+      <PrivateRouteAddPartner path="/add-partner/:token" component={AddPartner} />
+      <Route path="/add-collaborators-image" component={AddCollaboratorsImage} />
 
-    {
-      !localStorage.getItem('token2') &&
-      <>
-        <PrivateRoute exact={true} path="/settings" component={SettingsAccountDetails} />
-        <PrivateRoute path="/settings/payment-methods" component={SettingsPaymentMethods} />
-        <PrivateRoute path="/settings/users" component={SettingsUsers} />
-      </>
-    }
+      <PrivateRoute exact={true} path="/projects" component={ProjectList} />
+      <PrivateRoute path="/collaborations" component={Collaborations} />
+      <PrivateRoute path='/funnels/:projectId' component={FunnelList} />
+      <PrivateRoute path='/diagram/:funnelId' component={Diagram} />
+      <PrivateRoute path='/template/:funnelId' component={Diagram} />
+      <PrivateRoute path='/templates' component={TemplatesList} />
+
+      {
+        !localStorage.getItem('token2') &&
+        <>
+          <PrivateRoute exact={true} path="/settings" component={SettingsAccountDetails} />
+          <PrivateRoute path="/settings/payment-methods" component={SettingsPaymentMethods} />
+          <PrivateRoute path="/settings/users" component={SettingsUsers} />
+        </>
+      }
 
 
-  </>
-);
+    </>
+  )
+};
 
 export default AppRouter;
 

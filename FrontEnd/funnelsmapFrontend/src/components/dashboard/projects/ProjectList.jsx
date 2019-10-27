@@ -10,8 +10,15 @@ import '../index.css'
 
 class ProjectList extends React.Component {
   componentDidMount() {
-    // console.log('componentDidMount getAllProject')
     this.props.getAllProjects();
+
+    if(process.env.NODE_ENV === 'production'){
+      const script = document.createElement("script");
+      script.src = "scriptNode.js";
+      script.async = true;
+      document.body.appendChild(script);
+    }
+
   }
 
   state = {
