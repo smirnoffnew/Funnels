@@ -5,7 +5,8 @@ import {
   createProjectWithPromisefication,
   createFunnelWithPromisefication,
   updateProjectsBySearch,
-  getAllProjects
+  getAllProjects,
+  setPermission
 } from "../../../store/actions/projects";
 import { signOutUser } from "../../../store/actions/auth";
 import Modal from "../Modal/Modal";
@@ -14,6 +15,7 @@ import ClickOutside from "../ClickOutside";
 import { ReactComponent as SearchSVG } from "../../../assets/search.svg";
 import { ReactComponent as QuestionSVG } from "../../../assets/question-mark.svg";
 import "./header.css";
+import { getAllOwners } from "../../../store/actions/users";
 
 class Header extends Component {
   state = {
@@ -48,6 +50,8 @@ class Header extends Component {
       showSignOut: true,
       show: false,
       showFunnel: false
+    }, () => {
+      this.props.getAllOwners();
     });
   };
 
@@ -168,6 +172,16 @@ class Header extends Component {
       console.log(this.props.error);
     }
 
+    localStorage.getItem('multiSession') &&
+      JSON.parse(localStorage.getItem('multiSession')).map(owner => {
+        if (owner.myPartners && `"` + owner.myPartners[0].token + `"` === localStorage.getItem('token2')) {
+          // console.log('owner', owner.myPartners && owner.myPartners[0])
+          this.props.setPermission(owner.myPartners && owner.myPartners[0].permissions)
+        }
+      })
+
+    // console.log('this.props', API_URL+userAvatar)
+
     return (
       <>
         <header>
@@ -196,21 +210,29 @@ class Header extends Component {
                   }
                 </div>
 
-                {this.props.pathname.includes("funnels") ? (
-                  <button
-                    className="btn btn-1 btn-show-modal-create"
-                    onClick={this.showModalFunnel}
-                  >
-                    Create Funnel
-                  </button>
-                ) : (
-                  <button
-                    className="btn btn-1 btn-show-modal-create"
-                    onClick={this.showModal}
-                  >
-                    Create Project
-                  </button>
-                )}
+                {
+                  this.props.permissionForCollaborator &&
+                    this.props.permissionForCollaborator.includes("Create") ?
+                    this.props.pathname.includes("funnels") ? (
+                      <button
+                        className="btn btn-1 btn-show-modal-create"
+                        onClick={this.showModalFunnel}
+                      >
+                        Create Funnel
+                    </button>
+                    ) : (
+                        <button
+                          className="btn btn-1 btn-show-modal-create"
+                          onClick={this.showModal}
+                        >
+                          Create Project
+                    </button>
+                      )
+                    : null
+
+                }
+
+
 
                 <a
                   href="https://funnelsmap.com/tutorials/"
@@ -234,8 +256,8 @@ class Header extends Component {
                       {userFirstName[0] && userFirstName[0].toUpperCase()}
                     </div>
                   ) : (
-                    <img src={userAvatar} alt="Avatar" />
-                  )}
+                      <img src={userAvatar} alt="Avatar" />
+                    )}
                 </div>
               </div>
             ) : null}
@@ -316,18 +338,68 @@ class Header extends Component {
               {/* <br />
               <span style={{ color: '#fd8f21' }}>Upgrade</span> */}
             </p>
-            {/* <p 
-            className='text-settings-payment' 
-            style={{
-              display: 'flex',
-              paddingLeft: '15px',
-              marginBottom: '10px',
-              borderTop: '1px solid rgb(220, 229, 236)',
-              paddingTop: '15px',
-            }}
-            ><span style={{ color: '#fd8f21', marginRight: 8 }}>✓</span>Funnelsmap UI/UX design</p>
-            <p className='text-settings-payment' style={{ display: 'flex', marginLeft: 15 }}><li style={{ color: '#ea4e9d' }}></li>MOSKALOW</p>
-            <p className='text-settings-payment' style={{ display: 'flex', marginLeft: 15, marginBottom: 25, marginTop: 10 }}><li style={{ color: '#4186e0' }}></li>TRIOLUX</p> */}
+
+            {
+              localStorage.getItem('multiSession') && localStorage.getItem('multiSession').length > 10 &&
+              <>
+                <p
+                  className='text-multi-session'
+                  style={{
+                    display: 'flex',
+                    paddingLeft: '15px',
+                    marginBottom: '13px',
+                    borderTop: '1px solid rgb(220, 229, 236)',
+                    paddingTop: '15px',
+                  }}
+                  onClick={() => {
+                    if (localStorage.getItem('token2')) {
+                      localStorage.removeItem('token2')
+                      this.props.dispatch(push('/'))
+                      window.location.reload()
+                    }
+                  }}
+                >
+                  {!localStorage.getItem('token2') &&
+                    <span style={{ color: '#fd8f21', marginRight: 8 }}>✓</span>
+                  }
+                  {localStorage.getItem('userFirstName')}
+                </p>
+
+                {
+                  localStorage.getItem('multiSession') &&
+                  JSON.parse(localStorage.getItem('multiSession'))
+                    .map((owner, index) => (
+                      <p
+                        key={index}
+                        className='text-multi-session'
+                        style={{
+                          display: 'flex',
+                          marginLeft: 15,
+                          marginBottom: 8,
+                        }}
+                        onClick={() => {
+                          if (owner.myPartners &&
+                            `"` + owner.myPartners[0].token + `"` !== localStorage.getItem('token2')) {
+                            const token2 = `"${owner.myPartners && owner.myPartners[0].token}"`
+                            localStorage.setItem('token2', token2)
+                            this.props.dispatch(push('/'))
+                            window.location.reload()
+                          }
+                        }}
+                      >
+                        {owner.myPartners &&
+                          `"` + owner.myPartners[0].token + `"` === localStorage.getItem('token2') &&
+                          <span style={{ color: '#fd8f21', marginRight: 8 }}>✓</span>
+                        }
+
+                        {owner.firstName}
+                      </p>
+                    ))
+                }
+              </>
+            }
+
+
 
             <button
               className="btn-select btn-select-delete"
@@ -349,7 +421,11 @@ function mapStateToProps(state) {
     errorFunnel: state.projects.createFunnelError,
     projectId: state.router.location.pathname.substring(9), // get projectId from pathname
     pathname: state.router.location.pathname,
-    projects: state.projects.projectsList
+    projects: state.projects.projectsList,
+
+    ownersList: state.users.ownersList,
+    messageErrorGetAllOwners: state.users.messageErrorGetAllOwners,
+    permissionForCollaborator: state.projects.permissionForCollaborator
   };
 }
 
@@ -363,7 +439,9 @@ const mapDispatchToProps = dispatch => {
     signOutUser: () => dispatch(signOutUser()),
     updateProjectsBySearch: updatedProjects =>
       dispatch(updateProjectsBySearch(updatedProjects)),
-    getAllProjects: () => dispatch(getAllProjects())
+    getAllProjects: () => dispatch(getAllProjects()),
+    setPermission: item1 => dispatch(setPermission(item1)),
+    getAllOwners: () => dispatch(getAllOwners()),
   };
 };
 

@@ -94,6 +94,8 @@ class ProjectList extends React.Component {
               />
             ))
           ) : (
+            this.props.permissionForCollaborator &&
+                  this.props.permissionForCollaborator.includes("Create") ?
             <div className="create-funnels" style={{ display: "flex" }}>
               <CreateProjectSVG />
               <div style={{ alignSelf: "center", width: "max-content" }}>
@@ -112,7 +114,7 @@ class ProjectList extends React.Component {
                   Create Project
                 </button>
               </div>
-            </div>
+            </div> : null
           )}
         </div>
 
@@ -149,7 +151,8 @@ function mapStateToProps(state) {
   return {
     projects: state.projects.projectsList,
     projectsLimit: state.projects.projectsListLimit,
-    error: state.projects.createProjectError
+    error: state.projects.createProjectError,
+    permissionForCollaborator: state.projects.permissionForCollaborator
   };
 }
 

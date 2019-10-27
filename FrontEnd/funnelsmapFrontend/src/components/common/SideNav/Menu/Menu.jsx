@@ -16,7 +16,10 @@ const Menu = () => {
       <MenuItem exact={true} to="/templates" name="Templates" icon={<TemplatesSVG />} />
       <MenuItem exact={false} to="/collaborations" name="Collaborations" icon={<CollaborationsSVG />} />
       <MenuItemLink href="https://funnelsmap.com/helpdesk/" target='_blank' name="Helpdesk" icon={<HelpdeskSVG />} />
-      <MenuItem exact={false} to="/settings" name="Settings" icon={<SettingsSVG />} />
+      {
+        !localStorage.getItem('token2') && <MenuItem exact={false} to="/settings" name="Settings" icon={<SettingsSVG />} />
+      }
+      
       {/* <MenuItemUpgrade exact={false} to="/upgrade" name="Upgrade" /> */}
 
       {/* <MenuItem exact={false} to="/" name="Settings"> */}

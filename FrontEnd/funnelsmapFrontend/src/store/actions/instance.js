@@ -8,10 +8,20 @@ export const API = axios.create({
 
 API.interceptors.request.use(
   function (config) {
-    const token = JSON.parse(localStorage.getItem('token'));
-    if (token) config.headers.authorization = token;
 
-    return config;
+    if (localStorage.getItem('token2')) {
+      const token2 = JSON.parse(localStorage.getItem('token2'));
+      if (token2) config.headers.authorization = token2;
+
+      return config;
+    }
+    else {
+      const token = JSON.parse(localStorage.getItem('token'));
+      if (token) config.headers.authorization = token;
+
+      return config;
+    }
+
   },
   function (error) {
 
@@ -28,10 +38,10 @@ export const requestPromise = req => dispatch => (
         reject(new Error(response.statusText));
       }
     })
-    .catch(error => {
-      if (error.response) {
-        reject(error.response.data.error);
-      }
-    });
+      .catch(error => {
+        if (error.response) {
+          reject(error.response.data.error);
+        }
+      });
   })
 )

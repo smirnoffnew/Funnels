@@ -79,6 +79,9 @@ export function signupUser(props) {
         if (params.get('add-collaborations')) {
           dispatch(push(`/questionnaire?add-collaborations=${params.get('add-collaborations')}`));
         }
+        else if (params.get('add-partner')) {
+          dispatch(push(`/questionnaire?add-partner=${params.get('add-partner')}`));
+        }
         else {
           dispatch(push('/questionnaire'));
         }
@@ -129,6 +132,9 @@ export function signupTester(props) {
         if (params.get('add-collaborations')) {
           dispatch(push(`/questionnaire?add-collaborations=${params.get('add-collaborations')}`));
         }
+        else if (params.get('add-partner')) {
+          dispatch(push(`/questionnaire?add-partner=${params.get('add-partner')}`));
+        }
         else {
           dispatch(push('/questionnaire'));
         }
@@ -158,7 +164,7 @@ export function signinUser(props) {
     })
       .then(response => {
         if (response.data) {
-          // console.log(response.data)
+          console.log(response.data)
           localStorage.setItem('token', JSON.stringify(response.data.token));
           localStorage.setItem('userAvatar', JSON.stringify(API_URL + response.data.data.photoUrl));
           localStorage.setItem('userFirstName', response.data.data.firstName);
@@ -169,6 +175,9 @@ export function signinUser(props) {
           let params = new URLSearchParams(routerState.location.search);
           if (params.get('add-collaborations')) {
             dispatch(push(params.get('add-collaborations')));
+          }
+          else if (params.get('add-partner')) {
+            dispatch(push(params.get('add-partner')));
           }
           else {
             dispatch(push('/'));
@@ -266,6 +275,10 @@ export function questionnaireUser(props, signUpData, limited) {
         let params = new URLSearchParams(routerState.location.search);
         if (params.get('add-collaborations')) {
           let route = params.get('add-collaborations');
+          dispatch(push(route));
+        }
+        else if (params.get('add-partner')) {
+          let route = params.get('add-partner');
           dispatch(push(route));
         }
         else {

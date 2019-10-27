@@ -291,7 +291,7 @@ export default class BodyWidget extends React.Component {
   }
 
   render() {
-    this.props.work.permissionForCollaborator === "Edit" ?
+    this.props.work.permissionForCollaborator.includes("Edit") ?
       this.props.app.getDiagramEngine().getDiagramModel().setLocked(false)
       :
       this.props.app.getDiagramEngine().getDiagramModel().setLocked(true)
@@ -344,8 +344,8 @@ export default class BodyWidget extends React.Component {
             >
               {
                 this.state.toggleAnalytics ?
-                  <EditSVG />
-                  : ""
+                  this.props.work.permissionForCollaborator.includes("Edit") ? <EditSVG /> : null
+                : ""
               }
             </div>
 
@@ -395,7 +395,7 @@ export default class BodyWidget extends React.Component {
             {this.props.work.pathname.includes("diagram") ? (
               <>
                 {
-                  this.props.work.permissionForCollaborator === "Edit" ?
+                  this.props.work.permissionForCollaborator.includes("Edit") ?
                     <>
                       <div className="zoom-wrapper">
                         <ReactSVG
@@ -643,7 +643,7 @@ export default class BodyWidget extends React.Component {
 
           <div className="content">
             {
-              this.props.work.permissionForCollaborator === "Edit" &&
+              this.props.work.permissionForCollaborator.includes("Edit") &&
               <div className="panel-buttons">
                 {this.button(
                   "first",

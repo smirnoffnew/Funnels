@@ -226,6 +226,14 @@ header label {
     text-align: center;
 }
 
+.text-multi-session{
+  font-size: 14px;
+  color: #212939;
+  font-family: 'Roboto';
+  font-weight: 300;
+  cursor: pointer;
+}
+
 
 
 

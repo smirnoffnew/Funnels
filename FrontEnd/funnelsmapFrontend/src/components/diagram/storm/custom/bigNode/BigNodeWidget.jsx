@@ -512,7 +512,7 @@ class BigNodeWidget extends React.Component {
             ) : (
                 <Select
                   show={
-                    this.props.permissionForCollaborator === "Edit"
+                    this.props.permissionForCollaborator.includes("Edit")
                       ? this.state.show
                       : false
                   }

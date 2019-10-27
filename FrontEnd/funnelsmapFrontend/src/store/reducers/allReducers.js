@@ -4,6 +4,7 @@ import collaborationsReducer from './collaborationsReducer';
 import settingsReducer from './settingsReducer'
 import commentsReducer from './commentsReducer';
 import conversionReducer from './conversionReducer';
+import usersReducer from './usersReducer'
 
 const allReducers = ({
     auth: authReducer,
@@ -11,7 +12,8 @@ const allReducers = ({
     collaborations: collaborationsReducer,
     settings: settingsReducer,
     comments: commentsReducer,
-    conversion: conversionReducer
+    conversion: conversionReducer,
+    users: usersReducer,
 });
 
 export default allReducers

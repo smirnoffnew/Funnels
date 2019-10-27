@@ -156,9 +156,14 @@ class ProjectItem extends React.Component {
             {funnelsLength} funnels
           </div>
 
-          <button className="options-project" onClick={this.showModal}>
-            Options
-          </button>
+          {
+            this.props.permissionForCollaborator &&
+              this.props.permissionForCollaborator.includes("Edit") ?
+              <button className="options-project" onClick={this.showModal}>
+                Options
+              </button>
+              : null
+          }
 
           <ClickOutside
             onClickOutside={() => {

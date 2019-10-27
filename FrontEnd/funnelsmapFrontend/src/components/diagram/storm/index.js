@@ -41,6 +41,7 @@ class App extends React.Component {
     this.props.getTemplate(this.props.funnelId);
     this.props.getSVG();
 
+
     localStorage.getItem('permission') &&
       localStorage.getItem('permission') !== 'undefined' ?
       JSON.parse(localStorage.getItem('permission')).map(
@@ -49,12 +50,21 @@ class App extends React.Component {
           elem.funnelId === this.props.funnelId &&
           this.props.setPermission(elem.permissions)
       )
-      : this.props.setPermission("Edit")
+      :
+      localStorage.getItem('multiSession') &&
+      JSON.parse(localStorage.getItem('multiSession')).map(owner => {
+        if (owner.token === localStorage.getItem('token2')) {
+          this.props.setPermission(owner.rules)
+        }
+      })
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.diagram) {
-      if (prevProps.diagram.snackMsg !== this.state.snackMsg && prevProps.diagram.snackMsg !== undefined) {
+      if (
+        prevProps.diagram.snackMsg !== this.state.snackMsg &&
+        prevProps.diagram.snackMsg !== undefined
+      ) {
         this.props.getDiagram(this.props.funnelId);
         this.props.getTemplate(this.props.funnelId);
 
@@ -66,7 +76,14 @@ class App extends React.Component {
               elem.funnelId === this.props.funnelId &&
               this.props.setPermission(elem.permissions)
           )
-          : this.props.setPermission("Edit")
+          :
+          localStorage.getItem('multiSession') &&
+      JSON.parse(localStorage.getItem('multiSession')).map(owner => {
+            if (owner.token === localStorage.getItem('token2')) {
+              this.props.setPermission(owner.rules)
+            }
+          })
+
       }
     }
     else return null
@@ -98,6 +115,7 @@ class App extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+  // console.log('permissionForCollaborator', state.projects.permissionForCollaborator)
   return {
     diagram: state.projects[`diagram${ownProps.match.params.funnelId}`],
     svg: state.projects.svgList,
@@ -121,6 +139,8 @@ function mapStateToProps(state, ownProps) {
     UTMLinkMessage: state.projects.createUTMLinkMessage,
 
     permissionForCollaborator: state.projects.permissionForCollaborator,
+
+    ownersList: state.users.ownersList,
   };
 }
 

@@ -29,10 +29,17 @@ class FunnelItemContainer extends Component {
         projectId={projectId}
         handleDelete={this.handleDelete}
         backgroundImg={backgroundImg}
+        permissionForCollaborator={this.props.permissionForCollaborator}
       />
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    permissionForCollaborator: state.projects.permissionForCollaborator,
+  };
+};
 
 const mapDispatchToState = dispatch => ({
   setPermission: item1 => dispatch(setPermission(item1)),
@@ -41,6 +48,6 @@ const mapDispatchToState = dispatch => ({
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToState
 )(FunnelItemContainer);

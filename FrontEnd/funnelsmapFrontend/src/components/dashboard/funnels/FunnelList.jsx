@@ -99,6 +99,8 @@ class FunnelList extends React.Component {
                   />
                 ))
                 :
+                this.props.permissionForCollaborator &&
+                this.props.permissionForCollaborator.includes("Create") ?
                 <div className='create-funnels' style={{ display: 'flex' }}>
                   <CreateFunnelSVG />
                   <div style={{ alignSelf: 'center', width: 'max-content' }}>
@@ -109,7 +111,7 @@ class FunnelList extends React.Component {
                     </p>
                     <button className="btn btn-1" style={{ width: '125px', marginTop: '25px' }} onClick={this.showModal}>Create Funnel</button>
                   </div>
-                </div>
+                </div> : null
             }
           </div>
         </Layout>
@@ -143,6 +145,7 @@ function mapStateToProps(state, ownProps) {
     funnelsLimit: state.projects[`funnelsListLimit${ownProps.match.params.projectId}`],
     projectId: ownProps.match.params.projectId,
     error: state.projects.createFunnelError,
+    permissionForCollaborator: state.projects.permissionForCollaborator,
   };
 }
 

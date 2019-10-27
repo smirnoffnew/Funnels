@@ -26,11 +26,10 @@ export default class SaveBeforeExitModal extends React.Component {
   render() {
     return (
       <>
-
         {
           this.props.work.pathname.includes('diagram') ?
 
-            this.props.work.permissionForCollaborator !== "Edit" ?
+            !this.props.work.permissionForCollaborator.includes("Edit") ?
               <NavLink
                 to={'/collaborations'}
                 style={{

@@ -18,6 +18,8 @@ import SettingsAccountDetails from '../components/settings/SettingsAccountDetail
 import SettingsPaymentMethods from '../components/settings/SettingsPaymentMethods/SettingsPaymentMethods';
 import SettingsUsers from '../components/settings/SettingsUsers/SettingsUsers';
 import Diagram from '../components/diagram/storm';
+import { PrivateRouteAddPartner } from '../components/PrivateRouteAddPartner';
+import AddPartner from '../components/dashboard/projects/addCollaborators/AddPartner';
 
 const AppRouter = () => (
   <>
@@ -32,6 +34,7 @@ const AppRouter = () => (
     <Route path="/questionnaire" component={Questionnaire} />
 
     <PrivateRouteAddCollaborator path="/add-collaborators/:token" component={AddCollaborators} />
+    <PrivateRouteAddPartner path="/add-partner/:token" component={AddPartner} />
     <Route path="/add-collaborators-image" component={AddCollaboratorsImage} />
 
     <PrivateRoute exact={true} path="/" component={ProjectList} />
@@ -41,9 +44,16 @@ const AppRouter = () => (
     <PrivateRoute path='/template/:funnelId' component={Diagram} />
     <PrivateRoute path='/templates' component={TemplatesList} />
 
-    <PrivateRoute exact={true} path="/settings" component={SettingsAccountDetails} />
-    <PrivateRoute path="/settings/payment-methods" component={SettingsPaymentMethods} />
-    <PrivateRoute path="/settings/users" component={SettingsUsers} />
+    {
+      !localStorage.getItem('token2') &&
+      <>
+        <PrivateRoute exact={true} path="/settings" component={SettingsAccountDetails} />
+        <PrivateRoute path="/settings/payment-methods" component={SettingsPaymentMethods} />
+        <PrivateRoute path="/settings/users" component={SettingsUsers} />
+      </>
+    }
+
+
   </>
 );
 

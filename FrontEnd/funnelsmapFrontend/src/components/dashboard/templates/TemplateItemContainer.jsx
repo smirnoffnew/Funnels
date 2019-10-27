@@ -26,6 +26,7 @@ class TemplateItemContainer extends Component {
         handleDelete={this.handleDelete}
         createNewProjectWithTemplate={this.createNewProjectWithTemplate}
         messageCreateProject={this.props.messageCreateProject}
+        permissionForCollaborator={this.props.permissionForCollaborator}
       />
     );
   }
@@ -33,7 +34,8 @@ class TemplateItemContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    messageCreateProject: state.projects.createNewProjectWithTemplateMessage
+    messageCreateProject: state.projects.createNewProjectWithTemplateMessage,
+    permissionForCollaborator: state.projects.permissionForCollaborator,
   };
 };
 

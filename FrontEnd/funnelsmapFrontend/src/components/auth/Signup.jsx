@@ -165,7 +165,13 @@ class Signup extends React.Component {
           params.get('add-collaborations') ?
             <div className="form-bottom-register">
               <NavLink to={`/sign-in?add-collaborations=${params.get('add-collaborations')}`}>Already have an account?</NavLink>
+            </div> :
+
+            params.get('add-partner') ?
+            <div className="form-bottom-register">
+              <NavLink to={`/sign-in?add-partner=${params.get('add-partner')}`}>Already have an account?</NavLink>
             </div>
+
             :
             <div className="form-bottom-register">
               <NavLink to="/sign-in">Already have an account?</NavLink>
