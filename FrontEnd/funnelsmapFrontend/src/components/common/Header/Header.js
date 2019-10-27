@@ -26,6 +26,10 @@ class Header extends Component {
     funnelName: "",
     searchProject: ""
   };
+  
+  componentDidMount = () => {
+    this.props.getAllOwners();
+  }
 
   showModal = () => {
     this.setState({ show: true });
@@ -366,7 +370,7 @@ class Header extends Component {
                 </p>
 
                 {
-                  localStorage.getItem('multiSession') &&
+                  // localStorage.getItem('multiSession') &&
                   JSON.parse(localStorage.getItem('multiSession'))
                     .map((owner, index) => (
                       <p
