@@ -42,21 +42,27 @@ class App extends React.Component {
     this.props.getSVG();
 
 
-    localStorage.getItem('permission') &&
-      localStorage.getItem('permission') !== 'undefined' ?
+    localStorage.getItem('token2') ?
+      JSON.parse(localStorage.getItem('multiSession')).map(owner => {
+        localStorage.getItem('permission') &&
+          localStorage.getItem('permission') !== 'undefined' &&
+          JSON.parse(localStorage.getItem('permission')).map(
+            elem =>
+              elem.profileId === owner._id &&
+              elem.funnelId === this.props.funnelId &&
+              this.props.setPermission(elem.permissions)
+          )
+      })
+      :
+      localStorage.getItem('permission') &&
+      localStorage.getItem('permission') !== 'undefined' &&
       JSON.parse(localStorage.getItem('permission')).map(
         elem =>
           elem.profileId === localStorage.getItem("userID") &&
           elem.funnelId === this.props.funnelId &&
           this.props.setPermission(elem.permissions)
       )
-      :
-      localStorage.getItem('multiSession') &&
-      JSON.parse(localStorage.getItem('multiSession')).map(owner => {
-        if (owner.token === localStorage.getItem('token2')) {
-          this.props.setPermission(owner.rules)
-        }
-      })
+
   }
 
   componentDidUpdate(prevProps) {
@@ -68,21 +74,26 @@ class App extends React.Component {
         this.props.getDiagram(this.props.funnelId);
         this.props.getTemplate(this.props.funnelId);
 
-        localStorage.getItem('permission') &&
-          localStorage.getItem('permission') !== 'undefined' ?
+        localStorage.getItem('token2') ?
+          JSON.parse(localStorage.getItem('multiSession')).map(owner => {
+            localStorage.getItem('permission') &&
+              localStorage.getItem('permission') !== 'undefined' &&
+              JSON.parse(localStorage.getItem('permission')).map(
+                elem =>
+                  elem.profileId === owner._id &&
+                  elem.funnelId === this.props.funnelId &&
+                  this.props.setPermission(elem.permissions)
+              )
+          })
+          :
+          localStorage.getItem('permission') &&
+          localStorage.getItem('permission') !== 'undefined' &&
           JSON.parse(localStorage.getItem('permission')).map(
             elem =>
               elem.profileId === localStorage.getItem("userID") &&
               elem.funnelId === this.props.funnelId &&
               this.props.setPermission(elem.permissions)
           )
-          :
-          localStorage.getItem('multiSession') &&
-      JSON.parse(localStorage.getItem('multiSession')).map(owner => {
-            if (owner.token === localStorage.getItem('token2')) {
-              this.props.setPermission(owner.rules)
-            }
-          })
 
       }
     }

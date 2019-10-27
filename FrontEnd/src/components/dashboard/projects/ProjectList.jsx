@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import Layout from "../../common/Layout/Layout";
-import { getAllProjects } from "../../../store/actions/projects";
+import { getAllProjects, setPermission } from "../../../store/actions/projects";
 import ProjectItemContainer from "./ProjectItemContainer";
 import { createProjectWithPromisefication } from "../../../store/actions/projects";
 import Modal from "../../common/Modal/Modal";
@@ -165,6 +165,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = dispatch => {
   return {
+    setPermission: item1 => dispatch(setPermission(item1)),
     dispatch: item => dispatch(item),
     getAllProjects: () => dispatch(getAllProjects()),
     createProjectWithPromisefication: projectName => dispatch(createProjectWithPromisefication(projectName)),

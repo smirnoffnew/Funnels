@@ -30,6 +30,7 @@ class FunnelItemContainer extends Component {
         handleDelete={this.handleDelete}
         backgroundImg={backgroundImg}
         permissionForCollaborator={this.props.permissionForCollaborator}
+        pathname={this.props.pathname}
       />
     );
   }
@@ -37,6 +38,7 @@ class FunnelItemContainer extends Component {
 
 const mapStateToProps = state => {
   return {
+    pathname: state.router.location.pathname,
     permissionForCollaborator: state.projects.permissionForCollaborator,
   };
 };

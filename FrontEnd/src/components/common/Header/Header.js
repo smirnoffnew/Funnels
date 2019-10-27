@@ -177,14 +177,13 @@ class Header extends Component {
     }
 
     localStorage.getItem('multiSession') &&
-      JSON.parse(localStorage.getItem('multiSession')).map(owner => {
-        if (owner.myPartners && `"` + owner.myPartners[0].token + `"` === localStorage.getItem('token2')) {
-          // console.log('owner', owner.myPartners && owner.myPartners[0])
-          this.props.setPermission(owner.myPartners && owner.myPartners[0].permissions)
-        }
-      })
+    JSON.parse(localStorage.getItem('multiSession')).map(owner => {
+      if (owner.myPartners && `"` + owner.myPartners[0].token + `"` === localStorage.getItem('token2')) {
+        // console.log('owner', owner.myPartners && owner.myPartners[0])
+        this.props.setPermission(owner.myPartners && owner.myPartners[0].permissions)
+      }
+    })
 
-    // console.log('this.props', API_URL+userAvatar)
 
     return (
       <>

@@ -70,6 +70,7 @@ class FunnelItem extends React.Component {
 
 
           {
+            !this.props.pathname.includes("collaborations") &&
             this.props.permissionForCollaborator &&
               this.props.permissionForCollaborator.includes("Edit") ?
               <button className="options-project" onClick={this.showModal}>

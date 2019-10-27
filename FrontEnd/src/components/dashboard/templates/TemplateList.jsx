@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import Layout from "../../common/Layout/Layout";
-import { getAllTemplates } from "../../../store/actions/projects";
+import { getAllTemplates, setPermission } from "../../../store/actions/projects";
 import TemplateItemContainer from "./TemplateItemContainer.jsx";
 import '../index.css'
 
@@ -43,7 +43,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getAllTemplates: () => dispatch(getAllTemplates())
+    getAllTemplates: () => dispatch(getAllTemplates()),
+    setPermission: item1 => dispatch(setPermission(item1)),
   };
 };
 
