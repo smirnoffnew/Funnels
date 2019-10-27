@@ -176,6 +176,7 @@ class Header extends Component {
       console.log(this.props.error);
     }
 
+    localStorage.getItem('token2') ?
     localStorage.getItem('multiSession') &&
     JSON.parse(localStorage.getItem('multiSession')).map(owner => {
       if (owner.myPartners && `"` + owner.myPartners[0].token + `"` === localStorage.getItem('token2')) {
@@ -183,7 +184,9 @@ class Header extends Component {
         this.props.setPermission(owner.myPartners && owner.myPartners[0].permissions)
       }
     })
-
+    :
+    this.props.setPermission('View,Edit,Create')
+    
 
     return (
       <>

@@ -4,6 +4,7 @@ import Layout from "../../common/Layout/Layout";
 import { getAllFunnelsCollaboration } from "../../../store/actions/collaborations";
 import FunnelItemContainer from "../funnels/FunnelItemContainer";
 import '../index.css'
+import { setPermission } from "../../../store/actions/projects";
 
 class Collaborations extends Component {
   componentDidMount = () => {
@@ -11,6 +12,17 @@ class Collaborations extends Component {
   };
 
   render() {
+    localStorage.getItem('token2') ?
+    localStorage.getItem('multiSession') &&
+    JSON.parse(localStorage.getItem('multiSession')).map(owner => {
+      if (owner.myPartners && `"` + owner.myPartners[0].token + `"` === localStorage.getItem('token2')) {
+        // console.log('owner', owner.myPartners && owner.myPartners[0])
+        this.props.setPermission(owner.myPartners && owner.myPartners[0].permissions)
+      }
+    })
+    :
+    this.props.setPermission('View,Edit,Create')
+
 
     return (
       <Layout title="Collaborations">
@@ -45,6 +57,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = dispatch => {
   return {
+    setPermission: item1 => dispatch(setPermission(item1)),
     getAllFunnelsCollaboration: () => dispatch(getAllFunnelsCollaboration())
   };
 };

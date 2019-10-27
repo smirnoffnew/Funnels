@@ -59,6 +59,18 @@ class ProjectList extends React.Component {
   };
 
   render() {
+
+    localStorage.getItem('token2') ?
+    localStorage.getItem('multiSession') &&
+    JSON.parse(localStorage.getItem('multiSession')).map(owner => {
+      if (owner.myPartners && `"` + owner.myPartners[0].token + `"` === localStorage.getItem('token2')) {
+        // console.log('owner', owner.myPartners && owner.myPartners[0])
+        this.props.setPermission(owner.myPartners && owner.myPartners[0].permissions)
+      }
+    })
+    :
+    this.props.setPermission('View,Edit,Create')
+
     return (
       <Layout title="Project List">
         {this.props.projectsLimit ? (

@@ -4,6 +4,7 @@ import Layout from "../../common/Layout/Layout";
 import { 
   getAllFunnels, 
   createFunnelWithPromisefication,
+  setPermission,
 } from '../../../store/actions/projects'
 import FunnelItemContainer from './FunnelItemContainer.jsx'
 import Modal from '../../common/Modal/Modal'
@@ -60,6 +61,17 @@ class FunnelList extends React.Component {
 
   render() {
     localStorage.removeItem('permission');
+
+    localStorage.getItem('token2') ?
+    localStorage.getItem('multiSession') &&
+    JSON.parse(localStorage.getItem('multiSession')).map(owner => {
+      if (owner.myPartners && `"` + owner.myPartners[0].token + `"` === localStorage.getItem('token2')) {
+        // console.log('owner', owner.myPartners && owner.myPartners[0])
+        this.props.setPermission(owner.myPartners && owner.myPartners[0].permissions)
+      }
+    })
+    :
+    this.props.setPermission('View,Edit,Create')
 
     return (
       <>
@@ -151,6 +163,7 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = dispatch => {
   return {
+    setPermission: item1 => dispatch(setPermission(item1)),
     dispatch: item => dispatch(item),
     getAllFunnels: id => dispatch(getAllFunnels(id)),
     createFunnelWithPromisefication: (funnelName, id) => dispatch(createFunnelWithPromisefication(funnelName, id)),
