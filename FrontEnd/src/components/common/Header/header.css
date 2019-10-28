@@ -260,3 +260,125 @@ header label {
     from { width: 200px; }
     to   { width: 0px; }
 }
+
+
+
+.burgers {
+  display: none;
+  z-index: 99;
+}
+
+.burger {
+  display: inline-table;
+  border: 0;
+  background: none;
+  outline: 0;
+  padding: 0;
+  cursor: pointer;
+  border-bottom: 3px solid currentColor;
+  width: 35px;
+  height: 19px;
+  transition: border-bottom 1s ease-in-out;
+  color: black;
+  margin-left: 20px;
+  
+}
+.burger::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+.burger:before {
+  content: "";
+  display: block;
+  border-bottom: 3px solid currentColor;
+  width: 100%;
+  margin-bottom: 6px;
+  transition: transform 0.5s ease-in-out;
+}
+.burger:after {
+  content: "";
+  display: block;
+  border-bottom: 3px solid currentColor;
+  width: 100%;
+  margin-bottom: 5px;
+  transition: transform 0.5s ease-in-out;
+}
+.burger-check {
+  display: none;
+}
+.burger-check:checked ~ .burger {
+  border-bottom: 4px solid transparent;
+  transition: border-bottom 0.8s ease-in-out;
+}
+.burger-check:checked ~ .burger:before {
+  transform: rotate(-405deg) translateY(6px) translateX(-7px);
+  transition: transform 0.5s ease-in-out;
+}
+.burger-check:checked ~ .burger:after {
+  transform: rotate(405deg) translateY(0px) translateX(0px);
+  transition: transform 0.5s ease-in-out;
+}
+.navigation {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.5s ease-in-out;
+  position: absolute;
+  left: 10px;
+  z-index: 100;
+}
+.burger-check:checked ~ .navigation {
+  max-height: 650px;
+  transition: max-height 0.5s ease-in-out;
+}
+
+#navigation1 a {
+  color: #fff
+}
+
+.navigation ul {
+  background: #212939;
+  display: flex;
+  flex-direction: column;
+}
+
+.navigation ul li a {
+  font-size: 18px;
+  color: #fff !important;
+  line-height: 35px;
+  z-index: 100;
+  text-decoration: none;
+}
+
+.menu-item-burger {
+	padding: 10px 20px;
+	box-sizing: border-box;
+	width: 100%;
+	color: #fff;
+	margin: 0px;
+  font-weight: normal;
+  font-size: 15px;
+  align-self: center;
+  display: flex;
+  font-size: 18px;
+  color: #fff !important;
+  line-height: 42px;
+  z-index: 100;
+  text-decoration: none;
+}
+
+.menu-item-burger:hover {
+	text-decoration: none;
+}
+
+.menu-item-burger.menu-item-burger-active {
+	background: linear-gradient(84deg, #E62D24, #FD8F21);
+}
+
+.menu-item-burger.menu-settings-burger-active {
+	background: #3b4049;
+}
+
+.menu-item-burger.sub {
+	font-size: 1em;
+	padding-left: 50px;
+}

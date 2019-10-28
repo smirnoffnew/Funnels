@@ -18,6 +18,7 @@ import allReducers from './store/reducers/allReducers';
 import * as serviceWorker from './serviceWorker';
 import { AUTH_USER } from './store/actions/types/index';
 import './index.css'
+import './indexMedia.css'
 
 const history = createBrowserHistory();
 // Build the middleware for intercepting and dispatching navigation actions

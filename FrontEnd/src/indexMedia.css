@@ -1,0 +1,69 @@
+@media all and (max-width: 1000px) {
+
+  @media all and (orientation: portrait) { 
+    .navigation ul {
+      display: flex;
+    }
+  }
+
+  @media all and (orientation: landscape) {
+    .navigation ul {
+      display: block;
+    }
+  }
+
+  .burgers {
+    display: inline;
+  }
+
+  .search-projects-bar {
+    display: none;
+  }
+
+  .sidebar{
+    display: none;
+  }
+
+  .sidebar-settings{
+    display: none;
+  }
+
+  .main-settings {
+    margin-left: 0px;
+  }
+
+  #settings-wrapper {
+    margin-left: 0px;
+  }
+
+  .settings-user-wrapper {
+    margin-left: 0px;
+  }
+
+  header nav ul li {
+    margin-left: 0px;
+    color: white;
+  }
+
+  header {
+    left: 0px;
+  }
+
+  header .logo {
+    padding-left: 20px;
+    float: none;
+    display: inline;
+  }
+
+}
+
+@media all and (max-width: 430px) {
+  header .logo {
+    display: none;
+  }
+
+  .btn-show-modal-create{
+    width: 86px !important;
+  }
+
+}

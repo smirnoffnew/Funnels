@@ -16,6 +16,7 @@ import { ReactComponent as SearchSVG } from "../../../assets/search.svg";
 import { ReactComponent as QuestionSVG } from "../../../assets/question-mark.svg";
 import "./header.css";
 import { getAllOwners } from "../../../store/actions/users";
+import HeaderNavigationBox from "./HeaderNavigationBox";
 
 class Header extends Component {
   state = {
@@ -24,9 +25,10 @@ class Header extends Component {
     showSignOut: false,
     projectName: "",
     funnelName: "",
-    searchProject: ""
+    searchProject: "",
+    showHeaderNavigationBox: false,
   };
-  
+
   componentDidMount = () => {
     this.props.getAllOwners();
   }
@@ -168,6 +170,14 @@ class Header extends Component {
     }, 700);
   };
 
+  changeHeaderNavigationBox = () => {
+    this.setState(prev => {
+      return {
+        showHeaderNavigationBox: !prev.showHeaderNavigationBox
+      }
+    })
+  }
+
   render() {
     const userAvatar = JSON.parse(localStorage.getItem("userAvatar"));
     const userFirstName = localStorage.getItem("userFirstName");
@@ -177,20 +187,47 @@ class Header extends Component {
     }
 
     localStorage.getItem('token2') ?
-    localStorage.getItem('multiSession') &&
-    JSON.parse(localStorage.getItem('multiSession')).map(owner => {
-      if (owner.myPartners && `"` + owner.myPartners[0].token + `"` === localStorage.getItem('token2')) {
-        // console.log('owner', owner.myPartners && owner.myPartners[0])
-        this.props.setPermission(owner.myPartners && owner.myPartners[0].permissions)
-      }
-    })
-    :
-    this.props.setPermission('View,Edit,Create')
-    
+      localStorage.getItem('multiSession') &&
+      JSON.parse(localStorage.getItem('multiSession')).map(owner => {
+        if (owner.myPartners && `"` + owner.myPartners[0].token + `"` === localStorage.getItem('token2')) {
+          // console.log('owner', owner.myPartners && owner.myPartners[0])
+          this.props.setPermission(owner.myPartners && owner.myPartners[0].permissions)
+        }
+      })
+      :
+      this.props.setPermission('View,Edit,Create')
+
 
     return (
       <>
         <header>
+
+          <ClickOutside
+            onClickOutside={() => {
+              this.setState({
+                showHeaderNavigationBox: false
+              })
+            }}
+            style={{
+              display: 'inline'
+            }}
+          >
+            <div className="burgers">
+              <input
+                className="burger-check"
+                id="burger-check"
+                type="checkbox"
+                checked={this.state.showHeaderNavigationBox}
+                onChange={this.changeHeaderNavigationBox}
+              />
+              <label htmlFor="burger-check" className="burger" />
+              <nav id="navigation1" className="navigation">
+                <HeaderNavigationBox />
+              </nav>
+            </div>
+          </ClickOutside>
+
+
           <div className="logo">{this.props.title}</div>
           <nav>
             {this.props.authenticated ? (
