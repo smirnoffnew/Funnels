@@ -18,7 +18,7 @@ class ChangeUserName extends React.Component {
       // isSubmitting,
     } = this.props;
     return (
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="settings-box-form">
         <div className='settings-box'>
           <label className='settings-box-label'>Your Account Details</label>
           <br />

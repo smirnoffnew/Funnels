@@ -151,8 +151,8 @@ class ProjectItem extends React.Component {
           </div>
 
           <div className="project">
-            {projectName}
-            <br />
+            <p className="project-name" >{projectName}</p>
+            {/* <br /> */}
             {funnelsLength} funnels
           </div>
 

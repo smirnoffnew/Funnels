@@ -132,11 +132,10 @@ class FunnelCommentsRightPanel extends React.Component {
             style={{
               position: "absolute",
               top: 65,
-              width: 500,
               height: "calc(100vh -67px)"
             }}
           >
-            <label className="label-create-widget-settings">Comments</label>
+            <label className="label-create-widget-settings funnel-comments-modal-width">Comments</label>
             <div
 
               style={{

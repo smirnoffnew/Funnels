@@ -54,3 +54,14 @@
   color: #848F99;
   font-size: 14px;
 }
+
+.settings-password-change-box{
+  display: flex;
+  justify-content: space-between;
+  margin-top: -20px; 
+  margin-right: 10px;
+}
+
+.settings-password-change-input{
+  width: 200px !important;
+}

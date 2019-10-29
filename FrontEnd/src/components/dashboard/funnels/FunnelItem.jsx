@@ -63,8 +63,8 @@ class FunnelItem extends React.Component {
           </div>
 
           <div className='project'>
-            {funnelName}
-            <br />
+            <p className="project-name" >{funnelName}</p>
+            {/* <br /> */}
             {/* {funnels} funnels */}
           </div>
 

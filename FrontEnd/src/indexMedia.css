@@ -12,6 +12,14 @@
     }
   }
 
+  .modal-main{
+    width: fit-content;
+  }
+
+  .label-create{
+    padding-right: 70px;
+  }
+
   .burgers {
     display: inline;
   }
@@ -55,6 +63,42 @@
     display: inline;
   }
 
+  .title {
+    max-width: 220px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-left: 10px;
+  }
+
+}
+
+@media all and (max-width: 800px) {
+
+  .title {
+    max-width: 180px;
+  }
+}
+
+@media all and (max-width: 700px) {
+
+  .settings-box {
+    width: auto;
+  }
+
+  .settings-box-form{
+    width: 100%;
+  }
+
+  .settings-password-change-box {
+    margin-top: 0px; 
+    margin-right: 0px;
+    flex-direction: column;
+  }
+
+  .settings-password-change-input{
+    width: auto !important;
+  }
+
 }
 
 @media all and (max-width: 430px) {
@@ -66,4 +110,49 @@
     width: 86px !important;
   }
 
+  .wrapper {
+    padding: 10px;
+  }
+
+  .top-text-first {
+    text-align: center;
+  }
+
+  .top-text-second {
+    text-align: center;
+  }
+
+  .collaborators-in-modal-width{
+    width: auto;
+  }
+
+  .create-funnels{
+    width: 100%;
+  }
+
+  .panel-buttons{
+    display: none;
+  }
+
+  .diagram-header-button-save {
+    display: none;
+  }
+
+  .modal-node-widget-main{
+    width: 100%;
+  }
+
+  .funnel-comments-modal-width{
+    width: 100%;
+  }
+
+  .top-text-second-questionnaire {
+    text-align: center;
+  }
+
+  .top-text-fourth {
+    text-align: center;
+  }
+
 }
+

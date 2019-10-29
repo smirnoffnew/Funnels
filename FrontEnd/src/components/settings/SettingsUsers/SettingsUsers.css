@@ -12,3 +12,7 @@
   display: block !important;
   margin-bottom: 20px !important;
 }
+
+.collaborators-in-modal-width{
+  width: 212px;
+}

@@ -18,7 +18,7 @@ class ChangeUserPassword extends React.Component {
       // isSubmitting,
     } = this.props;
     return (
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="settings-box-form">
 
         <div className='settings-box'>
           <label className='settings-box-label'>Reset Your Password</label>
@@ -43,7 +43,7 @@ class ChangeUserPassword extends React.Component {
           </div>
 
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '-20px', marginRight: '10px' }}>
+          <div className='settings-password-change-box'>
             <div className='setting-input-wrapper'>
               <label className='settings-label-input'>
                 New Password
@@ -56,7 +56,7 @@ class ChangeUserPassword extends React.Component {
                 value={values.newPassword}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                style={{ width: '200px' }}
+                className='settings-password-change-input'
               />
               {errors.newPassword && touched.newPassword && (
                 <div className={`input-group ${errors.newPassword && touched.newPassword ? 'has-error' : ''}`}>{errors.newPassword}</div>
@@ -75,7 +75,7 @@ class ChangeUserPassword extends React.Component {
                 value={values.newPasswordConfirm}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                style={{ width: '200px' }}
+                className='settings-password-change-input'
               />
               {errors.newPasswordConfirm && touched.newPasswordConfirm && (
                 <div className={`input-group ${errors.newPasswordConfirm && touched.newPasswordConfirm ? 'has-error' : ''}`}>{errors.newPasswordConfirm}</div>

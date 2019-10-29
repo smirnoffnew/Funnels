@@ -30,6 +30,7 @@ import CreateTemplateModal from "./componentsForBodyWidget/CreateTemplateModal";
 import API_URL from "../../../../config";
 import FunnelCommentsRightPanel from "./componentsForBodyWidget/FunnelCommentsRightPanel";
 import { keyMonitor } from "../utils";
+import MobileDevice from "./componentsForBodyWidget/MobileDevice";
 
 const Select = ({ show, children, style }) => {
   const showHideClassName = show
@@ -125,7 +126,7 @@ export default class BodyWidget extends React.Component {
     if (this.state.toggleAnalytics) {
       this.setState({
         conversionIsView: false
-      },() => {
+      }, () => {
         this.changeConverseLinksVisible(this.state.conversionIsView)
       })
     }
@@ -295,8 +296,32 @@ export default class BodyWidget extends React.Component {
       this.props.app.getDiagramEngine().getDiagramModel().setLocked(false)
       :
       this.props.app.getDiagramEngine().getDiagramModel().setLocked(true)
+
+
+
     return (
       <>
+
+        {
+          (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) &&
+          <MobileDevice />
+        }
+
+        {
+          (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ?
+
+          document.getElementsByClassName('srd-diagram')[0] ?
+          (
+            document.getElementsByClassName('srd-diagram')[0].style.overflow = 'scroll',
+            document.getElementsByClassName('diagram-header-button-save')[0].style.display = 'none',
+            document.getElementsByClassName('panel-buttons')[0].style.display = 'none',
+            null
+          ) 
+           : null : null
+          
+        }
+
+
         <SettingsNodeRightPanel work={this.props.work} app={this.props.app} />
         <NotesNodeRightPanel work={this.props.work} app={this.props.app} />
 
@@ -345,7 +370,7 @@ export default class BodyWidget extends React.Component {
               {
                 this.state.toggleAnalytics ?
                   this.props.work.permissionForCollaborator.includes("Edit") ? <EditSVG /> : null
-                : ""
+                  : ""
               }
             </div>
 
@@ -732,7 +757,7 @@ export default class BodyWidget extends React.Component {
               </ClickOutside>
             ) : null}
 
-            <div id="diagram">
+            <div id="diagram" ref={ref => this.diagramReff = ref}>
               <div
                 id="diagram-layer"
                 ref={ref => this.diagramRef = ref}

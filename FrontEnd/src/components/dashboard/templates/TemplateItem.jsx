@@ -77,8 +77,8 @@ class TemplateItem extends React.Component {
           </div>
 
           <div className="project">
-            {funnelName}
-            <br />
+            <p className="project-name" >{funnelName}</p>
+            {/* <br /> */}
           </div>
 
           <Modal

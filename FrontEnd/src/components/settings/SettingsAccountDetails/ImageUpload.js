@@ -47,38 +47,40 @@ class ImageUpload extends React.Component {
 
     return (
       <>
-        <div className='settings-box'>
-          <label className='settings-box-label'>Your Avatar</label>
-          <br />
-          <div className="img-preview">
-            {$imagePreview}
-          </div>
+        <div className="settings-box-form">
+          <div className='settings-box'>
+            <label className='settings-box-label'>Your Avatar</label>
+            <br />
+            <div className="img-preview">
+              {$imagePreview}
+            </div>
 
 
-          {this.props.changeUserAvatarMessage && this.props.changeUserAvatarMessage.length > 0 && (
-            <div className={`input-group`} style={{ textAlign: 'center' }}>{this.props.changeUserAvatarMessage}</div>
-          )}
+            {this.props.changeUserAvatarMessage && this.props.changeUserAvatarMessage.length > 0 && (
+              <div className={`input-group`} style={{ textAlign: 'center' }}>{this.props.changeUserAvatarMessage}</div>
+            )}
 
-          <p className="file">
-            <input
-              type="file"
-              name="file"
-              id="file"
-              accept="image/x-png,image/gif,image/jpeg"
-              onChange={e => this.handleImageChange(e)}
-            />
-            <label
-              htmlFor="file"
-              className="btn btn-1"
-              style={{
-                width: '150px',
-                marginBottom: '20px'
-              }}
-            >
-              Choose Image
+            <p className="file">
+              <input
+                type="file"
+                name="file"
+                id="file"
+                accept="image/x-png,image/gif,image/jpeg"
+                onChange={e => this.handleImageChange(e)}
+              />
+              <label
+                htmlFor="file"
+                className="btn btn-1"
+                style={{
+                  width: '150px',
+                  marginBottom: '20px'
+                }}
+              >
+                Choose Image
             </label>
-          </p>
+            </p>
 
+          </div>
         </div>
       </>
     )

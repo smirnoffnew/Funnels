@@ -183,8 +183,7 @@ class SettingsUsers extends Component {
                           }
                         </div>
                         <p
-                          style={{ width: '212px' }}
-                          className='collaborators-in-modal'
+                          className='collaborators-in-modal collaborators-in-modal-width'
                         >
                           {
                             user.partnerProfile &&

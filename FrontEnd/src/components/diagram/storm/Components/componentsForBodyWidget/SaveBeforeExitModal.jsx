@@ -1,6 +1,7 @@
 import * as React from "react";
 import domtoimage from 'dom-to-image';
 import randomString from 'random-string';
+import { Redirect } from 'react-router-dom'
 
 import Modal from '../../../../common/Modal/Modal'
 import { NavLink } from "react-router-dom";
@@ -58,52 +59,61 @@ export default class SaveBeforeExitModal extends React.Component {
             </div>
         }
 
-        <Modal show={this.state.saveBeforeExit} handleClose={this.hideSaveBeforeExit} >
-          <label className='label-create'>Save Before Exit</label>
+        {
+          (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ?
+            this.state.saveBeforeExit && <Redirect to={{
+              pathname: `/projects`,
+            }} />
+            : 
+            <Modal show={this.state.saveBeforeExit} handleClose={this.hideSaveBeforeExit} >
+            <label className='label-create'>Save Before Exit</label>
+  
+            <div style={{
+              display: 'flex',
+              width: 300,
+              margin: '22px auto',
+            }}>
+              <button
+                className='btn btn-1 create-project-button-in-modal'
+                onClick={() => {
+                  let diagram = document.getElementById('diagram-layer');
+                  domtoimage.toBlob(diagram)
+                    .then(data => {
+                      let name = randomString({ length: 10 });
+                      var file = new File([data], name, { type: "image/svg" });
+                      this.saveDiagramThenExit(file)
+                    })
+                    .catch(function (error) {
+                      console.error('oops, something went wrong!', error);
+                    });
+                }}
+              >
+                Save
+            </button>
+  
+              <NavLink
+                to={'/projects'}
+                className='btn btn-1 create-project-button-in-modal'
+                style={{
+                  color: '#fff',
+                  display: 'flex',
+                  fontWeight: 400,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                Don't Save
+            </NavLink>
+            </div>
+            {
+              this.props.work.message && (
+                <div className='input-group'>{this.props.work.message}</div>
+              )
+            }
+          </Modal >
+        }
 
-          <div style={{
-            display: 'flex',
-            width: 300,
-            margin: '22px auto',
-          }}>
-            <button
-              className='btn btn-1 create-project-button-in-modal'
-              onClick={() => {
-                let diagram = document.getElementById('diagram-layer');
-                domtoimage.toBlob(diagram)
-                  .then(data => {
-                    let name = randomString({ length: 10 });
-                    var file = new File([data], name, { type: "image/svg" });
-                    this.saveDiagramThenExit(file)
-                  })
-                  .catch(function (error) {
-                    console.error('oops, something went wrong!', error);
-                  });
-              }}
-            >
-              Save
-          </button>
-
-            <NavLink
-              to={'/projects'}
-              className='btn btn-1 create-project-button-in-modal'
-              style={{
-                color: '#fff',
-                display: 'flex',
-                fontWeight: 400,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              Don't Save
-          </NavLink>
-          </div>
-          {
-            this.props.work.message && (
-              <div className='input-group'>{this.props.work.message}</div>
-            )
-          }
-        </Modal >
+       
       </>
     );
   }

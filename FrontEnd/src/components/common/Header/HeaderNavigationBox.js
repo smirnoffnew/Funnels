@@ -42,7 +42,6 @@ class HeaderNavigationBox extends React.Component {
             rel="noopener noreferrer"
             href="https://funnelsmap.com/helpdesk/"
             className="menu-item-burger"
-            activeClassName="menu-item-burger-active"
           >
             Helpdesk
           </a>
@@ -53,7 +52,7 @@ class HeaderNavigationBox extends React.Component {
           <>
             <li>
               <NavLink
-                exact={false}
+                exact={true}
                 to={'/settings'}
                 className="menu-item-burger"
                 activeClassName="menu-item-burger-active"
