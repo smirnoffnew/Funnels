@@ -6,6 +6,7 @@
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
     "connected-react-router": "^6.0.0",
+    "cross-env": "^6.0.3",
     "dom-to-image": "^2.6.0",
     "draft-js": "^0.11.0",
     "draft-js-emoji-plugin": "^2.1.3",
@@ -31,8 +32,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build-amazon": "REACT_APP_BUILD=amazon react-scripts build",
-    "build-prod": "REACT_APP_BUILD=prod react-scripts build",
+    "build-amazon": "cross-env REACT_APP_BUILD=amazon react-scripts build",
+    "build-prod": "cross-env REACT_APP_BUILD=prod react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
