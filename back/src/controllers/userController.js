@@ -10,7 +10,11 @@ const sendEmail = require('../libs/sendEmail.js');
 const validateEmail = require('../libs/validateEmail.js');
 const keygen = require('../libs/keygen.js');
 
+/**signup variables */
 let g_profile, g_token;
+
+/**signin variables */
+let g_user;
 
 module.exports = {
     signUp: function (req, res) {
@@ -79,138 +83,104 @@ module.exports = {
             })
             .catch(err => {
                 console.log('Error...', err);
-                res
-                    .status(404)
-                    .json({
-                        message: 'activeCampaignApi error',
-                        data: err,
-                    })
+                res.status(404).json({
+                    message: 'activeCampaignApi error',
+                    data: err,
+                })
             })
     },
-    signIn: async function (req, res) {
-        await req.body.email.toLowerCase();
-        const emailFromUser = await validateEmail(req.body.email);
+    signIn: function (req, res) {
+        const emailFromUser = req.body.email.toLowerCase()
+        const checkEmailFromUser = validateEmail(emailFromUser);
         let apiResponse = '';
-        if (emailFromUser) {
-            User.findOne({
-                    email: req.body.email
-                })
-                .exec()
-                .then(user => {
-
-                    if (user && bcrypt.compareSync(req.body.password, user.password)) {
-                        Profile.findOne({
-                                email: req.body.email
-                            })
-                            .exec()
-                            .then(profile => {
-                                if (profile) {
-                                    let today = new Date();
-                                    let date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
-
-                                    let contact = new AC.Contact({
-                                        'url': 'https://vladhuntyk.activehosted.com',
-                                        'token': process.env.CAMPAING_ACCOUNT_KEY
-                                    });
-
-                                    let payload = {
-                                        'email': profile.email,
-                                        'firstName': profile.firstName,
-                                        'lastName': profile.lastName,
-                                        'phone': profile.phone,
-                                        'fields': [{
-                                            'name': 'Last Active',
-                                            'value': date
-                                        }, ]
-                                    };
-                                    contact.sync(payload, (err, res) => {
-                                        if (err) {
-                                            console.log("AC error", err)
-                                            res
-                                                .status(404)
-                                                .json({
-                                                    message: 'AC error',
-                                                    data: err,
-                                                })
-                                        }
-                                        console.log(res);
-                                    });
-                                    const token = jwt.sign({
-                                        profile,
-                                        userId: user._id
-                                    }, process.env.SECRET, {
-                                        expiresIn: process.env.TOKEN_EXPIRES
-                                    });
-
+        try {
+            if (checkEmailFromUser) {
+                User.findOne({
+                        email: emailFromUser
+                    }).exec()
+                    .then(user => {
+                        if (user && bcrypt.compareSync(req.body.password, user.password)) {
+                            g_user = user;
+                            return user
+                        } else {
+                            throw 'email not found or password is wrong'
+                        }
+                    })
+                    .then(() => {
+                        return Profile.findOne({
+                            email: emailFromUser
+                        }).exec()
+                    })
+                    .then(profile => {
+                        if (profile) {
+                            let today = new Date();
+                            let date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
+                            let contact = new AC.Contact({
+                                'url': 'https://vladhuntyk.activehosted.com',
+                                'token': process.env.CAMPAING_ACCOUNT_KEY
+                            });
+                            let payload = {
+                                'email': profile.email,
+                                'firstName': profile.firstName,
+                                'lastName': profile.lastName,
+                                'phone': profile.phone,
+                                'fields': [{
+                                    'name': 'Last Active',
+                                    'value': date
+                                }, ]
+                            };
+                            contact.sync(payload, (err, res) => {
+                                if (err) {
+                                    console.log("AC error", err)
                                     res
-                                        .status(200)
+                                        .status(404)
                                         .json({
-                                            data: {
-                                                _id: profile._id,
-                                                firstName: profile.firstName,
-                                                email: profile.email,
-                                                description: profile.description,
-                                                photoUrl: profile.photoUrl,
-                                                accountName: profile.accountName
-                                            },
-                                            token: `Bearer ${token}`,
-                                        })
-                                } else {
-                                    const profile = new Profile({
-                                        _id: new mongoose.Types.ObjectId(),
-                                        password: user.password,
-                                        email: user.email,
-                                        firstName: user.firstName,
-                                        accountName: user.accountName
-                                    });
-                                    profile.save()
-                                        .then(profile => {
-                                            const token = jwt.sign({
-                                                profile,
-                                                userId: user._id
-                                            }, process.env.SECRET, {
-                                                expiresIn: process.env.TOKEN_EXPIRES
-                                            });
-                                            res.status(200).json({
-                                                data: profile,
-                                                token: `Bearer ${token}`
-                                            });
-                                        })
-                                        .catch(err => {
-                                            console.log(err);
-                                            res.status(500).json({
-                                                err
-                                            });
+                                            message: 'AC error',
+                                            data: err,
                                         })
                                 }
-
-                            })
-                            .catch(err => {
-                                console.log(err);
-                                res.status(500).json({
-                                    err
-                                });
                             });
-
-                    } else {
-                        res.status(400).json({
-                            message: "User not found or wrong password"
+                            const token = jwt.sign({
+                                profile,
+                                userId: g_user._id
+                            }, process.env.SECRET, {
+                                expiresIn: process.env.TOKEN_EXPIRES
+                            });
+                            return {
+                                profile,
+                                token
+                            }
+                        } else {
+                            throw 'error in profile'
+                        }
+                    })
+                    .then((obj) => {
+                        res.status(200).json({
+                            data: {
+                                _id: obj.profile._id,
+                                firstName: obj.profile.firstName,
+                                email: obj.profile.email,
+                                description: obj.profile.description,
+                                photoUrl: obj.profile.photoUrl,
+                                accountName: obj.profile.accountName
+                            },
+                            token: `Bearer ${obj.token}`,
+                        })
+                    })
+                    .catch(err => {
+                        res.status(500).json({
+                            error: err
                         });
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                    res.status(500).json({
-                        error: err.message
-                    });
-                });
-        } else {
-            res.status(400).json({
-                message: "email isn't correct"
+                    })
+            }
+            else {throw 'email is required'}
+        } catch (error) {
+            res.status(500).json({
+                error: error
             });
         }
-
     },
+
     emailValidation: async function (req, res) {
         const emailTest = req.body.email.toLowerCase();
         User.findOne({
