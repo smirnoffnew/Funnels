@@ -232,6 +232,7 @@
   font-size: 17px;
   color: #848f99;
   font-weight: 400;
+  max-height: 40px;
 }
 
 .btn-select-widget{
