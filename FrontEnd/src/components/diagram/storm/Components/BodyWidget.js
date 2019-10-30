@@ -107,19 +107,20 @@ export default class BodyWidget extends React.Component {
       this.props.work.showAnalyticsBoolean(this.state.toggleAnalytics)
       this.props.work.getConversionInfoForAllNodes(this.props.work.funnelId)
 
-      domtoimage
-        .toBlob(this.diagramRef)
-        .then(data => {
-          const name = randomString({ length: 10 });
-          const file = new File([data], name, {
-            type: "image/svg"
+      !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) &&
+        domtoimage
+          .toBlob(this.diagramRef)
+          .then(data => {
+            const name = randomString({ length: 10 });
+            const file = new File([data], name, {
+              type: "image/svg"
+            });
+            this.saveDiagramHandle(file);
+            this.hideSelect();
+          })
+          .catch(function (error) {
+            console.error("oops, something went wrong!", error);
           });
-          this.saveDiagramHandle(file);
-          this.hideSelect();
-        })
-        .catch(function (error) {
-          console.error("oops, something went wrong!", error);
-        });
 
     })
 
@@ -273,11 +274,12 @@ export default class BodyWidget extends React.Component {
   changeConverseLinksVisible = boolean => {
     this.props.work.hideConversionLink(boolean)
 
+    !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) &&
     domtoimage
       .toBlob(this.diagramRef)
       .then(data => {
-        let name = randomString({ length: 10 });
-        var file = new File([data], name, {
+        const name = randomString({ length: 10 });
+        const file = new File([data], name, {
           type: "image/svg"
         });
         this.saveDiagramHandle(file);
@@ -310,15 +312,16 @@ export default class BodyWidget extends React.Component {
         {
           (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ?
 
-          document.getElementsByClassName('srd-diagram')[0] ?
-          (
-            document.getElementsByClassName('srd-diagram')[0].style.overflow = 'scroll',
-            document.getElementsByClassName('diagram-header-button-save')[0].style.display = 'none',
-            document.getElementsByClassName('panel-buttons')[0].style.display = 'none',
-            null
-          ) 
-           : null : null
-          
+            document.getElementsByClassName('srd-diagram')[0] ?
+              (
+                document.getElementById('diagram').style.height = '100vh',
+                document.getElementsByClassName('srd-diagram')[0].style.overflow = 'scroll',
+                document.getElementsByClassName('diagram-header-button-save')[0].style.display = 'none',
+                document.getElementsByClassName('panel-buttons')[0].style.display = 'none',
+                null
+              )
+              : null : null
+
         }
 
 
@@ -369,7 +372,9 @@ export default class BodyWidget extends React.Component {
             >
               {
                 this.state.toggleAnalytics ?
-                  this.props.work.permissionForCollaborator.includes("Edit") ? <EditSVG /> : null
+                  this.props.work.permissionForCollaborator.includes("Edit") ? 
+                  !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ? <EditSVG /> : null
+                   : null
                   : ""
               }
             </div>
@@ -486,33 +491,39 @@ export default class BodyWidget extends React.Component {
                         app={this.props.app}
                       />
 
-                      <div className="diagram-header-instruction-buttons">
-                        <button
-                          className="diagram-header-instruction-button"
-                          onClick={() => {
-                            domtoimage
-                              .toBlob(this.diagramRef)
-                              .then(data => {
-                                let name = randomString({ length: 10 });
-                                var file = new File([data], name, {
-                                  type: "image/svg"
-                                });
-                                this.saveDiagramHandle(file);
-                                this.props.work.sendImageToCollaborate(
-                                  this.props.work.funnelId,
-                                  file
-                                );
-                                this.hideSelect();
-                              })
-                              .catch(function (error) {
-                                console.error("oops, something went wrong!", error);
-                              });
-                          }}
-                          title={"Share The Funnel"}
-                        >
-                          <ShareFunnelSVG />
-                        </button>
-                      </div>
+                      {
+                         !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ?
+                         <div className="diagram-header-instruction-buttons">
+                         <button
+                           className="diagram-header-instruction-button"
+                           onClick={() => {
+                             domtoimage
+                               .toBlob(this.diagramRef)
+                               .then(data => {
+                                 let name = randomString({ length: 10 });
+                                 var file = new File([data], name, {
+                                   type: "image/svg"
+                                 });
+                                 this.saveDiagramHandle(file);
+                                 this.props.work.sendImageToCollaborate(
+                                   this.props.work.funnelId,
+                                   file
+                                 );
+                                 this.hideSelect();
+                               })
+                               .catch(function (error) {
+                                 console.error("oops, something went wrong!", error);
+                               });
+                           }}
+                           title={"Share The Funnel"}
+                         >
+                           <ShareFunnelSVG />
+                         </button>
+                       </div>
+                       : null
+                      }
+
+                     
 
                       <FunnelOptionsRightPanel
                         work={this.props.work}

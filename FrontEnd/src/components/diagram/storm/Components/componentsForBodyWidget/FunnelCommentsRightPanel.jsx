@@ -46,28 +46,30 @@ class FunnelCommentsRightPanel extends React.Component {
 
   showComments = () => {
  
-    let diagram = document.getElementById("diagram-layer");
-    domtoimage
-      .toBlob(diagram)
-      .then(data => {
-        let name = randomString({ length: 10 });
-        var file = new File([data], name, { type: "image/svg" });
-        this.setState(
-          {
-            snackMsg: "next",
-            converted: this.props.app.serialization(
-              this.props.app.getDiagramEngine().getDiagramModel()
-            )
-          },
-          () => {
-            this.props.work.saveDiagram(this.props.work.funnelId, this.state, file);
-          })
-      }).then(() =>{
+    // let diagram = document.getElementById("diagram-layer");
+    // domtoimage
+    //   .toBlob(diagram)
+    //   .then(data => {
+    //     // let name = randomString({ length: 10 });
+    //     // var file = new File([data], name, { type: "image/svg" });
+    //     // this.setState(
+    //     //   {
+    //     //     snackMsg: "next",
+    //     //     converted: this.props.app.serialization(
+    //     //       this.props.app.getDiagramEngine().getDiagramModel()
+    //     //     )
+    //     //   },
+    //     //   () => {
+    //     //     // this.props.work.saveDiagram(this.props.work.funnelId, this.state, file);
+    //     //   })
+    //   }).then(() =>{
         this.setState({
           showComments: true,
         }); 
+
         this.props.work.showCommentsBoolean(true) 
-      }   )
+      // }   
+      // )
 
       
   }
@@ -134,8 +136,9 @@ class FunnelCommentsRightPanel extends React.Component {
               top: 65,
               height: "calc(100vh -67px)"
             }}
+            commentsStyleClass=' funnel-comments-modal-width'
           >
-            <label className="label-create-widget-settings funnel-comments-modal-width">Comments</label>
+            <label className="label-create-widget-settings">Comments</label>
             <div
 
               style={{
