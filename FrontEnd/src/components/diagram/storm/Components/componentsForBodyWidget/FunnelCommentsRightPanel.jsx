@@ -11,8 +11,6 @@ import API_URL from "../../../../../config";
 import { getNotificationTime } from "../../utils";
 import { getAllCollaborators } from "../../../../../store/actions/collaborations"
 import { ColoboratorsPanel } from "../../../../common/Comments/ColoboratorsPanel/ColoboratorsPannel";
-import domtoimage from "dom-to-image";
-import randomString from "random-string";
 
 class FunnelCommentsRightPanel extends React.Component {
   state = {
@@ -45,31 +43,10 @@ class FunnelCommentsRightPanel extends React.Component {
   }
 
   showComments = () => {
- 
-    // let diagram = document.getElementById("diagram-layer");
-    // domtoimage
-    //   .toBlob(diagram)
-    //   .then(data => {
-    //     // let name = randomString({ length: 10 });
-    //     // var file = new File([data], name, { type: "image/svg" });
-    //     // this.setState(
-    //     //   {
-    //     //     snackMsg: "next",
-    //     //     converted: this.props.app.serialization(
-    //     //       this.props.app.getDiagramEngine().getDiagramModel()
-    //     //     )
-    //     //   },
-    //     //   () => {
-    //     //     // this.props.work.saveDiagram(this.props.work.funnelId, this.state, file);
-    //     //   })
-    //   }).then(() =>{
+
         this.setState({
           showComments: true,
         }); 
-
-        this.props.work.showCommentsBoolean(true) 
-      // }   
-      // )
 
       
   }
@@ -78,7 +55,6 @@ class FunnelCommentsRightPanel extends React.Component {
     this.setState({
       showComments: false
     })
-    this.props.work.showCommentsBoolean(false)
   };
 
   sendComment = (comment) => {

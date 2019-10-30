@@ -23,7 +23,6 @@ import {
   setPermission,
   getConversationInfoWithPromisefication,
   getConversionInfoForAllNodes,
-  showCommentsBoolean,
   changeKeyDown,
 } from '../../../store/actions/projects'
 import { hideConversionLink } from "../../../store/actions/conversion";
@@ -142,7 +141,6 @@ function mapStateToProps(state, ownProps) {
     showSettingsWidgetEngine: state.projects.showSettingsWidgetEngine,
 
     showNotesWidgetBoolean: state.projects.showNotesWidgetBoolean,
-    showCommentsWidgetBoolean: state.projects.showCommentsWidgetBoolean,
     showNotesWidgetModel: state.projects.showNotesWidgetModel,
     showNotesWidgetEngine: state.projects.showNotesWidgetEngine,
     showTypeOfNode: state.projects.showTypeOfNode,
@@ -177,7 +175,6 @@ const mapDispatchToProps = dispatch => {
       dispatch(saveDiagramThenShowOrHideNotesModal(id, state, file, boolean, model, engine)),
 
     showAnalyticsBoolean: boolean => dispatch(showAnalyticsBoolean(boolean)),
-    showCommentsBoolean: boolean => dispatch(showCommentsBoolean(boolean)),
 
     changeKeyDown: key => dispatch(changeKeyDown(key)),
 
