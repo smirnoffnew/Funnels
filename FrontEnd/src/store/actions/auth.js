@@ -159,7 +159,7 @@ export function signinUser(props) {
     let routerState = getState().router
 
     API.post(`sign-in`, {
-      'email': email,
+      'email': email.trim(),
       'password': password
     })
       .then(response => {

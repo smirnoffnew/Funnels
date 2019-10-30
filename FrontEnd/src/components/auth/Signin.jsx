@@ -118,7 +118,7 @@ class Signin extends React.Component {
 
 const formikEnhancer = withFormik({
   validationSchema: Yup.object().shape({
-    email: Yup.string().email('Invalid email address').required('Email is required!'),
+    email: Yup.string().trim().email('Invalid email address').required('Email is required!'),
     password: Yup.string()
       .min(8, 'Minimum 8 letters')
       .required('Password is required.')
