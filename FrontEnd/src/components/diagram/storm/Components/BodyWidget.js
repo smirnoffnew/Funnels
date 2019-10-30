@@ -107,6 +107,8 @@ export default class BodyWidget extends React.Component {
       this.props.work.showAnalyticsBoolean(this.state.toggleAnalytics)
       this.props.work.getConversionInfoForAllNodes(this.props.work.funnelId)
 
+      // console.log('permission handleToggleAnalytics', this.props.work.permissionForCollaborator)
+      this.props.work.permissionForCollaborator.includes("Edit") && 
       !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) &&
         domtoimage
           .toBlob(this.diagramRef)
@@ -273,7 +275,9 @@ export default class BodyWidget extends React.Component {
 
   changeConverseLinksVisible = boolean => {
     this.props.work.hideConversionLink(boolean)
-
+    // console.log('permission changeConverseLinksVisible', this.props.work.permissionForCollaborator)
+    // this.props.work.permissionForCollaborator.includes("Edit")
+    this.props.work.permissionForCollaborator.includes("Edit") && 
     !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) &&
     domtoimage
       .toBlob(this.diagramRef)
@@ -287,7 +291,8 @@ export default class BodyWidget extends React.Component {
       })
       .catch(function (error) {
         console.error("oops, something went wrong!", error);
-      });
+      })
+
 
     document.getElementById("diagram-layer").click();
     this.forceUpdate();
