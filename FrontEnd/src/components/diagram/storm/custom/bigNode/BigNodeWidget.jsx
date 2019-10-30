@@ -201,8 +201,8 @@ class BigNodeWidget extends React.Component {
             borderRadius: 7,
             zIndex: 10
           }}
-          onMouseEnter={this.showModal}
-          onMouseLeave={this.hideModal}
+          // onMouseEnter={this.showModal}
+          // onMouseLeave={this.hideModal}
           title={
             this.props.node.extras.named
               ? this.props.node.extras.named
@@ -218,14 +218,18 @@ class BigNodeWidget extends React.Component {
             </>
           ) : null}
 
+          {
+            !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ?
 
-          <div
-            className="big-area-for-hover"
-            onMouseEnter={this.showModal}
-            onMouseLeave={this.hideModal}
-            onMouseMove={this.mouseMove}
-            onClick={this.handleClickOnWidget}
-          />
+              <div
+                className="big-area-for-hover"
+                onMouseEnter={this.showModal}
+                onMouseLeave={this.hideModal}
+                onMouseMove={this.mouseMove}
+                onClick={this.handleClickOnWidget}
+              />
+              : null
+          }
 
           <ClickOutside
             onClickOutside={() => {
@@ -472,7 +476,7 @@ class BigNodeWidget extends React.Component {
                             !this.props.hideConversionLinkBoolean ? 'none' :
                               this.props.node.extras.conversionsContainer === undefined ||
                                 (this.props.node.extras.conversionsContainer &&
-                                this.props.node.extras.conversionsContainer.length <= 2) ? 'block' : 'none'
+                                  this.props.node.extras.conversionsContainer.length <= 2) ? 'block' : 'none'
                         }}
                         title={'add conversion block'}
                       >

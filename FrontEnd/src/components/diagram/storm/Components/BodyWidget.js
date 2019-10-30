@@ -314,10 +314,11 @@ export default class BodyWidget extends React.Component {
 
             document.getElementsByClassName('srd-diagram')[0] ?
               (
-                document.getElementById('diagram').style.height = '100vh',
+                // document.getElementById('diagram').style.height = '100vh',
                 document.getElementsByClassName('srd-diagram')[0].style.overflow = 'scroll',
                 document.getElementsByClassName('diagram-header-button-save')[0].style.display = 'none',
                 document.getElementsByClassName('panel-buttons')[0].style.display = 'none',
+                document.getElementsByClassName('zoom-wrapper')[0].style.display = 'none',
                 null
               )
               : null : null
