@@ -39,7 +39,7 @@ class Collaborations extends Component {
               />
             ))
           ) : (
-            <div className="create-funnels">No Funnels Collaboration.</div>
+            <div className="no-funnels">No Funnels Collaboration.</div>
           )}
         </div>
       </Layout>

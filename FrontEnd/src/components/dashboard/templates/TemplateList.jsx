@@ -38,7 +38,7 @@ class TemplateList extends React.Component {
                 />
               ))
             ) : (
-              <div className="create-funnels">No templates.</div>
+              <div className="no-funnels">No Templates.</div>
             )}
           </div>
         </Layout>

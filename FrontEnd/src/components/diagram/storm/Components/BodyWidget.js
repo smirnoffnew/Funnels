@@ -108,8 +108,8 @@ export default class BodyWidget extends React.Component {
       this.props.work.getConversionInfoForAllNodes(this.props.work.funnelId)
 
       // console.log('permission handleToggleAnalytics', this.props.work.permissionForCollaborator)
-      this.props.work.permissionForCollaborator.includes("Edit") && 
-      !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) &&
+      this.props.work.permissionForCollaborator.includes("Edit") &&
+        !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) &&
         domtoimage
           .toBlob(this.diagramRef)
           .then(data => {
@@ -277,21 +277,21 @@ export default class BodyWidget extends React.Component {
     this.props.work.hideConversionLink(boolean)
     // console.log('permission changeConverseLinksVisible', this.props.work.permissionForCollaborator)
     // this.props.work.permissionForCollaborator.includes("Edit")
-    this.props.work.permissionForCollaborator.includes("Edit") && 
-    !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) &&
-    domtoimage
-      .toBlob(this.diagramRef)
-      .then(data => {
-        const name = randomString({ length: 10 });
-        const file = new File([data], name, {
-          type: "image/svg"
-        });
-        this.saveDiagramHandle(file);
-        this.hideSelect();
-      })
-      .catch(function (error) {
-        console.error("oops, something went wrong!", error);
-      })
+    this.props.work.permissionForCollaborator.includes("Edit") &&
+      !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) &&
+      domtoimage
+        .toBlob(this.diagramRef)
+        .then(data => {
+          const name = randomString({ length: 10 });
+          const file = new File([data], name, {
+            type: "image/svg"
+          });
+          this.saveDiagramHandle(file);
+          this.hideSelect();
+        })
+        .catch(function (error) {
+          console.error("oops, something went wrong!", error);
+        })
 
 
     document.getElementById("diagram-layer").click();
@@ -317,7 +317,11 @@ export default class BodyWidget extends React.Component {
         {
           (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ?
 
-            document.getElementsByClassName('srd-diagram')[0] ?
+            document.getElementById('diagram') &&
+              document.getElementsByClassName('srd-diagram')[0] &&
+              document.getElementsByClassName('diagram-header-button-save')[0] &&
+              document.getElementsByClassName('panel-buttons')[0] &&
+              document.getElementsByClassName('zoom-wrapper')[0] ?
               (
                 document.getElementById('diagram').style.height = '100vh',
                 document.getElementsByClassName('srd-diagram')[0].style.overflow = 'scroll',
@@ -378,9 +382,9 @@ export default class BodyWidget extends React.Component {
             >
               {
                 this.state.toggleAnalytics ?
-                  this.props.work.permissionForCollaborator.includes("Edit") ? 
-                  !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ? <EditSVG /> : null
-                   : null
+                  this.props.work.permissionForCollaborator.includes("Edit") ?
+                    !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ? <EditSVG /> : null
+                    : null
                   : ""
               }
             </div>
@@ -498,38 +502,38 @@ export default class BodyWidget extends React.Component {
                       />
 
                       {
-                         !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ?
-                         <div className="diagram-header-instruction-buttons">
-                         <button
-                           className="diagram-header-instruction-button"
-                           onClick={() => {
-                             domtoimage
-                               .toBlob(this.diagramRef)
-                               .then(data => {
-                                 let name = randomString({ length: 10 });
-                                 var file = new File([data], name, {
-                                   type: "image/svg"
-                                 });
-                                 this.saveDiagramHandle(file);
-                                 this.props.work.sendImageToCollaborate(
-                                   this.props.work.funnelId,
-                                   file
-                                 );
-                                 this.hideSelect();
-                               })
-                               .catch(function (error) {
-                                 console.error("oops, something went wrong!", error);
-                               });
-                           }}
-                           title={"Share The Funnel"}
-                         >
-                           <ShareFunnelSVG />
-                         </button>
-                       </div>
-                       : null
+                        !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ?
+                          <div className="diagram-header-instruction-buttons">
+                            <button
+                              className="diagram-header-instruction-button"
+                              onClick={() => {
+                                domtoimage
+                                  .toBlob(this.diagramRef)
+                                  .then(data => {
+                                    let name = randomString({ length: 10 });
+                                    var file = new File([data], name, {
+                                      type: "image/svg"
+                                    });
+                                    this.saveDiagramHandle(file);
+                                    this.props.work.sendImageToCollaborate(
+                                      this.props.work.funnelId,
+                                      file
+                                    );
+                                    this.hideSelect();
+                                  })
+                                  .catch(function (error) {
+                                    console.error("oops, something went wrong!", error);
+                                  });
+                              }}
+                              title={"Share The Funnel"}
+                            >
+                              <ShareFunnelSVG />
+                            </button>
+                          </div>
+                          : null
                       }
 
-                     
+
 
                       <FunnelOptionsRightPanel
                         work={this.props.work}
@@ -537,50 +541,111 @@ export default class BodyWidget extends React.Component {
                       />
                     </>
                     :
-                    <div className="zoom-wrapper">
-                      <ReactSVG
-                        src={LupaSVG}
-                        alt=""
-                        beforeInjection={svg => {
-                          svg.setAttribute("style", "width: 17px; height: 25px;");
-                        }}
-                      />
-                      <div className="zoom-count">
-                        {this.props.app
-                          .getDiagramEngine()
-                          .getDiagramModel()
-                          .zoom.toFixed(0)}
-                        %
-                    </div>
-                      <div className="zoom-buttons-wrapper">
-                        <button
-                          className="zoom-button-plus"
-                          onClick={this.scalePlus}
-                        >
-                          +
-                      </button>
-                        <button
-                          className="zoom-button-minus"
-                          onClick={this.scaleMinus}
-                        >
-                          -
-                      </button>
+                    <>
+                      <div className="zoom-wrapper">
+                        <ReactSVG
+                          src={LupaSVG}
+                          alt=""
+                          beforeInjection={svg => {
+                            svg.setAttribute("style", "width: 17px; height: 25px;");
+                          }}
+                        />
+                        <div className="zoom-count">
+                          {this.props.app
+                            .getDiagramEngine()
+                            .getDiagramModel()
+                            .zoom.toFixed(0)}
+                          %
+                        </div>
+                        <div className="zoom-buttons-wrapper">
+                          <button
+                            className="zoom-button-plus"
+                            onClick={this.scalePlus}
+                          >
+                            +
+                          </button>
+                          <button
+                            className="zoom-button-minus"
+                            onClick={this.scaleMinus}
+                          >
+                            -
+                          </button>
+                        </div>
                       </div>
-                    </div>
+
+                      <button
+                        className="btn btn-1"
+                        style={{
+                          width: 100,
+                          height: 40,
+                          borderRadius: 7,
+                          marginRight: 10
+                        }}
+                        onClick={() => this.zoomToFit()}
+                      >
+                        Zoom to Fit
+                      </button>
+                    </>
                 }
 
               </>
             ) : (
-                <button
-                  className="btn btn-1 diagram-header-button-save"
-                  onClick={this.showSelect}
-                  style={{ margin: 12.5 }}
-                >
-                  SAVE
-                <div className="arrow-for-select">
-                    <ArrowSelectSVG />
+                <>
+                  <div className="zoom-wrapper">
+                    <ReactSVG
+                      src={LupaSVG}
+                      alt=""
+                      beforeInjection={svg => {
+                        svg.setAttribute("style", "width: 17px; height: 25px;");
+                      }}
+                    />
+                    <div className="zoom-count">
+                      {this.props.app
+                        .getDiagramEngine()
+                        .getDiagramModel()
+                        .zoom.toFixed(0)}
+                      %
+                        </div>
+                    <div className="zoom-buttons-wrapper">
+                      <button
+                        className="zoom-button-plus"
+                        onClick={this.scalePlus}
+                      >
+                        +
+                          </button>
+                      <button
+                        className="zoom-button-minus"
+                        onClick={this.scaleMinus}
+                      >
+                        -
+                      </button>
+                    </div>
                   </div>
+
+                  <button
+                    className="btn btn-1"
+                    style={{
+                      width: 100,
+                      height: 40,
+                      borderRadius: 7,
+                      marginRight: 10
+                    }}
+                    onClick={() => this.zoomToFit()}
+                  >
+                    Zoom to Fit
                 </button>
+
+                  <button
+                    className="btn btn-1 diagram-header-button-save"
+                    onClick={this.showSelect}
+                    style={{ margin: 12.5 }}
+                  >
+                    SAVE
+                <div className="arrow-for-select">
+                      <ArrowSelectSVG />
+                    </div>
+                  </button>
+                </>
               )}
 
             {/* {

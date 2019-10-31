@@ -14,6 +14,7 @@
 
   .modal-main{
     width: fit-content;
+    max-width: 900px;
   }
 
   .label-create{
@@ -128,6 +129,12 @@
 
   .create-funnels{
     width: 100%;
+    justify-content: center;
+    display: flex;
+  }
+
+  .no-funnels{
+    font-size: 22px;
   }
 
   .panel-buttons{
@@ -152,6 +159,21 @@
 
   .top-text-fourth {
     text-align: center;
+  }
+
+  .select-main {
+    right: 0px;
+    width: 100px;
+  }
+
+  .projects-wrapper {
+    margin: auto;
+    justify-content: center;
+    margin-top: 70px;
+  }
+
+  .modal-main {
+    width: 235px;
   }
 
 }
