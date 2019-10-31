@@ -12,7 +12,6 @@ import {
 
 const initialState = {
   showSettingsWidgetBoolean: false,
-  showCommentsWidgetBoolean: false,
   showAnalyticsBoolean: false,
   createProjectError: '',
   permissionForCollaborator: "Edit,Create",

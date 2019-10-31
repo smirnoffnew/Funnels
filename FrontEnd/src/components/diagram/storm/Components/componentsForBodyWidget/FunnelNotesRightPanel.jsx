@@ -12,7 +12,7 @@ export default class FunnelNotesRightPanel extends React.Component {
     note: ""
   };
 
-  showNotes = () =>{
+  showNotes = () => {
     this.setState({
       showNotes: true,
       showMenu: false,
@@ -64,7 +64,7 @@ export default class FunnelNotesRightPanel extends React.Component {
         var file = new File([data], name, { type: "image/svg" });
         this.saveDiagramHandle(file);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.error("oops, something went wrong!", error);
       });
   }
@@ -82,21 +82,21 @@ export default class FunnelNotesRightPanel extends React.Component {
             >
               <FunnelNotesSVG />
             </button>
-           {((this.props.work.diagram&&
-            this.props.work.diagram.funnelNotes&& 
-            this.props.work.diagram.funnelNotes.length !== 0)||
-            (
-            this.state.funnelNotes&&
-            this.state.funnelNotes.length !== 0) )
-            &&
-            <div style={{    
-              position: 'absolute',
-              top: '12px',
-              right: '100px',
-              transform: 'scale(0.9)'
+            {((this.props.work.diagram &&
+              this.props.work.diagram.funnelNotes &&
+              this.props.work.diagram.funnelNotes.length !== 0) ||
+              (
+                this.state.funnelNotes &&
+                this.state.funnelNotes.length !== 0))
+              &&
+              <div style={{
+                position: 'absolute',
+                top: '12px',
+                right: '100px',
+                transform: 'scale(0.9)'
               }}>
-            <NotesStatusIcon/>
-            </div>
+                <NotesStatusIcon />
+              </div>
             }
           </>
         ) : null}
@@ -114,7 +114,7 @@ export default class FunnelNotesRightPanel extends React.Component {
               top: 65
             }}
           >
-            <label  id="label-create-widget-settings" className="label-create-widget-settings">Funnel Notes</label>
+            <label id="label-create-widget-settings" className="label-create-widget-settings">Funnel Notes</label>
             <div
               style={{
                 padding: 15,
@@ -122,58 +122,69 @@ export default class FunnelNotesRightPanel extends React.Component {
                 flexDirection: "column"
               }}
             >
-              <label htmlFor="FunnelNotes" className="label-input">
-                Funnel Notes
-              </label>
+              {
+                this.state.funnelNotes && this.state.funnelNotes.length > 0 &&
+                <label htmlFor="FunnelNotes" className="label-input">
+                  Funnel Notes
+                </label>
+              }
 
-              <textarea
-                style={{
-                  height: 100,
-                  borderRadius: 5,
-                  border: "1px solid rgb(191, 207, 233)",
-                  padding: 10,
-                  maxWidth: "90%",
-                  minWidth: "90%",
-                  width: "90%"
-                }}
-                placeholder="Start typing your note.."
-                type="text"
-                value={this.state.note}
-                onChange={this.handleChange}
-                name="note"
-              />
+              {
+                !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ?
+                  <>
 
-              <button
-                className="btn btn-1"
-                onClick={() => this.addNoteToNotebook()}
-                style={{
-                  height: 30,
-                  width: 120,
-                  margin: "10px auto"
-                }}
-              >
-                Add Note
-              </button>
+                    <textarea
+                      style={{
+                        height: 100,
+                        borderRadius: 5,
+                        border: "1px solid rgb(191, 207, 233)",
+                        padding: 10,
+                        maxWidth: "90%",
+                        minWidth: "90%",
+                        width: "90%"
+                      }}
+                      placeholder="Start typing your note.."
+                      type="text"
+                      value={this.state.note}
+                      onChange={this.handleChange}
+                      name="note"
+                    />
 
-              <button
-                className="btn btn-1 create-project-button-in-modal"
-                style={{ display: "block" }}
-                onClick={this.handleSaveToDB}
-              >
-                Save
-              </button>
+                    <button
+                      className="btn btn-1"
+                      onClick={() => this.addNoteToNotebook()}
+                      style={{
+                        height: 30,
+                        width: 120,
+                        margin: "10px auto"
+                      }}
+                    >
+                      Add Note
+                    </button>
 
-              {this.props.work.message && (
-                <div
-                  className="input-group"
-                  style={{
-                    display: "flex",
-                    margin: "20px auto"
-                  }}
-                >
-                  {this.props.work.message}
-                </div>
-              )}
+                    <button
+                      className="btn btn-1 create-project-button-in-modal"
+                      style={{ display: "block" }}
+                      onClick={this.handleSaveToDB}
+                    >
+                      Save
+                    </button>
+
+                    {this.props.work.message && (
+                      <div
+                        className="input-group"
+                        style={{
+                          display: "flex",
+                          margin: "20px auto"
+                        }}
+                      >
+                        {this.props.work.message}
+                      </div>
+                    )}
+
+                  </>
+                  : null
+              }
 
               <div
                 style={{
@@ -205,7 +216,7 @@ export default class FunnelNotesRightPanel extends React.Component {
                         placeholder="Start typing your note.."
                         type="text"
                         value={item}
-                        onChange={() => {}}
+                        onChange={() => { }}
                       />
                       <button
                         onClick={() => this.delete(index)}

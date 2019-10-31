@@ -116,8 +116,8 @@ class SmallNodeWidget extends React.Component {
             borderRadius: 7,
             zIndex: 10
           }}
-          onMouseEnter={this.showModal}
-          onMouseLeave={this.hideModal}
+          // onMouseEnter={this.showModal}
+          // onMouseLeave={this.hideModal}
           title={
             this.props.node.extras.named
               ? this.props.node.extras.named
@@ -133,13 +133,18 @@ class SmallNodeWidget extends React.Component {
             </>
           ) : null}
 
-          <div
-            className="small-area-for-hover"
-            onMouseEnter={this.showModal}
-            onMouseLeave={this.hideModal}
-            onMouseMove={this.mouseMove}
-            onClick={this.handleClickOnWidget}
-          />
+          {
+            !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ?
+              <div
+                className="small-area-for-hover"
+                onMouseEnter={this.showModal}
+                onMouseLeave={this.hideModal}
+                onMouseMove={this.mouseMove}
+                onClick={this.handleClickOnWidget}
+              />
+              : null
+          }
+
           <ClickOutside
             onClickOutside={() => {
               this.setState({ show: false })
@@ -202,10 +207,10 @@ class SmallNodeWidget extends React.Component {
                       paddingTop:
                         this.props.node.extras.notesd &&
                         this.props.node.extras.notesd.length !== 0 && 0,
-                      width: 
+                      width:
                         this.props.node.extras.notesd &&
                         this.props.node.extras.notesd.length !== 0 && 27,
-                      height: 
+                      height:
                         this.props.node.extras.notesd &&
                         this.props.node.extras.notesd.length !== 0 && 28
                     }}
@@ -244,10 +249,10 @@ class SmallNodeWidget extends React.Component {
                   </button>
                   <button
                     className="btn-select-widget"
-                    onClick={() => 
+                    onClick={() =>
                       deleteNode(
-                        this.props.engine, 
-                        this.props.funnelId, 
+                        this.props.engine,
+                        this.props.funnelId,
                         this.props.node.id
                       )
                     }

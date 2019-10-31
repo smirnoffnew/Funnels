@@ -79,9 +79,15 @@ class TextWithOutPortsWidget extends React.Component {
             position: "relative",
             zIndex: 10,
           }}
-          onMouseEnter={this.showModal}
+          onMouseEnter={
+            !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) &&
+            this.showModal
+          }
           onMouseLeave={this.hideModal}
-          onMouseMove={this.mouseMove}
+          onMouseMove={
+            !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) &&
+            this.mouseMove
+          }
         > 
           {
             this.state.handleGridTwo ?

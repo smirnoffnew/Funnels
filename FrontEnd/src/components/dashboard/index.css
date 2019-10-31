@@ -301,5 +301,5 @@
 .project-name{
   text-overflow: ellipsis;
   overflow: hidden;
-  /* display: contents; */
+  max-height: 50px;
 }

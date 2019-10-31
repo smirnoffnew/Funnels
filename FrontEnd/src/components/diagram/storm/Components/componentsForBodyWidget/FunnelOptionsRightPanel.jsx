@@ -29,13 +29,13 @@ export default class FunnelNotesRightPanel extends React.Component {
     });
 
   handleChangeCheckbox = () => {
-    this.setState(prev => ({handleGrid: !prev.handleGrid}), () => {
+    this.setState(prev => ({ handleGrid: !prev.handleGrid }), () => {
       let name = randomString({ length: 10 });
       var file = new File([], name, { type: "image/svg" });
       this.saveDiagramHandle(file);
     })
   }
-  
+
   saveDiagramHandle = file =>
     this.setState(
       {
@@ -57,7 +57,7 @@ export default class FunnelNotesRightPanel extends React.Component {
             <button
               className="diagram-header-menu-button"
               onClick={this.showMenu}
-              // style={{ background: this.state.showMenu ? "#ecf1f2" : "#fff" }}
+            // style={{ background: this.state.showMenu ? "#ecf1f2" : "#fff" }}
             >
               <MenuWidgetSVG />
             </button>
@@ -97,43 +97,50 @@ export default class FunnelNotesRightPanel extends React.Component {
                   {this.props.work.changeFunnelNameMessage}
                 </div>
               )}
-              <label 
-                htmlFor="CheckBox" 
-                className="container-checkbox"
-              >
-                Show Grid
-                <input
-                  id='CheckBox'
-                  type="radio"
-                  checked={this.state.handleGrid}
-                  onClick={this.handleChangeCheckbox}
-                  onChange={()=>{}}
-                />
-                <span className="checkmark"></span>
-              </label> 
-              <button
-                className="btn btn-1 create-project-button-in-modal"
-                style={{ display: "block" }}
-                onClick={() => {
-                  let diagram = document.getElementById("diagram-layer");
-                  domtoimage
-                    .toBlob(diagram)
-                    .then(data => {
-                      let name = randomString({ length: 10 });
-                      var file = new File([data], name, { type: "image/svg" });
-                      this.saveDiagramHandle(file);
-                      this.props.work.changeFunnelName(
-                        this.props.work.funnelId,
-                        this.state.funnelName
-                      );
-                    })
-                    .catch(function(error) {
-                      console.error("oops, something went wrong!", error);
-                    });
-                }}
-              >
-                Save
-              </button>
+              {
+                !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ?
+                  <>
+                    <label
+                      htmlFor="CheckBox"
+                      className="container-checkbox"
+                    >
+                      Show Grid
+                      <input
+                        id='CheckBox'
+                        type="radio"
+                        checked={this.state.handleGrid}
+                        onClick={this.handleChangeCheckbox}
+                        onChange={() => { }}
+                      />
+                      <span className="checkmark"></span>
+                    </label>
+                    <button
+                      className="btn btn-1 create-project-button-in-modal"
+                      style={{ display: "block" }}
+                      onClick={() => {
+                        let diagram = document.getElementById("diagram-layer");
+                        domtoimage
+                          .toBlob(diagram)
+                          .then(data => {
+                            let name = randomString({ length: 10 });
+                            var file = new File([data], name, { type: "image/svg" });
+                            this.saveDiagramHandle(file);
+                            this.props.work.changeFunnelName(
+                              this.props.work.funnelId,
+                              this.state.funnelName
+                            );
+                          })
+                          .catch(function (error) {
+                            console.error("oops, something went wrong!", error);
+                          });
+                      }}
+                    >
+                      Save
+                    </button>
+                  </>
+                  : null
+
+              }
             </div>
           </ModalFunnelWidget>
         </ClickOutside>

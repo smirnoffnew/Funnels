@@ -52,19 +52,21 @@ module.exports = {
             })
             .then((profile) => {
                 g_profile = profile;
-                return new activeCampaignApi.ApiClient({
+                try {
+                    return new activeCampaignApi.ApiClient({
                         accountName: process.env.CAMPAING_ACCOUNT_NAME,
                         key: process.env.CAMPAING_ACCOUNT_KEY
                     })
-                    .call('contact_add', {}, 'POST', {
-                        email: profile.email,
-                        first_name: profile.firstName,
-                        tags: profile.description,
-                        'p[15]': process.env.LISTID
-                    })
-            })
-            .then(response => {
-                return response
+                        .call('contact_add', {}, 'POST', {
+                            email: profile.email,
+                            first_name: profile.firstName,
+                            tags: profile.description,
+                            'p[15]': process.env.LISTID
+                        })
+
+                } catch (err){
+                    throw new Error('Active Campaign Api broken')
+                }
             })
             .then((response) => {
                 res.status(200).json({
@@ -93,8 +95,7 @@ module.exports = {
         const emailFromUser = req.body.email.toLowerCase()
         const checkEmailFromUser = validateEmail(emailFromUser);
         let apiResponse = '';
-        try {
-            if (checkEmailFromUser) {
+        if (checkEmailFromUser) {
                 User.findOne({
                         email: emailFromUser
                     }).exec()
@@ -129,17 +130,13 @@ module.exports = {
                                     'value': date
                                 }, ]
                             };
-                            contact.sync(payload, (err, res) => {
-                                if (err) {
-                                    console.log("AC error", err)
-                                    res
-                                        .status(404)
-                                        .json({
-                                            message: 'AC error',
-                                            data: err,
-                                        })
-                                }
-                            });
+                            try {
+                                new Promise((resolve, reject)=>{
+                                    contact.sync(payload, (err, res) => err ? reject(err) : resolve(res));
+                                }).then()
+                            } catch (error) {
+                               throw new Error('Active Campaign Api broken') 
+                            }
                             const token = jwt.sign({
                                 profile,
                                 userId: g_user._id
@@ -174,13 +171,7 @@ module.exports = {
                     })
             }
             else {throw 'email is required'}
-        } catch (error) {
-            res.status(500).json({
-                error: error
-            });
-        }
     },
-
     emailValidation: async function (req, res) {
         const emailTest = req.body.email.toLowerCase();
         User.findOne({
@@ -197,7 +188,6 @@ module.exports = {
                         message: "email is free"
                     });
                 }
-
             })
             .catch(err => {
                 console.log(err);
