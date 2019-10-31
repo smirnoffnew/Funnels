@@ -94,6 +94,9 @@ module.exports = {
     signIn: function (req, res) {
         const emailFromUser = req.body.email.toLowerCase()
         const checkEmailFromUser = validateEmail(emailFromUser);
+        let _token;
+        let _profile;
+
         let apiResponse = '';
         if (checkEmailFromUser) {
                 User.findOne({
@@ -130,25 +133,28 @@ module.exports = {
                                     'value': date
                                 }, ]
                             };
-                            try {
-                                new Promise((resolve, reject)=>{
-                                    contact.sync(payload, (err, res) => err ? reject(err) : resolve(res));
-                                }).then()
-                            } catch (error) {
-                               throw new Error('Active Campaign Api broken') 
-                            }
                             const token = jwt.sign({
                                 profile,
                                 userId: g_user._id
                             }, process.env.SECRET, {
                                 expiresIn: process.env.TOKEN_EXPIRES
                             });
-                            return {
-                                profile,
-                                token
-                            }
+
+                            _profile = profile;
+                            _token = token;
+
+                            return new Promise((resolve, reject)=>{
+                                contact.sync(payload, (err, res) => err ? reject(err) : resolve(res));
+                            })
+
                         } else {
                             throw 'error in profile'
+                        }
+                    })
+                    .then(()=>{
+                        return {
+                            _profile,
+                            _token
                         }
                     })
                     .then((obj) => {
