@@ -37,7 +37,7 @@ module.exports = {
                 res.status(500).json({
                     error: err.message
                 });
-            });
+            });   
 
     },
     changeUsersAvatar: (req, res) => {
