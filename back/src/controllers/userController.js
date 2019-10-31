@@ -153,8 +153,8 @@ module.exports = {
                     })
                     .then(()=>{
                         return {
-                            _profile,
-                            _token
+                            profile:_profile,
+                            token: _token
                         }
                     })
                     .then((obj) => {
