@@ -133,7 +133,7 @@ class ProjectList extends React.Component {
                   Create Project
                 </button>
               </div>
-            </div> : null
+            </div> : <div className="no-funnels">No Projects</div>
           )}
         </div>
 

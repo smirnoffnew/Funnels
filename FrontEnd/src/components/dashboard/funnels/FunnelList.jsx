@@ -123,7 +123,7 @@ class FunnelList extends React.Component {
                     </p>
                     <button className="btn btn-1" style={{ width: '125px', marginTop: '25px' }} onClick={this.showModal}>Create Funnel</button>
                   </div>
-                </div> : null
+                </div> : <div className="no-funnels">No Funnels</div>
             }
           </div>
         </Layout>
