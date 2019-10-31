@@ -51,7 +51,7 @@ module.exports = {
                 return profile
             })
             .then((profile) => {
-                g_profile = profile;
+                g_profile = profile; 
                 try {
                     return new activeCampaignApi.ApiClient({
                         accountName: process.env.CAMPAING_ACCOUNT_NAME,
