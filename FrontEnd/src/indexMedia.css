@@ -12,6 +12,16 @@
     }
   }
 
+  .select-main {
+    right: 0px;
+    width: 100px;
+  }
+
+  .projects-wrapper {
+    margin-right: 0px;
+    padding-bottom: 70px;
+  }
+
   .btn-show-modal-create{
     position: fixed;
     bottom: 0;
@@ -168,11 +178,6 @@
 
   .top-text-fourth {
     text-align: center;
-  }
-
-  .select-main {
-    right: 0px;
-    width: 100px;
   }
 
   .projects-wrapper {
