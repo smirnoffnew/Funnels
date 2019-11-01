@@ -9,6 +9,7 @@ const Profile = require('../models/profile.js');
 const sendEmail = require('../libs/sendEmail.js');
 const validateEmail = require('../libs/validateEmail.js');
 const keygen = require('../libs/keygen.js');
+const deviceCheck = require('../libs/deviceCheck.js')
 
 /**signup variables */
 let g_profile, g_token;
@@ -40,7 +41,6 @@ module.exports = {
                 return profile
             })
             .then((profile) => {
-                console.log(profile)
                 const token = jwt.sign({
                     profile,
                     userId: user._id
@@ -54,17 +54,18 @@ module.exports = {
                 g_profile = profile;
                 try {
                     return new activeCampaignApi.ApiClient({
-                        accountName: process.env.CAMPAING_ACCOUNT_NAME,
-                        key: process.env.CAMPAING_ACCOUNT_KEY
-                    })
+                            accountName: process.env.CAMPAING_ACCOUNT_NAME,
+                            key: process.env.CAMPAING_ACCOUNT_KEY
+                        })
                         .call('contact_add', {}, 'POST', {
                             email: profile.email,
                             first_name: profile.firstName,
                             tags: profile.description,
+                            device: deviceCheck(req),
                             'p[15]': process.env.LISTID
                         })
 
-                } catch (err){
+                } catch (err) {
                     throw new Error('Active Campaign Api broken')
                 }
             })
@@ -99,84 +100,87 @@ module.exports = {
 
         let apiResponse = '';
         if (checkEmailFromUser) {
-                User.findOne({
+            User.findOne({
+                    email: emailFromUser
+                }).exec()
+                .then(user => {
+                    if (user && bcrypt.compareSync(req.body.password, user.password)) {
+                        g_user = user;
+                        return user
+                    } else {
+                        throw 'email not found or password is wrong'
+                    }
+                })
+                .then(() => {
+                    return Profile.findOne({
                         email: emailFromUser
                     }).exec()
-                    .then(user => {
-                        if (user && bcrypt.compareSync(req.body.password, user.password)) {
-                            g_user = user;
-                            return user
-                        } else {
-                            throw 'email not found or password is wrong'
-                        }
-                    })
-                    .then(() => {
-                        return Profile.findOne({
-                            email: emailFromUser
-                        }).exec()
-                    })
-                    .then(profile => {
-                        if (profile) {
-                            let today = new Date();
-                            let date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
-                            let contact = new AC.Contact({
-                                'url': 'https://vladhuntyk.activehosted.com',
-                                'token': process.env.CAMPAING_ACCOUNT_KEY
-                            });
-                            let payload = {
-                                'email': profile.email,
-                                'firstName': profile.firstName,
-                                'lastName': profile.lastName,
-                                'phone': profile.phone,
-                                'fields': [{
-                                    'name': 'Last Active',
-                                    'value': date
-                                }, ]
-                            };
-                            const token = jwt.sign({
-                                profile,
-                                userId: g_user._id
-                            }, process.env.SECRET, {
-                                expiresIn: process.env.TOKEN_EXPIRES
-                            });
-
-                            _profile = profile;
-                            _token = token;
-
-                            return new Promise((resolve, reject)=>{
-                                contact.sync(payload, (err, res) => err ? reject(err) : resolve(res));
-                            })
-
-                        } else {
-                            throw 'error in profile'
-                        }
-                    })
-                    .then(()=>{
-                        return {
-                            profile:_profile,
-                            token: _token
-                        }
-                    })
-                    .then((obj) => {
-                        res.status(200).json({
-                            data: {
-                                _id: obj.profile._id,
-                                firstName: obj.profile.firstName,
-                                email: obj.profile.email,
-                                description: obj.profile.description,
-                                photoUrl: obj.profile.photoUrl,
-                                accountName: obj.profile.accountName
-                            },
-                            token: `Bearer ${obj.token}`,
-                        })
-                    })
-                    .catch(err => {
-                        res.status(500).json({
-                            error: err
+                })
+                .then(profile => {
+                    if (profile) {
+                        let today = new Date();
+                        let date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
+                        let contact = new AC.Contact({
+                            'url': 'https://vladhuntyk.activehosted.com',
+                            'token': process.env.CAMPAING_ACCOUNT_KEY
                         });
+
+                        let payload = {
+                            'email': profile.email,
+                            'firstName': profile.firstName,
+                            'lastName': profile.lastName,
+                            'phone': profile.phone,
+                            'fields': [{
+                                'name': 'Last Active',
+                                'value': date,
+                                'device': deviceCheck(req)
+                            }, ]
+                        };
+                        const token = jwt.sign({
+                            profile,
+                            userId: g_user._id
+                        }, process.env.SECRET, {
+                            expiresIn: process.env.TOKEN_EXPIRES
+                        });
+
+                        _profile = profile;
+                        _token = token;
+
+                        return new Promise((resolve, reject) => {
+                            contact.sync(payload, (err, res) => err ? reject(err) : resolve(res));
+                        })
+
+                    } else {
+                        throw 'error in profile'
+                    }
+                })
+                .then(() => {
+                    return {
+                        profile: _profile,
+                        token: _token
+                    }
+                })
+                .then((obj) => {
+                    res.status(200).json({
+                        data: {
+                            _id: obj.profile._id,
+                            firstName: obj.profile.firstName,
+                            email: obj.profile.email,
+                            description: obj.profile.description,
+                            photoUrl: obj.profile.photoUrl,
+                            accountName: obj.profile.accountName
+                        },
+                        token: `Bearer ${obj.token}`,
                     })
-            }
-            else {throw 'email is required'}
+                })
+                .catch(err => {
+                    res.status(500).json({
+                        error: err
+                    });
+                })
+        } else {
+            throw 'email is required'
+        }
     },
     emailValidation: async function (req, res) {
         const emailTest = req.body.email.toLowerCase();
@@ -303,6 +307,6 @@ module.exports = {
             secretKeyEmail: keygen(20)
         });
     },
-
-
+    
 };
+
