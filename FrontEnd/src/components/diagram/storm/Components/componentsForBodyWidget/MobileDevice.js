@@ -8,7 +8,12 @@ export default class MobileDevice extends React.Component {
   }
 
   showDetectMobileDevice = () => this.setState({ detectMobileDevice: true })
-  hideDetectMobileDevice = () => this.setState({ detectMobileDevice: false })
+  hideDetectMobileDevice = () => this.setState({ 
+    detectMobileDevice: false 
+  }, () => {
+    this.props.app.getDiagramEngine().zoomToFit();
+    document.getElementById("diagram-layer").click();
+  })
 
   render() {
     return (

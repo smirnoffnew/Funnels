@@ -311,7 +311,7 @@ export default class BodyWidget extends React.Component {
 
         {
           (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) &&
-          <MobileDevice />
+          <MobileDevice app={this.props.app} />
         }
 
 
@@ -323,12 +323,18 @@ export default class BodyWidget extends React.Component {
           document.getElementById('diagram') &&
             document.getElementsByClassName('srd-diagram')[0] &&
             document.getElementsByClassName('diagram-header-button-save')[0] &&
+            document.getElementsByClassName('diagram-header-menu-button')[1] &&
+            document.getElementsByClassName('diagram-header-menu-button')[2] &&
+            document.getElementsByClassName('btn-zoom-to-fit')[0] &&
             document.getElementsByClassName('panel-buttons')[0] &&
             document.getElementsByClassName('zoom-wrapper')[0] ?
             (
               document.getElementById('diagram').style.height = '100vh',
               document.getElementsByClassName('srd-diagram')[0].style.overflow = 'scroll',
               document.getElementsByClassName('diagram-header-button-save')[0].style.display = 'none',
+              document.getElementsByClassName('diagram-header-menu-button')[1].style.display = 'none',
+              document.getElementsByClassName('diagram-header-menu-button')[2].style.display = 'none',
+              document.getElementsByClassName('btn-zoom-to-fit')[0].style.display = 'none',
               document.getElementsByClassName('panel-buttons')[0].style.display = 'none',
               document.getElementsByClassName('zoom-wrapper')[0].style.display = 'none',
               null
@@ -341,10 +347,12 @@ export default class BodyWidget extends React.Component {
 
           document.getElementById('diagram') &&
             document.getElementsByClassName('srd-diagram')[0] &&
+            document.getElementsByClassName('btn-zoom-to-fit')[0] &&
             document.getElementsByClassName('zoom-wrapper')[0] ?
             (
               document.getElementById('diagram').style.height = '100vh',
               document.getElementsByClassName('srd-diagram')[0].style.overflow = 'scroll',
+              document.getElementsByClassName('btn-zoom-to-fit')[0].style.display = 'none',
               document.getElementsByClassName('zoom-wrapper')[0].style.display = 'none',
               null
             )
@@ -462,7 +470,7 @@ export default class BodyWidget extends React.Component {
                       </div>
 
                       <button
-                        className="btn btn-1"
+                        className="btn btn-1 btn-zoom-to-fit"
                         style={{
                           width: 100,
                           height: 40,
@@ -565,7 +573,7 @@ export default class BodyWidget extends React.Component {
                       </div>
 
                       <button
-                        className="btn btn-1"
+                        className="btn btn-1 btn-zoom-to-fit"
                         style={{
                           width: 100,
                           height: 40,
@@ -617,7 +625,7 @@ export default class BodyWidget extends React.Component {
                       </div>
 
                       <button
-                        className="btn btn-1"
+                        className="btn btn-1 btn-zoom-to-fit"
                         style={{
                           width: 100,
                           height: 40,
@@ -675,7 +683,7 @@ export default class BodyWidget extends React.Component {
                     </div>
 
                     <button
-                      className="btn btn-1"
+                      className="btn btn-1 btn-zoom-to-fit"
                       style={{
                         width: 100,
                         height: 40,
