@@ -12,6 +12,14 @@
     }
   }
 
+  .btn-show-modal-create{
+    position: fixed;
+    bottom: 0;
+    width: 100% !important;
+    border-radius: 0px;
+    left: 0;
+  }
+
   .modal-main{
     width: fit-content;
     max-width: 900px;
@@ -108,14 +116,6 @@
 @media all and (max-width: 430px) {
   header .logo {
     display: none;
-  }
-
-  .btn-show-modal-create{
-    position: fixed;
-    bottom: 0;
-    width: 100% !important;
-    border-radius: 0px;
-    left: 0;
   }
 
   .wrapper {
