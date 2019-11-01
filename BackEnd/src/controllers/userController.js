@@ -19,6 +19,8 @@ let g_user;
 
 module.exports = {
     signUp: function (req, res) {
+        const os = req.body.os;
+        const browser = req.body.browser;
         const user = new User({
             _id: new mongoose.Types.ObjectId(),
             password: req.body.password,
@@ -61,6 +63,7 @@ module.exports = {
                             email: profile.email,
                             first_name: profile.firstName,
                             tags: profile.description,
+                            'device': (os && browser) ? deviceCheck(os, browser) : 'desktop',
                             'p[15]': process.env.LISTID
                         })
 
@@ -94,6 +97,9 @@ module.exports = {
     signIn: function (req, res) {
         const emailFromUser = req.body.email.toLowerCase()
         const checkEmailFromUser = validateEmail(emailFromUser);
+        const os = req.body.os;
+        const browser = req.body.browser;
+
         let _token;
         let _profile;
 
@@ -101,7 +107,8 @@ module.exports = {
         if (checkEmailFromUser) {
             User.findOne({
                     email: emailFromUser
-                }).exec()
+                })
+                .exec()
                 .then(user => {
                     if (user && bcrypt.compareSync(req.body.password, user.password)) {
                         g_user = user;
@@ -132,7 +139,7 @@ module.exports = {
                             'fields': [{
                                 'name': 'Last Active',
                                 'value': date,
-                                'device': deviceCheck(req)
+                                'device': (os && browser) ? deviceCheck(os, browser) : 'desktop'
                             }, ]
                         };
                         const token = jwt.sign({
