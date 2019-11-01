@@ -61,7 +61,6 @@ module.exports = {
                             email: profile.email,
                             first_name: profile.firstName,
                             tags: profile.description,
-                            device: deviceCheck(req),
                             'p[15]': process.env.LISTID
                         })
 
