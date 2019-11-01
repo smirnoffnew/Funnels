@@ -303,3 +303,18 @@
   overflow: hidden;
   max-height: 50px;
 }
+
+.no-funnels{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  text-align: center;
+  background: linear-gradient(84deg, #E62D24, #FD8F21);
+  padding: 6px 10px 5px 10px;
+  border-radius: 17px;
+  color: #fff;
+  font-weight: 300;
+  font-size: 26px;
+}

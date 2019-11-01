@@ -13,6 +13,7 @@ import {
 
 import { push } from 'connected-react-router'
 import axios from 'axios'
+import detect from 'detect.js'
 import API_URL from '../../config'
 
 /*
@@ -154,13 +155,17 @@ export function signupTester(props) {
  */
 export function signinUser(props) {
   const { email, password } = props;
+  const user = detect.parse(navigator.userAgent);
+  const brawser = user.browser.family + ' ' + user.browser.version;
 
   return function (dispatch, getState) {
     let routerState = getState().router
 
     API.post(`sign-in`, {
       'email': email.trim(),
-      'password': password
+      'password': password,
+      'browser': brawser,
+      'os': user.os.name,
     })
       .then(response => {
         if (response.data) {
@@ -252,13 +257,18 @@ export function questionnaireUser(props, signUpData, limited) {
   return function (dispatch, getState) {
     let routerState = getState().router
 
+    const user = detect.parse(navigator.userAgent);
+    const brawser = user.browser.family + ' ' + user.browser.version;
+
     API.post(`sign-up`, {
       'password': signUpData.password,
       'email': signUpData.email.toLowerCase(),
       'firstName': signUpData.firstName,
       'accountName': signUpData.accountName,
       'limited': limited,
-      'description': obj
+      'description': obj,
+      'browser': brawser,
+      'os': user.os.name,
     })
       .then(response => {
 

@@ -40,27 +40,37 @@ class App extends React.Component {
     this.props.getTemplate(this.props.funnelId);
     this.props.getSVG();
 
-
     localStorage.getItem('token2') ?
-      JSON.parse(localStorage.getItem('multiSession')).map(owner => {
-        localStorage.getItem('permission') &&
-          localStorage.getItem('permission') !== 'undefined' &&
-          JSON.parse(localStorage.getItem('permission')).map(
-            elem =>
-              elem.profileId === owner._id &&
-              elem.funnelId === this.props.funnelId &&
-              this.props.setPermission(elem.permissions)
-          )
-      })
-      :
+
       localStorage.getItem('permission') &&
-      localStorage.getItem('permission') !== 'undefined' &&
+      localStorage.getItem('permission') !== 'undefined' ?
+      JSON.parse(localStorage.getItem('multiSession')).map(owner => {
       JSON.parse(localStorage.getItem('permission')).map(
         elem =>
-          elem.profileId === localStorage.getItem("userID") &&
+          elem.profileId === owner._id &&
           elem.funnelId === this.props.funnelId &&
           this.props.setPermission(elem.permissions)
       )
+      })
+
+      :
+      
+      JSON.parse(localStorage.getItem('multiSession')).map(owner => {
+        if (owner.myPartners && `"` + owner.myPartners[0].token + `"` === localStorage.getItem('token2')) {
+          this.props.setPermission(owner.myPartners && owner.myPartners[0].permissions)
+        }
+      })
+
+    :
+
+    localStorage.getItem('permission') &&
+    localStorage.getItem('permission') !== 'undefined' &&
+    JSON.parse(localStorage.getItem('permission')).map(
+      elem =>
+        elem.profileId === localStorage.getItem("userID") &&
+        elem.funnelId === this.props.funnelId &&
+        this.props.setPermission(elem.permissions)
+    )
 
   }
 
@@ -68,32 +78,10 @@ class App extends React.Component {
     if (prevProps.diagram) {
       if (
         prevProps.diagram.snackMsg !== this.state.snackMsg &&
-        prevProps.diagram.snackMsg !== undefined
+        prevProps.diagram.snackMsg !== undefined 
       ) {
         this.props.getDiagram(this.props.funnelId);
         this.props.getTemplate(this.props.funnelId);
-
-        localStorage.getItem('token2') ?
-          JSON.parse(localStorage.getItem('multiSession')).map(owner => {
-            localStorage.getItem('permission') &&
-              localStorage.getItem('permission') !== 'undefined' &&
-              JSON.parse(localStorage.getItem('permission')).map(
-                elem =>
-                  elem.profileId === owner._id &&
-                  elem.funnelId === this.props.funnelId &&
-                  this.props.setPermission(elem.permissions)
-              )
-          })
-          :
-          localStorage.getItem('permission') &&
-          localStorage.getItem('permission') !== 'undefined' &&
-          JSON.parse(localStorage.getItem('permission')).map(
-            elem =>
-              elem.profileId === localStorage.getItem("userID") &&
-              elem.funnelId === this.props.funnelId &&
-              this.props.setPermission(elem.permissions)
-          )
-
       }
     }
     else return null
@@ -101,7 +89,11 @@ class App extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.diagram)
-      if (nextProps.diagram.snackMsg !== prevState.snackMsg)
+      if (
+          nextProps.diagram.snackMsg !== prevState.snackMsg
+          // &&
+          // nextProps.diagram.snackMsg !== 'prev'
+        )
         return {
           diagram: nextProps.diagram.converted,
           snackMsg: 'next',
