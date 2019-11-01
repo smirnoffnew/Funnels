@@ -314,26 +314,42 @@ export default class BodyWidget extends React.Component {
           <MobileDevice />
         }
 
+
         {
+          this.props.work.permissionForCollaborator.includes("Edit") ?
+
           (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ?
 
-            document.getElementById('diagram') &&
-              document.getElementsByClassName('srd-diagram')[0] &&
-              document.getElementsByClassName('diagram-header-button-save')[0] &&
-              document.getElementsByClassName('panel-buttons')[0] &&
-              document.getElementsByClassName('zoom-wrapper')[0] ?
-              (
-                document.getElementById('diagram').style.height = '100vh',
-                document.getElementsByClassName('srd-diagram')[0].style.overflow = 'scroll',
-                document.getElementsByClassName('diagram-header-button-save')[0].style.display = 'none',
-                document.getElementsByClassName('panel-buttons')[0].style.display = 'none',
-                document.getElementsByClassName('zoom-wrapper')[0].style.display = 'none',
-                null
-              )
-              : null : null
+          document.getElementById('diagram') &&
+            document.getElementsByClassName('srd-diagram')[0] &&
+            document.getElementsByClassName('diagram-header-button-save')[0] &&
+            document.getElementsByClassName('panel-buttons')[0] &&
+            document.getElementsByClassName('zoom-wrapper')[0] ?
+            (
+              document.getElementById('diagram').style.height = '100vh',
+              document.getElementsByClassName('srd-diagram')[0].style.overflow = 'scroll',
+              document.getElementsByClassName('diagram-header-button-save')[0].style.display = 'none',
+              document.getElementsByClassName('panel-buttons')[0].style.display = 'none',
+              document.getElementsByClassName('zoom-wrapper')[0].style.display = 'none',
+              null
+            )
+            : null : null
 
+          : 
+          
+          (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ?
+
+          document.getElementById('diagram') &&
+            document.getElementsByClassName('srd-diagram')[0] &&
+            document.getElementsByClassName('zoom-wrapper')[0] ?
+            (
+              document.getElementById('diagram').style.height = '100vh',
+              document.getElementsByClassName('srd-diagram')[0].style.overflow = 'scroll',
+              document.getElementsByClassName('zoom-wrapper')[0].style.display = 'none',
+              null
+            )
+            : null : null
         }
-
 
         <SettingsNodeRightPanel work={this.props.work} app={this.props.app} />
         <NotesNodeRightPanel work={this.props.work} app={this.props.app} />
@@ -360,6 +376,7 @@ export default class BodyWidget extends React.Component {
                   : <AnalyticsSVG />
               }
             </div>
+
             <div
               className='edit-button'
               title='Edit'
@@ -408,30 +425,6 @@ export default class BodyWidget extends React.Component {
               </>
             ) : null}
 
-            {/* <button
-              className='btn btn-1'
-              style={{
-                width: 100,
-                height: 40,
-                borderRadius: 7,
-                marginRight: 10
-              }}
-              onClick={() => {
-                this.setState(prev =>({
-                  srdLinkLayerSwitch: !prev.srdLinkLayerSwitch
-                }), () => {
-                  if(this.state.srdLinkLayerSwitch){
-                    document.getElementsByClassName('srd-link-layer')[0].style.zIndex = 1
-                  }
-                  else{
-                    document.getElementsByClassName('srd-link-layer')[0].style.zIndex = 0
-                  }
-                })
-              }}
-            >
-              link layer switch {this.state.srdLinkLayerSwitch ? `'on'` : `'off'`}
-            </button> */}
-
             {this.props.work.pathname.includes("diagram") ? (
               <>
                 {
@@ -464,7 +457,7 @@ export default class BodyWidget extends React.Component {
                             onClick={this.scaleMinus}
                           >
                             -
-                      </button>
+                          </button>
                         </div>
                       </div>
 
@@ -533,8 +526,6 @@ export default class BodyWidget extends React.Component {
                           : null
                       }
 
-
-
                       <FunnelOptionsRightPanel
                         work={this.props.work}
                         app={this.props.app}
@@ -591,68 +582,115 @@ export default class BodyWidget extends React.Component {
               </>
             ) : (
                 <>
-                  <div className="zoom-wrapper">
-                    <ReactSVG
-                      src={LupaSVG}
-                      alt=""
-                      beforeInjection={svg => {
-                        svg.setAttribute("style", "width: 17px; height: 25px;");
-                      }}
-                    />
-                    <div className="zoom-count">
-                      {this.props.app
-                        .getDiagramEngine()
-                        .getDiagramModel()
-                        .zoom.toFixed(0)}
-                      %
-                        </div>
-                    <div className="zoom-buttons-wrapper">
-                      <button
-                        className="zoom-button-plus"
-                        onClick={this.scalePlus}
-                      >
-                        +
+                 {
+                  this.props.work.permissionForCollaborator.includes("Edit") ?
+                    <>
+                      <div className="zoom-wrapper">
+                        <ReactSVG
+                          src={LupaSVG}
+                          alt=""
+                          beforeInjection={svg => {
+                            svg.setAttribute("style", "width: 17px; height: 25px;");
+                          }}
+                        />
+                        <div className="zoom-count">
+                          {this.props.app
+                            .getDiagramEngine()
+                            .getDiagramModel()
+                            .zoom.toFixed(0)}
+                          %
+                            </div>
+                        <div className="zoom-buttons-wrapper">
+                          <button
+                            className="zoom-button-plus"
+                            onClick={this.scalePlus}
+                          >
+                            +
+                              </button>
+                          <button
+                            className="zoom-button-minus"
+                            onClick={this.scaleMinus}
+                          >
+                            -
                           </button>
+                        </div>
+                      </div>
+
                       <button
-                        className="zoom-button-minus"
-                        onClick={this.scaleMinus}
+                        className="btn btn-1"
+                        style={{
+                          width: 100,
+                          height: 40,
+                          borderRadius: 7,
+                          marginRight: 10
+                        }}
+                        onClick={() => this.zoomToFit()}
                       >
-                        -
+                        Zoom to Fit
                       </button>
-                    </div>
-                  </div>
 
-                  <button
-                    className="btn btn-1"
-                    style={{
-                      width: 100,
-                      height: 40,
-                      borderRadius: 7,
-                      marginRight: 10
-                    }}
-                    onClick={() => this.zoomToFit()}
-                  >
-                    Zoom to Fit
-                </button>
+                      <button
+                        className="btn btn-1 diagram-header-button-save"
+                        onClick={this.showSelect}
+                        style={{ margin: 12.5 }}
+                      >
+                        SAVE
+                        <div className="arrow-for-select">
+                          <ArrowSelectSVG />
+                        </div>
+                      </button>
+                    </> 
+                  :
 
-                  <button
-                    className="btn btn-1 diagram-header-button-save"
-                    onClick={this.showSelect}
-                    style={{ margin: 12.5 }}
-                  >
-                    SAVE
-                <div className="arrow-for-select">
-                      <ArrowSelectSVG />
+                  <>
+                    <div className="zoom-wrapper">
+                      <ReactSVG
+                        src={LupaSVG}
+                        alt=""
+                        beforeInjection={svg => {
+                          svg.setAttribute("style", "width: 17px; height: 25px;");
+                        }}
+                      />
+                      <div className="zoom-count">
+                        {this.props.app
+                          .getDiagramEngine()
+                          .getDiagramModel()
+                          .zoom.toFixed(0)}
+                        %
+                          </div>
+                      <div className="zoom-buttons-wrapper">
+                        <button
+                          className="zoom-button-plus"
+                          onClick={this.scalePlus}
+                        >
+                          +
+                            </button>
+                        <button
+                          className="zoom-button-minus"
+                          onClick={this.scaleMinus}
+                        >
+                          -
+                        </button>
+                      </div>
                     </div>
-                  </button>
+
+                    <button
+                      className="btn btn-1"
+                      style={{
+                        width: 100,
+                        height: 40,
+                        borderRadius: 7,
+                        marginRight: 10
+                      }}
+                      onClick={() => this.zoomToFit()}
+                    >
+                      Zoom to Fit
+                    </button>
+                  </> 
+                 }
                 </>
               )}
 
-            {/* {
-              this.props.work.pathname.includes("diagram") ?
-
-
-            } */}
 
             {this.props.work.pathname.includes("diagram") ? (
               <ClickOutside
