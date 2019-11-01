@@ -12,6 +12,10 @@
     }
   }
 
+  .project-create{
+    display: none;
+  }
+
   .select-main {
     right: 0px;
     width: 100px;
