@@ -9,6 +9,7 @@ const Profile = require('../models/profile.js');
 const sendEmail = require('../libs/sendEmail.js');
 const validateEmail = require('../libs/validateEmail.js');
 const keygen = require('../libs/keygen.js');
+const deviceCheck = require('../libs/deviceCheck.js')
 
 /**signup variables */
 let g_profile, g_token;
@@ -18,6 +19,8 @@ let g_user;
 
 module.exports = {
     signUp: function (req, res) {
+        const os = req.body.os;
+        const browser = req.body.browser;
         const user = new User({
             _id: new mongoose.Types.ObjectId(),
             password: req.body.password,
@@ -40,7 +43,6 @@ module.exports = {
                 return profile
             })
             .then((profile) => {
-                console.log(profile)
                 const token = jwt.sign({
                     profile,
                     userId: user._id
@@ -61,6 +63,7 @@ module.exports = {
                             email: profile.email,
                             first_name: profile.firstName,
                             tags: profile.description,
+                            'device': (os && browser) ? deviceCheck(os, browser) : 'desktop',
                             'p[15]': process.env.LISTID
                         })
 
@@ -94,6 +97,9 @@ module.exports = {
     signIn: function (req, res) {
         const emailFromUser = req.body.email.toLowerCase()
         const checkEmailFromUser = validateEmail(emailFromUser);
+        const os = req.body.os;
+        const browser = req.body.browser;
+
         let _token;
         let _profile;
 
@@ -101,7 +107,8 @@ module.exports = {
         if (checkEmailFromUser) {
             User.findOne({
                     email: emailFromUser
-                }).exec()
+                })
+                .exec()
                 .then(user => {
                     if (user && bcrypt.compareSync(req.body.password, user.password)) {
                         g_user = user;
@@ -130,7 +137,8 @@ module.exports = {
                             'phone': profile.phone,
                             'fields': [{
                                 'name': 'Last Active',
-                                'value': date
+                                'value': date,
+                                'device': (os && browser) ? deviceCheck(os, browser) : 'desktop'
                             }, ]
                         };
                         const token = jwt.sign({
@@ -179,6 +187,26 @@ module.exports = {
             throw 'email is required'
         }
     },
+    // emailValidation: async function (req, res) {
+    //     const emailTest = req.body.email.toLowerCase();
+    //     User.findOne({
+    //             email: emailTest
+    //         })
+    //         .exec()
+    //         .then(doc => {
+    //             if (doc) {
+    //                 res.status(302).json({
+    //                     message: "email already exists!"
+    //                 });
+    //             } else {
+    //                 res.status(404).json({
+    //                     message: "email is free"
+    //                 });
+    //             })
+    //     } else {
+    //         throw 'email is required'
+    //     }
+    // },
     emailValidation: function (req, res) {
         if (req.body.email) {
             const emailTest = req.body.email.toLowerCase();
@@ -295,4 +323,6 @@ module.exports = {
             secretKeyEmail: keygen(20)
         });
     },
+    
 };
+

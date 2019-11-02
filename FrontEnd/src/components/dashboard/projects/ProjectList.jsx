@@ -126,7 +126,7 @@ class ProjectList extends React.Component {
                   </span>
                 </p>
                 <button
-                  className="btn btn-1"
+                  className="btn btn-1 project-create"
                   style={{ width: "125px", marginTop: "25px" }}
                   onClick={this.showModal}
                 >
