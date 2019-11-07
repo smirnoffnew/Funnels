@@ -23,7 +23,7 @@ export class NodeFactory extends SRD.AbstractNodeFactory {
     const model = new this.nodeModel();
     // model.addListener({
     //   selectionChanged: e => console.log("selectionChanged", e),
-    //   entityRemoved: e => console.log("entityRemoved", e),
+    //   // entityRemoved: e => console.log("entityRemoved", e),
     // });
     return model;
   }

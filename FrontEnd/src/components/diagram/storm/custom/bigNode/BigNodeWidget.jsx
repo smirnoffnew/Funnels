@@ -25,7 +25,6 @@ import { openLinkOnNewTab, isEmpty, /*isEmpty*/ } from "../../utils";
 import { DevelopmentStage } from "../../../../common/DevelopmentStage/DevelopmentStage";
 import { NotesStatusIconGroup } from "../../../../common/NotesStatus/NotesStatus";
 import { setConversionCompound } from "../../../../../store/actions/conversion";
-// import ModalPortal from "../../../../common/ModalPortal/ModalPortal";
 import AdvancedConversion, { getAdvancedConversion } from "../AdvancedConversion/AdvancedConversion";
 
 const Select = ({ show, children }) => {

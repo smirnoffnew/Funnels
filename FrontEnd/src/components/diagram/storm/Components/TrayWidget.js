@@ -40,7 +40,7 @@ export class TrayWidget extends React.Component {
           }}>
             <SearchProjectsSVG />
           </div>
-          <div className='tray'>
+          <div id='tray'>
             {this.state.items ? this.state.items : this.props.children}
           </div>
         </div>

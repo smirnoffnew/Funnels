@@ -49,44 +49,49 @@ export const cloneSelected = (
   funnelId,
   node
 ) => {
-  let offset = { x: 100, y: 100 };
-  let model = engine.getDiagramModel();
-  let itemMap = {};
-  _.forEach(model.getSelectedItems(), item => {
-    let newItem = item.clone(itemMap);
-    // offset the nodes slightly
-    if (newItem instanceof CustomNodeModel) {
-      newItem.setPosition(newItem.x + offset.x, newItem.y + offset.y);
-      model.addNode(newItem);
-    } else if (newItem instanceof AdvancedLinkModel) {
-      // offset the link points
-      newItem.getPoints().forEach(p => {
-        p.updateLocation({ x: p.getX() + offset.x, y: p.getY() + offset.y });
-      });
-      model.addLink(newItem);
-    }
-    newItem.selected = false;
-  });
-  // document.getElementById("diagram-layer").click();
+  try {
+    let offset = { x: 100, y: 100 };
+    let model = engine.getDiagramModel();
+    let itemMap = {};
+    _.forEach(model.getSelectedItems(), item => {
+      let newItem = item.clone(itemMap);
+      // offset the nodes slightly
+      if (newItem instanceof CustomNodeModel) {
+        newItem.setPosition(newItem.x + offset.x, newItem.y + offset.y);
+        model.addNode(newItem);
+      } else if (newItem instanceof AdvancedLinkModel) {
+        // offset the link points
+        newItem.getPoints().forEach(p => {
+          p.updateLocation({ x: p.getX() + offset.x, y: p.getY() + offset.y });
+        });
+        model.addLink(newItem);
+      }
+      newItem.selected = false;
+    });
+    // document.getElementById("diagram-layer").click();
 
-  // save for handle rename another item itself
-  const name = randomString({ length: 10 });
-  const file = new File(["test"], name, {
-    type: "image/png"
-  });
-  saveDiagramThenShowOrHideSettingsModal(
-    funnelId,
-    {
-      snackMsg: "next",
-      converted: serializationInWidget(engine.getDiagramModel()),
-      funnelName,
-      funnelNotes,
-    },
-    file,
-    false,
-    node,
-    engine.getDiagramModel()
-  );
+    // save for handle rename another item itself
+    const name = randomString({ length: 10 });
+    const file = new File(["test"], name, {
+      type: "image/png"
+    });
+    saveDiagramThenShowOrHideSettingsModal(
+      funnelId,
+      {
+        snackMsg: "next",
+        converted: serializationInWidget(engine.getDiagramModel()),
+        funnelName,
+        funnelNotes,
+      },
+      file,
+      false,
+      node,
+      engine.getDiagramModel()
+    );
+  }
+  catch{
+    console.log('hui')
+  }
 };
 
 export const showRightModal = (

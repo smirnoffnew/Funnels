@@ -43,6 +43,12 @@ export class CustomNodeModel extends NodeModel {
     this.extras.setNotesExtras = this.setNotesExtras;
     this.setNotes = this.setNotes;
 
+
+    this.extras.templates = this.templatesd;
+    this.extras.setTemplatesExtras = this.setTemplatesExtras;
+    this.setTemplates = this.setTemplates;
+
+
     this.extras.height = this.heightd;
     this.extras.setHeightExtras = this.setHeightExtras;
     this.setHeight = this.setHeight;
@@ -109,6 +115,17 @@ export class CustomNodeModel extends NodeModel {
   setNotes(notes) {
     this.extras.notesd = notes;
   }
+
+
+  setTemplatesExtras(templates) {
+    this.templatesd = templates;
+  }
+  setTemplates(templates) {
+    this.extras.templatesd = templates;
+  }
+
+
+
 
   setHeightExtras(height) {
     this.heightd = height;

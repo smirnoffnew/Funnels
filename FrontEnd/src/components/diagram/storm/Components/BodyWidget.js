@@ -2,9 +2,11 @@ import * as React from "react";
 import ReactSVG from "react-svg";
 import * as RJD from "storm-react-diagrams";
 import domtoimage from "dom-to-image";
+import * as _ from "lodash";
 import randomString from "random-string";
+import ReactCrop from 'react-image-crop';
 import { TrayWidget } from "./TrayWidget";
-import { TrayBigItemWidget, TraySmallItemWidget, TrayTextItemWidget } from "./TrayItemWidget";
+import { TrayBigItemWidget, TraySmallItemWidget, TrayTextItemWidget, TrayTemplatesItemWidget } from "./TrayItemWidget";
 import ClickOutside from "../../../common/ClickOutside";
 import { CustomNodeModel } from "../custom/CustomNodeModel";
 import PagesButton from "../../../../assets/PagesButton.svg";
@@ -15,6 +17,7 @@ import EmailMarketingButton from "../../../../assets/EmailMarketingButton.svg";
 import TextArea from "../../../../assets/TextArea.svg";
 import TextPanel from "../../../../assets/TextPanel.svg";
 import TemplatesButton from "../../../../assets/TemplatesButton.svg";
+import FunnelTemplate from "../../../../assets/funnelTemplate.svg";
 import { ReactComponent as ArrowSelectSVG } from "../../../../assets/ArrowSelect.svg";
 import { ReactComponent as ShareFunnelSVG } from "../../../../assets/instructions.svg";
 import { ReactComponent as AnalyticsSVG } from '../../../../assets/Analytics.svg'
@@ -31,6 +34,12 @@ import API_URL from "../../../../config";
 import FunnelCommentsRightPanel from "./componentsForBodyWidget/FunnelCommentsRightPanel";
 import { keyMonitor } from "../utils";
 import MobileDevice from "./componentsForBodyWidget/MobileDevice";
+import { serializationInWidget, deleteNode, cloneSelected } from "../custom/funcsForCustomNodeWidget";
+import { AdvancedLinkModel } from "../custom/customLink/customLink";
+import Modal from "../../../common/Modal/Modal";
+import { ReactComponent as CopySVG } from "../../../../assets/selectForWidget/copy.svg";
+import { ReactComponent as DeleteAllLinksSVG } from "../../../../assets/selectForWidget/delete-all-links.svg";
+import { ReactComponent as DeleteSVG } from "../../../../assets/selectForWidget/delete.svg";
 
 const Select = ({ show, children, style }) => {
   const showHideClassName = show
@@ -59,8 +68,19 @@ export default class BodyWidget extends React.Component {
     allowCanvasZoom: true,
     toggleAnalytics: false,
     conversionIsView: false,
-    srdLinkLayerSwitch: false,
+
+    showTemplateButtons: false,
+
   };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.work.diagram)
+      return {
+        allTemplatesItems: prevState.allTemplatesItems && prevState.allTemplatesItems.length > 0 ? prevState.allTemplatesItems :
+          (nextProps.work.diagram && nextProps.work.diagram.allTemplatesItems) || [],
+      };
+    else return null
+  }
 
   saveDiagramHandle = file => {
     this.setState(
@@ -94,7 +114,9 @@ export default class BodyWidget extends React.Component {
   toggle = name => {
     this.setState({
       toggle: name,
-      show: true
+      show: true,
+      allTemplatesItems: this.state.allTemplatesItems.length > 0 ? this.state.allTemplatesItems :
+        (this.props.work.diagram && this.props.work.diagram.allTemplatesItems) || []
     });
   }
 
@@ -249,6 +271,35 @@ export default class BodyWidget extends React.Component {
     )
   }
 
+  createTemplatesItemsWidget() {
+    return this.state.allTemplatesItems.map((item, key) => (
+      <TrayTemplatesItemWidget
+        key={key}
+        model={{ data: item.data }}
+        name={item.name}
+        // icon={TemplatesButton}
+        icon={FunnelTemplate}
+        delete={() => this.removeTemplate(key)}
+      />
+    ))
+  }
+
+  showTemplateItemName = () => {
+    if (this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems().length > 2) {
+      this.setState({
+        templateItemName: '',
+        showTemplateItemName: true,
+      });
+    }
+    else {
+      console.log('select more elements!')
+    }
+  }
+  hideTemplateItemName = () => this.setState({
+    templateItemName: '',
+    showTemplateItemName: false,
+  });
+
   showSelect = () => this.setState({ showSelect: true });
   hideSelect = () => this.setState({ showSelect: false });
 
@@ -298,16 +349,202 @@ export default class BodyWidget extends React.Component {
     this.forceUpdate();
   }
 
+
+  addTemplate = () => {
+    // console.log(this.state.allTemplatesItems)
+    if (this.state.allTemplatesItems.length === 0) {
+      this.setState({
+        allTemplatesItems: [{
+          name: this.state.templateItemName,
+          data: serializationInWidget(this.props.app.getDiagramEngine().getDiagramModel())
+        }],
+        showTemplateButtons: false
+      }, () => this.hideTemplateItemName())
+    }
+    if (this.state.allTemplatesItems.length >= 1) {
+      this.setState({
+        allTemplatesItems: [...this.state.allTemplatesItems, {
+          name: this.state.templateItemName,
+          data: serializationInWidget(this.props.app.getDiagramEngine().getDiagramModel())
+        }],
+        showTemplateButtons: false
+      }, () => this.hideTemplateItemName())
+    }
+  };
+
+  removeTemplate = index => {
+    this.state.allTemplatesItems.splice(index, 1)
+    document.getElementById("tray").click();
+  };
+
+
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+  debounce(f, ms, leading) {
+    let timer = null;
+    return function (...args) {
+      const onComplete = () => {
+        f.apply(this, args);
+        timer = null;
+      }
+      if (timer === null && leading) f.apply(this, args);
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(onComplete, ms);
+    };
+  }
+
+  showToolElement = this.debounce(e => {
+    e.persist();
+    if (e.shiftKey) {
+
+      console.log('this.state.x', this.state.x)
+      console.log('this.state.y', this.state.y)
+
+      this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems().length > 2 ?
+        this.setState({
+          showTemplateButtons: true,
+          x: e.clientX,
+          y: e.clientY,
+        })
+        :
+        this.setState({
+          showTemplateButtons: false
+        })
+    }
+
+
+    // document.getElementById("diagram-layer") &&
+    // document.getElementById("diagram-layer").click() && 
+    // this.setState({
+    //   showTemplateButtons: false
+    // })
+
+  }, 5, true);
+
+
   render() {
     this.props.work.permissionForCollaborator.includes("Edit") ?
       this.props.app.getDiagramEngine().getDiagramModel().setLocked(false)
       :
       this.props.app.getDiagramEngine().getDiagramModel().setLocked(true)
 
+    // console.log(this.props)
+    // console.log(this.state)
+
+    // console.log('model.getSelectedItems()', this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems())
+
 
 
     return (
       <>
+
+        <Modal
+          show={this.state.showTemplateItemName}
+          handleClose={this.hideTemplateItemName}
+        >
+          <label className="label-create">Tempalate Name</label>
+          <label htmlFor="templateItemName" className="label-input">
+            Tempalate Name
+          </label>
+          <input
+            // className="created-link-wrapper"
+            value={this.state.templateItemName}
+            name='templateItemName'
+            onChange={e => this.handleChange(e)}
+            type='text'
+          />
+
+          <div className="delete-modal-btn-wrapper">
+            <button
+              className="btn btn-1 btn-delete-modal"
+              onClick={() => this.addTemplate()}
+            >
+              Add
+              </button>
+            <button
+              className="btn btn-1 btn-delete-modal"
+              onClick={this.hideTemplateItemName}
+            >
+              Exit
+            </button>
+          </div>
+        </Modal>
+
+        <ClickOutside
+          onClickOutside={() => {
+            this.setState({ showTemplateButtons: false });
+          }}
+        >
+          {
+            this.state.showTemplateButtons &&
+            <div style={{
+              position: 'absolute',
+              // top: this.state.y > this.state.x ? this.state.y + 40 : this.state.y - 40,
+              // left: this.state.x > this.state.y ? this.state.x - 80 : this.state.x + 80,
+              top: this.state.y - 40,
+              left: this.state.x - 80,
+              zIndex: 10
+            }}>
+              {
+                <div className='btn-select-template-wrapper'>
+                  <button
+                    className="btn-select-template"
+                    onClick={() => {
+                      this.showTemplateItemName()
+                    }}
+                  >
+                    <DeleteAllLinksSVG />
+                  </button>
+
+                  <button
+                    className="btn-select-template"
+                    onClick={() => {
+                      deleteNode(this.props.app.getDiagramEngine())
+
+                      this.setState({
+                        showTemplateButtons: false
+                      })
+                    }}
+                    title={"Delete"}
+                  >
+                    <DeleteSVG />
+                  </button>
+
+                  <button
+                    className="btn-select-template"
+                    onClick={() => {
+                      cloneSelected(
+                        this.props.work.diagram.funnelName,
+                        this.props.work.diagram.funnelNotes,
+                        this.props.app.getDiagramEngine(),
+                        this.props.work.saveDiagramThenShowOrHideSettingsModal,
+                        this.props.work.funnelId,
+                        this.props.app.getDiagramEngine().getDiagramModel().nodes[0],
+                      )
+
+                      this.setState({
+                        showTemplateButtons: false
+                      })
+                    }}
+                    title={"Copy"}
+                  >
+                    <CopySVG />
+                  </button>
+
+                </div>
+
+              }
+            </div>
+          }
+        </ClickOutside>
+
+
 
         {
           (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) &&
@@ -318,45 +555,45 @@ export default class BodyWidget extends React.Component {
         {
           this.props.work.permissionForCollaborator.includes("Edit") ?
 
-          (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ?
+            (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ?
 
-          document.getElementById('diagram') &&
-            document.getElementsByClassName('srd-diagram')[0] &&
-            document.getElementsByClassName('diagram-header-button-save')[0] &&
-            document.getElementsByClassName('diagram-header-menu-button')[1] &&
-            document.getElementsByClassName('diagram-header-menu-button')[2] &&
-            document.getElementsByClassName('btn-zoom-to-fit')[0] &&
-            document.getElementsByClassName('panel-buttons')[0] &&
-            document.getElementsByClassName('zoom-wrapper')[0] ?
-            (
-              document.getElementById('diagram').style.height = '100vh',
-              document.getElementsByClassName('srd-diagram')[0].style.overflow = 'scroll',
-              document.getElementsByClassName('diagram-header-button-save')[0].style.display = 'none',
-              document.getElementsByClassName('diagram-header-menu-button')[1].style.display = 'none',
-              document.getElementsByClassName('diagram-header-menu-button')[2].style.display = 'none',
-              document.getElementsByClassName('btn-zoom-to-fit')[0].style.display = 'none',
-              document.getElementsByClassName('panel-buttons')[0].style.display = 'none',
-              document.getElementsByClassName('zoom-wrapper')[0].style.display = 'none',
-              null
-            )
-            : null : null
+              document.getElementById('diagram') &&
+                document.getElementsByClassName('srd-diagram')[0] &&
+                document.getElementsByClassName('diagram-header-button-save')[0] &&
+                document.getElementsByClassName('diagram-header-menu-button')[1] &&
+                document.getElementsByClassName('diagram-header-menu-button')[2] &&
+                document.getElementsByClassName('btn-zoom-to-fit')[0] &&
+                document.getElementsByClassName('panel-buttons')[0] &&
+                document.getElementsByClassName('zoom-wrapper')[0] ?
+                (
+                  document.getElementById('diagram').style.height = '100vh',
+                  document.getElementsByClassName('srd-diagram')[0].style.overflow = 'scroll',
+                  document.getElementsByClassName('diagram-header-button-save')[0].style.display = 'none',
+                  document.getElementsByClassName('diagram-header-menu-button')[1].style.display = 'none',
+                  document.getElementsByClassName('diagram-header-menu-button')[2].style.display = 'none',
+                  document.getElementsByClassName('btn-zoom-to-fit')[0].style.display = 'none',
+                  document.getElementsByClassName('panel-buttons')[0].style.display = 'none',
+                  document.getElementsByClassName('zoom-wrapper')[0].style.display = 'none',
+                  null
+                )
+                : null : null
 
-          : 
-          
-          (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ?
+            :
 
-          document.getElementById('diagram') &&
-            document.getElementsByClassName('srd-diagram')[0] &&
-            document.getElementsByClassName('btn-zoom-to-fit')[0] &&
-            document.getElementsByClassName('zoom-wrapper')[0] ?
-            (
-              document.getElementById('diagram').style.height = '100vh',
-              document.getElementsByClassName('srd-diagram')[0].style.overflow = 'scroll',
-              document.getElementsByClassName('btn-zoom-to-fit')[0].style.display = 'none',
-              document.getElementsByClassName('zoom-wrapper')[0].style.display = 'none',
-              null
-            )
-            : null : null
+            (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) ?
+
+              document.getElementById('diagram') &&
+                document.getElementsByClassName('srd-diagram')[0] &&
+                document.getElementsByClassName('btn-zoom-to-fit')[0] &&
+                document.getElementsByClassName('zoom-wrapper')[0] ?
+                (
+                  document.getElementById('diagram').style.height = '100vh',
+                  document.getElementsByClassName('srd-diagram')[0].style.overflow = 'scroll',
+                  document.getElementsByClassName('btn-zoom-to-fit')[0].style.display = 'none',
+                  document.getElementsByClassName('zoom-wrapper')[0].style.display = 'none',
+                  null
+                )
+                : null : null
         }
 
         <SettingsNodeRightPanel work={this.props.work} app={this.props.app} />
@@ -438,6 +675,7 @@ export default class BodyWidget extends React.Component {
                 {
                   this.props.work.permissionForCollaborator.includes("Edit") ?
                     <>
+
                       <div className="zoom-wrapper">
                         <ReactSVG
                           src={LupaSVG}
@@ -590,112 +828,112 @@ export default class BodyWidget extends React.Component {
               </>
             ) : (
                 <>
-                 {
-                  this.props.work.permissionForCollaborator.includes("Edit") ?
-                    <>
-                      <div className="zoom-wrapper">
-                        <ReactSVG
-                          src={LupaSVG}
-                          alt=""
-                          beforeInjection={svg => {
-                            svg.setAttribute("style", "width: 17px; height: 25px;");
-                          }}
-                        />
-                        <div className="zoom-count">
-                          {this.props.app
-                            .getDiagramEngine()
-                            .getDiagramModel()
-                            .zoom.toFixed(0)}
-                          %
+                  {
+                    this.props.work.permissionForCollaborator.includes("Edit") ?
+                      <>
+                        <div className="zoom-wrapper">
+                          <ReactSVG
+                            src={LupaSVG}
+                            alt=""
+                            beforeInjection={svg => {
+                              svg.setAttribute("style", "width: 17px; height: 25px;");
+                            }}
+                          />
+                          <div className="zoom-count">
+                            {this.props.app
+                              .getDiagramEngine()
+                              .getDiagramModel()
+                              .zoom.toFixed(0)}
+                            %
                             </div>
-                        <div className="zoom-buttons-wrapper">
-                          <button
-                            className="zoom-button-plus"
-                            onClick={this.scalePlus}
-                          >
-                            +
+                          <div className="zoom-buttons-wrapper">
+                            <button
+                              className="zoom-button-plus"
+                              onClick={this.scalePlus}
+                            >
+                              +
                               </button>
-                          <button
-                            className="zoom-button-minus"
-                            onClick={this.scaleMinus}
-                          >
-                            -
+                            <button
+                              className="zoom-button-minus"
+                              onClick={this.scaleMinus}
+                            >
+                              -
                           </button>
-                        </div>
-                      </div>
-
-                      <button
-                        className="btn btn-1 btn-zoom-to-fit"
-                        style={{
-                          width: 100,
-                          height: 40,
-                          borderRadius: 7,
-                          marginRight: 10
-                        }}
-                        onClick={() => this.zoomToFit()}
-                      >
-                        Zoom to Fit
-                      </button>
-
-                      <button
-                        className="btn btn-1 diagram-header-button-save"
-                        onClick={this.showSelect}
-                        style={{ margin: 12.5 }}
-                      >
-                        SAVE
-                        <div className="arrow-for-select">
-                          <ArrowSelectSVG />
-                        </div>
-                      </button>
-                    </> 
-                  :
-
-                  <>
-                    <div className="zoom-wrapper">
-                      <ReactSVG
-                        src={LupaSVG}
-                        alt=""
-                        beforeInjection={svg => {
-                          svg.setAttribute("style", "width: 17px; height: 25px;");
-                        }}
-                      />
-                      <div className="zoom-count">
-                        {this.props.app
-                          .getDiagramEngine()
-                          .getDiagramModel()
-                          .zoom.toFixed(0)}
-                        %
                           </div>
-                      <div className="zoom-buttons-wrapper">
-                        <button
-                          className="zoom-button-plus"
-                          onClick={this.scalePlus}
-                        >
-                          +
-                            </button>
-                        <button
-                          className="zoom-button-minus"
-                          onClick={this.scaleMinus}
-                        >
-                          -
-                        </button>
-                      </div>
-                    </div>
+                        </div>
 
-                    <button
-                      className="btn btn-1 btn-zoom-to-fit"
-                      style={{
-                        width: 100,
-                        height: 40,
-                        borderRadius: 7,
-                        marginRight: 10
-                      }}
-                      onClick={() => this.zoomToFit()}
-                    >
-                      Zoom to Fit
+                        <button
+                          className="btn btn-1 btn-zoom-to-fit"
+                          style={{
+                            width: 100,
+                            height: 40,
+                            borderRadius: 7,
+                            marginRight: 10
+                          }}
+                          onClick={() => this.zoomToFit()}
+                        >
+                          Zoom to Fit
+                      </button>
+
+                        <button
+                          className="btn btn-1 diagram-header-button-save"
+                          onClick={this.showSelect}
+                          style={{ margin: 12.5 }}
+                        >
+                          SAVE
+                        <div className="arrow-for-select">
+                            <ArrowSelectSVG />
+                          </div>
+                        </button>
+                      </>
+                      :
+
+                      <>
+                        <div className="zoom-wrapper">
+                          <ReactSVG
+                            src={LupaSVG}
+                            alt=""
+                            beforeInjection={svg => {
+                              svg.setAttribute("style", "width: 17px; height: 25px;");
+                            }}
+                          />
+                          <div className="zoom-count">
+                            {this.props.app
+                              .getDiagramEngine()
+                              .getDiagramModel()
+                              .zoom.toFixed(0)}
+                            %
+                          </div>
+                          <div className="zoom-buttons-wrapper">
+                            <button
+                              className="zoom-button-plus"
+                              onClick={this.scalePlus}
+                            >
+                              +
+                            </button>
+                            <button
+                              className="zoom-button-minus"
+                              onClick={this.scaleMinus}
+                            >
+                              -
+                        </button>
+                          </div>
+                        </div>
+
+                        <button
+                          className="btn btn-1 btn-zoom-to-fit"
+                          style={{
+                            width: 100,
+                            height: 40,
+                            borderRadius: 7,
+                            marginRight: 10
+                          }}
+                          onClick={() => this.zoomToFit()}
+                        >
+                          Zoom to Fit
                     </button>
-                  </> 
-                 }
+                      </>
+                  }
                 </>
               )}
 
@@ -881,7 +1119,27 @@ export default class BodyWidget extends React.Component {
               <ClickOutside
                 onClickOutside={() => this.setState({ show: false })}
               >
-                <TrayWidget show={this.state.show}>{/*empty*/}</TrayWidget>
+                <TrayWidget show={this.state.show && !this.state.showTemplateItemName}>
+                  {this.createTemplatesItemsWidget()}
+                  {/* {
+
+                    <div className='tray-item-body'>
+                      <div className='tray-item-wrapper'>
+                        <button
+                          style={{
+                            width: 51, height: 51
+                          }}
+                          onClick={() => {
+                            this.showTemplateItemName()
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+
+                  } */}
+                </TrayWidget>
               </ClickOutside>
             ) : null}
 
@@ -891,19 +1149,52 @@ export default class BodyWidget extends React.Component {
                 ref={ref => this.diagramRef = ref}
                 onDrop={event => {
                   try {
-                    const data = JSON.parse(
-                      event.dataTransfer.getData("storm-diagram-node")
-                    );
-                    const node = this.nodeFactory(data);
-                    const points = this.props.app
-                      .getDiagramEngine()
-                      .getRelativeMousePoint(event);
-                    node.x = points.x;
-                    node.y = points.y;
-                    this.props.app
-                      .getDiagramEngine()
-                      .getDiagramModel()
-                      .addNode(node);
+                    if (event.dataTransfer.getData("storm-diagram-templates")) {
+                      const data = JSON.parse(
+                        event.dataTransfer.getData("storm-diagram-templates")
+                      );
+
+                      const model2 = new RJD.DiagramModel();
+                      model2.deSerializeDiagram(JSON.parse(data.model.data), this.props.app
+                        .getDiagramEngine());
+
+                      console.log('template', model2.getSelectedItems())
+
+                      let offset = { x: 600, y: 300 };
+                      let model = this.props.app
+                        .getDiagramEngine().getDiagramModel();
+                      let itemMap = {};
+                      _.forEach(model2.getSelectedItems(), item => {
+                        let newItem = item.clone(itemMap);
+                        // offset the nodes slightly
+                        if (newItem instanceof CustomNodeModel) {
+                          newItem.setPosition(newItem.x + offset.x, newItem.y + offset.y);
+                          model.addNode(newItem);
+                        } else if (newItem instanceof AdvancedLinkModel) {
+                          // offset the link points
+                          newItem.getPoints().forEach(p => {
+                            p.updateLocation({ x: p.getX() + offset.x, y: p.getY() + offset.y });
+                          });
+                          model.addLink(newItem);
+                        }
+
+                      });
+                    }
+                    else {
+                      const data = JSON.parse(
+                        event.dataTransfer.getData("storm-diagram-node")
+                      );
+                      const node = this.nodeFactory(data);
+                      const points = this.props.app
+                        .getDiagramEngine()
+                        .getRelativeMousePoint(event);
+                      node.x = points.x;
+                      node.y = points.y;
+                      this.props.app
+                        .getDiagramEngine()
+                        .getDiagramModel()
+                        .addNode(node);
+                    }
                     this.forceUpdate();
                   }
                   catch (err) {
@@ -961,6 +1252,32 @@ export default class BodyWidget extends React.Component {
                   this.props.app.getDiagramEngine().enableRepaintEntities([]);
                   this.forceUpdate();
                 }}
+
+                onMouseMove={this.showToolElement}
+
+              // onMouseMove={(e) => {
+
+              //   if (e.shiftKey) {
+
+              //     this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems().length > 2 ?
+              //       this.setState({
+              //         showTemplateButtons: true,
+              //         x: e.clientX,
+              //         y: e.clientY,
+              //       })
+              //       :
+              //       this.setState({
+              //         showTemplateButtons: false
+              //       })
+              //   }
+              //   else {
+              //     // this.setState({
+              //     //   showTemplateButtons: false
+              //     // })
+              //   }
+
+
+              // }}
               >
                 <RJD.DiagramWidget
                   deleteKeys={[]}
