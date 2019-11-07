@@ -5,6 +5,12 @@ const User = require('../models/user.js');
 const Partner = require('../models/partner.js');
 const PartnerToken = require('../models/partnerToken.js');
 const activeCampaignApi = require('activecampaign-api');
+
+
+const fetch = require('node-fetch');
+const FormData = require('form-data');
+const bufferFile = __dirname + `../../../public/avatars/buffer-file.jpg`;
+
 /**changeUsersAvatar variables */
 module.exports = {
     changeMyProfile: async (req, res) => {
@@ -37,44 +43,48 @@ module.exports = {
                 res.status(500).json({
                     error: err.message
                 });
-            });   
+            });
 
     },
     changeUsersAvatar: (req, res) => {
-        const photoURL = process.env.IMAGE_STORE;
-        let fileToDelete;
+        
         Profile
             .findOne({
                 _id: req.authData.profile._id
             })
             .exec()
-            .then(profile => {
-                fileToDelete = `${profile.photoUrl}`
+            /**find profile in db */
+            .then((profile) => {
+                const data = new FormData();
+                data.append('userName', profile.accountName);
+                data.append('img', fs.createReadStream(bufferFile));
+                return fetch('http://localhost:3001/avatars', {
+                    method: 'POST',
+                    body: data
+                })
             })
-            .then(() => {
+            .then(result => result.json())
+            .then((result) => {
+
                 return Profile
-                    .findOneAndUpdate({_id: req.authData.profile._id}, {
-                        photoUrl: `${photoURL+req.authData.profile.accountName}/${req.file.filename}`
+                    .findOneAndUpdate({
+                        _id: req.authData.profile._id
+                    }, {
+                        photoUrl: result.link
                     }, {
                         new: true
                     })
                     .exec()
             })
-            .then((result) => {
+            .then(() => {
                 try {
-                    fs.unlinkSync(__dirname+'../../../'+fileToDelete)
-                    res.status(200).json({
-                        message: "Avatar updated succesfully",
-                        data: result[1]
-                    })
+                    fs.unlinkSync(bufferFile)
                 } catch (error) {
-                    error.message = 'File to update was not found on server, but successfully added'
-                    res
-                    .status(500)
-                    .json({
-                        error: error.message
-                    });
+                    throw new Error('problem with deleting buffer file')
                 }
+                res.status(200).json({
+                    message: "Avatar updated succesfully...",
+                })
             })
             .catch(err => {
                 res
@@ -84,7 +94,7 @@ module.exports = {
                     });
             });
     },
-    
+
     getAllPartners: async (req, res) => {
 
         Profile
