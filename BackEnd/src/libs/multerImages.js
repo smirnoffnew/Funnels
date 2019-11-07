@@ -5,9 +5,10 @@ const storage = multer.diskStorage({
         // // Windows settings 
         // callback(null, `./${process.env.IMAGE_STORE}`);
         // Linux settings
+        console.log(__dirname)
         callback(null, `${process.env.APP_PATH}${process.env.IMAGE_STORE}`);
     },
-    filename: function (req, file, callback) {
+    filename: function (req, file, callback) { 
         callback(null, 'buffer-file.jpg');
     },
 });

@@ -9,7 +9,11 @@ const activeCampaignApi = require('activecampaign-api');
 
 const fetch = require('node-fetch');
 const FormData = require('form-data');
-const bufferFile = __dirname + `../../../public/avatars/buffer-file.jpg`;
+
+const bufferFile = `${process.env.APP_PATH}${process.env.IMAGE_STORE}buffer-file.jpg`;
+
+//Windows settings
+//const bufferFile = __dirname + `../../../public/avatars/buffer-file.jpg`;
 
 /**changeUsersAvatar variables */
 module.exports = {
@@ -47,7 +51,7 @@ module.exports = {
 
     },
     changeUsersAvatar: (req, res) => {
-        
+        console.log(bufferFile)
         Profile
             .findOne({
                 _id: req.authData.profile._id
