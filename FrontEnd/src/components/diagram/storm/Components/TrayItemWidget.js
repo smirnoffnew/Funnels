@@ -127,7 +127,7 @@ export class TrayTemplatesItemWidget extends React.Component {
               />
             </div>
           </div>
-          <button 
+          <button
             onClick={() => {
               this.props.delete()
             }}
@@ -146,9 +146,14 @@ export class TrayTemplatesItemWidget extends React.Component {
             title={"Delete Template"}
           >
             x
-          </button>  
+          </button>
         </div>
-        {this.props.name}
+        <div 
+          className='tray-item-name'
+          title={this.props.name}
+        >
+          {this.props.name}
+        </div>
       </div>
     );
   }

@@ -498,6 +498,7 @@ export default class BodyWidget extends React.Component {
                     onClick={() => {
                       this.showTemplateItemName()
                     }}
+                    title={"Create Template"}
                   >
                     <DeleteAllLinksSVG />
                   </button>
