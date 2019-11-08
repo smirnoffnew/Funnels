@@ -12,7 +12,7 @@ projectRouter.post('/',
     enshureToken,
     verifyToken,
     lastActive,
-    projectController.createProject);
+    projectController.createProject); 
 projectRouter.delete('/:project_id/:col_id',
     enshureToken,
     projectController.deleteCollaborator);

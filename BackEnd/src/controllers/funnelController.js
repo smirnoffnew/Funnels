@@ -7,8 +7,13 @@ const Project = require('../models/project.js');
 const Token = require('../models/colaboratetoken.js');
 const Template = require('../models/template.js');
 const NodeCounter = require('../models/nodes')
-
 const svgArray = require('../libs/svgArray.js');
+
+
+const fetch = require('node-fetch');
+const FormData = require('form-data');
+const bufferFile = __dirname + `../../../public/funnelBackgrounds/buffer-file.jpg`;
+const screenShotBufferFile = __dirname + `../../../public/screenshots/buffer-file.jpg`;
 
 const { base64encode, base64decode } = require('nodejs-base64');
 
@@ -145,8 +150,6 @@ module.exports = {
                     .json({ error: err.message });
             });
     },
-
-
     getAllCollaboratedToUserFunnels: async function (req, res) {
         Funnel.find({ collaborators: { $elemMatch: { profileId: req.authData.profile._id } } })
             .exec()
@@ -162,39 +165,50 @@ module.exports = {
             });
     },
     addFunnelDiagramAndBackground: async function (req, res) {
-        const bckgrUrl = process.env.BACKGROUND_STORE;
-        let fileToDelete;
-        Promise
-            .all([
-                Funnel
-                    .findOne({ _id: req.params.funnelId })
-                    .exec()
-                    .then(funnel => {
-                        fileToDelete = `src${funnel.funnelBackground}`;
-                    }),
-                Funnel
-                    .findOneAndUpdate({ _id: req.params.funnelId },
-                        { funnelBackground: `${bckgrUrl}${req.file.originalname}`, funnelBody: req.body.funnelBody },
-                        { new: true })
-                    .exec()
-            ])
-            .then(result => {
-                res
-                    .status(200)
-                    .json({ message: "Funnel updated successfully", data: result[1] })
+        Funnel
+        .findOne({
+            _id: req.params.funnelId
+        })
+        .exec()
+        /**find profile in db */
+        .then((funnel) => {
+            const data = new FormData();
+            data.append('funnelId',funnel._id.toString());
+            data.append('img', fs.createReadStream(bufferFile));
+            return fetch(`${process.env.FILE_SHARER}/backgrounds`, {
+                method: 'POST',
+                body: data
             })
-            .then(() => {
-                fs.unlink(fileToDelete, (err) => {
-                    if (err) {
-                        console.log(err);
-                    }
+        })
+        .then(result => result.json())
+        .then((result) => {
+            return Funnel
+                .findOneAndUpdate({
+                    _id: req.params.funnelId
+                }, {
+                    funnelBackground: result.link
+                }, {
+                    new: true
+                })
+                .exec()
+        })
+        .then(() => {
+            try {
+                fs.unlinkSync(bufferFile)
+            } catch (error) {
+                throw new Error('problem with deleting buffer file')
+            }
+            res.status(200).json({
+                message: "Funnel updated succesfully...",
+            })
+        })
+        .catch(err => {
+            res
+                .status(500)
+                .json({
+                    error: err.message
                 });
-            })
-            .catch(err => {
-                res
-                    .status(500)
-                    .json({ error: err.message });
-            });
+        });
     },
     getFunnelById: async function (req, res) {
         Funnel
@@ -213,6 +227,7 @@ module.exports = {
             });
     },
     getScreenshot: async function (req, res) {
+
         const Url = process.env.NODE_ENV == 'dev' ? process.env.DEV_URL : process.env.PROD_URL;
         const screenShotURL = `${process.env.SCREENSHOT_STORE}${req.file.originalname}`;
         const funnelColaborateData = {
@@ -221,6 +236,17 @@ module.exports = {
             screenShotURL: screenShotURL
         };
         const collaborateToken = jwt.sign(funnelColaborateData, process.env.SECRET_COLLABORATOR);
+
+        const data = new FormData();
+            data.append('funnelsId', req.body.funnelsId);
+            data.append('img', fs.createReadStream(screenShotBufferFile));
+            fetch(`${process.env.FILE_SHARER}/screenshots`, {
+                method: 'POST',
+                body: data
+            })
+        .then(result => result.json())
+        .then(res => console.log(res.link));
+
         new Token({
             body: collaborateToken
         })
@@ -229,9 +255,17 @@ module.exports = {
                 res
                     .status(200)
                     .json({
+                        message: "Screenshot added succesfully...",
                         link: `${Url}/add-collaborators-image?image=${screenShotURL}&add-collaborators-image=${token.body}`,
                         token: token.body,
                     });
+            })
+            .then(() => {
+                try {
+                    fs.unlinkSync(screenShotBufferFile)
+                } catch (error) {
+                    throw new Error('problem with deleting buffer file')
+                }
             })
             .catch(err => {
                 res
@@ -330,7 +364,7 @@ module.exports = {
 
     },
     getFunnelsSvg: async function (req, res) {
-        const response = svgArray();
+        const response = svgArray(); 
         res
             .status(200)
             .json({ response, count: response.length });

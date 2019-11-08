@@ -58,7 +58,7 @@ module.exports = {
                 const data = new FormData();
                 data.append('userName', profile.accountName);
                 data.append('img', fs.createReadStream(bufferFile));
-                return fetch('http://localhost:3001/avatars', {
+                return fetch(`${process.env.FILE_SHARER}/avatars`, {
                     method: 'POST',
                     body: data
                 })
