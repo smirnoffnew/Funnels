@@ -495,6 +495,15 @@ export default class BodyWidget extends React.Component {
                     }}
                     title={"Create Template"}
                   >
+                    <div
+                      style={{
+                        width: "15px",
+                        height: "15px",
+                        backgroundColor: "transparent",
+                        position: "absolute"
+                      }}
+                      onClick={() => this.showTemplateItemName()}
+                    />
                     <ReactSVG
                       src={FunnelTemplate}
                       beforeInjection={svg => {
