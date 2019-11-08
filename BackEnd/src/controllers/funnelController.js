@@ -12,8 +12,14 @@ const svgArray = require('../libs/svgArray.js');
 
 const fetch = require('node-fetch');
 const FormData = require('form-data');
-const bufferFile = __dirname + `../../../public/funnelBackgrounds/buffer-file.jpg`;
-const screenShotBufferFile = __dirname + `../../../public/screenshots/buffer-file.jpg`;
+
+//Linux settings
+const bufferFile = `${process.env.APP_PATH}${process.env.BACKGROUND_STORE}buffer-file.jpg`;
+const screenShotBufferFile = `${process.env.APP_PATH}${process.env.SCREENSHOT_STORE}buffer-file.jpg`;;
+
+//Windows settings
+// const bufferFile = __dirname + `../../../public/funnelBackgrounds/buffer-file.jpg`;
+// const screenShotBufferFile = __dirname + `../../../public/screenshots/buffer-file.jpg`;
 
 const { base64encode, base64decode } = require('nodejs-base64');
 
@@ -165,6 +171,7 @@ module.exports = {
             });
     },
     addFunnelDiagramAndBackground: async function (req, res) {
+        
         Funnel
         .findOne({
             _id: req.params.funnelId

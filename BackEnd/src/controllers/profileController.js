@@ -10,8 +10,8 @@ const activeCampaignApi = require('activecampaign-api');
 const fetch = require('node-fetch');
 const FormData = require('form-data');
 
+//Linux settings
 const bufferFile = `${process.env.APP_PATH}${process.env.IMAGE_STORE}buffer-file.jpg`;
-
 //Windows settings
 //const bufferFile = __dirname + `../../../public/avatars/buffer-file.jpg`;
 
