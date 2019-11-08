@@ -14,12 +14,12 @@ const fetch = require('node-fetch');
 const FormData = require('form-data');
 
 //Linux settings
-const bufferFile = `${process.env.APP_PATH}${process.env.BACKGROUND_STORE}buffer-file.jpg`;
-const screenShotBufferFile = `${process.env.APP_PATH}${process.env.SCREENSHOT_STORE}buffer-file.jpg`;;
+ const bufferFile = `${process.env.APP_PATH}${process.env.BACKGROUND_STORE}buffer-file.jpg`;
+ const screenShotBufferFile = `${process.env.APP_PATH}${process.env.SCREENSHOT_STORE}buffer-file.jpg`;;
 
 //Windows settings
-// const bufferFile = __dirname + `../../../public/funnelBackgrounds/buffer-file.jpg`;
-// const screenShotBufferFile = __dirname + `../../../public/screenshots/buffer-file.jpg`;
+//const bufferFile = __dirname + `../../../public/funnelBackgrounds/buffer-file.jpg`;
+//const screenShotBufferFile = __dirname + `../../../public/screenshots/buffer-file.jpg`;
 
 const { base64encode, base64decode } = require('nodejs-base64');
 
@@ -199,7 +199,7 @@ module.exports = {
                 })
                 .exec()
         })
-        .then(() => {
+        .then((result) => {
             try {
                 fs.unlinkSync(bufferFile)
             } catch (error) {
@@ -207,6 +207,7 @@ module.exports = {
             }
             res.status(200).json({
                 message: "Funnel updated succesfully...",
+                data: result
             })
         })
         .catch(err => {
