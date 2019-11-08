@@ -5,67 +5,67 @@ module.exports = () => {
             data: [
                 {
                     name: `Adwords`,
-                    url: `/public/svg/1Adwords.svg`
+                    url: `${process.env.FILE_SHARER}/svg/1Adwords.svg`
                 },
                 {
                     name: `ChatBox`,
-                    url: `/public/svg/ChatBox.svg`
+                    url: `${process.env.FILE_SHARER}/svg/ChatBox.svg`
                 },
                 {
                     name: `CustomSource`,
-                    url: `/public/svg/CustomSource.svg`
+                    url: `${process.env.FILE_SHARER}/svg/CustomSource.svg`
                 },
                 {
                     name: `Email`,
-                    url: `/public/svg/Email.svg`
+                    url: `${process.env.FILE_SHARER}/svg/Email.svg`
                 },
                 {
                     name: `FacebookAds`,
-                    url: `/public/svg/FacebookAds.svg`
+                    url: `${process.env.FILE_SHARER}/svg/FacebookAds.svg`
                 },
                 {
                     name: `Facebook`,
-                    url: `/public/svg/Facebook.svg`
+                    url: `${process.env.FILE_SHARER}/svg/Facebook.svg`
                 },
                 {
                     name: `InstagramAds`,
-                    url: `/public/svg/InstagramAds.svg`
+                    url: `${process.env.FILE_SHARER}/svg/InstagramAds.svg`
                 },
                 {
                     name: `Instagram`,
-                    url: `/public/svg/LinkedInAds.svg`
+                    url: `${process.env.FILE_SHARER}/svg/LinkedInAds.svg`
                 },
                 {
                     name: `LinkedIn`,
-                    url: `/public/svg/CustomSource.svg`
+                    url: `${process.env.FILE_SHARER}/svg/CustomSource.svg`
                 },
                 {
                     name: `Messenger`,
-                    url: `/public/svg/Messenger.svg`
+                    url: `${process.env.FILE_SHARER}/svg/Messenger.svg`
                 },
                 {
                     name: `Search`,
-                    url: `/public/svg/Search.svg`
+                    url: `${process.env.FILE_SHARER}/svg/Search.svg`
                 },
                 {
                     name: `TrackingLink`,
-                    url: `/public/svg/TrackingLink.svg`
+                    url: `${process.env.FILE_SHARER}/svg/TrackingLink.svg`
                 },
                 {
                     name: `TwitterAds`,
-                    url: `/public/svg/TwitterAds.svg`
+                    url: `${process.env.FILE_SHARER}/svg/TwitterAds.svg`
                 },
                 {
                     name: `Twitter`,
-                    url: `/public/svg/Twitter.svg`
+                    url: `${process.env.FILE_SHARER}/svg/Twitter.svg`
                 },
                 {
                     name: `YoutubeAds`,
-                    url: `/public/svg/YoutubeAds.svg`
+                    url: `${process.env.FILE_SHARER}/svg/YoutubeAds.svg`
                 },
                 {
                     name: `Youtube`,
-                    url: `/public/svg/Youtube.svg`
+                    url: `${process.env.FILE_SHARER}/svg/Youtube.svg`
                 }]
         },
         {
@@ -73,43 +73,43 @@ module.exports = () => {
             data: [
                 {
                     name: `AddTag`,
-                    url: `/public/svg/AddTag.svg`
+                    url: `${process.env.FILE_SHARER}/svg/AddTag.svg`
                 },
                 {
                     name: `Condition`,
-                    url: `/public/svg/Condition.svg`
+                    url: `${process.env.FILE_SHARER}/svg/Condition.svg`
                 },
                 {
                     name: `CustomAction`,
-                    url: `/public/svg/CustomAction.svg`
+                    url: `${process.env.FILE_SHARER}/svg/CustomAction.svg`
                 },
                 {
                     name: `RemoveTag`,
-                    url: `/public/svg/RemoveTag.svg`
+                    url: `${process.env.FILE_SHARER}/svg/RemoveTag.svg`
                 },
                 {
                     name: `SendEmail`,
-                    url: `/public/svg/SendEmail.svg`
+                    url: `${process.env.FILE_SHARER}/svg/SendEmail.svg`
                 },
                 {
                     name: `SendNotification`,
-                    url: `/public/svg/SendNotification.svg`
+                    url: `${process.env.FILE_SHARER}/svg/SendNotification.svg`
                 },
                 {
                     name: `SendSms`,
-                    url: `/public/svg/SendSms.svg`
+                    url: `${process.env.FILE_SHARER}/svg/SendSms.svg`
                 },
                 {
                     name: `Subscribe`,
-                    url: `/public/svg/Subscribe.svg`
+                    url: `${process.env.FILE_SHARER}/svg/Subscribe.svg`
                 },
                 {
                     name: `Unsubscribe`,
-                    url: `/public/svg/Unsubscribe.svg`
+                    url: `${process.env.FILE_SHARER}/svg/Unsubscribe.svg`
                 },
                 {
                     name: `Wait`,
-                    url: `/public/svg/Wait.svg`
+                    url: `${process.env.FILE_SHARER}/svg/Wait.svg`
                 }]
         },
         {
@@ -117,35 +117,35 @@ module.exports = () => {
             data: [
                 {
                     name: `AddToCart`,
-                    url: `/public/svg/AddToCart.svg`
+                    url: `${process.env.FILE_SHARER}/svg/AddToCart.svg`
                 },
                 {
                     name: `ClickButton`,
-                    url: `/public/svg/ClickButton.svg`
+                    url: `${process.env.FILE_SHARER}/svg/ClickButton.svg`
                 },
                 {
                     name: `CompleteForm`,
-                    url: `/public/svg/CompleteForm.svg`
+                    url: `${process.env.FILE_SHARER}/svg/CompleteForm.svg`
                 },
                 {
                     name: `GenericEvent`,
-                    url: `/public/svg/GenericEvent.svg`
+                    url: `${process.env.FILE_SHARER}/svg/GenericEvent.svg`
                 },
                 {
                     name: `PopUpBox`,
-                    url: `/public/svg/PopUpBox.svg`
+                    url: `${process.env.FILE_SHARER}/svg/PopUpBox.svg`
                 },
                 {
                     name: `Purchase`,
-                    url: `/public/svg/Purchase.svg`
+                    url: `${process.env.FILE_SHARER}/svg/Purchase.svg`
                 },
                 {
                     name: `Scroll`,
-                    url: `/public/svg/Scroll.svg`
+                    url: `${process.env.FILE_SHARER}/svg/Scroll.svg`
                 },
                 {
                     name: `WatchVideo`,
-                    url: `/public/svg/WatchVideo.svg`
+                    url: `${process.env.FILE_SHARER}/svg/WatchVideo.svg`
                 }]
         },
         {
@@ -153,63 +153,63 @@ module.exports = () => {
             data: [
                 {
                     name: `BlogPost`,
-                    url: `/public/svg/BlogPost.svg`
+                    url: `${process.env.FILE_SHARER}/svg/BlogPost.svg`
                 },
                 {
                     name: `Calendar`,
-                    url: `/public/svg/Calendar.svg`
+                    url: `${process.env.FILE_SHARER}/svg/Calendar.svg`
                 },
                 {
                     name: `Download`,
-                    url: `/public/svg/Download.svg`
+                    url: `${process.env.FILE_SHARER}/svg/Download.svg`
                 },
                 {
                     name: `Generic`,
-                    url: `/public/svg/Generic.svg`
+                    url: `${process.env.FILE_SHARER}/svg/Generic.svg`
                 },
                 {
                     name: `MembersArea`,
-                    url: `/public/svg/MembersArea.svg`
+                    url: `${process.env.FILE_SHARER}/svg/MembersArea.svg`
                 },
                 {
                     name: `OptIn`,
-                    url: `/public/svg/OptIn.svg`
+                    url: `${process.env.FILE_SHARER}/svg/OptIn.svg`
                 },
                 {
                     name: `OrderPage`,
-                    url: `/public/svg/OrderPage.svg`
+                    url: `${process.env.FILE_SHARER}/svg/OrderPage.svg`
                 },
                 {
                     name: `Popup`,
-                    url: `/public/svg/Popup.svg`
+                    url: `${process.env.FILE_SHARER}/svg/Popup.svg`
                 },
                 {
                     name: `SalesPage`,
-                    url: `/public/svg/SalesPage.svg`
+                    url: `${process.env.FILE_SHARER}/svg/SalesPage.svg`
                 },
                 {
                     name: `SalesVideo`,
-                    url: `/public/svg/SalesVideo.svg`
+                    url: `${process.env.FILE_SHARER}/svg/SalesVideo.svg`
                 },
                 {
                     name: `Survey`,
-                    url: `/public/svg/Survey.svg`
+                    url: `${process.env.FILE_SHARER}/svg/Survey.svg`
                 },
                 {
                     name: `ThankYou`,
-                    url: `/public/svg/ThankYou.svg`
+                    url: `${process.env.FILE_SHARER}/svg/ThankYou.svg`
                 },
                 {
                     name: `Upsell`,
-                    url: `/public/svg/Upsell.svg`
+                    url: `${process.env.FILE_SHARER}/svg/Upsell.svg`
                 },
                 {
                     name: `Webinar`,
-                    url: `/public/svg/Webinar.svg`
+                    url: `${process.env.FILE_SHARER}/svg/Webinar.svg`
                 },
                 {
                     name: `WebinarReplay`,
-                    url: `/public/svg/WebinarReplay.svg`
+                    url: `${process.env.FILE_SHARER}/svg/WebinarReplay.svg`
                 }]
         }
     ]

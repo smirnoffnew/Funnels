@@ -188,131 +188,245 @@ module.exports = {
             throw 'email is required'
         }
     },
-    emailValidation: async function (req, res) {
-        const emailTest = req.body.email.toLowerCase();
+
+    emailValidation: function (req, res) {
         User.findOne({
-                email: emailTest
+                email: req.body.email.toLowerCase()
             })
             .exec()
             .then(doc => {
                 if (doc) {
-                    res.status(302).json({
-                        message: "email already exists!"
-                    });
+                    throw new Error('email already exists!')
                 } else {
-                    res.status(404).json({
+                    res.json({
                         message: "email is free"
                     });
                 }
             })
-            .catch(err => {
-                console.log(err);
-                res.status(500).json({
-                    err
+            .catch(error => {
+                res.json({
+                    error: error.message
                 });
-            });
+            })
     },
-    resetPassword: async function (req, res) {
-        const emailReset = req.body.email.toLowerCase();
+
+    // emailValidation: async function (req, res) {
+    //     const emailTest = req.body.email.toLowerCase();
+    //     User.findOne({
+    //             email: emailTest
+    //         })
+    //         .exec()
+    //         .then(doc => {
+    //             if (doc) {
+    //                 res.status(302).json({
+    //                     message: "email already exists!"
+    //                 });
+    //             } else {
+    //                 res.status(404).json({
+    //                     message: "email is free"
+    //                 });
+    //             }
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //             res.status(500).json({
+    //                 err
+    //             });
+    //         });
+    // },
+
+    resetPassword: function (req, res) {
         User.findOne({
-                email: emailReset
+                email: req.body.email.toLowerCase()
             })
             .exec()
             .then(user => {
-
-                if (user) {
+                if (!user) {
+                    throw new Error('email does not exists in DB')
+                } else {
                     const token = jwt.sign({
                         email: user.email
                     }, process.env.SECRET_LETTER, {
                         expiresIn: process.env.TOKEN_EXPIRES_LETTER
                     });
                     const options = sendEmail.getMailoptions(user.email, user.firstName, token);
-                    sendEmail.transporter.sendMail(options, (err, info) => {
-                        if (err) {
-                            console.log(err);
-                            res
-                                .status(500)
-                                .json({
-                                    message: "Email not send!",
-                                    data: err
-                                })
-                        } else {
-                            res.status(201).json({
-                                message: "Email sended!",
-                                //token: token,
-                            });
-                        }
-                    });
-                } else {
-                    res.status(404).json({
-                        message: "email doesn't exists in DB"
-                    });
+                    return new Promise((resolve, reject) => {
+                        sendEmail.transporter.sendMail(options, (err, info) => err ? reject(err) : resolve(res));
+                    })
                 }
             })
+            .then(() => {
+                res.status(201).json({
+                    message: "Email sent!",
+                    //token: token,
+                });
+            })
             .catch(err => {
-                console.log(err);
-                res.status(500).json({
+                console.log(err)
+                res.json({
                     error: err.message
                 });
             });
     },
-    changePassword: async function (req, res) {
-        jwt.verify(req.token, process.env.SECRET_LETTER, (err, authData) => {
-            if (err) {
-                return res.status(403).send("No authority");
-            }
-            const decodedJwt = jwt.decode(req.token, {
-                complete: true
-            });
-            const passwordChange = bcrypt.hashSync(req.body.password, 10);
-            User.updateOne({
-                    email: decodedJwt.payload.email
+
+    // resetPassword: async function (req, res) {
+    //     const emailReset = req.body.email.toLowerCase();
+    //     User.findOne({
+    //             email: emailReset
+    //         })
+    //         .exec()
+    //         .then(user => {
+
+    //             if (user) {
+    //                 const token = jwt.sign({
+    //                     email: user.email
+    //                 }, process.env.SECRET_LETTER, {
+    //                     expiresIn: process.env.TOKEN_EXPIRES_LETTER
+    //                 });
+                    
+    //                 const options = sendEmail.getMailoptions(user.email, user.firstName, token);
+    //                 sendEmail.transporter.sendMail(options, (err, info) => {
+    //                     console.log('options......',options)
+    //                     if (err) {
+    //                         console.log(err);
+    //                         res
+    //                             .status(500)
+    //                             .json({
+    //                                 message: "Email not send!",
+    //                                 data: err
+    //                             })
+    //                     } else {
+    //                         res.status(201).json({
+    //                             message: "Email sended!",
+    //                             //token: token,
+    //                         });
+    //                     }
+    //                 });
+    //             } else {
+    //                 res.status(404).json({
+    //                     message: "email doesn't exists in DB"
+    //                 });
+    //             }
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //             res.status(500).json({
+    //                 error: err.message
+    //             });
+    //         });
+    // },
+
+    changePassword: function (req, res) {
+        const passwordChange = bcrypt.hashSync(req.body.password, 10);
+        const decodedJwtEmail = jwt.decode(req.token, {
+            complete: true
+        }).payload.email;
+
+        new Promise((resolve, reject) => {
+                jwt.verify(req.token, process.env.SECRET_LETTER, (err, authData) => err ? reject(err) : resolve(res));
+            })
+            .then(() => {
+                console.log(decodedJwtEmail)
+                return User.updateOne({
+                    email: decodedJwtEmail
                 }, {
                     password: passwordChange
-                })
-                .exec()
-                .then(user => {
-                    if (user) {
-                        Profile.updateOne({
-                                email: req.body.email
-                            }, {
-                                password: passwordChange
-                            })
-                            .exec()
-                            .then(profile => {
-                                if (profile) {
-                                    res.status(200).json({
-                                        message: "Password updated successfully!!"
-                                    });
-                                }
-                            })
-                            .catch(err => {
-                                console.log(err);
-                                res.status(500).json({
-                                    error: err
-                                });
-                            });
-                    } else {
-                        res.status(404).json({
-                            message: "email doesn't exists"
-                        });
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                    res.status(500).json({
-                        error: err.message
+                }).exec()
+            })
+            .then((user) => {
+                if (!user.nModified) {
+                    throw new Error('Not found user with this email')
+                } else {
+                    return Profile.updateOne({
+                            email: decodedJwtEmail
+                        }, {
+                            password: passwordChange
+                        })
+                        .exec()
+                }
+            })
+            .then((profile) => {
+                if (!profile.nModified) {
+                    throw new Error('Not found profile with this email')
+                } else {
+                    res.status(200).json({
+                        message: "Password updated successfully!!"
                     });
-                });
-        });
+                }
 
+            })
+            .catch(err => {
+                console.log(err);
+                res.json({
+                    error: err.message
+                });
+            });
     },
-    generateSecretKeys: async function (req, res) {
+
+    // changePassword: async function (req, res) {
+    //     jwt.verify(req.token, process.env.SECRET_LETTER, (err, authData) => {
+    //         if (err) {
+    //             return res.status(403).send("No authority");
+    //         }
+    //         const decodedJwt = jwt.decode(req.token, {
+    //             complete: true
+    //         });
+    //         const passwordChange = bcrypt.hashSync(req.body.password, 10);
+    //         User.updateOne({
+    //                 email: decodedJwt.payload.email
+    //             }, {
+    //                 password: passwordChange
+    //             })
+    //             .exec()
+    //             .then(user => {
+    //                 if (user) {
+    //                     Profile.updateOne({
+    //                             email: req.body.email
+    //                         }, {
+    //                             password: passwordChange
+    //                         })
+    //                         .exec()
+    //                         .then(profile => {
+    //                             if (profile) {
+    //                                 res.status(200).json({
+    //                                     message: "Password updated successfully!!"
+    //                                 });
+    //                             }
+    //                         })
+    //                         .catch(err => {
+    //                             console.log(err);
+    //                             res.status(500).json({
+    //                                 error: err
+    //                             });
+    //                         });
+    //                 } else {
+    //                     res.status(404).json({
+    //                         message: "email doesn't exists"
+    //                     });
+    //                 }
+    //             })
+    //             .catch(err => {
+    //                 console.log(err);
+    //                 res.status(500).json({
+    //                     error: err.message
+    //                 });
+    //             });
+    //     });
+
+    // },
+
+    generateSecretKeys: function (req, res) {
         res.json({
             secretKey: keygen(20),
             secretKeyEmail: keygen(20)
         });
     },
     
-};
+    // generateSecretKeys: async function (req, res) {
+    //     res.json({
+    //         secretKey: keygen(20),
+    //         secretKeyEmail: keygen(20)
+    //     });
+    // },
 
+};

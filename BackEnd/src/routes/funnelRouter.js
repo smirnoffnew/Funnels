@@ -8,6 +8,11 @@ const multerImage = require('../libs/multerScreenshot.js');
 const multerBackground = require('../libs/multerBackground.js');
 const lastActive = require('../libs/lastActive');
 
+/**test svg */
+funnelRouter.get('/one_svg',
+    
+    funnelController.getFunnelsSvg);
+/**test svg */
 funnelRouter.get('/svg',
     enshureToken,
     verifyToken,
@@ -22,7 +27,7 @@ funnelRouter.post('/:projectId',
     enshureToken,
     verifyToken,
     lastActive,
-    funnelController.createFunnel);
+    funnelController.createFunnel); 
 funnelRouter.delete('/:projectId/:funnelId',
     enshureToken,
     verifyToken,
@@ -48,7 +53,7 @@ funnelRouter.patch('/diagram/:funnelId',
     verifyToken,
     lastActive,
     multerBackground.single('funnelBackground'),
-    funnelController.addFunnelDiagramAndBackground);
+    funnelController.addFunnelDiagramAndBackground); 
 funnelRouter.post('/template/:templateId',
     enshureToken,
     verifyToken,
@@ -64,7 +69,7 @@ funnelRouter.post('/diagram/screenshot',
     verifyToken,
     lastActive,
     multerImage.single('screenshot'),
-    funnelController.getScreenshot);
+    funnelController.getScreenshot); 
 
 funnelRouter.post('/node/createUrl',
     enshureToken,
