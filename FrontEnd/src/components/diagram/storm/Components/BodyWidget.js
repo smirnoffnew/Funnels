@@ -4,7 +4,6 @@ import * as RJD from "storm-react-diagrams";
 import domtoimage from "dom-to-image";
 import * as _ from "lodash";
 import randomString from "random-string";
-import ReactCrop from 'react-image-crop';
 import { TrayWidget } from "./TrayWidget";
 import { TrayBigItemWidget, TraySmallItemWidget, TrayTextItemWidget, TrayTemplatesItemWidget } from "./TrayItemWidget";
 import ClickOutside from "../../../common/ClickOutside";
@@ -402,10 +401,6 @@ export default class BodyWidget extends React.Component {
   showToolElement = this.debounce(e => {
     e.persist();
     if (e.shiftKey) {
-
-      console.log('this.state.x', this.state.x)
-      console.log('this.state.y', this.state.y)
-
       this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems().length > 2 ?
         this.setState({
           showTemplateButtons: true,
@@ -500,7 +495,12 @@ export default class BodyWidget extends React.Component {
                     }}
                     title={"Create Template"}
                   >
-                    <DeleteAllLinksSVG />
+                    <ReactSVG
+                      src={FunnelTemplate}
+                      beforeInjection={svg => {
+                        svg.setAttribute('style', 'width: 15px; height: 15px; ')
+                      }}
+                    />
                   </button>
 
                   <button
