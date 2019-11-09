@@ -1263,7 +1263,10 @@ export default class BodyWidget extends React.Component {
                   this.forceUpdate();
                 }}
 
-                onMouseMove={this.showToolElement}
+                onMouseMove={e => {
+                  e.persist()
+                  this.showToolElement(e)
+                }}
 
               // onMouseMove={(e) => {
 
