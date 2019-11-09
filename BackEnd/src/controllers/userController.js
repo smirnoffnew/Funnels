@@ -114,7 +114,7 @@ module.exports = {
                         g_user = user;
                         return user
                     } else {
-                        throw 'email not found or password is wrong'
+                        throw new Error('email not found or password is wrong')
                     }
                 })
                 .then(() => {
@@ -180,8 +180,9 @@ module.exports = {
                     })
                 })
                 .catch(err => {
-                    res.status(500).json({
-                        error: err
+                    console.log(err.message)
+                    res.status(403).json({
+                        error: err.message
                     });
                 })
         } else {
