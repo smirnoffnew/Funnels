@@ -1,0 +1,4 @@
+package.json - windows ----- cross-env
+multerBackground.js - windows - callback(null, `./${process.env.BACKGROUND_STORE}`);
+multerImages.js - windows - callback(null, `./${process.env.IMAGE_STORE}`);
+multerScreenshot.js - windows - callback(null, `./${process.env.SCREENSHOT_STORE}`);

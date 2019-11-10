@@ -9,13 +9,10 @@ const activeCampaignApi = require('activecampaign-api');
 
 const fetch = require('node-fetch');
 const FormData = require('form-data');
+const avatarBufferDir = process.env.AVATARBUFFER_DIR;
 
-//Linux settings
-const bufferFile = `${process.env.APP_PATH}${process.env.IMAGE_STORE}buffer-file.jpg`;
-//Windows settings
-//const bufferFile = __dirname + `../../../public/avatars/buffer-file.jpg`;
+let bufferFile;
 
-/**changeUsersAvatar variables */
 module.exports = {
     changeMyProfile: async (req, res) => {
         //await req.body.email.toLowerCase();
@@ -51,25 +48,33 @@ module.exports = {
 
     },
     changeUsersAvatar: (req, res) => {
-        console.log(bufferFile)
+        
         Profile
             .findOne({
                 _id: req.authData.profile._id
             })
             .exec()
             /**find profile in db */
+            .then((profile)=>{
+                try {
+                    bufferFile = fs.readdirSync(avatarBufferDir)[0]
+                   
+                } catch (error) {
+                    throw new Error('Can not find buffer folder')
+                }
+                return profile
+            })
             .then((profile) => {
                 const data = new FormData();
                 data.append('userName', profile.accountName);
-                data.append('img', fs.createReadStream(bufferFile));
+                data.append('img', fs.createReadStream(`${avatarBufferDir}/${bufferFile}`));
                 return fetch(`${process.env.FILE_SHARER}/avatars`, {
                     method: 'POST',
                     body: data
                 })
             })
-            .then(result => result.json())
+            .then(result =>result.json())
             .then((result) => {
-
                 return Profile
                     .findOneAndUpdate({
                         _id: req.authData.profile._id
@@ -80,13 +85,14 @@ module.exports = {
                     })
                     .exec()
             })
-            .then(() => {
+            .then((result) => {
                 try {
-                    fs.unlinkSync(bufferFile)
+                    fs.unlinkSync(`${avatarBufferDir}/${bufferFile}`)
                 } catch (error) {
                     throw new Error('problem with deleting buffer file')
                 }
                 res.status(200).json({
+                    link:result,
                     message: "Avatar updated succesfully...",
                 })
             })
@@ -94,6 +100,7 @@ module.exports = {
                 res
                     .status(500)
                     .json({
+                        
                         error: err.message
                     });
             });

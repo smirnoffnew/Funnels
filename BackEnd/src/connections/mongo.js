@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 const options = {
     useNewUrlParser: true,
     useFindAndModify: true,
-    autoReconnect: true
+    autoReconnect: true,
+    useUnifiedTopology: true,
+    //useCreateIndex: true
 };
 module.exports = function () {
     mongoose

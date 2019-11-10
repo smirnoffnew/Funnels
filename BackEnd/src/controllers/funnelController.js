@@ -9,47 +9,54 @@ const Template = require('../models/template.js');
 const NodeCounter = require('../models/nodes')
 const svgArray = require('../libs/svgArray.js');
 
-
 const fetch = require('node-fetch');
 const FormData = require('form-data');
 
-//Linux settings
- const bufferFile = `${process.env.APP_PATH}${process.env.BACKGROUND_STORE}buffer-file.jpg`;
- const screenShotBufferFile = `${process.env.APP_PATH}${process.env.SCREENSHOT_STORE}buffer-file.jpg`;;
+const backgroundbufferDir = process.env.BACKGROUNDBUFFER_DIR;
+const screenShotBufferDir = process.env.SCREENSHOTBUFFER_DIR;
 
-//Windows settings
-//const bufferFile = __dirname + `../../../public/funnelBackgrounds/buffer-file.jpg`;
-//const screenShotBufferFile = __dirname + `../../../public/screenshots/buffer-file.jpg`;
+let bufferFile;
 
-const { base64encode, base64decode } = require('nodejs-base64');
+const {
+    base64encode,
+    base64decode
+} = require('nodejs-base64');
 
 module.exports = {
     createFunnel: async function (req, res) {
         let savedFunnel, funnelCounter;
-        Project.findOne({ _id: req.params.projectId })
+        Project.findOne({
+                _id: req.params.projectId
+            })
             .exec()
             .then(result => {
                 if (result.projectFunnels.length >= process.env.FUNNEL_LIMIT && req.authData.profile.limited == true) {
                     res
                         .status(400)
-                        .json({ error: "Funnel creation limit is reached!" })
+                        .json({
+                            error: "Funnel creation limit is reached!"
+                        })
                 } else {
                     new Funnel({
-                        _id: new mongoose.Types.ObjectId(),
-                        funnelAuthor: req.authData.profile._id,
-                        funnelProject: req.params.projectId,
-                        funnelName: req.body.funnelName,
-                        funnelBody: req.body.funnelBody
-                    })
+                            _id: new mongoose.Types.ObjectId(),
+                            funnelAuthor: req.authData.profile._id,
+                            funnelProject: req.params.projectId,
+                            funnelName: req.body.funnelName,
+                            funnelBody: req.body.funnelBody
+                        })
                         .save()
                         .then(funnel => {
                             savedFunnel = funnel;
                             Project
-                                .findOneAndUpdate(
-                                    { _id: req.params.projectId },
-                                    { $push: { projectFunnels: funnel._id } },
-                                    { new: true }
-                                )
+                                .findOneAndUpdate({
+                                    _id: req.params.projectId
+                                }, {
+                                    $push: {
+                                        projectFunnels: funnel._id
+                                    }
+                                }, {
+                                    new: true
+                                })
                                 .exec()
                                 .then((result) => {
                                     funnelCounter = result.projectFunnels.length;
@@ -67,20 +74,26 @@ module.exports = {
                                 .catch(err => {
                                     res
                                         .status(400)
-                                        .json({ error: err.message });
+                                        .json({
+                                            error: err.message
+                                        });
                                 });
                         })
                         .catch(err => {
                             res
                                 .status(400)
-                                .json({ error: err.message });
+                                .json({
+                                    error: err.message
+                                });
                         });
                 }
             })
             .catch(err => {
                 res
                     .status(400)
-                    .json({ error: err.message });
+                    .json({
+                        error: err.message
+                    });
             });
 
 
@@ -88,7 +101,9 @@ module.exports = {
     getAllFunnelsInProject: async function (req, res) {
 
         Funnel
-            .find({ funnelProject: req.params.projectId })
+            .find({
+                funnelProject: req.params.projectId
+            })
             .exec()
             .then(funnels => {
                 const limit = req.authData.profile.limited == true ? ` ${process.env.FUNNEL_LIMIT}` : null;
@@ -102,31 +117,45 @@ module.exports = {
             .catch(err => {
                 res
                     .status(400)
-                    .json({ error: err.message });
+                    .json({
+                        error: err.message
+                    });
             });
     },
     deleteFunnel: async function (req, res) {
         Promise
             .all([
                 Funnel
-                    .findOneAndDelete({ _id: req.params.funnelId, funnelAuthor: req.authData.profile._id })
-                    .exec(),
+                .findOneAndDelete({
+                    _id: req.params.funnelId,
+                    funnelAuthor: req.authData.profile._id
+                })
+                .exec(),
                 Project
-                    .updateOne({ _id: req.params.projectId },
-                        { $pull: { projectFunnels: req.params.funnelId } })
-                    .exec()
+                .updateOne({
+                    _id: req.params.projectId
+                }, {
+                    $pull: {
+                        projectFunnels: req.params.funnelId
+                    }
+                })
+                .exec()
 
             ])
             .then(() => {
                 res
                     .status(200)
-                    .json({ message: "Funnel deleted successfully!" });
+                    .json({
+                        message: "Funnel deleted successfully!"
+                    });
             })
             .catch(err => {
 
                 res
                     .status(500)
-                    .json({ error: err.message });
+                    .json({
+                        error: err.message
+                    });
             });
     },
     createUrlForCollaborate: async function (req, res) {
@@ -138,8 +167,8 @@ module.exports = {
         };
         const collaborateToken = jwt.sign(funnelColaborateData, process.env.SECRET_COLLABORATOR);
         new Token({
-            body: collaborateToken
-        })
+                body: collaborateToken
+            })
             .save()
             .then((token) => {
                 const request = req.authData.profile.limited == true ? `No authority to collaborate` : `${Url}/add-collaborators/${token.body}`;
@@ -153,89 +182,114 @@ module.exports = {
             .catch(err => {
                 res
                     .status(500)
-                    .json({ error: err.message });
+                    .json({
+                        error: err.message
+                    });
             });
     },
     getAllCollaboratedToUserFunnels: async function (req, res) {
-        Funnel.find({ collaborators: { $elemMatch: { profileId: req.authData.profile._id } } })
+        Funnel.find({
+                collaborators: {
+                    $elemMatch: {
+                        profileId: req.authData.profile._id
+                    }
+                }
+            })
             .exec()
             .then(funnels => {
                 res
                     .status(200)
-                    .json({ data: funnels, user: req.authData.profile._id });
+                    .json({
+                        data: funnels,
+                        user: req.authData.profile._id
+                    });
             })
             .catch(err => {
                 res
                     .status(500)
-                    .json({ error: err.message });
+                    .json({
+                        error: err.message
+                    });
             });
     },
     addFunnelDiagramAndBackground: async function (req, res) {
-        
         Funnel
-        .findOne({
-            _id: req.params.funnelId
-        })
-        .exec()
-        /**find profile in db */
-        .then((funnel) => {
-            const data = new FormData();
-            data.append('funnelId',funnel._id.toString());
-            data.append('img', fs.createReadStream(bufferFile));
-            return fetch(`${process.env.FILE_SHARER}/backgrounds`, {
-                method: 'POST',
-                body: data
+            .findOne({
+                _id: req.params.funnelId
             })
-        })
-        .then(result => result.json())
-        .then((result) => {
-            return Funnel
-                .findOneAndUpdate({
-                    _id: req.params.funnelId
-                }, {
-                    funnelBackground: result.link
-                }, {
-                    new: true
+            .exec()
+            .then(funnel=>{
+                try {
+                    bufferFile = fs.readdirSync(backgroundbufferDir)[0]
+                } catch (error) {
+                    throw new Error('Can not find buffer folder')
+                }
+                return funnel
+            })
+            /**find profile in db */
+            .then((funnel) => {
+                const data = new FormData();
+                data.append('funnelId', funnel._id.toString());
+                data.append('img', fs.createReadStream(`${backgroundbufferDir}/${bufferFile}`));
+                return fetch(`${process.env.FILE_SHARER}/backgrounds`, {
+                    method: 'POST',
+                    body: data
                 })
-                .exec()
-        })
-        .then((result) => {
-            try {
-                fs.unlinkSync(bufferFile)
-            } catch (error) {
-                throw new Error('problem with deleting buffer file')
-            }
-            res.status(200).json({
-                message: "Funnel updated succesfully...",
-                data: result
             })
-        })
-        .catch(err => {
-            res
-                .status(500)
-                .json({
-                    error: err.message
-                });
-        });
+            .then(result => result.json())
+            .then((result) => {
+                return Funnel
+                    .findOneAndUpdate({
+                        _id: req.params.funnelId
+                    }, {
+                        funnelBackground: result.link
+                    }, {
+                        new: true
+                    })
+                    .exec()
+            })
+            .then((result) => {
+                try {
+                    fs.unlinkSync(`${backgroundbufferDir}/${bufferFile}`)
+                } catch (error) {
+                    throw new Error('problem with deleting buffer file')
+                }
+                res.status(200).json({
+                    message: "Funnel updated succesfully...",
+                    data: result
+                })
+            })
+            .catch(err => {
+                res
+                    .status(500)
+                    .json({
+                        error: err.message
+                    });
+            });
     },
     getFunnelById: async function (req, res) {
         Funnel
-            .findOne({ _id: req.params.funnelId },
-            )
+            .findOne({
+                _id: req.params.funnelId
+            }, )
             .exec()
             .then(funnel => {
                 res
                     .status(200)
-                    .json({ data: funnel });
+                    .json({
+                        data: funnel
+                    });
             })
             .catch(err => {
                 res
                     .status(500)
-                    .json({ error: err.message });
+                    .json({
+                        error: err.message
+                    });
             });
     },
     getScreenshot: async function (req, res) {
-
+        
         const Url = process.env.NODE_ENV == 'dev' ? process.env.DEV_URL : process.env.PROD_URL;
         const screenShotURL = `${process.env.SCREENSHOT_STORE}${req.file.originalname}`;
         const funnelColaborateData = {
@@ -243,34 +297,44 @@ module.exports = {
             permissions: req.body.permissions,
             screenShotURL: screenShotURL
         };
-        const collaborateToken = jwt.sign(funnelColaborateData, process.env.SECRET_COLLABORATOR);
 
+        const collaborateToken = jwt.sign(funnelColaborateData, process.env.SECRET_COLLABORATOR);
+        
         const data = new FormData();
-            data.append('funnelsId', req.body.funnelsId);
-            data.append('img', fs.createReadStream(screenShotBufferFile));
-            fetch(`${process.env.FILE_SHARER}/screenshots`, {
+        try {
+            bufferFile = fs.readdirSync(screenShotBufferDir)[0]
+        } catch (error) {
+            throw new Error('Can not find buffer folder')
+        }
+        data.append('funnelsId', req.body.funnelsId);
+        data.append('img', fs.createReadStream(`${screenShotBufferDir}/${bufferFile}`));
+        let screenShotLink;
+        fetch(`${process.env.FILE_SHARER}/screenshots`, {
                 method: 'POST',
                 body: data
             })
-        .then(result => result.json())
-        .then(res => console.log(res.link));
-
-        new Token({
-            body: collaborateToken
-        })
-            .save()
+            .then(result => result.json())
+            .then(res => {
+                screenShotLink = res.link
+            })
+            .then(() => {
+                return new Token({
+                        body: collaborateToken
+                    }).save()
+                    
+            })
             .then((token) => {
                 res
                     .status(200)
                     .json({
                         message: "Screenshot added succesfully...",
-                        link: `${Url}/add-collaborators-image?image=${screenShotURL}&add-collaborators-image=${token.body}`,
+                        link: `${Url}/add-collaborators-image?image=${screenShotLink}&add-collaborators-image=${token.body}`,
                         token: token.body,
                     });
             })
             .then(() => {
                 try {
-                    fs.unlinkSync(screenShotBufferFile)
+                    fs.unlinkSync(`${screenShotBufferDir}/${bufferFile}`)
                 } catch (error) {
                     throw new Error('problem with deleting buffer file')
                 }
@@ -278,7 +342,9 @@ module.exports = {
             .catch(err => {
                 res
                     .status(500)
-                    .json({ error: err.message });
+                    .json({
+                        error: err.message
+                    });
             });
     },
     createFunnelTemplate: async function (req, res) {
@@ -286,80 +352,102 @@ module.exports = {
         let projectId;
         Promise
             .all([
-                Template.findOne({ _id: templateId })
-                    .exec(),
+                Template.findOne({
+                    _id: templateId
+                })
+                .exec(),
 
-                Project.findOne({ projectName: req.body.projectName })
-                    .exec()
+                Project.findOne({
+                    projectName: req.body.projectName
+                })
+                .exec()
             ])
             .then(results => {
                 //res.json(results);
                 if (results[1] != null) {
                     projectId = results[1]._id;
                     new Funnel({
-                        _id: new mongoose.Types.ObjectId(),
-                        funnelAuthor: req.authData.profile._id,
-                        funnelProject: results[1]._id,
-                        funnelName: results[0].templateName,
-                        funnelBody: results[0].templateBody
-                    })
+                            _id: new mongoose.Types.ObjectId(),
+                            funnelAuthor: req.authData.profile._id,
+                            funnelProject: results[1]._id,
+                            funnelName: results[0].templateName,
+                            funnelBody: results[0].templateBody
+                        })
                         .save()
                         .then(funnel => {
                             res.json(funnel);
                             return Project
-                                .findOneAndUpdate(
-                                    { _id: projectId },
-                                    { $push: { projectFunnels: funnel._id } },
-                                    { new: true }
-                                )
+                                .findOneAndUpdate({
+                                    _id: projectId
+                                }, {
+                                    $push: {
+                                        projectFunnels: funnel._id
+                                    }
+                                }, {
+                                    new: true
+                                })
                                 .exec()
                         })
                         .then(funnel => {
                             res
                                 .status(200)
-                                .json({ message: "Funnel created from template successfully!", data: funnel })
+                                .json({
+                                    message: "Funnel created from template successfully!",
+                                    data: funnel
+                                })
                         })
 
                 } else {
                     new Project({
-                        _id: new mongoose.Types.ObjectId(),
-                        projectAuthor: req.authData.profile._id,
-                        projectName: req.body.projectName
-                    })
+                            _id: new mongoose.Types.ObjectId(),
+                            projectAuthor: req.authData.profile._id,
+                            projectName: req.body.projectName
+                        })
                         .save()
                         .then(project => {
                             new Funnel({
-                                _id: new mongoose.Types.ObjectId(),
-                                funnelAuthor: req.authData.profile._id,
-                                funnelProject: project._id,
-                                funnelName: results[0].templateName,
-                                funnelBody: results[0].templateBody
-                            })
+                                    _id: new mongoose.Types.ObjectId(),
+                                    funnelAuthor: req.authData.profile._id,
+                                    funnelProject: project._id,
+                                    funnelName: results[0].templateName,
+                                    funnelBody: results[0].templateBody
+                                })
                                 .save()
                                 .then(funnel => {
                                     return Project
-                                        .findOneAndUpdate(
-                                            { _id: project._id },
-                                            { $push: { projectFunnels: funnel._id } },
-                                            { new: true }
-                                        )
+                                        .findOneAndUpdate({
+                                            _id: project._id
+                                        }, {
+                                            $push: {
+                                                projectFunnels: funnel._id
+                                            }
+                                        }, {
+                                            new: true
+                                        })
                                         .exec()
                                 })
                                 .then(funnel => {
                                     res
                                         .status(200)
-                                        .json({ message: "Funnel created from template successfully!", data: funnel })
+                                        .json({
+                                            message: "Funnel created from template successfully!",
+                                            data: funnel
+                                        })
                                 })
                                 .catch(err => {
                                     res
                                         .status(500)
-                                        .json({ error: err.message });
+                                        .json({
+                                            error: err.message
+                                        });
                                 });
                         })
                         .catch(err => {
                             res
                                 .status(500)
-                                .json({ error: err.message });
+                                .json({
+                                    error: err.message
+                                });
                         });
                 }
 
@@ -367,32 +455,46 @@ module.exports = {
             .catch(err => {
                 res
                     .status(500)
-                    .json({ error: err.message });
+                    .json({
+                        error: err.message
+                    });
             });
 
     },
     getFunnelsSvg: async function (req, res) {
-        const response = svgArray(); 
+        const response = svgArray();
         res
             .status(200)
-            .json({ response, count: response.length });
+            .json({
+                response,
+                count: response.length
+            });
     },
     updateFunnel: async function (req, res) {
-        const updateObject = { ...req.body };
+        const updateObject = {
+            ...req.body
+        };
         Funnel
-            .updateOne({ _id: req.params.funnelId },
-                updateObject,
-                { new: true })
+            .updateOne({
+                    _id: req.params.funnelId
+                },
+                updateObject, {
+                    new: true
+                })
             .exec()
             .then(funnel => {
                 res
                     .status(200)
-                    .json({ message: 'Funnel updated successfully!' });
+                    .json({
+                        message: 'Funnel updated successfully!'
+                    });
             })
             .catch(err => {
                 res
                     .status(400)
-                    .json({ error: err.message });
+                    .json({
+                        error: err.message
+                    });
             });
     },
 
@@ -408,9 +510,18 @@ module.exports = {
             // let url =`https://api.funnelsmap.com/funnel/node/${random}`;
             let originalUrl = req.body.url
 
-            let response = await NodeCounter.findOneAndUpdate({ funnelId: req.body.funnelId, nodeId: req.body.elementId },
-                { counterUrl: 0, nodeId: req.body.elementId, hash: random, url: url, originalUrl: originalUrl },
-                { new: true });
+            let response = await NodeCounter.findOneAndUpdate({
+                funnelId: req.body.funnelId,
+                nodeId: req.body.elementId
+            }, {
+                counterUrl: 0,
+                nodeId: req.body.elementId,
+                hash: random,
+                url: url,
+                originalUrl: originalUrl
+            }, {
+                new: true
+            });
             if (response === null) {
                 await NodeCounter.create({
                     funnelId: req.body.funnelId,
@@ -423,7 +534,10 @@ module.exports = {
                 })
             }
 
-            res.status(200).json({ message: "Updated successfully", url: url })
+            res.status(200).json({
+                message: "Updated successfully",
+                url: url
+            })
 
         } catch (error) {
             res.status(400).send(error.message)
@@ -433,7 +547,10 @@ module.exports = {
     getNodeStatus: async function (req, res) {
 
         try {
-            let response = await NodeCounter.findOne({ funnelId: req.params.funnelId, nodeId: req.params.nodeId });
+            let response = await NodeCounter.findOne({
+                funnelId: req.params.funnelId,
+                nodeId: req.params.nodeId
+            });
 
             if (response === null) {
                 await NodeCounter.create({
@@ -441,7 +558,9 @@ module.exports = {
                     nodeId: req.params.nodeId
                 })
             } else {
-                res.status(200).json({ status: response.status });
+                res.status(200).json({
+                    status: response.status
+                });
             }
 
             // res.status(200).json({ status: response.status });
@@ -460,14 +579,18 @@ module.exports = {
             let response = await NodeCounter.findOneAndUpdate({
                 funnelId: req.body.funnelId,
                 nodeId: req.body.nodeId
-            }, { status: req.body.status }, { new: true }).exec();
+            }, {
+                status: req.body.status
+            }, {
+                new: true
+            }).exec();
             if (!response) {
                 response = await NodeCounter.create({
                     funnelId: req.body.funnelId,
                     nodeId: req.body.nodeId,
                     counterUrl: 0,
                     counterNode: 0,
-                    status:req.body.status,
+                    status: req.body.status,
                     hash: Math.random().toString(36).substring(2),
                     url: "",
                     originalUrl: ""
@@ -484,13 +607,24 @@ module.exports = {
     counterUrl: async function (req, res) {
         try {
 
-            let funnel = await NodeCounter.findOne({ hash: req.params.hash })
+            let funnel = await NodeCounter.findOne({
+                hash: req.params.hash
+            })
 
             if (funnel === null) {
-                return res.status(404).json({ message: "Funnel not found" })
+                return res.status(404).json({
+                    message: "Funnel not found"
+                })
             }
 
-            await NodeCounter.findOneAndUpdate({ funnelId: funnel.funnelId, nodeId: funnel.nodeId }, { $inc: { counterUrl: 1 } })
+            await NodeCounter.findOneAndUpdate({
+                funnelId: funnel.funnelId,
+                nodeId: funnel.nodeId
+            }, {
+                $inc: {
+                    counterUrl: 1
+                }
+            })
 
             res.writeHead(301, {
                 Location: funnel.originalUrl,
@@ -507,13 +641,26 @@ module.exports = {
     counterNode: async function (req, res) {
         try {
 
-            let response = await NodeCounter.findOneAndUpdate({ funnelId: req.body.funnelId, nodeId: req.body.nodeId }, { $inc: { counterNode: 1 } })
+            let response = await NodeCounter.findOneAndUpdate({
+                funnelId: req.body.funnelId,
+                nodeId: req.body.nodeId
+            }, {
+                $inc: {
+                    counterNode: 1
+                }
+            })
 
             if (response === null) {
-                await NodeCounter.create({ funnelId: req.body.funnelId, nodeId: req.body.nodeId, counterNode: 1 });
+                await NodeCounter.create({
+                    funnelId: req.body.funnelId,
+                    nodeId: req.body.nodeId,
+                    counterNode: 1
+                });
             }
 
-            res.status(200).json({ message: "Success" })
+            res.status(200).json({
+                message: "Success"
+            })
         } catch (error) {
             res.status(400).send(error.message)
         }
@@ -522,13 +669,23 @@ module.exports = {
     getCounterByIdNodeAndIdFunnel: async function (req, res) {
         try {
 
-            let counter = await NodeCounter.findOne({ funnelId: req.body.funnelId, nodeId: req.body.nodeId });
+            let counter = await NodeCounter.findOne({
+                funnelId: req.body.funnelId,
+                nodeId: req.body.nodeId
+            });
 
             if (counter === null) {
-                return res.status(403).json({ message: "Not found" })
+                return res.status(403).json({
+                    message: "Not found"
+                })
             }
 
-            res.status(200).json({ message: "Success", counterUrl: counter.counterUrl, counterNode: counter.counterNode, nodeDescription: counter.nodeDescription })
+            res.status(200).json({
+                message: "Success",
+                counterUrl: counter.counterUrl,
+                counterNode: counter.counterNode,
+                nodeDescription: counter.nodeDescription
+            })
         } catch (error) {
             res.status(400).send(error.message)
         }
@@ -538,9 +695,14 @@ module.exports = {
     deleteNodeById: async function (req, res) {
         try {
 
-            await NodeCounter.findOneAndRemove({ nodeId: req.params.nodeId, funnelId: req.params.funnelId })
+            await NodeCounter.findOneAndRemove({
+                nodeId: req.params.nodeId,
+                funnelId: req.params.funnelId
+            })
 
-            res.status(200).json({ message: "Success" })
+            res.status(200).json({
+                message: "Success"
+            })
         } catch (error) {
             res.status(400).send(error.message)
         }
@@ -548,9 +710,13 @@ module.exports = {
 
     getCounterByIdFunnel: async function (req, res) {
         try {
-            let response = await NodeCounter.find({ funnelId: req.params.funnelId });
+            let response = await NodeCounter.find({
+                funnelId: req.params.funnelId
+            });
 
-            res.status(200).json({ response });
+            res.status(200).json({
+                response
+            });
 
         } catch (error) {
             res.status(400).send(error.message)
@@ -559,11 +725,15 @@ module.exports = {
 
     getAllFunnelsNodeDevStatus: async function (req, res) {
         try {
-            let response = await NodeCounter.find({ funnelId: req.params.funnelId })
+            let response = await NodeCounter.find({
+                    funnelId: req.params.funnelId
+                })
                 .select('nodeId status -_id')
 
 
-            res.status(200).json({ response });
+            res.status(200).json({
+                response
+            });
 
         } catch (error) {
             res.status(400).send(error.message)
