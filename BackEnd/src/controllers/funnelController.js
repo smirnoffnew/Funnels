@@ -221,6 +221,7 @@ module.exports = {
             .then(funnel => {
                 try {
                     bufferFile = fs.readdirSync(backgroundbufferDir)[0]
+                    console.log(bufferFile)
                 } catch (error) {
                     throw new Error('Can not find buffer folder')
                 }
@@ -230,7 +231,7 @@ module.exports = {
             .then((funnel) => {
                 const data = new FormData();
                 data.append('funnelId', funnel._id.toString());
-                data.append('img', fs.createReadStream(`${backgroundbufferDir}/${bufferFile}`));
+                data.append('img', fs.createReadStream(`${backgroundbufferDir}/${req.authData.profile._id}.jpg`));
                 return fetch(`${process.env.FILE_SHARER}/backgrounds`, {
                     method: 'POST',
                     body: data
@@ -256,7 +257,7 @@ module.exports = {
                     }
                     if (items) {
                         try {
-                            fs.unlinkSync(`${backgroundbufferDir}/${bufferFile}`)
+                            fs.unlinkSync(`${backgroundbufferDir}/${req.authData.profile._id}.jpg`)
                         } catch (error) {
                             throw new Error('problem with deleting buffer file')
                         }

@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
         callback(null, `${process.env.BACKGROUNDBUFFER_DIR}`);
     },
     filename: function (req, file, callback) {
-        callback(null, `buffer-file${path.parse(file.originalname).ext}`);
+        callback(null, `${req.authData.profile._id}.jpg`);
     },
 });
 function fileFilter(req, file, callback){
