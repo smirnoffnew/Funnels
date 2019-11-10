@@ -108,7 +108,7 @@ export function changeUserAvatar(avatar) {
             type: "SETTINGS_MESSAGE_AVATAR_SUCCESS",
             payload: response.data.message
           });
-          localStorage.setItem('userAvatar', JSON.stringify(response.data.data.photoUrl));
+          localStorage.setItem('userAvatar', JSON.stringify(response.data.link.photoUrl));
 
           setTimeout(() => {
             dispatch({ type: 'SETTINGS_MESSAGE_AVATAR_RESET' });
