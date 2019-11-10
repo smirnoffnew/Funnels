@@ -242,7 +242,8 @@ module.exports = {
                     .findOneAndUpdate({
                         _id: req.params.funnelId
                     }, {
-                        funnelBackground: result.link
+                        funnelBackground: result.link,
+                        funnelBody: req.body.funnelBody
                     }, {
                         new: true
                     })
