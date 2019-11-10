@@ -257,7 +257,7 @@ module.exports = {
                     }
                     if (items) {
                         try {
-                            fs.unlinkSync(`${backgroundbufferDir}/${req.authData.profile._id}.jpg`)
+                            // fs.unlinkSync(`${backgroundbufferDir}/${req.authData.profile._id}.jpg`)
                         } catch (error) {
                             throw new Error('problem with deleting buffer file')
                         }
