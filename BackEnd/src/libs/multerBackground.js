@@ -1,17 +1,13 @@
 const multer = require('multer');
 const maxSize = process.env.IMAGE_MAX_SIZE;
+const path = require('path');
 const storage = multer.diskStorage({
     destination: function (req, file, callback) {
-        
-        // // Windows settings 
-        //callback(null, `./${process.env.BACKGROUND_STORE}`);
-        // Linux settings
-        callback(null, `${process.env.APP_PATH}${process.env.BACKGROUND_STORE}`);
+        callback(null, `${process.env.BACKGROUNDBUFFER_DIR}`);
     },
     filename: function (req, file, callback) {
-        callback(null, 'buffer-file.jpg');
+        callback(null, `buffer-file${path.parse(file.originalname).ext}`);
     },
-
 });
 function fileFilter(req, file, callback){
     const extension = file.mimetype.split('/')[0];
