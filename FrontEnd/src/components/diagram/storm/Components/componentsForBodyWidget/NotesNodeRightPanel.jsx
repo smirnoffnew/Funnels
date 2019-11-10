@@ -32,6 +32,8 @@ export default class NotesNodeRightPanel extends React.Component {
           file,
           false
         );
+
+        document.location.reload(true)
       }
     );
 

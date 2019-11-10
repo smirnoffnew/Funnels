@@ -276,6 +276,8 @@ export default class SettingsNodeRightPanel extends React.Component {
           copied: false,
           sourceLinkNode: '',
           price: '',
+        }, () => {
+          document.location.reload(true);
         });
       }
     );
