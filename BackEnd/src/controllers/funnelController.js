@@ -257,7 +257,7 @@ module.exports = {
                 }
                 res.status(200).json({
                     message: "Funnel updated succesfully...",
-                    data: result
+                    data: result[1]
                 })
             })
             .catch(err => {
