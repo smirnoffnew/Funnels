@@ -1,7 +1,6 @@
 import React from 'react'
 import "./ColoboratorsPanel.css";
 import { UserIcon } from '../../UserIcon/UserIcon';
-import API_URL from '../../../../config';
 
 export const ColoboratorsPanel = ({ collaborators = [] }) => {
     return (
@@ -15,7 +14,7 @@ export const ColoboratorsPanel = ({ collaborators = [] }) => {
                         <div className="coloborator" key={index}>
                             <UserIcon
                                 userName={user.firstName ? user.firstName : "#"}
-                                userAvatarUrl={`${API_URL}${user.photoUrl ? user.photoUrl : ""}`}
+                                userAvatarUrl={`${user.photoUrl ? user.photoUrl : ""}`}
                                 style={{
                                     transform: "scale(0.6)",
                                     margin: '0px',

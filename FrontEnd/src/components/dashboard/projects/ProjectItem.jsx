@@ -15,7 +15,6 @@ import {
   getAllCollaboratorsForFunnels,
   resetAllCollaboratorsForFunnels
 } from "../../../store/actions/collaborations";
-import API_URL from "../../../config";
 import "../index.css";
 
 class ProjectItem extends React.Component {
@@ -298,7 +297,7 @@ class ProjectItem extends React.Component {
                           ) : (
                             <img
                               className="collaborator-photo"
-                              src={API_URL + item.photoUrl}
+                              src={item.photoUrl}
                               alt="Avatar"
                             />
                           )}

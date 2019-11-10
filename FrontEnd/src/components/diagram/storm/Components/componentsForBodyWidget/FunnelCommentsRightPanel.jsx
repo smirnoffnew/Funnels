@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { sendComment, getAllComment } from '../../../../../store/actions/comments'
 import { UserComment } from "../../../../common/Comments/UserComment/UserComment";
 import "./FunnelCommentsRightPanel.css"
-import API_URL from "../../../../../config";
 import { getNotificationTime } from "../../utils";
 import { getAllCollaborators } from "../../../../../store/actions/collaborations"
 import { ColoboratorsPanel } from "../../../../common/Comments/ColoboratorsPanel/ColoboratorsPannel";
@@ -58,7 +57,7 @@ class FunnelCommentsRightPanel extends React.Component {
   };
 
   sendComment = (comment) => {
-    const avatarUrl = JSON.parse(localStorage.getItem("userAvatar")).replace(`${API_URL}`, '');
+    const avatarUrl = JSON.parse(localStorage.getItem("userAvatar")).replace('', '');
     this.setState({
       comments:
         [...this.state.comments,
@@ -144,28 +143,14 @@ class FunnelCommentsRightPanel extends React.Component {
 
                     return <React.Fragment key={index} >
                       {
-                        // (index + 1) === this.props.comments.length ?
-                        // <VisibilitySensor onChange={(isVisible) => {this.setState({isVisibleLastElement: isVisible})}}>
                         <UserComment
                           comment={item.comment}
                           userName={item.user_accountName}
-                          userAvatarUrl={`${API_URL}${item.user_photoUrl}`}
+                          userAvatarUrl={`${item.user_photoUrl}`}
                           isOwner={isOwner}
                           timeCreated={getNotificationTime(item.createdAt)}
                         />
-                        // </VisibilitySensor>
-                        // :
-
-                        // <UserComment
-                        // comment={item.comment}
-                        // userName={item.user_accountName}
-                        // userAvatarUrl={`${API_URL}${item.user_photoUrl}`}
-                        // isOwner={isOwner}
-                        // timeCreated={getNotificationTime(item.createdAt)}
-                        // />
-
                       }
-
 
                     </React.Fragment>
                   })
