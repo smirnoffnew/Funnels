@@ -11,7 +11,6 @@ import { CustomNodeModel } from "./custom/CustomNodeModel";
 import BigNodeWidget from "./custom/bigNode/BigNodeWidget";
 import SmallNodeWidget from "./custom/smallNode/SmallNodeWidget";
 import TextNodeWidget from "./custom/textNode/TextWithPortsWidget";
-import API_URL from '../../../config'
 import TextWithOutPortsWidget from "./custom/textNode/TextWithOutPortsWidget";
 
 export default class Application {
@@ -43,7 +42,7 @@ export default class Application {
             port: CustomPortModel,
             widget: BigNodeWidget,
             nodeModel: CustomNodeModel,
-            svg: API_URL + item.url,
+            svg: item.url,
           }
         )
       ))
@@ -55,7 +54,7 @@ export default class Application {
             port: CustomPortModel,
             widget: SmallNodeWidget,
             nodeModel: CustomNodeModel,
-            svg: API_URL + item.url,
+            svg: item.url,
           }
         )
       ))
@@ -67,7 +66,7 @@ export default class Application {
             port: CustomPortModel,
             widget: SmallNodeWidget,
             nodeModel: CustomNodeModel,
-            svg: API_URL + item.url,
+            svg: item.url,
           }
         )
       ))
@@ -79,7 +78,7 @@ export default class Application {
             port: CustomPortModel,
             widget: SmallNodeWidget,
             nodeModel: CustomNodeModel,
-            svg: API_URL + item.url,
+            svg: item.url,
           }
         )
       ))

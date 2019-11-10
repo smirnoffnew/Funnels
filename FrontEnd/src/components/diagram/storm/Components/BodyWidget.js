@@ -29,7 +29,6 @@ import SettingsNodeRightPanel from "./componentsForBodyWidget/SettingsNodeRightP
 import NotesNodeRightPanel from "./componentsForBodyWidget/NotesNodeRightPanel";
 import SaveBeforeExitModal from "./componentsForBodyWidget/SaveBeforeExitModal";
 import CreateTemplateModal from "./componentsForBodyWidget/CreateTemplateModal";
-import API_URL from "../../../../config";
 import FunnelCommentsRightPanel from "./componentsForBodyWidget/FunnelCommentsRightPanel";
 import { keyMonitor } from "../utils";
 import MobileDevice from "./componentsForBodyWidget/MobileDevice";
@@ -230,7 +229,7 @@ export default class BodyWidget extends React.Component {
           key={key}
           model={{ type: item.name }}
           name={item.name}
-          icon={API_URL + item.url}
+          icon={item.url}
         />
       ));
     }
@@ -244,7 +243,7 @@ export default class BodyWidget extends React.Component {
           key={key}
           model={{ type: item.name }}
           name={item.name}
-          icon={API_URL + item.url}
+          icon={item.url}
         />
       ));
     }
@@ -257,14 +256,12 @@ export default class BodyWidget extends React.Component {
           key='1'
           model={{ type: 'Text Area' }}
           name='Text Area'
-          // icon= { API_URL + '/public/svg/TextArea.svg' } // добавить нужный свг на бэке
           icon={TextArea}
         />,
         <TrayTextItemWidget
           key='2'
           model={{ type: 'Text Panel' }}
           name='Text Panel'
-          // icon= { API_URL + '/public/svg/TextPanel.svg' } // добавить нужный свг на бэке
           icon={TextPanel}
         />
       ]

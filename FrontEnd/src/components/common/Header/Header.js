@@ -10,7 +10,6 @@ import {
 } from "../../../store/actions/projects";
 import { signOutUser } from "../../../store/actions/auth";
 import Modal from "../Modal/Modal";
-import API_URL from "../../../config";
 import ClickOutside from "../ClickOutside";
 import { ReactComponent as SearchSVG } from "../../../assets/search.svg";
 import { ReactComponent as QuestionSVG } from "../../../assets/question-mark.svg";
@@ -179,7 +178,8 @@ class Header extends Component {
   }
 
   render() {
-    const userAvatar = JSON.parse(localStorage.getItem("userAvatar"));
+    const userAvatar = JSON.parse(localStorage.getItem("userAvatar"))
+    console.log('userAvatar', userAvatar)
     const userFirstName = localStorage.getItem("userFirstName");
 
     if (this.props.error && this.props.error.length > 0) {
@@ -294,12 +294,12 @@ class Header extends Component {
                   className="header-img-preview"
                   onClick={this.showModalSignOut}
                 >
-                  {userAvatar === API_URL ? (
+                  {userAvatar === '' ? (
                     <div className="header-preview-empty">
                       {userFirstName[0] && userFirstName[0].toUpperCase()}
                     </div>
                   ) : (
-                      <img src={userAvatar} alt="Avatar" />
+                      <img src={'http://' + userAvatar} alt="Avatar" />
                     )}
                 </div>
               </div>

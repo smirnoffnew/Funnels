@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { addCollaborator } from '../../../../store/actions/collaborations'
-import API_URL from '../../../../config'
 import logo from '../../../../assets/Logo_invert.png'
 import { ReactComponent as CollaborateSVG } from '../../../../assets/collaborate.svg';
 import './AddCollaboratorsImage.css'
@@ -28,7 +27,7 @@ class AddCollaboratorsImage extends React.Component {
     return (
       <div className='add-collaborators-img-body'>
 
-        <img className='add-collaborators-img-image' src={API_URL + '/' + params.get('image')} alt='img' />
+        <img className='add-collaborators-img-image' src={'http://' + params.get('image')} alt='img' />
 
         <div className='add-collaborators-img-right-panel-wrapper'>
           <div className='add-collaborators-img-right-panel'>

@@ -171,7 +171,7 @@ export function signinUser(props) {
         if (response.data) {
           // console.log(response.data)
           localStorage.setItem('token', JSON.stringify(response.data.token));
-          localStorage.setItem('userAvatar', JSON.stringify(API_URL + response.data.data.photoUrl));
+          localStorage.setItem('userAvatar', JSON.stringify(response.data.data.photoUrl));
           localStorage.setItem('userFirstName', response.data.data.firstName);
           localStorage.setItem('userID', response.data.data._id);
 
@@ -275,7 +275,7 @@ export function questionnaireUser(props, signUpData, limited) {
         if (response.data) {
           localStorage.setItem('token', JSON.stringify(response.data.token));
           localStorage.setItem('userFirstName', response.data.data.firstName);
-          localStorage.setItem('userAvatar', JSON.stringify(API_URL + response.data.data.photoUrl));
+          localStorage.setItem('userAvatar', JSON.stringify(response.data.data.photoUrl));
           localStorage.setItem('userID', response.data.data._id);
         }
 

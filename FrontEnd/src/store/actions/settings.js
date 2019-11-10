@@ -108,8 +108,7 @@ export function changeUserAvatar(avatar) {
             type: "SETTINGS_MESSAGE_AVATAR_SUCCESS",
             payload: response.data.message
           });
-          // Cookies.set("userAvatar", API_URL + response.data.data.photoUrl);
-          localStorage.setItem('userAvatar', JSON.stringify(API_URL + response.data.data.photoUrl));
+          localStorage.setItem('userAvatar', JSON.stringify(response.data.data.photoUrl));
 
           setTimeout(() => {
             dispatch({ type: 'SETTINGS_MESSAGE_AVATAR_RESET' });

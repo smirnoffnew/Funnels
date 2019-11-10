@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink } from "react-router-dom";
 import ClickOutside from '../../common/ClickOutside'
 import Modal from '../../common/Modal/Modal'
-import API_URL from '../../../config'
 import '../index.css'
 
 class FunnelItem extends React.Component {
@@ -44,13 +43,12 @@ class FunnelItem extends React.Component {
       backgroundImg,
     } = this.props;
 
-    // console.log(API_URL + backgroundImg)
     return (
       <>
         <div className='project-wrapper'>
           <div className='project-image'
             style={{
-              background: backgroundImg && backgroundImg.length > 0 ? `url(${API_URL + backgroundImg}) no-repeat center` : '#212939',
+              background: backgroundImg && backgroundImg.length > 0 ? `url(${'http://' + backgroundImg}) no-repeat center` : '#212939',
               backgroundSize: '220px 130px'
             }}
           >

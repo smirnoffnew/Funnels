@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './ImageUpload.css'
 import { changeUserAvatar } from '../../../store/actions/settings'
-import API_URL from '../../../config'
 
 class ImageUpload extends React.Component {
 
@@ -42,7 +41,7 @@ class ImageUpload extends React.Component {
     if (imagePreviewUrl) {
       $imagePreview = (<img src={imagePreviewUrl} alt='Avatar' />);
     } else {
-      $imagePreview = (userAvatar === API_URL ? <div className="preview-text">Please select an Image</div> : <img src={userAvatar} alt='Avatar' />);
+      $imagePreview = (userAvatar === '' ? <div className="preview-text">Please select an Image</div> : <img src={'http://' + userAvatar} alt='Avatar' />);
     }
 
     return (
