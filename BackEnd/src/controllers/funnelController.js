@@ -218,7 +218,7 @@ module.exports = {
                 _id: req.params.funnelId
             })
             .exec()
-            .then(funnel=>{
+            .then(funnel => {
                 try {
                     bufferFile = fs.readdirSync(backgroundbufferDir)[0]
                 } catch (error) {
@@ -250,15 +250,24 @@ module.exports = {
                     .exec()
             })
             .then((result) => {
-                try {
-                    fs.unlinkSync(`${backgroundbufferDir}/${bufferFile}`)
-                } catch (error) {
-                    throw new Error('problem with deleting buffer file')
-                }
-                res.status(200).json({
-                    message: "Funnel updated succesfully...",
-                    data: result
-                })
+                fs.readdir(backgroundbufferDir, function (err, items) {
+                    if (err) {
+                        throw new Error('can not read folder')
+                    }
+                    if (items) {
+                        try {
+                            fs.unlinkSync(`${backgroundbufferDir}/${bufferFile}`)
+                        } catch (error) {
+                            throw new Error('problem with deleting buffer file')
+                        }
+                    }
+                    res.status(200).json({
+                        message: "Funnel updated succesfully...",
+                        data: result
+                    })
+
+                });
+
             })
             .catch(err => {
                 res
@@ -290,7 +299,7 @@ module.exports = {
             });
     },
     getScreenshot: async function (req, res) {
-        
+
         const Url = process.env.NODE_ENV == 'dev' ? process.env.DEV_URL : process.env.PROD_URL;
         const screenShotURL = `${process.env.SCREENSHOT_STORE}${req.file.originalname}`;
         const funnelColaborateData = {
@@ -300,7 +309,7 @@ module.exports = {
         };
 
         const collaborateToken = jwt.sign(funnelColaborateData, process.env.SECRET_COLLABORATOR);
-        
+
         const data = new FormData();
         try {
             bufferFile = fs.readdirSync(screenShotBufferDir)[0]
@@ -320,9 +329,9 @@ module.exports = {
             })
             .then(() => {
                 return new Token({
-                        body: collaborateToken
-                    }).save()
-                    
+                    body: collaborateToken
+                }).save()
+
             })
             .then((token) => {
                 res
