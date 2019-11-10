@@ -39,6 +39,7 @@ import Modal from "../../../common/Modal/Modal";
 import { ReactComponent as CopySVG } from "../../../../assets/selectForWidget/copy.svg";
 import { ReactComponent as DeleteAllLinksSVG } from "../../../../assets/selectForWidget/delete-all-links.svg";
 import { ReactComponent as DeleteSVG } from "../../../../assets/selectForWidget/delete.svg";
+import UndoRedo from "./UndoRedo";
 
 const Select = ({ show, children, style }) => {
   const showHideClassName = show
@@ -399,7 +400,6 @@ export default class BodyWidget extends React.Component {
   }
 
   showToolElement = this.debounce(e => {
-    e.persist();
     if (e.shiftKey) {
       this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems().length > 2 ?
         this.setState({
@@ -413,14 +413,9 @@ export default class BodyWidget extends React.Component {
         })
     }
 
-
-    // document.getElementById("diagram-layer") &&
-    // document.getElementById("diagram-layer").click() && 
-    // this.setState({
-    //   showTemplateButtons: false
-    // })
-
   }, 5, true);
+
+
 
 
   render() {
@@ -428,12 +423,6 @@ export default class BodyWidget extends React.Component {
       this.props.app.getDiagramEngine().getDiagramModel().setLocked(false)
       :
       this.props.app.getDiagramEngine().getDiagramModel().setLocked(true)
-
-    // console.log(this.props)
-    // console.log(this.state)
-
-    // console.log('model.getSelectedItems()', this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems())
-
 
 
     return (
@@ -616,6 +605,8 @@ export default class BodyWidget extends React.Component {
           <div className="header">
             <SaveBeforeExitModal work={this.props.work} app={this.props.app} />
 
+            <UndoRedo />
+
             <div className="title">
               {this.props.work.diagram && this.props.work.diagram.funnelName}
             </div>
@@ -685,6 +676,8 @@ export default class BodyWidget extends React.Component {
                 {
                   this.props.work.permissionForCollaborator.includes("Edit") ?
                     <>
+
+                      
 
                       <div className="zoom-wrapper">
                         <ReactSVG
@@ -1131,24 +1124,6 @@ export default class BodyWidget extends React.Component {
               >
                 <TrayWidget show={this.state.show && !this.state.showTemplateItemName}>
                   {this.createTemplatesItemsWidget()}
-                  {/* {
-
-                    <div className='tray-item-body'>
-                      <div className='tray-item-wrapper'>
-                        <button
-                          style={{
-                            width: 51, height: 51
-                          }}
-                          onClick={() => {
-                            this.showTemplateItemName()
-                          }}
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-
-                  } */}
                 </TrayWidget>
               </ClickOutside>
             ) : null}
@@ -1267,30 +1242,6 @@ export default class BodyWidget extends React.Component {
                   e.persist()
                   this.showToolElement(e)
                 }}
-
-              // onMouseMove={(e) => {
-
-              //   if (e.shiftKey) {
-
-              //     this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems().length > 2 ?
-              //       this.setState({
-              //         showTemplateButtons: true,
-              //         x: e.clientX,
-              //         y: e.clientY,
-              //       })
-              //       :
-              //       this.setState({
-              //         showTemplateButtons: false
-              //       })
-              //   }
-              //   else {
-              //     // this.setState({
-              //     //   showTemplateButtons: false
-              //     // })
-              //   }
-
-
-              // }}
               >
                 <RJD.DiagramWidget
                   deleteKeys={[]}
@@ -1300,7 +1251,17 @@ export default class BodyWidget extends React.Component {
                   className="srd-demo-canvas"
                   diagramEngine={this.props.app.getDiagramEngine()}
                   allowLooseLinks={false}
-                // maxNumberPointsPerLink={0}
+                  // maxNumberPointsPerLink={0}
+                  // actionStartedFiring={(e) => console.log('eeee', e)}
+                  actionStoppedFiring={() => {
+                    // let _this = this
+                    setTimeout(() => {
+                      this.props.work.updateModel(
+                        this.props.app.serialization(this.props.app.getDiagramEngine().getDiagramModel())
+                      )
+                    })
+                  }}
+
                 />
               </div>
             </div>

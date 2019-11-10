@@ -26,6 +26,7 @@ import {
   changeKeyDown,
 } from '../../../store/actions/projects'
 import { hideConversionLink } from "../../../store/actions/conversion";
+import { updateModel } from "../../../store/actions/undo";
 
 class App extends React.Component {
   constructor(props) {
@@ -91,15 +92,14 @@ class App extends React.Component {
     if (nextProps.diagram)
       if (
           nextProps.diagram.snackMsg !== prevState.snackMsg
-          // &&
-          // nextProps.diagram.snackMsg !== 'prev'
         )
         return {
-          diagram: nextProps.diagram.converted,
+          diagram: nextProps.model ? nextProps.model : nextProps.diagram.converted,
           snackMsg: 'next',
         };
       else
         return {
+          diagram: nextProps.model ? nextProps.model : nextProps.diagram.converted,
           snackMsg: 'prev',
         };
     else return null
@@ -107,8 +107,8 @@ class App extends React.Component {
 
   render() {
     var app = new Application(
-      this.state.diagram && this.state.diagram,
-      this.props.svg && this.props.svg,
+      this.state.diagram,
+      this.props.svg,
     );
     return (
       <BodyWidget app={app} work={this.props} />
@@ -117,8 +117,8 @@ class App extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  // console.log('permissionForCollaborator', state.projects.permissionForCollaborator)
   return {
+    model: state.history.present.model,
     diagram: state.projects[`diagram${ownProps.match.params.funnelId}`],
     svg: state.projects.svgList,
     funnelId: ownProps.match.params.funnelId,
@@ -147,6 +147,7 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = dispatch => {
   return {
+    updateModel: model => dispatch(updateModel(model)),
     getSVG: () => dispatch(getSVG()),
     saveDiagram: (funnelId, obj, image) => dispatch(saveDiagram(funnelId, obj, image)),
     saveTemplate: (funnelId, obj) => dispatch(saveTemplate(funnelId, obj)),

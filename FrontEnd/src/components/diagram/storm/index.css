@@ -615,6 +615,17 @@
   max-width: 80px;
 }
 
+.undo-wrapper{
+  margin-left: 10px;
+  display: flex;
+}
+
+.btn-disabled{
+  background: #848f99;
+  /* color: #848f99; */
+  cursor: default;
+}
+
 
 
 

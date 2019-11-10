@@ -288,6 +288,13 @@ export default function (state = initialState, action) {
         ...state, keyDown: action.payload.key
       }
 
+
+    case 'UPDATE_MODEL':
+      return {
+        ...state,
+        model: action.payload.model
+      };
+
     default: return state;
   }
 }

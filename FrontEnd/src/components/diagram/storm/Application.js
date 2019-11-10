@@ -135,7 +135,7 @@ export default class Application {
           })
         })
         try {
-          props ? this.deSerialization(this.engine, JSON.stringify(oldProps)) : this.newModel()
+          this.deSerialization(this.engine, JSON.stringify(oldProps))
         }
         catch (e) {
           console.log(e)
@@ -169,51 +169,26 @@ export default class Application {
     })
   }
 
-  newModel() {
-    this.activeModel = new RJD.DiagramModel();
-    // this.activeModel.setGridSize(10);
-    // this.activeModel.addListener({
-    //   nodesUpdated: e => console.log("nodesUpdated", e),
-    //   linksUpdated: e => console.log("linksUpdated", e),
-    //   zoomUpdated: e => console.log("zoomUpdated", e),
-    //   gridUpdated: e => console.log("gridUpdated", e),
-    //   offsetUpdated: e => console.log("offsetUpdated", e),
-    //   entityRemoved: e => console.log("entityRemoved", e),
-    //   selectionChanged: e => console.log("selectionChanged", e)
-    // });
-    this.engine.setDiagramModel(this.activeModel);
-  }
-
   getDiagramEngine() {
     return this.engine;
   }
 
   serialization(activeModel) {
-    // We need this to help the system know what models to create form the JSON
-    let engine = new RJD.DiagramEngine();
-    engine.installDefaultFactories();
-    engine.registerLinkFactory(new AdvancedLinkFactory());
-
-    this.createElements(this.allElements, engine)
-
-    // Serialize the model
-    const str = JSON.stringify(activeModel.serializeDiagram());
-    return str;
+    return JSON.stringify(activeModel.serializeDiagram());
   }
 
   deSerialization(engine, str) {
-    // console.log('str', JSON.parse(str))
     const model2 = new RJD.DiagramModel();
     // model2.setGridSize(10);
-    // model2.addListener({
-    //   nodesUpdated: e => console.log("nodesUpdated", e),
-    //   linksUpdated: e => console.log("linksUpdated", e),
-    //   zoomUpdated: e => console.log("zoomUpdated", e),
-    //   gridUpdated: e => console.log("gridUpdated", e),
-    //   offsetUpdated: e => console.log("offsetUpdated", e),
-    //   entityRemoved: e => console.log("entityRemoved", e),
-    //   selectionChanged: e => console.log("selectionChanged", e),
-    // });
+    model2.addListener({
+      // nodesUpdated: e => console.log("nodesUpdated", e),
+      // linksUpdated: e => console.log("linksUpdated", e),
+      // zoomUpdated: e => console.log("zoomUpdated", e),
+      // gridUpdated: e => console.log("gridUpdated", e),
+      // offsetUpdated: e => console.log("offsetUpdated", e),
+      // entityRemoved: e => console.log("entityRemoved", e),
+      // selectionChanged: e => console.log("selectionChanged", e),
+    });
     model2.deSerializeDiagram(JSON.parse(str), engine);
     engine.setDiagramModel(model2);
     return model2;

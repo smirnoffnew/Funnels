@@ -26,6 +26,7 @@ import { DevelopmentStage } from "../../../../common/DevelopmentStage/Developmen
 import { NotesStatusIconGroup } from "../../../../common/NotesStatus/NotesStatus";
 import { setConversionCompound } from "../../../../../store/actions/conversion";
 import AdvancedConversion, { getAdvancedConversion } from "../AdvancedConversion/AdvancedConversion";
+import { updateModel } from "../../../../../store/actions/undo";
 
 const Select = ({ show, children }) => {
   const showHideClassName = show
@@ -580,13 +581,29 @@ class BigNodeWidget extends React.Component {
                   </button>
                   <button
                     className="btn-select-widget"
-                    onClick={() =>
+                    onClick={() => {
+
+                      // JSON.stringify(this.props.engine.getDiagramModel().serializeDiagram());
+
+                      // this.props.updateModel(
+                      //   JSON.stringify(this.props.engine.getDiagramModel().serializeDiagram())
+                      // )
+
+                      // let _this = this
+                      // setTimeout(() => {
+                      //   deleteNode(
+                      //     this.props.engine,
+                      //     this.props.funnelId,
+                      //     this.props.node.id,
+                      //   )
+                      // })
+
                       deleteNode(
                         this.props.engine,
                         this.props.funnelId,
-                        this.props.node.id
+                        this.props.node.id,
                       )
-                    }
+                    }}
                     title={"Delete"}
                   >
                     <DeleteSVG />
@@ -731,6 +748,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    updateModel: model => dispatch(updateModel(model)),
     setConversionCompound: advancedConversion => dispatch(setConversionCompound(advancedConversion)),
     changeKeyDown: key => dispatch(changeKeyDown(key)),
     saveDiagramThenShowOrHideSettingsModal: (
