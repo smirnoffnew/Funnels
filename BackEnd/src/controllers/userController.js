@@ -139,8 +139,11 @@ module.exports = {
                             'fields': [{
                                 'name': 'Last Active',
                                 'value': date,
-                                'device': (os && browser) ? deviceCheck(os, browser) : 'desktop'
-                            }, ]
+                            },
+                            {
+                                'name': 'device',
+                                'value' : (os && browser) ? deviceCheck(os, browser) : 'desktop'
+                            } ]
                         };
                         const token = jwt.sign({
                             profile,
