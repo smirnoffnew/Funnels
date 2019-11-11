@@ -68,7 +68,8 @@ module.exports = {
                         })
 
                 } catch (err) {
-                    throw new Error('Active Campaign Api broken')
+                    console.log(err)
+                    //throw new Error('Active Campaign Api broken')
                 }
             })
             .then((response) => {
