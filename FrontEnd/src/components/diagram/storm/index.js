@@ -117,7 +117,6 @@ class App extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  console.log('hh', state.history.present)
   return {
     model: state.history.present[`model${ownProps.match.params.funnelId}`],
     diagram: state.projects[`diagram${ownProps.match.params.funnelId}`],
