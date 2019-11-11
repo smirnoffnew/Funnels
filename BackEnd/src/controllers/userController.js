@@ -154,10 +154,14 @@ module.exports = {
 
                         _profile = profile;
                         _token = token;
-
-                        return new Promise((resolve, reject) => {
+                        try {
+                            return new Promise((resolve, reject) => {
                             contact.sync(payload, (err, res) => err ? reject(err) : resolve(res));
                         })
+                        } catch (error) {
+                            console.log(error)
+                        }
+                        
 
                     } else {
                         throw 'error in profile'
