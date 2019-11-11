@@ -16,24 +16,38 @@ module.exports = {
         Promise
             .all([
                 Profile
-                    .findOneAndUpdate({ _id: profileId, "myCollaborations.funnelId": funnelId },
-                        { $set: { "myCollaborations.$.permissions": permissionToChange } })
-                    .exec(),
+                .findOneAndUpdate({
+                    _id: profileId,
+                    "myCollaborations.funnelId": funnelId
+                }, {
+                    $set: {
+                        "myCollaborations.$.permissions": permissionToChange
+                    }
+                })
+                .exec(),
                 Funnel
-                    .findOneAndUpdate({ _id: funnelId, "collaborators.profileId": profileId },
-                        { $set: { "collaborators.$.permissions": permissionToChange } })
-                    .exec(),
+                .findOneAndUpdate({
+                    _id: funnelId,
+                    "collaborators.profileId": profileId
+                }, {
+                    $set: {
+                        "collaborators.$.permissions": permissionToChange
+                    }
+                })
+                .exec(),
 
             ])
             .then(result => {
                 res
                     .status(200)
-                    .json({ message: "permissions changed successfully!" });
+                    .json({
+                        message: "permissions changed successfully!"
+                    });
             })
             .catch(err => {
-                res
-                    .status(500)
-                    .json({ error: err.message });
+                res.status(400).json({
+                    error: err.message
+                })
             });
     },
     deleteCollaborator: async function (req, res) {
@@ -42,29 +56,51 @@ module.exports = {
         Promise
             .all([
                 Profile
-                    .findOneAndUpdate({ _id: profileId, "myCollaborations.funnelId": funnelId },
-                        { $pull: { myCollaborations: { funnelId: funnelId } } })
-                    .exec(),
+                .findOneAndUpdate({
+                    _id: profileId,
+                    "myCollaborations.funnelId": funnelId
+                }, {
+                    $pull: {
+                        myCollaborations: {
+                            funnelId: funnelId
+                        }
+                    }
+                })
+                .exec(),
                 Funnel
-                    .findOneAndUpdate({ _id: funnelId, "collaborators.profileId": profileId },
-                        { $pull: { collaborators: { profileId: profileId } } })
-                    .exec(),
+                .findOneAndUpdate({
+                    _id: funnelId,
+                    "collaborators.profileId": profileId
+                }, {
+                    $pull: {
+                        collaborators: {
+                            profileId: profileId
+                        }
+                    }
+                })
+                .exec(),
 
             ])
             .then(() => {
                 res
                     .status(200)
-                    .json({ message: "Collaborator deleted successfully!" });
+                    .json({
+                        message: "Collaborator deleted successfully!"
+                    });
             })
             .catch(err => {
-                res
-                    .status(500)
-                    .json({ error: err.message });
+                res.status(400).json({
+                    error: err.message
+                })
             });
     },
     createCollaborator: async function (req, res) {
-        const decodedJwtCollaborate = jwt.decode(req.collaborate_confirm, { complete: true });
-        const decodedJwtAuthorization = jwt.decode(req.token, { complete: true });
+        const decodedJwtCollaborate = jwt.decode(req.collaborate_confirm, {
+            complete: true
+        });
+        const decodedJwtAuthorization = jwt.decode(req.token, {
+            complete: true
+        });
         //res.json({colconfirm: decodedJwtCollaborate, url: `src/${decodedJwtCollaborate.payload.screenShotURL}`});
         const funnelsIdArray = decodedJwtCollaborate.payload.funnelsId;
 
@@ -78,23 +114,25 @@ module.exports = {
         Promise
             .all([
 
-                Profile.updateOne(
-                    { _id: decodedJwtAuthorization.payload.profile._id },
-                    {
-                        $push: {
-                            myCollaborations: funnelsIdArray.map(funnelId => {
-                                return {
-                                    permissions: decodedJwtCollaborate.payload.permissions,
-                                    funnelId: funnelId,
-                                    funnel: mongoose.Types.ObjectId(funnelId)
-                                }
-                            })
-                        }
+                Profile.updateOne({
+                    _id: decodedJwtAuthorization.payload.profile._id
+                }, {
+                    $push: {
+                        myCollaborations: funnelsIdArray.map(funnelId => {
+                            return {
+                                permissions: decodedJwtCollaborate.payload.permissions,
+                                funnelId: funnelId,
+                                funnel: mongoose.Types.ObjectId(funnelId)
+                            }
+                        })
                     }
-                ).exec(),
+                }).exec(),
 
-                Funnel.updateMany(
-                    { '_id': { $in: decodedJwtCollaborate.payload.funnelsId } },
+                Funnel.updateMany({
+                        '_id': {
+                            $in: decodedJwtCollaborate.payload.funnelsId
+                        }
+                    },
                     // {$push: {collaborators: collaboratorForFunnel}}
                     {
                         $push: {
@@ -108,9 +146,11 @@ module.exports = {
                         }
                     }
                 )
-                    .exec(),
-                Token.deleteOne({ body: req.collaborate_confirm })
-                    .exec()
+                .exec(),
+                Token.deleteOne({
+                    body: req.collaborate_confirm
+                })
+                .exec()
 
             ])
             .then(result => {
@@ -121,18 +161,26 @@ module.exports = {
                 });
                 res
                     .status(200)
-                    .json({ message: "collaborator added successfully!" });
+                    .json({
+                        message: "collaborator added successfully!"
+                    });
             })
             .catch(err => {
-                res
-                    .status(500)
-                    .json({ error: err.message });
+                res.status(400).json({
+                    error: err.message
+                })
             });
     },
     getAllFunnelsCollaborators: async function (req, res) {
         Profile
             .find({})
-            .and(req.body.funnelsId.map(item => ({ myCollaborations: { $elemMatch: { "funnelId": item } } })))
+            .and(req.body.funnelsId.map(item => ({
+                myCollaborations: {
+                    $elemMatch: {
+                        "funnelId": item
+                    }
+                }
+            })))
             .populate({
                 model: 'Funnel',
                 path: 'myCollaborations.funnel',
@@ -148,31 +196,38 @@ module.exports = {
             })
             .then(result =>
                 res
-                    .status(200)
-                    .json(result))
-            .catch(err =>
-                res
-                    .status(500)
-                    .json({ error: err.message }));
+                .status(200)
+                .json(result))
+            .catch(err => {
+                res.status(400).json({
+                    error: err.message
+                })
+            });
+
     },
 
     getAllCollaboratorsByFunnelId: async function (req, res) {
         const funnelId = req.params.funnelId;
 
         Funnel
-            .find({ "_id": funnelId })
+            .find({
+                "_id": funnelId
+            })
             .populate({
                 model: 'Profile',
                 path: 'collaborators.profileId',
-               
+
             }).
-            populate({
-                model: 'Profile',  
-                path: 'funnelAuthor' 
+        populate({
+                model: 'Profile',
+                path: 'funnelAuthor'
             })
             .exec()
             .then(result => res.status(200).json(result))
-            .catch(err => res.status(500).json({ error: err.message }));
-
+            .catch(err => {
+                res.status(400).json({
+                    error: err.message
+                })
+            });
     }
 };

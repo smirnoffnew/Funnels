@@ -25,9 +25,9 @@ module.exports = {
 
             })
             .catch(err => {
-                res
-                    .status(400)
-                    .json({error: err.message});
+                res.status(400).json({
+                    error: err.message
+                })
             });
     },
     deleteTemplate: async function (req, res) {
@@ -39,6 +39,11 @@ module.exports = {
                     .status(200)
                     .json({message: "Template deleted succesfully!"});
             })
+            .catch(err => {
+                res.status(400).json({
+                    error: err.message
+                })
+            });
     },
     getAllOwnTemplates: async function (req, res) {
         Template
@@ -49,6 +54,11 @@ module.exports = {
                     .status(200)
                     .json({data: templates});
             })
+            .catch(err => {
+                res.status(400).json({
+                    error: err.message
+                })
+            });
     },
     getTemplateById: async function (req, res) {
         Template
@@ -59,6 +69,11 @@ module.exports = {
                     .status(200)
                     .json({data: template});
             })
+            .catch(err => {
+                res.status(400).json({
+                    error: err.message
+                })
+            });
     },
     updateTemplate: async function (req, res) {
         Template
@@ -71,5 +86,10 @@ module.exports = {
                     .status(200)
                     .json({message:"Template updated successfully!", data: template});
             })
+            .catch(err => {
+                res.status(400).json({
+                    error: err.message
+                })
+            });
     },
 };

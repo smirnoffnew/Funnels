@@ -78,13 +78,9 @@ module.exports = {
                                         });
                                 });
                         })
-                        .catch(err => {
-                            res
-                                .status(400)
-                                .json({
-                                    error: err.message
-                                });
-                        });
+                        .catch(err => res.status(400).json({
+                            error: err.message
+                        }));
                 }
             })
             .catch(err => {
@@ -148,14 +144,9 @@ module.exports = {
                         message: "Funnel deleted successfully!"
                     });
             })
-            .catch(err => {
-
-                res
-                    .status(500)
-                    .json({
-                        error: err.message
-                    });
-            });
+            .catch(err => res.status(400).json({
+                error: err.message
+            }));
     },
     createUrlForCollaborate: async function (req, res) {
         const Url = process.env.PROD_URL;
@@ -178,13 +169,9 @@ module.exports = {
                         //token: token.body
                     });
             })
-            .catch(err => {
-                res
-                    .status(500)
-                    .json({
-                        error: err.message
-                    });
-            });
+            .catch(err => res.status(400).json({
+                error: err.message
+            }));
     },
     getAllCollaboratedToUserFunnels: async function (req, res) {
         Funnel.find({
@@ -203,13 +190,9 @@ module.exports = {
                         user: req.authData.profile._id
                     });
             })
-            .catch(err => {
-                res
-                    .status(500)
-                    .json({
-                        error: err.message
-                    });
-            });
+            .catch(err => res.status(400).json({
+                error: err.message
+            }));
     },
     addFunnelDiagramAndBackground: async function (req, res) {
         Funnel
@@ -259,14 +242,9 @@ module.exports = {
                 });
 
             })
-            .catch(err => {
-                console.log('this error................', err)
-                res
-                    .status(500)
-                    .json({
-                        error: err.message
-                    });
-            });
+            .catch(err => res.status(400).json({
+                error: err.message
+            }));
     },
     getFunnelById: async function (req, res) {
         Funnel
@@ -281,13 +259,9 @@ module.exports = {
                         data: funnel
                     });
             })
-            .catch(err => {
-                res
-                    .status(500)
-                    .json({
-                        error: err.message
-                    });
-            });
+            .catch(err => res.status(400).json({
+                error: err.message
+            }));
     },
     getScreenshot: async function (req, res) {
 
@@ -332,18 +306,16 @@ module.exports = {
             .then(() => {
                 try {
                     fs.unlinkSync(`${screenShotBufferDir}/${req.authData.profile._id}.jpg`)
-                } catch (error) {
-                    console.log(error)
-                    //throw new Error('problem with deleting buffer file')
+                } catch (err) {
+                    console.log(err)
+                    // res.status(400).json({
+                    //     error: err.message
+                    // })
                 }
             })
-            .catch(err => {
-                res
-                    .status(500)
-                    .json({
-                        error: err.message
-                    });
-            });
+            .catch(err => res.status(400).json({
+                error: err.message
+            }));
     },
     createFunnelTemplate: async function (req, res) {
         const templateId = req.params.templateId;
@@ -440,23 +412,15 @@ module.exports = {
                                         });
                                 });
                         })
-                        .catch(err => {
-                            res
-                                .status(500)
-                                .json({
-                                    error: err.message
-                                });
-                        });
+                        .catch(err => res.status(400).json({
+                            error: err.message
+                        }));
                 }
 
             })
-            .catch(err => {
-                res
-                    .status(500)
-                    .json({
-                        error: err.message
-                    });
-            });
+            .catch(err => res.status(400).json({
+                error: err.message
+            }));
 
     },
     getFunnelsSvg: async function (req, res) {
@@ -487,13 +451,9 @@ module.exports = {
                         message: 'Funnel updated successfully!'
                     });
             })
-            .catch(err => {
-                res
-                    .status(400)
-                    .json({
-                        error: err.message
-                    });
-            });
+            .catch(err => res.status(400).json({
+                error: err.message
+            }));
     },
 
     createUrl: async function (req, res) {
@@ -537,8 +497,10 @@ module.exports = {
                 url: url
             })
 
-        } catch (error) {
-            res.status(400).send(error.message)
+        } catch (err) {
+            res.status(400).json({
+                error: err.message
+            })
         }
     },
 
@@ -562,14 +524,14 @@ module.exports = {
             }
 
             // res.status(200).json({ status: response.status });
-        } catch (error) {
-            res.status(400).send(error.message)
+        } catch (err) {
+            res.status(400).json({
+                error: err.message
+            })
         }
-
     },
 
     updateStatus: async function (req, res) {
-
         try {
 
             req.body.status !== '' ? req.body.status = req.body.status.toUpperCase() : req.body.status = 'DEFAULT';
@@ -596,8 +558,10 @@ module.exports = {
                 res.status(200).json(response.status);
             }
             res.status(200).json(response.status)
-        } catch (error) {
-            res.status(400).send(error.message)
+        } catch (err) {
+            res.status(400).json({
+                error: err.message
+            })
         }
 
     },
@@ -631,8 +595,10 @@ module.exports = {
 
             res.end();
 
-        } catch (error) {
-            res.status(400).send(error.message)
+        } catch (err) {
+            res.status(400).json({
+                error: err.message
+            })
         }
     },
 
@@ -659,8 +625,10 @@ module.exports = {
             res.status(200).json({
                 message: "Success"
             })
-        } catch (error) {
-            res.status(400).send(error.message)
+        } catch (err) {
+            res.status(400).json({
+                error: err.message
+            })
         }
     },
 
@@ -684,11 +652,12 @@ module.exports = {
                 counterNode: counter.counterNode,
                 nodeDescription: counter.nodeDescription
             })
-        } catch (error) {
-            res.status(400).send(error.message)
+        } catch (err) {
+            res.status(400).json({
+                error: err.message
+            })
         }
     },
-
 
     deleteNodeById: async function (req, res) {
         try {
@@ -701,8 +670,10 @@ module.exports = {
             res.status(200).json({
                 message: "Success"
             })
-        } catch (error) {
-            res.status(400).send(error.message)
+        } catch (err) {
+            res.status(400).json({
+                error: err.message
+            })
         }
     },
 
@@ -716,8 +687,10 @@ module.exports = {
                 response
             });
 
-        } catch (error) {
-            res.status(400).send(error.message)
+        } catch (err) {
+            res.status(400).json({
+                error: err.message
+            })
         }
     },
 
@@ -733,8 +706,10 @@ module.exports = {
                 response
             });
 
-        } catch (error) {
-            res.status(400).send(error.message)
+        } catch (err) {
+            res.status(400).json({
+                error: err.message
+            })
         }
     }
 

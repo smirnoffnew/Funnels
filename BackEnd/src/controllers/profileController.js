@@ -39,10 +39,9 @@ module.exports = {
                 });
             })
             .catch(err => {
-                console.log(err);
-                res.status(500).json({
+                res.status(400).json({
                     error: err.message
-                });
+                })
             });
 
     },
@@ -88,12 +87,9 @@ module.exports = {
                 })
             })
             .catch(err => {
-                res
-                    .status(500)
-                    .json({
-                        
-                        error: err.message
-                    });
+                res.status(400).json({
+                    error: err.message
+                })
             });
     },
 
@@ -109,9 +105,11 @@ module.exports = {
             .then(profile => res.status(200).json({
                 myPartners: profile.myPartners
             }))
-            .catch(err => res.status(400).json({
-                error: err.message
-            }));
+            .catch(err => {
+                res.status(400).json({
+                    error: err.message
+                })
+            });
     },
 
     getSinglePartner: async (req, res) => {
@@ -129,9 +127,11 @@ module.exports = {
                     myPartners: [profile.myPartners.find(item => req.params.partnerId === item._id.toString())]
                 })
             )
-            .catch(err => res.status(400).json({
-                error: err.message
-            }))
+            .catch(err => {
+                res.status(400).json({
+                    error: err.message
+                })
+            });
 
     },
 
@@ -152,9 +152,11 @@ module.exports = {
             .then(updatedProfile => res.status(200).json({
                 myPartners: updatedProfile.myPartners
             }))
-            .catch(err => res.status(400).json({
-                error: err.message
-            }))
+            .catch(err => {
+                res.status(400).json({
+                    error: err.message
+                })
+            });
 
     },
 
@@ -174,9 +176,11 @@ module.exports = {
             .then(updatedProfile => res.status(200).json({
                 myPartners: updatedProfile.myPartners
             }))
-            .catch(err => res.status(400).json({
-                error: err.message
-            }))
+            .catch(err => {
+                res.status(400).json({
+                    error: err.message
+                })
+            });
 
     },
 
@@ -197,12 +201,13 @@ module.exports = {
                         `No authority to partner` : `${process.env.PROD_URL}/add-partner/${partnerToken._id}`
                 })
             )
-            .catch(err => res.status(500).json({
-                error: err.message
-            }));
+            .catch(err => {
+                res.status(400).json({
+                    error: err.message
+                })
+            });
 
     },
-
 
     createPartnerByLink: async function (req, res) {
 
@@ -264,9 +269,11 @@ module.exports = {
                 ownersProfile: profile,
                 message: 'now you added like a partner'
             }))
-            .catch(err => res.status(400).json({
-                error: err.message
-            }));
+            .catch(err => {
+                res.status(400).json({
+                    error: err.message
+                })
+            });
 
     },
 
@@ -288,9 +295,11 @@ module.exports = {
                         myPartners: item.myPartners.filter(i => i.partnerProfile.toString() === partnerProfileId)
                     }))
             }))
-            .catch(err => res.status(400).json({
-                error: err.message
-            }));
+            .catch(err => {
+                res.status(400).json({
+                    error: err.message
+                })
+            });
     }
 
 

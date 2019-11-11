@@ -41,9 +41,9 @@ module.exports = {
                 }
             })
             .catch(err => {
-                res
-                    .status(400)
-                    .json({error: err.message});
+                res.status(400).json({
+                    error: err.message
+                })
             });
     },
     deleteProject: async function (req, res) {
@@ -63,9 +63,9 @@ module.exports = {
                     .json({message: "project deleted successfully!"});
             })
             .catch(err => {
-                res
-                    .status(500)
-                    .json({error: err.message});
+                res.status(400).json({
+                    error: err.message
+                })
             });
 
     },
@@ -83,9 +83,9 @@ module.exports = {
                     });
             })
             .catch(err => {
-                res
-                    .status(500)
-                    .json({error: err.message});
+                res.status(400).json({
+                    error: err.message
+                })
             });
 
     },
@@ -130,8 +130,9 @@ module.exports = {
 
                 })
                 .catch(err => {
-                    console.log(err);
-                    res.status(500).json({error: err.message});
+                    res.status(400).json({
+                        error: err.message
+                    })
                 });
         });
     },
@@ -157,8 +158,9 @@ module.exports = {
 
                 })
                 .catch(err => {
-                    console.log(err);
-                    res.status(500).json({error: err.message});
+                    res.status(400).json({
+                        error: err.message
+                    })
                 });
 
         });

@@ -88,12 +88,10 @@ module.exports = {
                 });
             })
             .catch(err => {
-                console.log('Error...', err);
-                res.status(404).json({
-                    message: 'activeCampaignApi error',
-                    data: err,
+                res.status(400).json({
+                    error: err.message
                 })
-            })
+            });
     },
     signIn: function (req, res) {
         const emailFromUser = req.body.email.toLowerCase()
@@ -143,9 +141,10 @@ module.exports = {
                             },
                             {
                                 'name': 'device',
-                                'value' : (os && browser) ? deviceCheck(os, browser) : 'desktop'
+                                'value' : deviceCheck(req) 
                             } ]
                         };
+                        console.log(deviceCheck(req))
                         const token = jwt.sign({
                             profile,
                             userId: g_user._id
@@ -188,11 +187,10 @@ module.exports = {
                     })
                 })
                 .catch(err => {
-                    console.log(err.message)
-                    res.status(403).json({
+                    res.status(400).json({
                         error: err.message
-                    });
-                })
+                    })
+                });
         } else {
             throw 'email is required'
         }
@@ -212,37 +210,12 @@ module.exports = {
                     });
                 }
             })
-            .catch(error => {
-                res.json({
-                    error: error.message
-                });
-            })
+            .catch(err => {
+                res.status(400).json({
+                    error: err.message
+                })
+            });
     },
-
-    // emailValidation: async function (req, res) {
-    //     const emailTest = req.body.email.toLowerCase();
-    //     User.findOne({
-    //             email: emailTest
-    //         })
-    //         .exec()
-    //         .then(doc => {
-    //             if (doc) {
-    //                 res.status(302).json({
-    //                     message: "email already exists!"
-    //                 });
-    //             } else {
-    //                 res.status(404).json({
-    //                     message: "email is free"
-    //                 });
-    //             }
-    //         })
-    //         .catch(err => {
-    //             console.log(err);
-    //             res.status(500).json({
-    //                 err
-    //             });
-    //         });
-    // },
 
     resetPassword: function (req, res) {
         User.findOne({
@@ -271,59 +244,11 @@ module.exports = {
                 });
             })
             .catch(err => {
-                console.log(err)
-                res.json({
+                res.status(400).json({
                     error: err.message
-                });
+                })
             });
     },
-
-    // resetPassword: async function (req, res) {
-    //     const emailReset = req.body.email.toLowerCase();
-    //     User.findOne({
-    //             email: emailReset
-    //         })
-    //         .exec()
-    //         .then(user => {
-
-    //             if (user) {
-    //                 const token = jwt.sign({
-    //                     email: user.email
-    //                 }, process.env.SECRET_LETTER, {
-    //                     expiresIn: process.env.TOKEN_EXPIRES_LETTER
-    //                 });
-                    
-    //                 const options = sendEmail.getMailoptions(user.email, user.firstName, token);
-    //                 sendEmail.transporter.sendMail(options, (err, info) => {
-    //                     console.log('options......',options)
-    //                     if (err) {
-    //                         console.log(err);
-    //                         res
-    //                             .status(500)
-    //                             .json({
-    //                                 message: "Email not send!",
-    //                                 data: err
-    //                             })
-    //                     } else {
-    //                         res.status(201).json({
-    //                             message: "Email sended!",
-    //                             //token: token,
-    //                         });
-    //                     }
-    //                 });
-    //             } else {
-    //                 res.status(404).json({
-    //                     message: "email doesn't exists in DB"
-    //                 });
-    //             }
-    //         })
-    //         .catch(err => {
-    //             console.log(err);
-    //             res.status(500).json({
-    //                 error: err.message
-    //             });
-    //         });
-    // },
 
     changePassword: function (req, res) {
         const passwordChange = bcrypt.hashSync(req.body.password, 10);
@@ -365,77 +290,18 @@ module.exports = {
 
             })
             .catch(err => {
-                console.log(err);
-                res.json({
+                res.status(400).json({
                     error: err.message
-                });
+                })
             });
     },
-
-    // changePassword: async function (req, res) {
-    //     jwt.verify(req.token, process.env.SECRET_LETTER, (err, authData) => {
-    //         if (err) {
-    //             return res.status(403).send("No authority");
-    //         }
-    //         const decodedJwt = jwt.decode(req.token, {
-    //             complete: true
-    //         });
-    //         const passwordChange = bcrypt.hashSync(req.body.password, 10);
-    //         User.updateOne({
-    //                 email: decodedJwt.payload.email
-    //             }, {
-    //                 password: passwordChange
-    //             })
-    //             .exec()
-    //             .then(user => {
-    //                 if (user) {
-    //                     Profile.updateOne({
-    //                             email: req.body.email
-    //                         }, {
-    //                             password: passwordChange
-    //                         })
-    //                         .exec()
-    //                         .then(profile => {
-    //                             if (profile) {
-    //                                 res.status(200).json({
-    //                                     message: "Password updated successfully!!"
-    //                                 });
-    //                             }
-    //                         })
-    //                         .catch(err => {
-    //                             console.log(err);
-    //                             res.status(500).json({
-    //                                 error: err
-    //                             });
-    //                         });
-    //                 } else {
-    //                     res.status(404).json({
-    //                         message: "email doesn't exists"
-    //                     });
-    //                 }
-    //             })
-    //             .catch(err => {
-    //                 console.log(err);
-    //                 res.status(500).json({
-    //                     error: err.message
-    //                 });
-    //             });
-    //     });
-
-    // },
 
     generateSecretKeys: function (req, res) {
         res.json({
             secretKey: keygen(20),
             secretKeyEmail: keygen(20)
         });
+        
     },
-    
-    // generateSecretKeys: async function (req, res) {
-    //     res.json({
-    //         secretKey: keygen(20),
-    //         secretKeyEmail: keygen(20)
-    //     });
-    // },
 
 };

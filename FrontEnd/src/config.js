@@ -22,7 +22,9 @@ switch (process.env.REACT_APP_BUILD) {
     API_URL = 'https://api.funnelsmap.com'
     break;
   default:
-    API_URL = 'http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001'
+    //API_URL = 'http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001'
+    API_URL = 'http://localhost:9001'
+
 }
 
 export default API_URL

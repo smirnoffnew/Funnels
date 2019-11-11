@@ -17,8 +17,12 @@ class CommentController {
 
             res.status(200).json({ message: "Comment created successfully" });
 
-        } catch (error) {
-            res.status(400).json({ error: error.message })
+        } 
+
+        catch (err) {
+            res.status(400).json({
+                error: err.message
+            })
         }
     }
 
@@ -53,8 +57,11 @@ class CommentController {
             }
 
             res.status(200).json({ "message": "success", commentsList })
-        } catch (error) {
-            res.status(400).json({ error: error.message })
+        } 
+        catch (err) {
+            res.status(400).json({
+                error: err.message
+            })
         }
     }
 
@@ -84,8 +91,13 @@ class CommentController {
 
             res.status(200).json({ "message": "success", commentsList })
 
-        } catch (error) {
-            res.status(400).json({ error: error.message })
+        } 
+      
+
+        catch (err) {
+            res.status(400).json({
+                error: err.message
+            })
         }
     }
 }
