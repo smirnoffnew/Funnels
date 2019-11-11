@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux'
 import { deleteLink } from "../funcsForCustomNodeWidget";
+import { updateModel } from "../../../../../store/actions/undo";
 
 class AdvancedLinkSegment extends React.Component {
   constructor(props) {
@@ -272,7 +273,9 @@ class AdvancedLinkSegment extends React.Component {
               className={'circle-delete'}
               onClick={() =>
                 deleteLink(
-                  this.props.engine
+                  this.props.engine,
+                  this.props.funnelId,
+                  this.props.updateModel
                 )
               }
               r={8}
@@ -354,10 +357,19 @@ class AdvancedLinkSegment extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    funnelId: state.router.location.pathname.substring(9),
     hideConversionLinkBoolean: state.conversion.hideConversionLinkBoolean
   };
 }
 
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateModel: (model, funnelId) => dispatch(updateModel(model, funnelId)),
+  };
+};
+
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(AdvancedLinkSegment)

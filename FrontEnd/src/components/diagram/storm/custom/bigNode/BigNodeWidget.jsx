@@ -572,7 +572,8 @@ class BigNodeWidget extends React.Component {
                         this.props.engine,
                         this.props.saveDiagramThenShowOrHideSettingsModal,
                         this.props.funnelId,
-                        this.props.node
+                        this.props.node,
+                        this.props.updateModel,
                       )
                     }
                     title={"Copy"}
@@ -583,25 +584,11 @@ class BigNodeWidget extends React.Component {
                     className="btn-select-widget"
                     onClick={() => {
 
-                      // JSON.stringify(this.props.engine.getDiagramModel().serializeDiagram());
-
-                      // this.props.updateModel(
-                      //   JSON.stringify(this.props.engine.getDiagramModel().serializeDiagram())
-                      // )
-
-                      // let _this = this
-                      // setTimeout(() => {
-                      //   deleteNode(
-                      //     this.props.engine,
-                      //     this.props.funnelId,
-                      //     this.props.node.id,
-                      //   )
-                      // })
-
                       deleteNode(
                         this.props.engine,
                         this.props.funnelId,
                         this.props.node.id,
+                        this.props.updateModel,
                       )
                     }}
                     title={"Delete"}
@@ -610,7 +597,11 @@ class BigNodeWidget extends React.Component {
                   </button>
                   <button
                     className="btn-select-widget"
-                    onClick={() => deleteAllLinks(this.props.engine)}
+                    onClick={() => deleteAllLinks(
+                      this.props.engine,
+                      this.props.funnelId,
+                      this.props.updateModel,
+                    )}
                     title={"Delete All Links"}
                   >
                     <DeleteAllLinksSVG />
@@ -619,21 +610,35 @@ class BigNodeWidget extends React.Component {
               )}
           </ClickOutside>
 
-          <ReactSVG
-            src={this.props.svg}
-            beforeInjection={svg => {
-              svg.setAttribute(
-                "style",
-                `box-shadow: 0 0 28px ${
-                this.props.node.extras.goald
-                  ? "#fd8f21"
-                  : null || this.props.node.extras.triggerd
-                    ? "#5ab5ff"
-                    : null
-                }`
-              );
-            }}
-          />
+          {
+            this.props.node.selected ?
+              <ReactSVG
+                src={this.props.svg}
+                beforeInjection={svg => {
+                  svg.setAttribute(
+                    "style",
+                    `box-shadow: 0 0 28px #30d5c8`
+                  );
+                }}
+              />
+              :
+
+              <ReactSVG
+                src={this.props.svg}
+                beforeInjection={svg => {
+                  svg.setAttribute(
+                    "style",
+                    `box-shadow: 0 0 28px ${
+                    this.props.node.extras.goald
+                      ? "#fd8f21"
+                      : null || this.props.node.extras.triggerd
+                        ? "#5ab5ff"
+                        : null
+                    }`
+                  );
+                }}
+              />
+          }
 
           <div
             style={{
@@ -748,7 +753,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateModel: model => dispatch(updateModel(model)),
+    updateModel: (model, funnelId) => dispatch(updateModel(model, funnelId)),
     setConversionCompound: advancedConversion => dispatch(setConversionCompound(advancedConversion)),
     changeKeyDown: key => dispatch(changeKeyDown(key)),
     saveDiagramThenShowOrHideSettingsModal: (

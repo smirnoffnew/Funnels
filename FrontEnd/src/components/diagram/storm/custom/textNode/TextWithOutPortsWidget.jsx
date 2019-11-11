@@ -10,6 +10,7 @@ import {
 } from "../../../../../store/actions/projects";
 import { cloneSelected, deleteNode } from "../funcsForCustomNodeWidget";
 import './TextWithOutPortsWidget.css'
+import { updateModel } from "../../../../../store/actions/undo";
 
 const Select = ({ show, children }) => {
   const showHideClassName = show
@@ -18,8 +19,8 @@ const Select = ({ show, children }) => {
 
   return (
     <div className={showHideClassName}>
-      <section 
-        className="select-horizontally-without-ports" 
+      <section
+        className="select-horizontally-without-ports"
       >
         {children}
       </section>
@@ -42,9 +43,9 @@ class TextWithOutPortsWidget extends React.Component {
   }
 
   hideModal = () => {
-    this.setState({ 
-      show: false, 
-      handleGridTwo: false 
+    this.setState({
+      show: false,
+      handleGridTwo: false
     });
   };
 
@@ -52,7 +53,7 @@ class TextWithOutPortsWidget extends React.Component {
     this.state.handleGrid && this.setState({ handleGridTwo: true })
   }
 
- handleChangeText = e => {
+  handleChangeText = e => {
     e.target.style.height = 'inherit';
     e.target.style.width = 'inherit';
     this.setState({
@@ -88,57 +89,61 @@ class TextWithOutPortsWidget extends React.Component {
             !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) &&
             this.mouseMove
           }
-        > 
+        >
           {
             this.state.handleGridTwo ?
-            
-            <>
-              <div className='left-line' />
-              <div className='right-line' />
-              <div className='top-line' />
-              <div className='bottom-line' />
-            </> : null
+
+              <>
+                <div className='left-line' />
+                <div className='right-line' />
+                <div className='top-line' />
+                <div className='bottom-line' />
+              </> : null
           }
 
           <textarea
             className='node-panel-textarea-without-ports'
-            style={{ 
+            style={{
               height:
-                this.props.node && 
-                this.props.node.extras.heightd === undefined ? 
+                this.props.node &&
+                  this.props.node.extras.heightd === undefined ?
 
-                this.props.node && 
-                50 : 
+                  this.props.node &&
+                  50 :
 
-                this.props.node && 
-                this.props.node.extras.heightd,
+                  this.props.node &&
+                  this.props.node.extras.heightd,
 
               width:
-                this.props.node && 
-                this.props.node.extras.widthd === undefined ? 
+                this.props.node &&
+                  this.props.node.extras.widthd === undefined ?
 
-                this.props.node && 
-                195 : 
+                  this.props.node &&
+                  195 :
 
-                this.props.node && 
-                this.props.node.extras.widthd,
+                  this.props.node &&
+                  this.props.node.extras.widthd,
+
+              boxShadow: `0 0 28px ${
+                this.props.node.selected ? "#30d5c8" : "#F6F7F8"
+                }`
             }}
             placeholder="text"
             type="text"
             value={
-              this.state.text === '' ?  
+              this.state.text === '' ?
 
-                this.props.node && 
-                this.props.node.extras.named === undefined ? 
+                this.props.node &&
+                  this.props.node.extras.named === undefined ?
 
-                this.props.node && 
-                // this.props.work.showSettingsWidgetModel.type : 
-                '' : 
+                  this.props.node &&
+                  // this.props.work.showSettingsWidgetModel.type : 
+                  '' :
 
-                this.props.node && 
-                this.props.node.extras.named
+                  this.props.node &&
+                  this.props.node.extras.named
 
-              : this.state.text
+                : this.state.text
             }
             onChange={this.handleChangeText}
           />
@@ -159,6 +164,7 @@ class TextWithOutPortsWidget extends React.Component {
                   this.props.saveDiagramThenShowOrHideSettingsModal,
                   this.props.funnelId,
                   this.props.node,
+                  this.props.updateModel
                 )}
                 title={"Copy"}
               >
@@ -167,9 +173,10 @@ class TextWithOutPortsWidget extends React.Component {
               <button
                 className="btn-select-widget"
                 onClick={() => deleteNode(
-                  this.props.engine, 
-                  this.props.funnelId, 
-                  this.props.node.id
+                  this.props.engine,
+                  this.props.funnelId,
+                  this.props.node.id,
+                  this.props.updateModel
                 )}
                 title={"Delete"}
               >
@@ -212,6 +219,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    updateModel: (model, funnelId) => dispatch(updateModel(model, funnelId)),
     saveDiagramThenShowOrHideSettingsModal: (
       id,
       state,

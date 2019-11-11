@@ -24,6 +24,7 @@ import { DevelopmentStage } from "../../../../common/DevelopmentStage/Developmen
 import { openLinkOnNewTab } from "../../utils";
 import { NotesStatusIconGroup } from "../../../../common/NotesStatus/NotesStatus";
 import { setConversionCompound } from "../../../../../store/actions/conversion";
+import { updateModel } from "../../../../../store/actions/undo";
 
 const Select = ({ show, children }) => {
   const showHideClassName = show
@@ -100,6 +101,7 @@ class SmallNodeWidget extends React.Component {
   }
 
   render() {
+    console.log('this', this)
     return (
       <>
         <div className="small-node-title">
@@ -240,7 +242,8 @@ class SmallNodeWidget extends React.Component {
                         this.props.engine,
                         this.props.saveDiagramThenShowOrHideSettingsModal,
                         this.props.funnelId,
-                        this.props.node
+                        this.props.node,
+                        this.props.updateModel,
                       )
                     }
                     title={"Copy"}
@@ -253,7 +256,8 @@ class SmallNodeWidget extends React.Component {
                       deleteNode(
                         this.props.engine,
                         this.props.funnelId,
-                        this.props.node.id
+                        this.props.node.id,
+                        this.props.updateModel,
                       )
                     }
                     title={"Delete"}
@@ -262,7 +266,11 @@ class SmallNodeWidget extends React.Component {
                   </button>
                   <button
                     className="btn-select-widget"
-                    onClick={() => deleteAllLinks(this.props.engine)}
+                    onClick={() => deleteAllLinks(
+                      this.props.engine,
+                      this.props.funnelId,
+                      this.props.updateModel,
+                    )}
                     title={"Delete All Links"}
                   >
                     <DeleteAllLinksSVG />
@@ -275,7 +283,7 @@ class SmallNodeWidget extends React.Component {
             className="small-model-wrapper"
             style={{
               boxShadow: `0 0 28px ${
-                this.props.node.extras.triggerd ? "#5ab5ff" : "#fff"
+                this.props.node.selected ? "#30d5c8" : "#F6F7F8"
                 }`
             }}
           >
@@ -420,6 +428,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    updateModel: (model, funnelId) => dispatch(updateModel(model, funnelId)),
     setConversionCompound: advancedConversion => dispatch(setConversionCompound(advancedConversion)),
     changeKeyDown: key => dispatch(changeKeyDown(key)),
     saveDiagramThenShowOrHideSettingsModal: (

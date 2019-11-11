@@ -36,7 +36,6 @@ import { serializationInWidget, deleteNode, cloneSelected } from "../custom/func
 import { AdvancedLinkModel } from "../custom/customLink/customLink";
 import Modal from "../../../common/Modal/Modal";
 import { ReactComponent as CopySVG } from "../../../../assets/selectForWidget/copy.svg";
-import { ReactComponent as DeleteAllLinksSVG } from "../../../../assets/selectForWidget/delete-all-links.svg";
 import { ReactComponent as DeleteSVG } from "../../../../assets/selectForWidget/delete.svg";
 import UndoRedo from "./UndoRedo";
 
@@ -501,7 +500,7 @@ export default class BodyWidget extends React.Component {
                   <button
                     className="btn-select-template"
                     onClick={() => {
-                      deleteNode(this.props.app.getDiagramEngine())
+                      deleteNode(this.props.app.getDiagramEngine(), null, null, this.props.work.updateModel)
 
                       this.setState({
                         showTemplateButtons: false

@@ -118,8 +118,10 @@ class App extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    model: state.history.present[`model${ownProps.match.params.funnelId}`],
+
     diagram: state.projects[`diagram${ownProps.match.params.funnelId}`],
+    model: state.history.present[`model${ownProps.match.params.funnelId}`],
+
     svg: state.projects.svgList,
     funnelId: ownProps.match.params.funnelId,
     message: state.projects.saveDiagramMessage,
