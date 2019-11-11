@@ -46,3 +46,6 @@ sudo chmod +x /usr/local/bin/docker-compose
 5) Переходим в директорию "/Funnels/back" и выполняем "sudo docker-compose up -d".
    Бэк поднимется на 9001 порту.
 Если по пути "Funnels/back/src/public" нет папок avatars, screenshots, funnelBackgrounds, создаем их вручную.
+
+Папки /src/buffer/avatars , /src/buffer/funnelBackgrounds , /src/buffer/screenshots
+sudo chmod -R 777 /src/buffer
