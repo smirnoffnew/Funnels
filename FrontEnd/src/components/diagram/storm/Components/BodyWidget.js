@@ -1135,13 +1135,14 @@ export default class BodyWidget extends React.Component {
                         event.dataTransfer.getData("storm-diagram-templates")
                       );
 
+                      const points = this.props.app
+                        .getDiagramEngine()
+                        .getRelativeMousePoint(event);
+
                       const model2 = new RJD.DiagramModel();
                       model2.deSerializeDiagram(JSON.parse(data.model.data), this.props.app
                         .getDiagramEngine());
 
-                      console.log('template', model2.getSelectedItems())
-
-                      let offset = { x: 600, y: 300 };
                       let model = this.props.app
                         .getDiagramEngine().getDiagramModel();
                       let itemMap = {};
@@ -1149,12 +1150,12 @@ export default class BodyWidget extends React.Component {
                         let newItem = item.clone(itemMap);
                         // offset the nodes slightly
                         if (newItem instanceof CustomNodeModel) {
-                          newItem.setPosition(newItem.x + offset.x, newItem.y + offset.y);
+                          newItem.setPosition(newItem.x + points.x, newItem.y + points.y);
                           model.addNode(newItem);
                         } else if (newItem instanceof AdvancedLinkModel) {
                           // offset the link points
                           newItem.getPoints().forEach(p => {
-                            p.updateLocation({ x: p.getX() + offset.x, y: p.getY() + offset.y });
+                            p.updateLocation({ x: p.getX() + points.x, y: p.getY() + points.y });
                           });
                           model.addLink(newItem);
                         }
