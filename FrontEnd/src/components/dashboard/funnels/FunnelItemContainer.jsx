@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { ActionCreators as UndoActionCreators } from 'redux-undo'
 import { connect } from "react-redux";
 import FunnelItem from "./FunnelItem.jsx";
 import { deleteFunnel, setPermission } from "../../../store/actions/projects";
@@ -31,6 +32,7 @@ class FunnelItemContainer extends Component {
         backgroundImg={backgroundImg}
         permissionForCollaborator={this.props.permissionForCollaborator}
         pathname={this.props.pathname}
+        clearHistory={this.props.clearHistory}
       />
     );
   }
@@ -44,6 +46,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToState = dispatch => ({
+  clearHistory: () => dispatch(UndoActionCreators.clearHistory()),
   setPermission: item1 => dispatch(setPermission(item1)),
   deleteFunnel: (projectId, funnelId) =>
     dispatch(deleteFunnel(projectId, funnelId))

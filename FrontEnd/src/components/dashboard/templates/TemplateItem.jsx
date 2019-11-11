@@ -71,7 +71,7 @@ class TemplateItem extends React.Component {
       <>
         <div className="project-wrapper">
           <div className="project-image">
-            <NavLink className="view-funnels" to={"/template/" + _id}>
+            <NavLink className="view-funnels" to={"/template/" + _id} onClick={() => this.props.clearHistory()}>
               Open
             </NavLink>
           </div>

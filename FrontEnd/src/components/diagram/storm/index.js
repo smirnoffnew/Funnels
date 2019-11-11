@@ -117,8 +117,9 @@ class App extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+  console.log('hh', state.history.present)
   return {
-    model: state.history.present.model,
+    model: state.history.present[`model${ownProps.match.params.funnelId}`],
     diagram: state.projects[`diagram${ownProps.match.params.funnelId}`],
     svg: state.projects.svgList,
     funnelId: ownProps.match.params.funnelId,
@@ -147,7 +148,7 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateModel: model => dispatch(updateModel(model)),
+    updateModel: (model, funnelId) => dispatch(updateModel(model, funnelId)),
     getSVG: () => dispatch(getSVG()),
     saveDiagram: (funnelId, obj, image) => dispatch(saveDiagram(funnelId, obj, image)),
     saveTemplate: (funnelId, obj) => dispatch(saveTemplate(funnelId, obj)),

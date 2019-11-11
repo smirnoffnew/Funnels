@@ -1254,7 +1254,8 @@ export default class BodyWidget extends React.Component {
                     // let _this = this
                     setTimeout(() => {
                       this.props.work.updateModel(
-                        this.props.app.serialization(this.props.app.getDiagramEngine().getDiagramModel())
+                        this.props.app.serialization(this.props.app.getDiagramEngine().getDiagramModel()),
+                        this.props.work.funnelId
                       )
                     })
                   }}

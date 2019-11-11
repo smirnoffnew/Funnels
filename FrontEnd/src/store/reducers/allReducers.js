@@ -14,6 +14,7 @@ const allReducers = ({
     history: undoable(projectReducer, {
         limit: 3, // set a limit for the history
         filter: includeAction('UPDATE_MODEL'),
+        // initTypes: ['@@redux-undo/GET_DIAGRAM'],
         // debug: true, 
     }),
     collaborations: collaborationsReducer,

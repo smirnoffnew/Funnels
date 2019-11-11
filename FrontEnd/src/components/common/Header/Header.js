@@ -179,7 +179,7 @@ class Header extends Component {
 
   render() {
     const userAvatar = JSON.parse(localStorage.getItem("userAvatar"))
-    console.log('userAvatar', userAvatar)
+    // console.log('userAvatar', userAvatar)
     const userFirstName = localStorage.getItem("userFirstName");
 
     if (this.props.error && this.props.error.length > 0) {
@@ -218,7 +218,7 @@ class Header extends Component {
                 id="burger-check"
                 type="checkbox"
                 checked={this.state.showHeaderNavigationBox}
-                onChange={this.changeHeaderNavigationBox}
+                onClick={this.changeHeaderNavigationBox}
               />
               <label htmlFor="burger-check" className="burger" />
               <nav id="navigation1" className="navigation">

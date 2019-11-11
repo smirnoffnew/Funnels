@@ -55,6 +55,9 @@ class FunnelItem extends React.Component {
             <NavLink
               className='view-funnels'
               to={'/diagram/' + _id}
+              onClick={()=> {
+                this.props.clearHistory()
+              }}
             >
               Open
             </NavLink>

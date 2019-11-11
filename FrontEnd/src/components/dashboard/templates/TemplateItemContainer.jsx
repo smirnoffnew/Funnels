@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { ActionCreators as UndoActionCreators } from 'redux-undo'
 import TemplateItem from "./TemplateItem.jsx";
 import {
   deleteTemplate,
@@ -27,6 +28,7 @@ class TemplateItemContainer extends Component {
         createNewProjectWithTemplate={this.createNewProjectWithTemplate}
         messageCreateProject={this.props.messageCreateProject}
         permissionForCollaborator={this.props.permissionForCollaborator}
+        clearHistory={this.props.clearHistory}
       />
     );
   }
@@ -40,6 +42,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToState = dispatch => ({
+  clearHistory: () => dispatch(UndoActionCreators.clearHistory()),
   deleteTemplate: funnelId => dispatch(deleteTemplate(funnelId)),
   createNewProjectWithTemplate: (id, name, projectId) =>
     dispatch(createNewProjectWithTemplate(id, name, projectId))

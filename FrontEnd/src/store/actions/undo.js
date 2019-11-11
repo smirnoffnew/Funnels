@@ -1,8 +1,9 @@
-export const updateModel = model => dispatch => {
+export const updateModel = (model, funnelId) => dispatch => {
   dispatch({
     type: 'UPDATE_MODEL',
     payload: {
-      model
+      model,
+      funnelId
     }
   })
 }
