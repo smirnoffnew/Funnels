@@ -590,9 +590,23 @@
   display: block;
 }
 
-
 .btn-select-template:hover {
-  background-color: #fd8f21;
+  background: linear-gradient(90deg, rgb(230, 45, 36) 0%, rgb(253, 143, 33) 100%);
+}
+
+.btn-select-template:nth-child(1):hover {
+  background: linear-gradient(90deg, rgb(230, 45, 36) 0%, rgb(253, 143, 33) 100%);
+  border-radius: 13px 0px 0px 13px;
+}
+
+.btn-select-template:nth-child(2):hover {
+  background: linear-gradient(90deg, rgb(230, 45, 36) 0%, rgb(253, 143, 33) 100%);
+  border-radius: 0px;
+}
+
+.btn-select-template:nth-child(3):hover {
+  background: linear-gradient(90deg, rgb(230, 45, 36) 0%, rgb(253, 143, 33) 100%);
+  border-radius: 0px 13px 13px 0px;
 }
 
 .btn-select-template {
@@ -601,12 +615,20 @@
   color: #848f99;
   background-color: transparent;
   cursor: pointer;
-  font-size: 14px;
-  padding: 6px;
+  /* font-size: 14px; */
+  /* padding: 6px; */
+  width: 50px;
+  height: 50px;
 }
 
 .btn-select-template-wrapper{
   background-color: #fff;
+  position: fixed;
+  bottom: 13px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid rgb(253, 143, 33);
+  border-radius: 13px;
 }
 
 .tray-item-name{

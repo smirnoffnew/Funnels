@@ -617,26 +617,13 @@ class BigNodeWidget extends React.Component {
                 beforeInjection={svg => {
                   svg.setAttribute(
                     "style",
-                    `box-shadow: 0 0 28px #30d5c8`
+                    `box-shadow: 0 0 28px rgba(253,143,33, 0.5)`
                   );
                 }}
               />
               :
-
               <ReactSVG
                 src={this.props.svg}
-                beforeInjection={svg => {
-                  svg.setAttribute(
-                    "style",
-                    `box-shadow: 0 0 28px ${
-                    this.props.node.extras.goald
-                      ? "#fd8f21"
-                      : null || this.props.node.extras.triggerd
-                        ? "#5ab5ff"
-                        : null
-                    }`
-                  );
-                }}
               />
           }
 

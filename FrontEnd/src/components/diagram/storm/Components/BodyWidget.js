@@ -281,7 +281,7 @@ export default class BodyWidget extends React.Component {
   }
 
   showTemplateItemName = () => {
-    if (this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems().length > 2) {
+    if (this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems().length > 1) {
       this.setState({
         templateItemName: '',
         showTemplateItemName: true,
@@ -397,11 +397,9 @@ export default class BodyWidget extends React.Component {
 
   showToolElement = this.debounce(e => {
     if (e.shiftKey) {
-      this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems().length > 2 ?
+      this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems().length > 1 ?
         this.setState({
           showTemplateButtons: true,
-          x: e.clientX,
-          y: e.clientY,
         })
         :
         this.setState({
@@ -409,10 +407,7 @@ export default class BodyWidget extends React.Component {
         })
     }
 
-  }, 5, true);
-
-
-
+  }, 50, true);
 
   render() {
     this.props.work.permissionForCollaborator.includes("Edit") ?
@@ -465,27 +460,23 @@ export default class BodyWidget extends React.Component {
             this.state.showTemplateButtons &&
             <div style={{
               position: 'absolute',
-              // top: this.state.y > this.state.x ? this.state.y + 40 : this.state.y - 40,
-              // left: this.state.x > this.state.y ? this.state.x - 80 : this.state.x + 80,
-              top: this.state.y - 40,
-              left: this.state.x - 80,
               zIndex: 10
             }}>
               {
                 <div className='btn-select-template-wrapper'>
                   <button
                     className="btn-select-template"
-                    onClick={() => {
-                      this.showTemplateItemName()
-                    }}
                     title={"Create Template"}
+                    onClick={() => this.showTemplateItemName()}
                   >
                     <div
                       style={{
-                        width: "15px",
-                        height: "15px",
+                        width: "50px",
+                        height: "50px",
                         backgroundColor: "transparent",
-                        position: "absolute"
+                        position: "absolute",
+                        left: 0,
+                        top: 0,
                       }}
                       onClick={() => this.showTemplateItemName()}
                     />
@@ -521,6 +512,7 @@ export default class BodyWidget extends React.Component {
                         this.props.work.saveDiagramThenShowOrHideSettingsModal,
                         this.props.work.funnelId,
                         this.props.app.getDiagramEngine().getDiagramModel().nodes[0],
+                        this.props.work.updateModel,
                       )
 
                       this.setState({
@@ -673,7 +665,7 @@ export default class BodyWidget extends React.Component {
                   this.props.work.permissionForCollaborator.includes("Edit") ?
                     <>
 
-                      
+
 
                       <div className="zoom-wrapper">
                         <ReactSVG
@@ -1139,6 +1131,17 @@ export default class BodyWidget extends React.Component {
                         .getDiagramEngine()
                         .getRelativeMousePoint(event);
 
+                      // console.log('points', points)
+                      // event.preventDefault();
+                      // event.stopPropagation();
+                      // // debugger
+                      // const boundingRect = event.currentTarget.getBoundingClientRect();
+                      // const clientWidth = boundingRect.width;
+                      // const clientHeight = boundingRect.height;
+                      // // compute mouse coords relative to canvas
+                      // const clientX = event.clientX - boundingRect.left;
+                      // const clientY = event.clientY - boundingRect.top;
+
                       const model2 = new RJD.DiagramModel();
                       model2.deSerializeDiagram(JSON.parse(data.model.data), this.props.app
                         .getDiagramEngine());
@@ -1149,6 +1152,8 @@ export default class BodyWidget extends React.Component {
                       _.forEach(model2.getSelectedItems(), item => {
                         let newItem = item.clone(itemMap);
                         // offset the nodes slightly
+
+                        console.log('newItem', newItem)
                         if (newItem instanceof CustomNodeModel) {
                           newItem.setPosition(newItem.x + points.x, newItem.y + points.y);
                           model.addNode(newItem);
@@ -1159,6 +1164,8 @@ export default class BodyWidget extends React.Component {
                           });
                           model.addLink(newItem);
                         }
+
+                        newItem.selected = true;
 
                       });
                     }
@@ -1250,14 +1257,15 @@ export default class BodyWidget extends React.Component {
                   allowLooseLinks={false}
                   // maxNumberPointsPerLink={0}
                   // actionStartedFiring={(e) => console.log('eeee', e)}
-                  actionStoppedFiring={() => {
-                    // let _this = this
-                    setTimeout(() => {
-                      this.props.work.updateModel(
-                        this.props.app.serialization(this.props.app.getDiagramEngine().getDiagramModel()),
-                        this.props.work.funnelId
-                      )
-                    })
+                  actionStoppedFiring={(e) => {
+                    // if (e instanceof RJD.MoveItemsAction) {
+                      setTimeout(() => {
+                        this.props.work.updateModel(
+                          this.props.app.serialization(this.props.app.getDiagramEngine().getDiagramModel()),
+                          this.props.work.funnelId
+                        )
+                      })
+                    // }
                   }}
 
                 />

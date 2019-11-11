@@ -133,15 +133,16 @@ export class TrayTemplatesItemWidget extends React.Component {
             }}
             style={{
               position: "absolute",
-              top: -6,
+              top: -9,
               right: -10,
               border: 0,
               cursor: "pointer",
               margin: "inherit",
               padding: "0px 4px 2px 4px",
               borderRadius: "35%",
-              fontSize: 14,
-              backgroundColor: "#ffabab"
+              fontSize: 10,
+              backgroundColor: "rgb(253, 143, 33)",
+              color: '#fff',
             }}
             title={"Delete Template"}
           >

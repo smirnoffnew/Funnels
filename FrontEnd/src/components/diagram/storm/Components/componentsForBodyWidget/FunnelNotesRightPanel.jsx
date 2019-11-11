@@ -229,8 +229,9 @@ export default class FunnelNotesRightPanel extends React.Component {
                           margin: "inherit",
                           padding: "0px 4px 2px 4px",
                           borderRadius: "35%",
-                          fontSize: 14,
-                          backgroundColor: "#ffabab"
+                          fontSize: 10,
+                          backgroundColor: "rgb(253, 143, 33)",
+                          color: '#fff',
                         }}
                         title={"Delete Note"}
                       >

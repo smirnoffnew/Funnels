@@ -283,7 +283,7 @@ class SmallNodeWidget extends React.Component {
             className="small-model-wrapper"
             style={{
               boxShadow: `0 0 28px ${
-                this.props.node.selected ? "#30d5c8" : "#F6F7F8"
+                this.props.node.selected ? "rgba(253,143,33, 0.5)" : "#F6F7F8"
                 }`
             }}
           >

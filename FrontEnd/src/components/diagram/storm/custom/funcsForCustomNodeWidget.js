@@ -96,7 +96,7 @@ export const cloneSelected = (
         });
         model.addLink(newItem);
       }
-      newItem.selected = false;
+      newItem.selected = true;
     });
     // document.getElementById("diagram-layer").click();
 

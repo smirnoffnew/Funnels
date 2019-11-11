@@ -20,8 +20,9 @@
   margin: inherit;
   padding: 0px 4px 2px 4px;
   border-radius: 35%;
-  font-size: 14;
-  background-color: #ffabab;               
+  font-size: 10px;
+  background-color: rgb(253, 143, 33);
+  color: #fff;
 }
 
 .node-panel-textarea-holder{
