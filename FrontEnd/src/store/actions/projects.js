@@ -172,10 +172,10 @@ export function deleteFunnel(project_id, funnel_id) {
       .catch(function (error) {
         if (error.response) {
           console.log(error.response)
-          alert(error.response.data.message)
+          alert(error.response.data.error)
           dispatch({
             type: 'DELETE_FUNNEL_FAILURE',
-            payload: error.response.data.message
+            payload: error.response.data.error
           });
         }
       });
@@ -195,10 +195,10 @@ export function deleteTemplate(template_id) {
       .catch(function (error) {
         if (error.response) {
           console.log(error.response)
-          alert(error.response.data.message)
+          alert(error.response.data.error)
           dispatch({
             type: 'DELETE_TEMPLATE_FAILURE',
-            payload: error.response.data.message
+            payload: error.response.data.error
           });
         }
       });

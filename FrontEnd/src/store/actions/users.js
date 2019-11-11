@@ -182,8 +182,7 @@ export function addPartner(tokenPartner) {
         //   payload: response.data.data
         // });
         dispatch({
-          type: 'ADD_PARTNER_MESSAGE',
-          payload: response.data.message
+          type: 'ADD_PARTNER_SUCCESS'
         });
         // console.log('zaebis', response.data)
         dispatch(push('/projects'));
@@ -191,8 +190,8 @@ export function addPartner(tokenPartner) {
       .catch(function (error) {
         if (error.response) {
           dispatch({
-            type: 'ADD_PARTNER_MESSAGE',
-            payload: error.response.data.message
+            type: 'ADD_PARTNER_FAILURE',
+            payload: error.response.data.error
           });
         }
       });

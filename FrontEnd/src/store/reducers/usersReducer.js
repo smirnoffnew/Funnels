@@ -131,9 +131,16 @@ export default function (state = initialState, action) {
         ...state,
         messageErrorDeleteUser: null
       }
-
-
-
+    case 'ADD_PARTNER_SUCCESS':
+      return { 
+        ...state, 
+        addPartnerError: '' 
+      };
+    case 'ADD_PARTNER_FAILURE':
+      return { 
+        ...state, 
+        addPartnerError: action.payload 
+      };
     default: return state;
   }
 }

@@ -75,7 +75,7 @@ export function changeUserPassword(data) {
           // console.log(error.response)
           dispatch({
             type: "SETTINGS_MESSAGE_PASSWORD_FAILURE",
-            payload: error.response.data.message
+            payload: error.response.data.error
           });
         }
       });
@@ -122,7 +122,7 @@ export function changeUserAvatar(avatar) {
           // console.log("err",error.response)
           dispatch({
             type: "SETTINGS_MESSAGE_AVATAR_FAILURE",
-            payload: error.response.data.message
+            payload: error.response.data.error
           });
         }
       });

@@ -32,7 +32,7 @@ export function addCollaborator(tokenCollaborator) {
         if (error.response) {
           dispatch({
             type: 'ADD_COLLABORATOR_FAILURE',
-            payload: error.response.data.message
+            payload: error.response.data.error
           });
         }
       });

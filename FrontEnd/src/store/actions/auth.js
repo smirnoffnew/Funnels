@@ -192,7 +192,7 @@ export function signinUser(props) {
       })
       .catch(function (error) {
         if (error.response) {
-          dispatch(authError(SIGNIN_FAILURE, error.response.data.message))
+          dispatch(authError(SIGNIN_FAILURE, error.response.data.error))
         }
       });
   }
@@ -206,7 +206,7 @@ export function validationUser(email) {
       .then(res => res.json())
       .catch(function (error) {
         if (error.response) {
-          dispatch(emailValidError(error.response.data.message))
+          dispatch(emailValidError(error.response.data.error))
         }
       });
   }
