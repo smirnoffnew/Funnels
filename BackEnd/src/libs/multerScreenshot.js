@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
          callback(null, `${process.env.SCREENSHOTBUFFER_DIR}`);
     },
     filename: function (req, file, callback) {
-        callback(null, `buffer-file${path.parse(file.originalname).ext}`);
+        callback(null, `${req.authData.profile._id}.jpg`);
     },
 });
 function fileFilter(req, file, callback){
@@ -16,4 +16,4 @@ function fileFilter(req, file, callback){
     }
     callback(null, true);
 }
-module.exports = multer({storage: storage, fileFilter: fileFilter,limits: {fileSize: maxSize}});
+module.exports = multer({storage: storage, fileFilter: fileFilter,limits: {fileSize: maxSize}}); 

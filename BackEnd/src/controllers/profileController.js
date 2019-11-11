@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require('path')
 const mongoose = require("mongoose");
 const Profile = require('../models/profile.js');
 const User = require('../models/user.js');
@@ -10,8 +11,6 @@ const activeCampaignApi = require('activecampaign-api');
 const fetch = require('node-fetch');
 const FormData = require('form-data');
 const avatarBufferDir = process.env.AVATARBUFFER_DIR;
-
-let bufferFile;
 
 module.exports = {
     changeMyProfile: async (req, res) => {
@@ -55,19 +54,11 @@ module.exports = {
             })
             .exec()
             /**find profile in db */
-            .then((profile)=>{
-                try {
-                    bufferFile = fs.readdirSync(avatarBufferDir)[0]
-                   
-                } catch (error) {
-                    throw new Error('Can not find buffer folder')
-                }
-                return profile
-            })
             .then((profile) => {
                 const data = new FormData();
-                data.append('userName', profile.accountName);
-                data.append('img', fs.createReadStream(`${avatarBufferDir}/${bufferFile}`));
+                let userId = profile._id.toString()
+                data.append('userName', userId);
+                data.append('img', fs.createReadStream(`${avatarBufferDir}/${req.authData.profile._id}${path.parse(req.file.originalname).ext}`));
                 return fetch(`${process.env.FILE_SHARER}/avatars`, {
                     method: 'POST',
                     body: data
@@ -87,9 +78,9 @@ module.exports = {
             })
             .then((result) => {
                 try {
-                    fs.unlinkSync(`${avatarBufferDir}/${bufferFile}`)
+                    fs.unlinkSync(`${avatarBufferDir}/${req.authData.profile._id}${path.parse(req.file.originalname).ext}`)
                 } catch (error) {
-                    throw new Error('problem with deleting buffer file')
+                    console.log(error)
                 }
                 res.status(200).json({
                     link:result,

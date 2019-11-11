@@ -15,7 +15,6 @@ const FormData = require('form-data');
 const backgroundbufferDir = process.env.BACKGROUNDBUFFER_DIR;
 const screenShotBufferDir = process.env.SCREENSHOTBUFFER_DIR;
 
-let bufferFile;
 
 const {
     base64encode,
@@ -218,16 +217,6 @@ module.exports = {
                 _id: req.params.funnelId
             })
             .exec()
-            .then(funnel => {
-                try {
-                    bufferFile = fs.readdirSync(backgroundbufferDir)[0]
-                    console.log(bufferFile)
-                } catch (error) {
-                    throw new Error('Can not find buffer folder')
-                }
-                return funnel
-            })
-            /**find profile in db */
             .then((funnel) => {
                 const data = new FormData();
                 data.append('funnelId', funnel._id.toString());
@@ -257,9 +246,9 @@ module.exports = {
                     }
                     if (items) {
                         try {
-                            // fs.unlinkSync(`${backgroundbufferDir}/${req.authData.profile._id}.jpg`)
+                             fs.unlinkSync(`${backgroundbufferDir}/${req.authData.profile._id}.jpg`)
                         } catch (error) {
-                            throw new Error('problem with deleting buffer file')
+                            console.log(error)
                         }
                     }
                     res.status(200).json({
@@ -271,6 +260,7 @@ module.exports = {
 
             })
             .catch(err => {
+                console.log('this error................', err)
                 res
                     .status(500)
                     .json({
@@ -312,16 +302,12 @@ module.exports = {
         const collaborateToken = jwt.sign(funnelColaborateData, process.env.SECRET_COLLABORATOR);
 
         const data = new FormData();
-        try {
-            bufferFile = fs.readdirSync(screenShotBufferDir)[0]
-        } catch (error) {
-            throw new Error('Can not find buffer folder')
-        }
         data.append('funnelsId', req.body.funnelsId);
-        data.append('img', fs.createReadStream(`${screenShotBufferDir}/${bufferFile}`));
+        data.append('img', fs.createReadStream(`${screenShotBufferDir}/${req.authData.profile._id}.jpg`));
+
         let screenShotLink;
         fetch(`${process.env.FILE_SHARER}/screenshots`, {
-                method: 'POST',
+                method: 'POST', 
                 body: data
             })
             .then(result => result.json())
@@ -345,9 +331,10 @@ module.exports = {
             })
             .then(() => {
                 try {
-                    fs.unlinkSync(`${screenShotBufferDir}/${bufferFile}`)
+                    fs.unlinkSync(`${screenShotBufferDir}/${req.authData.profile._id}.jpg`)
                 } catch (error) {
-                    throw new Error('problem with deleting buffer file')
+                    console.log(error)
+                    //throw new Error('problem with deleting buffer file')
                 }
             })
             .catch(err => {
