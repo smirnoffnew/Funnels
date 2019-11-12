@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1a6379e7-8c77-4562-b744-1be3392afa02",
+		"_postman_id": "2bb38534-f5d9-4633-9803-10556c074b1e",
 		"name": "Funnelsmap",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -22,7 +22,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"password\":\"test2411\",\n\t\"email\":\"ttd86@ukr.net\",\n\t\"firstName\":\"testName\",\n\t\"accountName\":\"testAcc\"\n\t\n}"
+							"raw": "{\n\t\"password\":\"artshirin2009@gmail.com\",\n\t\"email\":\"artshirin2009@gmail.com\",\n\t\"firstName\":\"artFirstName\",\n\t\"accountName\":\"artAcc3\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9001/sign-up",
@@ -52,7 +52,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"password\":\"test2411\",\n\t\"email\":\"ttd86@ukr.net\"\n}"
+							"raw": "{\n\t\"email\":\"artshirin2009@gmail.com\",\n  \"password\": \"artshirin2009@gmail.com\",\n\t\"browser\": \"Mozilla/5.0 (Linux; Android 7.0; Pixel C Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/52.0.2743.98 Safari/537.36\",\n\t\"os\":\"Mozilla/5.0 (Linux; U; Android 4.4.2; en-us; SCH-I535 Build/KOT49H) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9001/sign-in",
@@ -82,7 +82,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\":\"tt86@ukr.net\"\n}"
+							"raw": "{\n\"email\":\"artshirin2009@gmail.com\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9001/email-validation",
@@ -97,8 +97,80 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "resetPassword",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\":\"artshirin2009@gmail.com\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9001/reset-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "changePassword",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "letter-confirm",
+								"type": "text",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFydHNoaXJpbjIwMDlAZ21haWwuY29tIiwiaWF0IjoxNTcyNjEzMDUzLCJleHAiOjE1NzI2MTY2NTN9.ZwgfxD5noAHyfbD1mq1VXO5spnprCSi5BlH_2zUFuf4"
+							},
+							{
+								"key": "",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\":\"artshirin200449@gmail.com\",\n  \"password\": \"artshirin2009@gmail.com\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9001/change-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"change-password"
+							]
+						}
+					},
+					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "devRoutes",
@@ -169,10 +241,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:9001/keys",
 							"protocol": "http",
@@ -187,11 +255,64 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "profileRoutes",
 			"item": [
+				{
+					"name": "update avatar",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"name": "Content-Type",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlIjp7InBhc3N3b3JkIjoiJDJiJDEwJFdjamJ2NnNzazk0Ukx2LmdpcDZDUHUvZW5uRFFvSHV1TzY2QmVmbXo1THVCQ0V5UHF0UGxTIiwiZW1haWwiOiJhcnRzaGlyaW4yMDA5QGdtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImFydEZpcnN0TmFtZSIsImFjY291bnROYW1lIjoiYXJ0QWNjMSIsImRlc2NyaXB0aW9uIjpudWxsLCJwaG90b1VybCI6ImxvY2FsaG9zdDozMDAxL2ltYWdlcy9hcnRBY2MxLzE1NzMxMzg4MTgzNzIuanBnIiwibGltaXRlZCI6ZmFsc2UsIl9pZCI6IjVkYzQxZmE1YTY1OTc5MzNhMDhkOGJiOSIsIm15Q29sbGFib3JhdGlvbnMiOltdLCJteVBhcnRuZXJzIjpbXX0sInVzZXJJZCI6IjVkYzQxZmE1YTY1OTc5MzNhMDhkOGJiNyIsImlhdCI6MTU3MzE2NDM5NCwiZXhwIjoxNTczNDIzNTk0fQ.p06Ui87Ysya3aFV-39t4_Y9k9Fd9Zz9PoaGz9-cr_WI",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlIjp7InBhc3N3b3JkIjoiJDJiJDEwJFdjamJ2NnNzazk0Ukx2LmdpcDZDUHUvZW5uRFFvSHV1TzY2QmVmbXo1THVCQ0V5UHF0UGxTIiwiZW1haWwiOiJhcnRzaGlyaW4yMDA5QGdtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImFydEZpcnN0TmFtZSIsImFjY291bnROYW1lIjoiYXJ0QWNjMSIsImRlc2NyaXB0aW9uIjpudWxsLCJwaG90b1VybCI6ImxvY2FsaG9zdDozMDAxL2ltYWdlcy9hcnRBY2MxLzE1NzMxMzg4MTgzNzIuanBnIiwibGltaXRlZCI6ZmFsc2UsIl9pZCI6IjVkYzQxZmE1YTY1OTc5MzNhMDhkOGJiOSIsIm15Q29sbGFib3JhdGlvbnMiOltdLCJteVBhcnRuZXJzIjpbXX0sInVzZXJJZCI6IjVkYzQxZmE1YTY1OTc5MzNhMDhkOGJiNyIsImlhdCI6MTU3MzE2NDM5NCwiZXhwIjoxNTczNDIzNTk0fQ.p06Ui87Ysya3aFV-39t4_Y9k9Fd9Zz9PoaGz9-cr_WI"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/agent/Desktop/212121.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:9001/profile/avatar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"profile",
+								"avatar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get photo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "updateDescribes",
 					"request": {
@@ -229,89 +350,26 @@
 					"response": []
 				},
 				{
-					"name": "resetPassword",
+					"name": "test requestify",
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlIjp7ImRlc2NyaXB0aW9uIjpudWxsLCJfaWQiOiI1Y2RjMDMyMzJkY2NiNDAwOWI2MjZjM2MiLCJwYXNzd29yZCI6IiQyYiQxMCRRdTRKVm5DZTcwUHBTODRNRDdGOHguVHBSV3NBNVZzd3BiU0lMNk42MHp5TGxCN2wvRjg0RyIsImVtYWlsIjoidHRkODZAdWtyLm5ldCIsImZpcnN0TmFtZSI6InRlc3ROYW1lIiwiYWNjb3VudE5hbWUiOiJ0ZXN0QWNjb3VudE5hbWUifSwiaWF0IjoxNTU3OTIyNTk1LCJleHAiOjE1NTgxODE3OTV9.edUtKVRvP_iQ7hjLzR2AEyA-WdmySisrq20sxOWyHyM",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"email\":\"ttd86@ukr.net\"\n}"
-						},
+						"header": [],
 						"url": {
-							"raw": "http://localhost:9001/reset-password",
+							"raw": "http://localhost:3001/req-test",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "9001",
+							"port": "3001",
 							"path": [
-								"reset-password"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "changePassword",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "letter-confirm",
-								"type": "text",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InR0ZDg2QHVrci5uZXQiLCJpYXQiOjE1NTc5OTI2MjksImV4cCI6MTU1Nzk5NjIyOX0.KaSBl7gRXbPOjjOvITCMTZuwcklFiyFWzgV13MZdizw"
-							},
-							{
-								"key": "",
-								"type": "text",
-								"value": "",
-								"disabled": true
-							},
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"email\":\"ttd86@ukr.net\",\n  \"password\": \"test777\"\n}"
-						},
-						"url": {
-							"raw": "http://localhost:9001/change-password",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9001",
-							"path": [
-								"change-password"
+								"req-test"
 							]
 						}
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "projectRoutes",
@@ -329,13 +387,13 @@
 							},
 							{
 								"key": "authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlIjp7ImRlc2NyaXB0aW9uIjp7ImNvbXBhbnlOYW1lIjoiMTIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyIn0sIl9pZCI6IjVjZGQwODA1NTgwYmEyMDBlZDRiMThhMiIsInBhc3N3b3JkIjoiJDJiJDEwJFhkOEhPajF3czJseUxjNmp3Sk9qRGVOeTZCeW5zMDMzbVBVdW9MTXdTQ1JRM1U4ME1iUkRpIiwiZW1haWwiOiJ0dGQ4NkB1a3IubmV0IiwiZmlyc3ROYW1lIjoidGVzdE5hbWUiLCJhY2NvdW50TmFtZSI6InRlc3RBY2NvdW50TmFtZSJ9LCJpYXQiOjE1NTc5OTI3MjQsImV4cCI6MTU1ODI1MTkyNH0.MwbFjyqUmWbtOvsR68_eMp4bfwATpZmIXvKGxSSR8AM",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlIjp7InBhc3N3b3JkIjoiJDJiJDEwJFdjamJ2NnNzazk0Ukx2LmdpcDZDUHUvZW5uRFFvSHV1TzY2QmVmbXo1THVCQ0V5UHF0UGxTIiwiZW1haWwiOiJhcnRzaGlyaW4yMDA5QGdtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImFydEZpcnN0TmFtZSIsImFjY291bnROYW1lIjoiYXJ0QWNjMSIsImRlc2NyaXB0aW9uIjpudWxsLCJwaG90b1VybCI6ImxvY2FsaG9zdDozMDAxL2ltYWdlcy9hcnRBY2MxLzE1NzMxOTc1MzY5MDcuanBnIiwibGltaXRlZCI6ZmFsc2UsIl9pZCI6IjVkYzQxZmE1YTY1OTc5MzNhMDhkOGJiOSIsIm15Q29sbGFib3JhdGlvbnMiOltdLCJteVBhcnRuZXJzIjpbXX0sInVzZXJJZCI6IjVkYzQxZmE1YTY1OTc5MzNhMDhkOGJiNyIsImlhdCI6MTU3MzE5ODEzNiwiZXhwIjoxNTczNDU3MzM2fQ.9umOW2F8rzu_YztCDL_9ax3vsmDFr4hwlFmuxNdPwWI",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"projectName\":\"testProject\"\n}"
+							"raw": "{\n  \"projectName\":\"artTestProject\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:9001/project",
@@ -362,10 +420,6 @@
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:9001/project",
 							"protocol": "http",
@@ -402,7 +456,7 @@
 							"raw": "{\n\t\"firstName\":\"ATB\",\n\t\"permissions\":\"view\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9001/project_col_add/5cdd541b02aca60079759717",
+							"raw": "http://localhost:9001/project_col_add/5cdd541b02aca60079759717?",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -495,10 +549,6 @@
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:9001/projects",
 							"protocol": "http",
@@ -513,7 +563,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "funnelRoutes",
@@ -525,7 +576,7 @@
 						"header": [
 							{
 								"key": "authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlIjp7ImRlc2NyaXB0aW9uIjpudWxsLCJwaG90b1VybCI6IiIsIl9pZCI6IjVjZTY3NGQzNGM5YmRhMDJhMDNhYWFmOCIsInBhc3N3b3JkIjoiJDJiJDEwJGdVVS9GdVlRVVRrV1JtZDhnUkxheE9uTEU5YXFWV1ZCOWZ1SlVOcWhHWC5FY2tLRTdGUlZ5IiwiZW1haWwiOiJrdXJiYXRza3lrdkBnbWFpbC5jb20iLCJmaXJzdE5hbWUiOiJLdXJiYXRza3kiLCJhY2NvdW50TmFtZSI6Ikt1cmJhdHNreUFjYyJ9LCJpYXQiOjE1NTg2MDcwNTksImV4cCI6MTU1ODg2NjI1OX0.4R51Whk9yS6LN5RuH564tVZrthx6EdWOpl9l2-909K4",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlIjp7InBhc3N3b3JkIjoiJDJiJDEwJFdjamJ2NnNzazk0Ukx2LmdpcDZDUHUvZW5uRFFvSHV1TzY2QmVmbXo1THVCQ0V5UHF0UGxTIiwiZW1haWwiOiJhcnRzaGlyaW4yMDA5QGdtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImFydEZpcnN0TmFtZSIsImFjY291bnROYW1lIjoiYXJ0QWNjMSIsImRlc2NyaXB0aW9uIjpudWxsLCJwaG90b1VybCI6ImxvY2FsaG9zdDozMDAxL2ltYWdlcy9hcnRBY2MxLzE1NzMxOTc1MzY5MDcuanBnIiwibGltaXRlZCI6ZmFsc2UsIl9pZCI6IjVkYzQxZmE1YTY1OTc5MzNhMDhkOGJiOSIsIm15Q29sbGFib3JhdGlvbnMiOltdLCJteVBhcnRuZXJzIjpbXX0sInVzZXJJZCI6IjVkYzQxZmE1YTY1OTc5MzNhMDhkOGJiNyIsImlhdCI6MTU3MzE5ODEzNiwiZXhwIjoxNTczNDU3MzM2fQ.9umOW2F8rzu_YztCDL_9ax3vsmDFr4hwlFmuxNdPwWI",
 								"type": "text"
 							},
 							{
@@ -540,15 +591,137 @@
 							"raw": "{\n\t\"funnelName\":\"TESTYOURSELF333\",\n\t\"funnelBody\":\"testFunnelBody\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9001/funnel_create/5ce6b1fc0677860493c8a9c5",
+							"raw": "http://localhost:9001/funnel/5dc51a86ff896c30f06361a2",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "9001",
 							"path": [
-								"funnel_create",
-								"5ce6b1fc0677860493c8a9c5"
+								"funnel",
+								"5dc51a86ff896c30f06361a2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getFunellSVG",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlIjp7InBhc3N3b3JkIjoiJDJiJDEwJFdjamJ2NnNzazk0Ukx2LmdpcDZDUHUvZW5uRFFvSHV1TzY2QmVmbXo1THVCQ0V5UHF0UGxTIiwiZW1haWwiOiJhcnRzaGlyaW4yMDA5QGdtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImFydEZpcnN0TmFtZSIsImFjY291bnROYW1lIjoiYXJ0QWNjMSIsImRlc2NyaXB0aW9uIjpudWxsLCJwaG90b1VybCI6ImxvY2FsaG9zdDozMDAxL2ltYWdlcy9hcnRBY2MxLzE1NzMxOTc1MzY5MDcuanBnIiwibGltaXRlZCI6ZmFsc2UsIl9pZCI6IjVkYzQxZmE1YTY1OTc5MzNhMDhkOGJiOSIsIm15Q29sbGFib3JhdGlvbnMiOltdLCJteVBhcnRuZXJzIjpbXX0sInVzZXJJZCI6IjVkYzQxZmE1YTY1OTc5MzNhMDhkOGJiNyIsImlhdCI6MTU3MzE5ODEzNiwiZXhwIjoxNTczNDU3MzM2fQ.9umOW2F8rzu_YztCDL_9ax3vsmDFr4hwlFmuxNdPwWI"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:9001/funnel/svg",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"funnel",
+								"svg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addFunnelDiagramAndBackground",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlIjp7InBhc3N3b3JkIjoiJDJiJDEwJFdjamJ2NnNzazk0Ukx2LmdpcDZDUHUvZW5uRFFvSHV1TzY2QmVmbXo1THVCQ0V5UHF0UGxTIiwiZW1haWwiOiJhcnRzaGlyaW4yMDA5QGdtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImFydEZpcnN0TmFtZSIsImFjY291bnROYW1lIjoiYXJ0QWNjMSIsImRlc2NyaXB0aW9uIjpudWxsLCJwaG90b1VybCI6IjQ1LjYxLjQ4LjE1My9hdmF0YXJzL2FydEFjYzEvMTU3MzM3MjMwMzUzNy5qcGciLCJsaW1pdGVkIjpmYWxzZSwiX2lkIjoiNWRjNDFmYTVhNjU5NzkzM2EwOGQ4YmI5IiwibXlDb2xsYWJvcmF0aW9ucyI6W10sIm15UGFydG5lcnMiOltdfSwidXNlcklkIjoiNWRjNDFmYTVhNjU5NzkzM2EwOGQ4YmI3IiwiaWF0IjoxNTczNDYxMDU0LCJleHAiOjE1NzM3MjAyNTR9.nJPDovYlRa0m0lfHWkPey8lzQpGbw94ojntrYKsl9cQ"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "funnelBackground",
+									"type": "file",
+									"src": "/C:/Users/agent/Desktop/test-images/adminhot-product_250x250.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:9001/funnel/diagram/5dc51b55ff896c30f06361a4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"funnel",
+								"diagram",
+								"5dc51b55ff896c30f06361a4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getScreenshot",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlIjp7InBhc3N3b3JkIjoiJDJiJDEwJFdjamJ2NnNzazk0Ukx2LmdpcDZDUHUvZW5uRFFvSHV1TzY2QmVmbXo1THVCQ0V5UHF0UGxTIiwiZW1haWwiOiJhcnRzaGlyaW4yMDA5QGdtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImFydEZpcnN0TmFtZSIsImFjY291bnROYW1lIjoiYXJ0QWNjMSIsImRlc2NyaXB0aW9uIjpudWxsLCJwaG90b1VybCI6IjQ1LjYxLjQ4LjE1My9hdmF0YXJzL2FydEFjYzEvMTU3MzM3MjMwMzUzNy5qcGciLCJsaW1pdGVkIjpmYWxzZSwiX2lkIjoiNWRjNDFmYTVhNjU5NzkzM2EwOGQ4YmI5IiwibXlDb2xsYWJvcmF0aW9ucyI6W10sIm15UGFydG5lcnMiOltdfSwidXNlcklkIjoiNWRjNDFmYTVhNjU5NzkzM2EwOGQ4YmI3IiwiaWF0IjoxNTczNDYxMDU0LCJleHAiOjE1NzM3MjAyNTR9.nJPDovYlRa0m0lfHWkPey8lzQpGbw94ojntrYKsl9cQ"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "screenshot",
+									"type": "file",
+									"src": "/C:/Users/agent/Desktop/test-images/adminhot-product_250x250.jpg"
+								},
+								{
+									"key": "funnelsId",
+									"value": "5dc51b55ff896c30f06361a4",
+									"type": "text"
+								},
+								{
+									"key": "permissions",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:9001/funnel/diagram/screenshot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"funnel",
+								"diagram",
+								"screenshot"
 							]
 						}
 					},
@@ -565,10 +738,6 @@
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:9001/funnels/5cdeb56c6b8b95018719813c",
 							"protocol": "http",
@@ -732,10 +901,6 @@
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://localhost:9001/funnels_col?",
 							"protocol": "http",
@@ -749,7 +914,7 @@
 							"query": [
 								{
 									"key": "",
-									"value": null
+									"value": ""
 								}
 							]
 						}
@@ -795,7 +960,31 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		}
-	]
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "6069039c-b9cb-41e6-ac40-774afa92ef7d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "4c33e314-19bb-4b7c-8293-fcc4d725ab3a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
 }

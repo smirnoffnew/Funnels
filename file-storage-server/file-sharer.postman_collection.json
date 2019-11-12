@@ -1,0 +1,96 @@
+{
+	"info": {
+		"_postman_id": "b9efa319-b211-4423-b50a-1b6726f09c25",
+		"name": "file-sharer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get-test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userName",
+							"value": "user2",
+							"type": "text"
+						},
+						{
+							"key": "img",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/avatars",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"avatars"
+					],
+					"query": [
+						{
+							"key": "imgUploader",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-image",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "e1yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyQWNjb3VudCI6InVzZXIyIiwiaWF0IjoxNTcyMzUxODUxLCJleHAiOjE1NzI0MzgyNTF9.zntC7Hk2pWi0kioGVECcHUpCpS9nuiDdp2kPMWr5tUs",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/images/user2/1572352159297.jpg",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"images",
+						"user2",
+						"1572352159297.jpg"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

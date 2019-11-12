@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "63010fc0-d707-47f4-83ef-b70101f00c66",
-		"name": "Funnelsmap my",
+		"_postman_id": "8dcddad6-5eed-4010-aeac-2607d61ea065",
+		"name": "AWS Funnelsmap",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -55,10 +55,14 @@
 							"raw": "{\n\t\"email\":\"artshirin2009@gmail.com\",\n  \"password\": \"artshirin2009@gmail.com\",\n\t\"browser\": \"Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.0\",\n\t\"os\":\"dasd\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:9001/sign-in",
+							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/sign-in",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"ec2-3-124-11-139",
+								"eu-central-1",
+								"compute",
+								"amazonaws",
+								"com"
 							],
 							"port": "9001",
 							"path": [
@@ -283,15 +287,19 @@
 								{
 									"key": "avatar",
 									"type": "file",
-									"src": "/C:/Users/agent/Desktop/adminhot-product_250x250.jpg"
+									"src": "/C:/Users/agent/Desktop/test-images/212121.jpg"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:9001/profile/avatar",
+							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/profile/avatar",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"ec2-3-124-11-139",
+								"eu-central-1",
+								"compute",
+								"amazonaws",
+								"com"
 							],
 							"port": "9001",
 							"path": [
@@ -644,25 +652,35 @@
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
 								{
+									"key": "funnelBody",
+									"type": "file",
+									"src": "/C:/Users/agent/Desktop/test-images/obj.json",
+									"disabled": true
+								},
+								{
 									"key": "funnelBackground",
 									"type": "file",
-									"src": "/C:/Users/agent/Desktop/fun_back.jpg"
+									"src": "/C:/Users/agent/Desktop/test-images/fun___back.jpg"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:9001/funnel/diagram/5dc51b55ff896c30f06361a4",
+							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/funnel/diagram/5dc51b55ff896c30f06361a4",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"ec2-3-124-11-139",
+								"eu-central-1",
+								"compute",
+								"amazonaws",
+								"com"
 							],
 							"port": "9001",
 							"path": [
@@ -697,7 +715,7 @@
 								{
 									"key": "screenshot",
 									"type": "file",
-									"src": "/C:/Users/agent/Desktop/sceen.jpg"
+									"src": "/C:/Users/agent/Desktop/test-images/adminhot-product_250x250.jpg"
 								},
 								{
 									"key": "funnelsId",
@@ -712,10 +730,14 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:9001/funnel/diagram/screenshot",
+							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/funnel/diagram/screenshot",
 							"protocol": "http",
 							"host": [
-								"localhost"
+								"ec2-3-124-11-139",
+								"eu-central-1",
+								"compute",
+								"amazonaws",
+								"com"
 							],
 							"port": "9001",
 							"path": [
@@ -914,7 +936,7 @@
 							"query": [
 								{
 									"key": "",
-									"value": null
+									"value": ""
 								}
 							]
 						}
