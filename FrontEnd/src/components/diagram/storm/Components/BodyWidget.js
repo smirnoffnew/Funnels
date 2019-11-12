@@ -35,8 +35,8 @@ import MobileDevice from "./componentsForBodyWidget/MobileDevice";
 import { serializationInWidget, deleteNode, cloneSelected } from "../custom/funcsForCustomNodeWidget";
 import { AdvancedLinkModel } from "../custom/customLink/customLink";
 import Modal from "../../../common/Modal/Modal";
-import { ReactComponent as CopySVG } from "../../../../assets/selectForWidget/copy.svg";
-import { ReactComponent as DeleteSVG } from "../../../../assets/selectForWidget/delete.svg";
+import CopySVG from "../../../../assets/selectForWidget/copy.svg";
+import DeleteSVG from "../../../../assets/selectForWidget/delete.svg";
 import UndoRedo from "./UndoRedo";
 
 const Select = ({ show, children, style }) => {
@@ -467,7 +467,6 @@ export default class BodyWidget extends React.Component {
                   <button
                     className="btn-select-template"
                     title={"Create Template"}
-                    onClick={() => this.showTemplateItemName()}
                   >
                     <div
                       style={{
@@ -483,45 +482,79 @@ export default class BodyWidget extends React.Component {
                     <ReactSVG
                       src={FunnelTemplate}
                       beforeInjection={svg => {
-                        svg.setAttribute('style', 'width: 15px; height: 15px; ')
+                        svg.setAttribute('style', 'width: 25px; height: 25px; ')
                       }}
                     />
                   </button>
 
                   <button
                     className="btn-select-template"
-                    onClick={() => {
-                      deleteNode(this.props.app.getDiagramEngine(), null, null, this.props.work.updateModel)
-
-                      this.setState({
-                        showTemplateButtons: false
-                      })
-                    }}
                     title={"Delete"}
                   >
-                    <DeleteSVG />
+                    <div
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        backgroundColor: "transparent",
+                        position: "absolute",
+                        left: 50,
+                        top: 0,
+                      }}
+                      onClick={() => {
+                        deleteNode(
+                          this.props.app.getDiagramEngine(), 
+                          this.props.work.funnelId, 
+                          this.props.work.updateModel
+                        )
+
+                        this.setState({
+                          showTemplateButtons: false
+                        })
+                      }}
+                    />
+                    <ReactSVG
+                      src={DeleteSVG}
+                      beforeInjection={svg => {
+                        svg.setAttribute('style', 'width: 25px; height: 25px; ')
+                      }}
+                    />
                   </button>
 
                   <button
                     className="btn-select-template"
-                    onClick={() => {
-                      cloneSelected(
-                        this.props.work.diagram.funnelName,
-                        this.props.work.diagram.funnelNotes,
-                        this.props.app.getDiagramEngine(),
-                        this.props.work.saveDiagramThenShowOrHideSettingsModal,
-                        this.props.work.funnelId,
-                        this.props.app.getDiagramEngine().getDiagramModel().nodes[0],
-                        this.props.work.updateModel,
-                      )
-
-                      this.setState({
-                        showTemplateButtons: false
-                      })
-                    }}
                     title={"Copy"}
                   >
-                    <CopySVG />
+                     <div
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        backgroundColor: "transparent",
+                        position: "absolute",
+                        left: 100,
+                        top: 0,
+                      }}
+                      onClick={() => {
+                        cloneSelected(
+                          this.props.work.diagram.funnelName,
+                          this.props.work.diagram.funnelNotes,
+                          this.props.app.getDiagramEngine(),
+                          this.props.work.saveDiagramThenShowOrHideSettingsModal,
+                          this.props.work.funnelId,
+                          this.props.app.getDiagramEngine().getDiagramModel().nodes[0],
+                          this.props.work.updateModel,
+                        )
+  
+                        this.setState({
+                          showTemplateButtons: false
+                        })
+                      }}
+                    />
+                    <ReactSVG
+                      src={CopySVG}
+                      beforeInjection={svg => {
+                        svg.setAttribute('style', 'width: 25px; height: 25px; ')
+                      }}
+                    />
                   </button>
 
                 </div>
@@ -1259,12 +1292,12 @@ export default class BodyWidget extends React.Component {
                   // actionStartedFiring={(e) => console.log('eeee', e)}
                   actionStoppedFiring={(e) => {
                     // if (e instanceof RJD.MoveItemsAction) {
-                      setTimeout(() => {
-                        this.props.work.updateModel(
-                          this.props.app.serialization(this.props.app.getDiagramEngine().getDiagramModel()),
-                          this.props.work.funnelId
-                        )
-                      })
+                    setTimeout(() => {
+                      this.props.work.updateModel(
+                        this.props.app.serialization(this.props.app.getDiagramEngine().getDiagramModel()),
+                        this.props.work.funnelId
+                      )
+                    })
                     // }
                   }}
 

@@ -101,7 +101,6 @@ class SmallNodeWidget extends React.Component {
   }
 
   render() {
-    console.log('this', this)
     return (
       <>
         <div className="small-node-title">
@@ -256,7 +255,6 @@ class SmallNodeWidget extends React.Component {
                       deleteNode(
                         this.props.engine,
                         this.props.funnelId,
-                        this.props.node.id,
                         this.props.updateModel,
                       )
                     }
@@ -281,11 +279,6 @@ class SmallNodeWidget extends React.Component {
 
           <div
             className="small-model-wrapper"
-            style={{
-              boxShadow: `0 0 28px ${
-                this.props.node.selected ? "rgba(253,143,33, 0.5)" : "#F6F7F8"
-                }`
-            }}
           >
             <div style={{ padding: 5, width: 40, height: 40 }}>
               <ReactSVG

@@ -1,6 +1,9 @@
 import React from 'react'
 import { ActionCreators as UndoActionCreators } from 'redux-undo'
 import { connect } from 'react-redux'
+import UndoSVG from "../../../../assets/undo.svg";
+import RedoSVG from "../../../../assets/redo.svg";
+import ReactSVG from 'react-svg';
 
 let UndoRedo = ({ canUndo, canRedo, onUndo, onRedo }) => (
   <div className='undo-wrapper'>
@@ -12,7 +15,13 @@ let UndoRedo = ({ canUndo, canRedo, onUndo, onRedo }) => (
         height: 35
       }}
     >
-      Undo
+      <ReactSVG
+        src={UndoSVG}
+        beforeInjection={svg => {
+          svg.setAttribute('style', 'width: 30px; height: 30px;')
+        }}
+      />
+      {/* <UndoSVG /> */}
     </button>
     <button
       className={canRedo ? 'btn btn-1' : 'btn btn-1 btn-disabled'}
@@ -23,7 +32,13 @@ let UndoRedo = ({ canUndo, canRedo, onUndo, onRedo }) => (
         height: 35
       }}
     >
-      Redo
+       <ReactSVG
+        src={RedoSVG}
+        beforeInjection={svg => {
+          svg.setAttribute('style', 'width: 30px; height: 30px;')
+        }}
+      />
+      {/* <RedoSVG /> */}
     </button>
   </div>
 )

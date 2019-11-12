@@ -79,6 +79,7 @@ class TextWithOutPortsWidget extends React.Component {
           style={{
             position: "relative",
             zIndex: 10,
+            borderRadius: 6,
           }}
           onMouseEnter={
             !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) &&
@@ -123,10 +124,6 @@ class TextWithOutPortsWidget extends React.Component {
 
                   this.props.node &&
                   this.props.node.extras.widthd,
-
-              boxShadow: `0 0 28px ${
-                this.props.node.selected ? "rgba(253,143,33, 0.5)" : "#F6F7F8"
-                }`
             }}
             placeholder="text"
             type="text"
@@ -175,7 +172,6 @@ class TextWithOutPortsWidget extends React.Component {
                 onClick={() => deleteNode(
                   this.props.engine,
                   this.props.funnelId,
-                  this.props.node.id,
                   this.props.updateModel
                 )}
                 title={"Delete"}

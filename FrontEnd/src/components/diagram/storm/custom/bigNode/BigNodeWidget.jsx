@@ -587,7 +587,6 @@ class BigNodeWidget extends React.Component {
                       deleteNode(
                         this.props.engine,
                         this.props.funnelId,
-                        this.props.node.id,
                         this.props.updateModel,
                       )
                     }}
@@ -610,22 +609,9 @@ class BigNodeWidget extends React.Component {
               )}
           </ClickOutside>
 
-          {
-            this.props.node.selected ?
-              <ReactSVG
-                src={this.props.svg}
-                beforeInjection={svg => {
-                  svg.setAttribute(
-                    "style",
-                    `box-shadow: 0 0 28px rgba(253,143,33, 0.5)`
-                  );
-                }}
-              />
-              :
-              <ReactSVG
-                src={this.props.svg}
-              />
-          }
+          <ReactSVG
+            src={this.props.svg}
+          />
 
           <div
             style={{

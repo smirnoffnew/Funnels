@@ -22,6 +22,7 @@
 }
 
 .node-panel-textarea-without-ports:focus{
- border: 1px solid #F15C22
+ /* border: 1px solid #F15C22; */
+ /* height: 100%; */
 }
 

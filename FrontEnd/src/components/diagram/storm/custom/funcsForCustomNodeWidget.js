@@ -5,10 +5,11 @@ import { CustomNodeModel } from "./CustomNodeModel";
 import { AdvancedLinkModel } from "./customLink/customLink";
 import { API } from '../../../../store/actions/instance'
 
-export const deleteNode = (engine, funnelId, nodeId, updateModel) => {
+export const deleteNode = (engine, funnelId, updateModel) => {
+
   _.forEach(engine.getDiagramModel().getSelectedItems(), item => {
     if (item instanceof CustomNodeModel) {
-      API.delete(`funnel/node/delete/${nodeId}/${funnelId}`).then(() => console.log())
+      // API.delete(`funnel/node/delete/${item.id}/${funnelId}`).then(() => console.log())
       item.remove()
     }
     if (item instanceof PointModel) {
@@ -22,7 +23,7 @@ export const deleteNode = (engine, funnelId, nodeId, updateModel) => {
       funnelId,
     )
   })
-  // document.getElementById("diagram-layer").click();
+
 };
 
 export const deleteLink = (engine, funnelId, updateModel)  => {

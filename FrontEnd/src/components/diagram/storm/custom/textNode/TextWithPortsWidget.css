@@ -10,6 +10,7 @@
   border: 1px solid #dce5ec;
   top: 0;
   right: 0;
+  border-radius: 4px;
 }
 
 .node-panel-textarea-with-ports{
@@ -18,10 +19,11 @@
   border-color: rgb(191, 207, 233);
   white-space: pre;
   resize: none;
+  display: block;
 }
 
 .node-panel-textarea-with-ports:focus{
-  border: 1px solid #F15C22
+  /* border: 1px solid #F15C22 */
 }
 
 .node-panel-textarea-with-ports-top{
@@ -34,7 +36,7 @@
 }
 
 .node-panel-textarea-with-ports-bottom{
-  bottom: -11px;
+  bottom: -15px;
   position: absolute;
   z-index: 10;
   display: flex;
