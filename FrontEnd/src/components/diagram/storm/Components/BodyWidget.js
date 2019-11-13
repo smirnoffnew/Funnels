@@ -626,7 +626,7 @@ export default class BodyWidget extends React.Component {
           <div className="header">
             <SaveBeforeExitModal work={this.props.work} app={this.props.app} />
 
-            <UndoRedo />
+            {/* <UndoRedo /> */}
 
             <div className="title">
               {this.props.work.diagram && this.props.work.diagram.funnelName}
