@@ -1,8 +1,11 @@
-## File storage server setup
+# File storage server setup
+
+1) Клонируем репозиторий в директорию сервера.
+2) Переходим в папку с проектом на сервере, делаем
 ```
 npm install
 ```
-
+3) Запускаем сервер: 
 ```
 npm start
 ```
