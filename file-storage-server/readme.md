@@ -1,4 +1,4 @@
-## Project setup
+## File storage server setup
 ```
 npm install
 ```
