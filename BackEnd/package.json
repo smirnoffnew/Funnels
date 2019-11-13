@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "export NODE_ENV=dev NODE_CONFIG_DIR=./src/config/ && npx nodemon -w src --exec \"babel-node src/app.js --plugins transform-object-rest-spread --presets env\""
+    "start": "export NODE_ENV=dev NODE_CONFIG_DIR=./src/config/ && npx nodemon -w src --exec \"babel-node src/app.js --plugins transform-object-rest-spread --presets env\"",
+    "migratedb": "node ../db-migrations/seeder.js"
   },
   "keywords": [],
   "author": " ",

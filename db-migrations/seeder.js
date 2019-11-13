@@ -1,5 +1,5 @@
-var Profile = require('./models/profile');
-var Funnel = require('./models/funnel');
+var Profile = require('../BackEnd/src/models/profile');
+var Funnel = require('../BackEnd/src/models/funnel');
 var mongoose = require('mongoose');
 
 var mongoOptions = {
@@ -12,7 +12,7 @@ var mongoOptions = {
 };
 
 mongoose.connect('mongodb://209.182.217.162:27018/Funnelsmap', mongoOptions, function (err) {
-
+    
     if (err) throw err;
 
     console.log('Successfully connected');

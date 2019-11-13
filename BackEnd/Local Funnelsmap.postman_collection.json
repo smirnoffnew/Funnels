@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "8dcddad6-5eed-4010-aeac-2607d61ea065",
-		"name": "AWS Funnelsmap",
+		"_postman_id": "2bb38534-f5d9-4633-9803-10556c074b1e",
+		"name": "Local Funnelsmap",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -25,14 +25,10 @@
 							"raw": "{\n\t\"password\":\"artshirin2009@gmail.com\",\n\t\"email\":\"artshirin2009@gmail.com\",\n\t\"firstName\":\"artFirstName\",\n\t\"accountName\":\"artAcc3\"\n}"
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/sign-up",
+							"raw": "http://localhost:9001/sign-up",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -55,7 +51,7 @@
 							},
 							{
 								"key": "User-Agent",
-								"value": "Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.0",
+								"value": "Mozilla/5.0 (Linux; Android 7.0; Pixel C Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/52.0.2743.98 Safari/537.36",
 								"type": "text"
 							}
 						],
@@ -64,14 +60,10 @@
 							"raw": "{\n\t\"email\":\"artshirin2009@gmail.com\",\n  \"password\": \"artshirin2009@gmail.com\"\n}"
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/sign-in",
+							"raw": "http://localhost:9001/sign-in",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -98,14 +90,10 @@
 							"raw": "{\n\"email\":\"artshirin2009@gmail.com\"\n}"
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/email-validation",
+							"raw": "http://localhost:9001/email-validation",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -132,14 +120,10 @@
 							"raw": "{\n\t\"email\":\"artshirin2009@gmail.com\"\n}"
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/reset-password",
+							"raw": "http://localhost:9001/reset-password",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -177,14 +161,10 @@
 							"raw": "{\n  \"email\":\"artshirin200449@gmail.com\",\n  \"password\": \"artshirin2009@gmail.com\"\n}"
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/change-password",
+							"raw": "http://localhost:9001/change-password",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -208,19 +188,15 @@
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001",
+							"raw": "http://localhost:9001",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001"
 						}
@@ -233,14 +209,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/keys",
+							"raw": "http://localhost:9001/keys",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -278,19 +250,15 @@
 								{
 									"key": "avatar",
 									"type": "file",
-									"src": "/C:/Users/agent/Desktop/test-images/212121.jpg"
+									"src": "/C:/Users/agent/Desktop/212121.jpg"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/profile/avatar",
+							"raw": "http://localhost:9001/profile/avatar",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -324,18 +292,33 @@
 							"raw": "{\n\t\"companyName\":\"122222222222222222222222222222\"\n}"
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/profile",
+							"raw": "http://localhost:9001/profile",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
 								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "test requestify",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/req-test",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"req-test"
 							]
 						}
 					},
@@ -369,14 +352,10 @@
 							"raw": "{\n  \"projectName\":\"artTestProject\"\n}"
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/project",
+							"raw": "http://localhost:9001/project",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -398,14 +377,10 @@
 							}
 						],
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/project",
+							"raw": "http://localhost:9001/project",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -437,14 +412,10 @@
 							"raw": "{\n\t\"firstName\":\"ATB\",\n\t\"permissions\":\"view\"\n}"
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/project_col_add/5cdd541b02aca60079759717?",
+							"raw": "http://localhost:9001/project_col_add/5cdd541b02aca60079759717?",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -478,14 +449,10 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/project_col_del/5cdebfaacb275003293e162d/5cdec2140ea54e036b7a9106",
+							"raw": "http://localhost:9001/project_col_del/5cdebfaacb275003293e162d/5cdec2140ea54e036b7a9106",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -513,14 +480,10 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/project/",
+							"raw": "http://localhost:9001/project/",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -543,14 +506,10 @@
 							}
 						],
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/projects",
+							"raw": "http://localhost:9001/projects",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -588,14 +547,10 @@
 							"raw": "{\n\t\"funnelName\":\"TESTYOURSELF333\",\n\t\"funnelBody\":\"testFunnelBody\"\n}"
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/funnel/5dc51a86ff896c30f06361a2",
+							"raw": "http://localhost:9001/funnel/5dc51a86ff896c30f06361a2",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -618,14 +573,10 @@
 							}
 						],
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/funnel/svg",
+							"raw": "http://localhost:9001/funnel/svg",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -644,40 +595,30 @@
 							{
 								"key": "authorization",
 								"type": "text",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlIjp7InBhc3N3b3JkIjoiJDJiJDEwJFdjamJ2NnNzazk0Ukx2LmdpcDZDUHUvZW5uRFFvSHV1TzY2QmVmbXo1THVCQ0V5UHF0UGxTIiwiZW1haWwiOiJhcnRzaGlyaW4yMDA5QGdtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImFydEZpcnN0TmFtZSIsImFjY291bnROYW1lIjoiYXJ0QWNjMSIsImRlc2NyaXB0aW9uIjpudWxsLCJwaG90b1VybCI6ImxvY2FsaG9zdDozMDAxL2ltYWdlcy9hcnRBY2MxLzE1NzMxOTc1MzY5MDcuanBnIiwibGltaXRlZCI6ZmFsc2UsIl9pZCI6IjVkYzQxZmE1YTY1OTc5MzNhMDhkOGJiOSIsIm15Q29sbGFib3JhdGlvbnMiOltdLCJteVBhcnRuZXJzIjpbXX0sInVzZXJJZCI6IjVkYzQxZmE1YTY1OTc5MzNhMDhkOGJiNyIsImlhdCI6MTU3MzE5ODEzNiwiZXhwIjoxNTczNDU3MzM2fQ.9umOW2F8rzu_YztCDL_9ax3vsmDFr4hwlFmuxNdPwWI"
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlIjp7InBhc3N3b3JkIjoiJDJiJDEwJFdjamJ2NnNzazk0Ukx2LmdpcDZDUHUvZW5uRFFvSHV1TzY2QmVmbXo1THVCQ0V5UHF0UGxTIiwiZW1haWwiOiJhcnRzaGlyaW4yMDA5QGdtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImFydEZpcnN0TmFtZSIsImFjY291bnROYW1lIjoiYXJ0QWNjMSIsImRlc2NyaXB0aW9uIjpudWxsLCJwaG90b1VybCI6IjQ1LjYxLjQ4LjE1My9hdmF0YXJzL2FydEFjYzEvMTU3MzM3MjMwMzUzNy5qcGciLCJsaW1pdGVkIjpmYWxzZSwiX2lkIjoiNWRjNDFmYTVhNjU5NzkzM2EwOGQ4YmI5IiwibXlDb2xsYWJvcmF0aW9ucyI6W10sIm15UGFydG5lcnMiOltdfSwidXNlcklkIjoiNWRjNDFmYTVhNjU5NzkzM2EwOGQ4YmI3IiwiaWF0IjoxNTczNDYxMDU0LCJleHAiOjE1NzM3MjAyNTR9.nJPDovYlRa0m0lfHWkPey8lzQpGbw94ojntrYKsl9cQ"
 							},
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"type": "text"
+								"type": "text",
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "funnelBody",
-									"type": "file",
-									"src": "/C:/Users/agent/Desktop/test-images/obj.json",
-									"disabled": true
-								},
-								{
 									"key": "funnelBackground",
 									"type": "file",
-									"src": "/C:/Users/agent/Desktop/test-images/fun___back.jpg"
+									"src": "/C:/Users/agent/Desktop/test-images/adminhot-product_250x250.jpg"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/funnel/diagram/5dc51b55ff896c30f06361a4",
+							"raw": "http://localhost:9001/funnel/diagram/5dc51b55ff896c30f06361a4",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -697,7 +638,7 @@
 							{
 								"key": "authorization",
 								"type": "text",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlIjp7InBhc3N3b3JkIjoiJDJiJDEwJFdjamJ2NnNzazk0Ukx2LmdpcDZDUHUvZW5uRFFvSHV1TzY2QmVmbXo1THVCQ0V5UHF0UGxTIiwiZW1haWwiOiJhcnRzaGlyaW4yMDA5QGdtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImFydEZpcnN0TmFtZSIsImFjY291bnROYW1lIjoiYXJ0QWNjMSIsImRlc2NyaXB0aW9uIjpudWxsLCJwaG90b1VybCI6ImxvY2FsaG9zdDozMDAxL2ltYWdlcy9hcnRBY2MxLzE1NzMxOTc1MzY5MDcuanBnIiwibGltaXRlZCI6ZmFsc2UsIl9pZCI6IjVkYzQxZmE1YTY1OTc5MzNhMDhkOGJiOSIsIm15Q29sbGFib3JhdGlvbnMiOltdLCJteVBhcnRuZXJzIjpbXX0sInVzZXJJZCI6IjVkYzQxZmE1YTY1OTc5MzNhMDhkOGJiNyIsImlhdCI6MTU3MzE5ODEzNiwiZXhwIjoxNTczNDU3MzM2fQ.9umOW2F8rzu_YztCDL_9ax3vsmDFr4hwlFmuxNdPwWI"
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlIjp7InBhc3N3b3JkIjoiJDJiJDEwJFdjamJ2NnNzazk0Ukx2LmdpcDZDUHUvZW5uRFFvSHV1TzY2QmVmbXo1THVCQ0V5UHF0UGxTIiwiZW1haWwiOiJhcnRzaGlyaW4yMDA5QGdtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImFydEZpcnN0TmFtZSIsImFjY291bnROYW1lIjoiYXJ0QWNjMSIsImRlc2NyaXB0aW9uIjpudWxsLCJwaG90b1VybCI6IjQ1LjYxLjQ4LjE1My9hdmF0YXJzL2FydEFjYzEvMTU3MzM3MjMwMzUzNy5qcGciLCJsaW1pdGVkIjpmYWxzZSwiX2lkIjoiNWRjNDFmYTVhNjU5NzkzM2EwOGQ4YmI5IiwibXlDb2xsYWJvcmF0aW9ucyI6W10sIm15UGFydG5lcnMiOltdfSwidXNlcklkIjoiNWRjNDFmYTVhNjU5NzkzM2EwOGQ4YmI3IiwiaWF0IjoxNTczNDYxMDU0LCJleHAiOjE1NzM3MjAyNTR9.nJPDovYlRa0m0lfHWkPey8lzQpGbw94ojntrYKsl9cQ"
 							},
 							{
 								"key": "Content-Type",
@@ -727,14 +668,10 @@
 							]
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/funnel/diagram/screenshot",
+							"raw": "http://localhost:9001/funnel/diagram/screenshot",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -758,14 +695,10 @@
 							}
 						],
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/funnels/5cdeb56c6b8b95018719813c",
+							"raw": "http://localhost:9001/funnels/5cdeb56c6b8b95018719813c",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -792,14 +725,10 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/funnel_col/5cdebfcfcb275003293e162f/5cdec2140ea54e036b7a9106",
+							"raw": "http://localhost:9001/funnel_col/5cdebfcfcb275003293e162f/5cdec2140ea54e036b7a9106",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -827,14 +756,10 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/funnel/5cdebfaacb275003293e162d/5ce2a9df2b961004c455b8aa",
+							"raw": "http://localhost:9001/funnel/5cdebfaacb275003293e162d/5ce2a9df2b961004c455b8aa",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -868,14 +793,10 @@
 							"raw": "{\n   \"funnelsId\":[\"5ce51cfb4b8d610288601205\"],\n   \"permissions\":\"Edit\"\n}"
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/funnel_col_url",
+							"raw": "http://localhost:9001/funnel_col_url",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -912,14 +833,10 @@
 							"raw": "{\n\t\"user_id\": \"\"\n}"
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/funnel_col_add",
+							"raw": "http://localhost:9001/funnel_col_add",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -941,18 +858,20 @@
 							}
 						],
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/funnels_col?",
+							"raw": "http://localhost:9001/funnels_col?",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
 								"funnels_col"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": ""
+								}
 							]
 						}
 					},
@@ -983,14 +902,10 @@
 							"raw": "{\n  \"funnelsId\":[\"5ce4fd1fbd08f4019e9d8bba\",\"5ce51022dfac8f0095740b73\"]\n}"
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/funnel_col_get/5ce52f9307db4702e01e85f2",
+							"raw": "http://localhost:9001/funnel_col_get/5ce52f9307db4702e01e85f2",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [

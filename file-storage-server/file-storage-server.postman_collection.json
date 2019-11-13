@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "b9efa319-b211-4423-b50a-1b6726f09c25",
-		"name": "file-sharer",
+		"_postman_id": "5f90c50a-bb14-4351-846e-fe62b0323b0f",
+		"name": "file-storage-server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -45,7 +45,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:3000/avatars",
+					"raw": "http://localhost:3000/avatars?",
 					"protocol": "http",
 					"host": [
 						"localhost"
