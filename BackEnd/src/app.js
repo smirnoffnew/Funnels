@@ -1,7 +1,9 @@
 //const express = require('express');
 import express from 'express';
 const app = express();
-require('dotenv').config({path:"./src/.env"});
+require('dotenv').config(
+    //{path:"./src/.env"}
+    );
 process.env.NODE_ENV = 'production';
 const bodyParser = require('body-parser');
 const cors = require('cors');
