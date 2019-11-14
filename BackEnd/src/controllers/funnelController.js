@@ -326,7 +326,8 @@ module.exports = {
     },
 
     getSignInToken: function (req, res) {
-        jwt.verify(req.headers.Authorization, process.env.SECRET_COLLABORATOR, (err, authData) => {
+        console.log(req.headers.authorization)
+        jwt.verify(req.headers.authorization, process.env.SECRET_COLLABORATOR, (err, authData) => {
             if (err) { 
                 console.log(err)
                 return res.status(403).send("No authority");
