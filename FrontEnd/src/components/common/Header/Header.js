@@ -219,6 +219,7 @@ class Header extends Component {
                 type="checkbox"
                 checked={this.state.showHeaderNavigationBox}
                 onClick={this.changeHeaderNavigationBox}
+                onChange={() => {}}
               />
               <label htmlFor="burger-check" className="burger" />
               <nav id="navigation1" className="navigation">

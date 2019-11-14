@@ -1,0 +1,16 @@
+.page-not-found{
+  background: linear-gradient(84deg, #E62D24, #FD8F21);
+  padding: 6px 10px 5px 10px;
+  border-radius: 17px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+}
+
+.gg{
+  background: linear-gradient(84deg, #E62D24, #FD8F21);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #FD8F21;
+  font-size: 140px;
+}

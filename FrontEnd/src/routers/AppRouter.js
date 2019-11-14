@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { Route } from 'react-router-dom';
-import { Redirect } from 'react-router-dom'
+import { Redirect, Route, Switch } from 'react-router-dom'
 import { PrivateRoute } from '../components/RequireAuth';
 import { PrivateRouteAddCollaborator } from '../components/PrivateRouteAddCollaborator';
 import ProjectList from '../components/dashboard/projects/ProjectList';
@@ -21,6 +20,7 @@ import SettingsUsers from '../components/settings/SettingsUsers/SettingsUsers';
 import Diagram from '../components/diagram/storm';
 import { PrivateRouteAddPartner } from '../components/PrivateRouteAddPartner';
 import AddPartner from '../components/dashboard/projects/addCollaborators/AddPartner';
+import NotFound from './NotFound'
 
 
 const AppRouter = () => {
@@ -55,37 +55,66 @@ const AppRouter = () => {
         }} />
       }
 
-      <Route path="/sign-in" component={Signin} />
-      <Route path="/sign-up" component={Signup} />
-      <Route path="/sign-up-testers" component={Signup} />
-
-      <Route path="/password-forgot-step-1" component={PasswordForgot1} />
-      <Route path="/password-forgot-step-2" component={PasswordForgot2} />
-      <Route path="/password-forgot-step-3" component={PasswordForgot3} />
-
-      <Route path="/questionnaire" component={Questionnaire} />
-
-      <PrivateRouteAddCollaborator path="/add-collaborators/:token" component={AddCollaborators} />
-      <PrivateRouteAddPartner path="/add-partner/:token" component={AddPartner} />
-      <Route path="/add-collaborators-image" component={AddCollaboratorsImage} />
-
-      <PrivateRoute exact={true} path="/projects" component={ProjectList} />
-      <PrivateRoute path="/collaborations" component={Collaborations} />
-      <PrivateRoute path='/funnels/:projectId' component={FunnelList} />
-      <PrivateRoute path='/diagram/:funnelId' component={Diagram} />
-      <PrivateRoute path='/template/:funnelId' component={Diagram} />
-      <PrivateRoute path='/templates' component={TemplatesList} />
-
       {
-        !localStorage.getItem('token2') &&
-        <>
-          <PrivateRoute exact={true} path="/settings" component={SettingsAccountDetails} />
-          <PrivateRoute path="/settings/payment-methods" component={SettingsPaymentMethods} />
-          <PrivateRoute path="/settings/users" component={SettingsUsers} />
-        </>
+        !localStorage.getItem('token2') ?
+          <>
+            <Switch>
+              <Route path="/sign-in" component={Signin} />
+              <Route path="/sign-up" component={Signup} />
+              <Route path="/sign-up-testers" component={Signup} />
+
+              <Route path="/password-forgot-step-1" component={PasswordForgot1} />
+              <Route path="/password-forgot-step-2" component={PasswordForgot2} />
+              <Route path="/password-forgot-step-3" component={PasswordForgot3} />
+
+              <Route path="/questionnaire" component={Questionnaire} />
+
+              <PrivateRouteAddCollaborator path="/add-collaborators/:token" component={AddCollaborators} />
+              <PrivateRouteAddPartner path="/add-partner/:token" component={AddPartner} />
+              <Route path="/add-collaborators-image" component={AddCollaboratorsImage} />
+
+              <PrivateRoute exact path="/projects" component={ProjectList} />
+              <PrivateRoute path="/collaborations" component={Collaborations} />
+              <PrivateRoute path='/funnels/:projectId' component={FunnelList} />
+              <PrivateRoute path='/diagram/:funnelId' component={Diagram} />
+              <PrivateRoute path='/template/:funnelId' component={Diagram} />
+              <PrivateRoute path='/templates' component={TemplatesList} />
+
+              <PrivateRoute exact path="/settings" component={SettingsAccountDetails} />
+              <PrivateRoute path="/settings/payment-methods" component={SettingsPaymentMethods} />
+              <PrivateRoute path="/settings/users" component={SettingsUsers} />
+
+              <Route component={NotFound} />
+            </Switch>
+          </>
+          :
+          <>
+            <Switch>
+              <Route path="/sign-in" component={Signin} />
+              <Route path="/sign-up" component={Signup} />
+              <Route path="/sign-up-testers" component={Signup} />
+
+              <Route path="/password-forgot-step-1" component={PasswordForgot1} />
+              <Route path="/password-forgot-step-2" component={PasswordForgot2} />
+              <Route path="/password-forgot-step-3" component={PasswordForgot3} />
+
+              <Route path="/questionnaire" component={Questionnaire} />
+
+              <PrivateRouteAddCollaborator path="/add-collaborators/:token" component={AddCollaborators} />
+              <PrivateRouteAddPartner path="/add-partner/:token" component={AddPartner} />
+              <Route path="/add-collaborators-image" component={AddCollaboratorsImage} />
+
+              <PrivateRoute exact path="/projects" component={ProjectList} />
+              <PrivateRoute path="/collaborations" component={Collaborations} />
+              <PrivateRoute path='/funnels/:projectId' component={FunnelList} />
+              <PrivateRoute path='/diagram/:funnelId' component={Diagram} />
+              <PrivateRoute path='/template/:funnelId' component={Diagram} />
+              <PrivateRoute path='/templates' component={TemplatesList} />
+
+              <Route component={NotFound} />
+            </Switch>
+          </>
       }
-
-
     </>
   )
 };
