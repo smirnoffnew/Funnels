@@ -290,8 +290,9 @@ module.exports = {
                     .status(200)
                     .json({
                         message: "Screenshot added succesfully...",
-                        link: `${Url}/add-collaborators-image?image=${screenShotLink}&add-collaborators-image=${token.body}`,
+                        link: `${Url}/add-collaborators-image?image=${screenShotLink}&add-collaborators-image=${token.body}&funnelId=${req.body.funnelsId}`,
                         token: token.body,
+                        funnelId: req.body.funnelsId
                     });
             })
             .then(() => {
