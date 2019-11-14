@@ -282,7 +282,6 @@ module.exports = {
                 return new Token({
                     body: collaborateToken
                 }).save()
-
             })
             .then((token) => {
                 console.log('token.body................', token.body)
@@ -291,8 +290,7 @@ module.exports = {
                     .json({
                         message: "Screenshot added succesfully...",
                         link: `${Url}/add-collaborators-image?image=${screenShotLink}&add-collaborators-image=${token.body}&funnelId=${req.body.funnelsId}`,
-                        token: token.body,
-                        funnelId: req.body.funnelsId
+                        token: token.body
                     });
             })
             .then(() => {
