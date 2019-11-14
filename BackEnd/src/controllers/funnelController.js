@@ -260,7 +260,7 @@ module.exports = {
         const funnelColaborateData = {
             funnelsId: [req.body.funnelsId],
             permissions: req.body.permissions,
-            screenShotURL: screenShotURL
+            //screenShotURL: screenShotURL
         };
 
         const collaborateToken = jwt.sign(funnelColaborateData, process.env.SECRET_COLLABORATOR);
@@ -276,7 +276,8 @@ module.exports = {
             })
             .then(result => result.json())
             .then(res => {
-                screenShotLink = res.link
+                screenShotLink = res.link;
+                funnelColaborateData.screenShotURL = screenShotLink
             })
             .then(() => {
                 return new Token({
@@ -284,7 +285,7 @@ module.exports = {
                 }).save()
             })
             .then((token) => {
-                console.log('token.body................', token.body)
+                console.log('funnelColaborateData', funnelColaborateData)
                 res
                     .status(200)
                     .json({
