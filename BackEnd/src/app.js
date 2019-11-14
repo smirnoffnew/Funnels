@@ -2,7 +2,7 @@
 import express from 'express';
 const app = express();
 require('dotenv').config(
-    //{path:"./src/.env"}
+    {path:"./src/.env"}
     );
 process.env.NODE_ENV = 'production';
 const bodyParser = require('body-parser');
