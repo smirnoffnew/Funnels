@@ -144,7 +144,7 @@ module.exports = {
                                 'value' : deviceCheck(req) 
                             } ]
                         };
-                        console.log(deviceCheck(req))
+                        console.log('profile..', profile);
                         const token = jwt.sign({
                             profile,
                             userId: g_user._id
