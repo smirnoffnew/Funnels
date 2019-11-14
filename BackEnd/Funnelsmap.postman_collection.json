@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "8dcddad6-5eed-4010-aeac-2607d61ea065",
-		"name": "AWS Funnelsmap",
+		"_postman_id": "2bb38534-f5d9-4633-9803-10556c074b1e",
+		"name": "Funnelsmap",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -52,17 +52,13 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\":\"artshirin2009@gmail.com\",\n  \"password\": \"artshirin2009@gmail.com\",\n\t\"browser\": \"Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.0\",\n\t\"os\":\"dasd\"\n}"
+							"raw": "{\n\t\"email\":\"artshirin2009@gmail.com\",\n  \"password\": \"artshirin2009@gmail.com\",\n\t\"browser\": \"Mozilla/5.0 (Linux; Android 7.0; Pixel C Build/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/52.0.2743.98 Safari/537.36\",\n\t\"os\":\"Mozilla/5.0 (Linux; U; Android 4.4.2; en-us; SCH-I535 Build/KOT49H) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30\"\n}"
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/sign-in",
+							"raw": "http://localhost:9001/sign-in",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -287,19 +283,15 @@
 								{
 									"key": "avatar",
 									"type": "file",
-									"src": "/C:/Users/agent/Desktop/test-images/212121.jpg"
+									"src": "/C:/Users/agent/Desktop/212121.jpg"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/profile/avatar",
+							"raw": "http://localhost:9001/profile/avatar",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -647,40 +639,30 @@
 							{
 								"key": "authorization",
 								"type": "text",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlIjp7InBhc3N3b3JkIjoiJDJiJDEwJFdjamJ2NnNzazk0Ukx2LmdpcDZDUHUvZW5uRFFvSHV1TzY2QmVmbXo1THVCQ0V5UHF0UGxTIiwiZW1haWwiOiJhcnRzaGlyaW4yMDA5QGdtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImFydEZpcnN0TmFtZSIsImFjY291bnROYW1lIjoiYXJ0QWNjMSIsImRlc2NyaXB0aW9uIjpudWxsLCJwaG90b1VybCI6ImxvY2FsaG9zdDozMDAxL2ltYWdlcy9hcnRBY2MxLzE1NzMxOTc1MzY5MDcuanBnIiwibGltaXRlZCI6ZmFsc2UsIl9pZCI6IjVkYzQxZmE1YTY1OTc5MzNhMDhkOGJiOSIsIm15Q29sbGFib3JhdGlvbnMiOltdLCJteVBhcnRuZXJzIjpbXX0sInVzZXJJZCI6IjVkYzQxZmE1YTY1OTc5MzNhMDhkOGJiNyIsImlhdCI6MTU3MzE5ODEzNiwiZXhwIjoxNTczNDU3MzM2fQ.9umOW2F8rzu_YztCDL_9ax3vsmDFr4hwlFmuxNdPwWI"
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlIjp7InBhc3N3b3JkIjoiJDJiJDEwJFdjamJ2NnNzazk0Ukx2LmdpcDZDUHUvZW5uRFFvSHV1TzY2QmVmbXo1THVCQ0V5UHF0UGxTIiwiZW1haWwiOiJhcnRzaGlyaW4yMDA5QGdtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImFydEZpcnN0TmFtZSIsImFjY291bnROYW1lIjoiYXJ0QWNjMSIsImRlc2NyaXB0aW9uIjpudWxsLCJwaG90b1VybCI6IjQ1LjYxLjQ4LjE1My9hdmF0YXJzL2FydEFjYzEvMTU3MzM3MjMwMzUzNy5qcGciLCJsaW1pdGVkIjpmYWxzZSwiX2lkIjoiNWRjNDFmYTVhNjU5NzkzM2EwOGQ4YmI5IiwibXlDb2xsYWJvcmF0aW9ucyI6W10sIm15UGFydG5lcnMiOltdfSwidXNlcklkIjoiNWRjNDFmYTVhNjU5NzkzM2EwOGQ4YmI3IiwiaWF0IjoxNTczNDYxMDU0LCJleHAiOjE1NzM3MjAyNTR9.nJPDovYlRa0m0lfHWkPey8lzQpGbw94ojntrYKsl9cQ"
 							},
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"type": "text"
+								"type": "text",
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "funnelBody",
-									"type": "file",
-									"src": "/C:/Users/agent/Desktop/test-images/obj.json",
-									"disabled": true
-								},
-								{
 									"key": "funnelBackground",
 									"type": "file",
-									"src": "/C:/Users/agent/Desktop/test-images/fun___back.jpg"
+									"src": "/C:/Users/agent/Desktop/test-images/adminhot-product_250x250.jpg"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/funnel/diagram/5dc51b55ff896c30f06361a4",
+							"raw": "http://localhost:9001/funnel/diagram/5dc51b55ff896c30f06361a4",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [
@@ -700,7 +682,7 @@
 							{
 								"key": "authorization",
 								"type": "text",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlIjp7InBhc3N3b3JkIjoiJDJiJDEwJFdjamJ2NnNzazk0Ukx2LmdpcDZDUHUvZW5uRFFvSHV1TzY2QmVmbXo1THVCQ0V5UHF0UGxTIiwiZW1haWwiOiJhcnRzaGlyaW4yMDA5QGdtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImFydEZpcnN0TmFtZSIsImFjY291bnROYW1lIjoiYXJ0QWNjMSIsImRlc2NyaXB0aW9uIjpudWxsLCJwaG90b1VybCI6ImxvY2FsaG9zdDozMDAxL2ltYWdlcy9hcnRBY2MxLzE1NzMxOTc1MzY5MDcuanBnIiwibGltaXRlZCI6ZmFsc2UsIl9pZCI6IjVkYzQxZmE1YTY1OTc5MzNhMDhkOGJiOSIsIm15Q29sbGFib3JhdGlvbnMiOltdLCJteVBhcnRuZXJzIjpbXX0sInVzZXJJZCI6IjVkYzQxZmE1YTY1OTc5MzNhMDhkOGJiNyIsImlhdCI6MTU3MzE5ODEzNiwiZXhwIjoxNTczNDU3MzM2fQ.9umOW2F8rzu_YztCDL_9ax3vsmDFr4hwlFmuxNdPwWI"
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlIjp7InBhc3N3b3JkIjoiJDJiJDEwJFdjamJ2NnNzazk0Ukx2LmdpcDZDUHUvZW5uRFFvSHV1TzY2QmVmbXo1THVCQ0V5UHF0UGxTIiwiZW1haWwiOiJhcnRzaGlyaW4yMDA5QGdtYWlsLmNvbSIsImZpcnN0TmFtZSI6ImFydEZpcnN0TmFtZSIsImFjY291bnROYW1lIjoiYXJ0QWNjMSIsImRlc2NyaXB0aW9uIjpudWxsLCJwaG90b1VybCI6IjQ1LjYxLjQ4LjE1My9hdmF0YXJzL2FydEFjYzEvMTU3MzM3MjMwMzUzNy5qcGciLCJsaW1pdGVkIjpmYWxzZSwiX2lkIjoiNWRjNDFmYTVhNjU5NzkzM2EwOGQ4YmI5IiwibXlDb2xsYWJvcmF0aW9ucyI6W10sIm15UGFydG5lcnMiOltdfSwidXNlcklkIjoiNWRjNDFmYTVhNjU5NzkzM2EwOGQ4YmI3IiwiaWF0IjoxNTczNDYxMDU0LCJleHAiOjE1NzM3MjAyNTR9.nJPDovYlRa0m0lfHWkPey8lzQpGbw94ojntrYKsl9cQ"
 							},
 							{
 								"key": "Content-Type",
@@ -730,14 +712,10 @@
 							]
 						},
 						"url": {
-							"raw": "http://ec2-3-124-11-139.eu-central-1.compute.amazonaws.com:9001/funnel/diagram/screenshot",
+							"raw": "http://localhost:9001/funnel/diagram/screenshot",
 							"protocol": "http",
 							"host": [
-								"ec2-3-124-11-139",
-								"eu-central-1",
-								"compute",
-								"amazonaws",
-								"com"
+								"localhost"
 							],
 							"port": "9001",
 							"path": [

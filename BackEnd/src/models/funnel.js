@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-//import mongoose   from 'mongoose';
+//const mongoose = require("mongoose");
+import mongoose   from 'mongoose';
 
 const Schema = mongoose.Schema;
 const uniqueValidator = require('mongoose-unique-validator');

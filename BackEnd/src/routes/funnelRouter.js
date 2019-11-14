@@ -64,7 +64,7 @@ funnelRouter.patch('/:funnelId',
     verifyToken,
     lastActive,
     funnelController.updateFunnel);
-funnelRouter.post('/diagram/screenshot', 
+funnelRouter.post('/diagram/screenshot',
     enshureToken,
     verifyToken,
     lastActive,
