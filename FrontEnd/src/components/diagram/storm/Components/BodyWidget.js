@@ -396,16 +396,17 @@ export default class BodyWidget extends React.Component {
   }
 
   showToolElement = this.debounce(e => {
-    if (e.shiftKey) {
-      this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems().length > 1 ?
-        this.setState({
-          showTemplateButtons: true,
-        })
-        :
-        this.setState({
-          showTemplateButtons: false
-        })
-    }
+    if (this.props.work.permissionForCollaborator.includes("Edit"))
+      if (e.shiftKey) {
+        this.props.app.getDiagramEngine().getDiagramModel().getSelectedItems().length > 1 ?
+          this.setState({
+            showTemplateButtons: true,
+          })
+          :
+          this.setState({
+            showTemplateButtons: false
+          })
+      }
 
   }, 50, true);
 
@@ -502,8 +503,8 @@ export default class BodyWidget extends React.Component {
                       }}
                       onClick={() => {
                         deleteNode(
-                          this.props.app.getDiagramEngine(), 
-                          this.props.work.funnelId, 
+                          this.props.app.getDiagramEngine(),
+                          this.props.work.funnelId,
                           this.props.work.updateModel
                         )
 
@@ -524,7 +525,7 @@ export default class BodyWidget extends React.Component {
                     className="btn-select-template"
                     title={"Copy"}
                   >
-                     <div
+                    <div
                       style={{
                         width: "50px",
                         height: "50px",
@@ -543,7 +544,7 @@ export default class BodyWidget extends React.Component {
                           this.props.app.getDiagramEngine().getDiagramModel().nodes[0],
                           this.props.work.updateModel,
                         )
-  
+
                         this.setState({
                           showTemplateButtons: false
                         })
@@ -636,6 +637,9 @@ export default class BodyWidget extends React.Component {
               onClick={() => this.handleToggleAnalytics()}
               className='analytics-button'
               title='Analytics'
+              style={{
+                right: this.props.addCollaborators && 370
+              }}
             >
               {
                 this.state.toggleAnalytics
