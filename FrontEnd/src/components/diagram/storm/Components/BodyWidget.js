@@ -125,8 +125,21 @@ export default class BodyWidget extends React.Component {
       }
     }, () => {
       this.props.work.showAnalyticsBoolean(this.state.toggleAnalytics)
-      this.props.work.getConversionInfoForAllNodes(this.props.work.funnelId)
+      
 
+      if(this.props.addCollaborators){
+        let params = new URLSearchParams(window.location.search);
+
+        this.props.work.getConversionInfoForAllNodesForRecipiensCollaborator(
+          this.props.work.funnelId, 
+          params.get('add-collaborators-image')
+        )
+      }
+      else{
+        this.props.work.getConversionInfoForAllNodes(this.props.work.funnelId)
+      }
+
+    
       // console.log('permission handleToggleAnalytics', this.props.work.permissionForCollaborator)
       this.props.work.permissionForCollaborator.includes("Edit") &&
         !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) &&

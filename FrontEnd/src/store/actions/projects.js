@@ -339,7 +339,30 @@ export function getConversionInfoForAllNodes(funnelId) {
   }
 }
 
-
+export function getConversionInfoForAllNodesForRecipiensCollaborator(funnelId ,token) {
+  const axiosConfig = {
+    headers: {
+      'authorization': "Bearer " + token
+    },
+  };
+  return function (dispatch) {
+    axios.get(`funnel/node/static/getCounter/${funnelId}`, axiosConfig)
+      .then(response => {
+        dispatch({
+          type: 'CONVERSION_INFO',
+          payload: response.data.response
+        });
+      })
+      .catch(function (error) {
+        if (error.response) {
+          dispatch({
+            type: 'CREATE_TEMPLATE_FAILURE',
+            payload: error.response.data.error
+          });
+        }
+      });
+  }
+}
 
 export function saveDiagramThenCreateTemplate(funnelId, diagramObj, image, templateName) {
   const token = JSON.parse(localStorage.getItem('token'));
@@ -627,6 +650,69 @@ export function getDiagram(funnelId) {
   }
 }
 
+
+export function getDiagramForRecipiensCollaborator(funnelId, tokenCollaborator) {
+
+  console.log('getDiagramForRecipiensCollaborator')
+
+  // console.log(tokenCollaborator)
+
+  const axiosConfig = {
+    headers: {
+      // 'collaborate-confirm': tokenCollaborator,
+      'authorization': tokenCollaborator
+    },
+  };
+
+  return function (dispatch) {
+    API.get(`funnel/diagram/${funnelId}`, axiosConfig)
+    // axios.post(`${API_URL}/collaborator`, postData, axiosConfig)
+
+   
+
+      .then(response => {
+
+        // console.log('response', response)
+
+
+        let res = {}
+        if (response.data.data.funnelBody) {
+          res = JSON.parse(response.data.data.funnelBody);
+          res['funnelName'] = response.data.data.funnelName;
+        }
+        else {
+          res = {
+            funnelName: response.data.data.funnelName,
+            snackMsg: 'next'
+          };
+        }
+        dispatch({
+          type: 'GET_DIAGRAM',
+          payload: {
+            funnelId,
+            res,
+          }
+        });
+        dispatch({ type: 'GET_DIAGRAM_SUCCESS' });
+
+
+      })
+      .catch(function (error) {
+        if (error.response) {
+          console.log(error.response)
+          dispatch({
+            type: 'GET_DIAGRAM_FAILURE',
+            payload: error.response.data.error
+          });
+        }
+      });
+
+
+  }
+}
+
+
+
 export function getTemplate(funnelId) {
   // console.log('getDiagram funnelId: ', funnelId)
   return function (dispatch) {
@@ -816,6 +902,36 @@ export const getSVG = () => dispatch => {
       }
     });
 }
+
+export function getSVGForRecipiensCollaborator(token) {
+
+  const axiosConfig = {
+    headers: {
+      'authorization': token
+    },
+  };
+ 
+  return function (dispatch) {
+    axios.get(`${API_URL}/funnel/svg`, axiosConfig)
+      .then(response => {
+        console.log('response', response.data)
+        dispatch({
+          type: 'GET_ALL_SVG',
+          payload: response.data.response,
+        });
+        dispatch({ type: 'GET_ALL_SVG_SUCCESS' });
+      })
+      .catch(function (error) {
+        if (error.response) {
+          dispatch({
+            type: 'GET_DIAGRAM_FAILURE',
+            payload: error.response.data.error
+          });
+        }
+      });
+  }
+}
+
 
 export const showSettingsModalOnlyBoolean = (boolean) => dispatch => {
   dispatch({

@@ -7,16 +7,21 @@ import { ReactComponent as CollaborateSVG } from '../../../../assets/collaborate
 import BodyWidget from "../../../diagram/storm/Components/BodyWidget";
 import Application from "../../../diagram/storm/Application";
 import {
-  getDiagram,
-  getSVG,
+  getDiagramForRecipiensCollaborator,
+  getSVGForRecipiensCollaborator,
   showAnalyticsBoolean,
   setPermission,
   getConversationInfoWithPromisefication,
-  getConversionInfoForAllNodes,
+
+  getConversionInfoForAllNodesForRecipiensCollaborator,
   changeKeyDown,
 } from '../../../../store/actions/projects'
 import { hideConversionLink } from "../../../../store/actions/conversion";
 import { updateModel } from "../../../../store/actions/undo";
+
+import axios from 'axios'
+import API_URL from '../../../../config'
+
 import "storm-react-diagrams/dist/style.min.css";
 import './AddCollaboratorsImage.css'
 import "../../../diagram/storm/index.css";
@@ -32,10 +37,24 @@ class AddCollaboratorsImage extends React.Component {
   componentDidMount() {
     let params = new URLSearchParams(window.location.search);
 
-    this.props.getDiagram( params.get('funnelId') );
-    this.props.getSVG();
+    const axiosConfig = {
+      headers: {
+        'Authorization': params.get('add-collaborators-image')
+      },
+    };
 
-    this.props.setPermission('View');
+    axios.post(`${API_URL}/funnel/get-signin-token`, {}, axiosConfig)
+      .then(response => {
+        this.props.getDiagramForRecipiensCollaborator(params.get('funnelId'), "Bearer " + response.data.message);
+        this.props.getSVGForRecipiensCollaborator("Bearer " + response.data.message);
+      })
+      .catch(function (error) {
+        if (error.response) {
+          console.log(error.response.data.error)
+        }
+      });
+
+      this.props.setPermission('View');
   }
 
   componentDidUpdate(prevProps) {
@@ -44,7 +63,7 @@ class AddCollaboratorsImage extends React.Component {
         prevProps.diagram.snackMsg !== this.state.snackMsg &&
         prevProps.diagram.snackMsg !== undefined
       ) {
-        this.props.getDiagram(this.props.funnelId);
+        this.props.getDiagramForRecipiensCollaborator(this.props.funnelId);
       }
     }
     else return null
@@ -77,9 +96,6 @@ class AddCollaboratorsImage extends React.Component {
       this.state.diagram,
       this.props.svg,
     );
-
-    // let params = new URLSearchParams(window.location.search);
-
 
     const { referrer } = this.state;
     if (referrer) return <Redirect to={referrer} />;
@@ -137,17 +153,19 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = dispatch => {
   return {
+    dispatch: item => dispatch(item),
     addCollaborator: id => dispatch(addCollaborator(id)),
     updateModel: (model, funnelId) => dispatch(updateModel(model, funnelId)),
-    getSVG: () => dispatch(getSVG()),
-    getDiagram: id => dispatch(getDiagram(id)),
+
+    getSVGForRecipiensCollaborator: (token) => dispatch(getSVGForRecipiensCollaborator(token)),
+    getDiagramForRecipiensCollaborator: (funnelId, token) => dispatch(getDiagramForRecipiensCollaborator(funnelId, token)),
+    getConversionInfoForAllNodesForRecipiensCollaborator: (funnelId, token) => dispatch(getConversionInfoForAllNodesForRecipiensCollaborator(funnelId, token)),
+    
     showAnalyticsBoolean: boolean => dispatch(showAnalyticsBoolean(boolean)),
     changeKeyDown: key => dispatch(changeKeyDown(key)),
-    getConversationInfoWithPromisefication: (item1, item2) => dispatch(getConversationInfoWithPromisefication(item1, item2)),
-    dispatch: item => dispatch(item),
     setPermission: item1 => dispatch(setPermission(item1)),
-    getConversionInfoForAllNodes: funnelId => dispatch(getConversionInfoForAllNodes(funnelId)),
     hideConversionLink: boolean => dispatch(hideConversionLink(boolean)),
+    getConversationInfoWithPromisefication: (item1, item2) => dispatch(getConversationInfoWithPromisefication(item1, item2)),
   }
 }
 
