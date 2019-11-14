@@ -36,7 +36,7 @@ module.exports = {
                             error: "Funnel creation limit is reached!"
                         })
                 } else {
-                    new Funnel({
+                    return new Funnel({
                             _id: new mongoose.Types.ObjectId(),
                             funnelAuthor: req.authData.profile._id,
                             funnelProject: req.params.projectId,
@@ -44,44 +44,34 @@ module.exports = {
                             funnelBody: req.body.funnelBody
                         })
                         .save()
-                        .then(funnel => {
-                            savedFunnel = funnel;
-                            Project
-                                .findOneAndUpdate({
-                                    _id: req.params.projectId
-                                }, {
-                                    $push: {
-                                        projectFunnels: funnel._id
-                                    }
-                                }, {
-                                    new: true
-                                })
-                                .exec()
-                                .then((result) => {
-                                    funnelCounter = result.projectFunnels.length;
-                                })
-                        })
-                        .then(() => {
-                            const limit = req.authData.profile.limited == true ? ` ${process.env.FUNNEL_LIMIT}` : null;
-                            res
-                                .status(200)
-                                .json({
-                                    message: "Funnel added successfully!",
-                                    data: savedFunnel,
-                                    limit: limit
-                                })
-                                .catch(err => {
-                                    res
-                                        .status(400)
-                                        .json({
-                                            error: err.message
-                                        });
-                                });
-                        })
-                        .catch(err => res.status(400).json({
-                            error: err.message
-                        }));
                 }
+            })
+            .then(funnel => {
+                savedFunnel = funnel;
+                return Project
+                    .findOneAndUpdate({
+                        _id: req.params.projectId
+                    }, {
+                        $push: {
+                            projectFunnels: funnel._id
+                        }
+                    }, {
+                        new: true
+                    })
+                    .exec()
+            })
+            .then((result) => {
+                funnelCounter = result.projectFunnels.length;
+            })
+            .then(() => {
+                const limit = req.authData.profile.limited == true ? ` ${process.env.FUNNEL_LIMIT}` : null;
+                res
+                    .status(200)
+                    .json({
+                        message: "Funnel added successfully!",
+                        data: savedFunnel,
+                        limit: limit
+                    })
             })
             .catch(err => {
                 res
@@ -94,7 +84,7 @@ module.exports = {
 
     },
     getAllFunnelsInProject: async function (req, res) {
-
+        console.log('start to find')
         Funnel
             .find({
                 funnelProject: req.params.projectId
@@ -229,7 +219,7 @@ module.exports = {
                     }
                     if (items) {
                         try {
-                             fs.unlinkSync(`${backgroundbufferDir}/${req.authData.profile._id}.jpg`)
+                            fs.unlinkSync(`${backgroundbufferDir}/${req.authData.profile._id}.jpg`)
                         } catch (error) {
                             console.log(error)
                         }
@@ -281,7 +271,7 @@ module.exports = {
 
         let screenShotLink;
         fetch(`${process.env.FILE_SHARER}/screenshots`, {
-                method: 'POST', 
+                method: 'POST',
                 body: data
             })
             .then(result => result.json())
@@ -295,6 +285,7 @@ module.exports = {
 
             })
             .then((token) => {
+                console.log('token.body................', token.body)
                 res
                     .status(200)
                     .json({
