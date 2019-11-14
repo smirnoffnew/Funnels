@@ -10,7 +10,6 @@ const lastActive = require('../libs/lastActive');
 
 /**test svg */
 funnelRouter.get('/one_svg',
-    
     funnelController.getFunnelsSvg);
 /**test svg */
 funnelRouter.get('/svg',
@@ -27,7 +26,7 @@ funnelRouter.post('/:projectId',
     enshureToken,
     verifyToken,
     lastActive,
-    funnelController.createFunnel); 
+    funnelController.createFunnel);
 funnelRouter.delete('/:projectId/:funnelId',
     enshureToken,
     verifyToken,
@@ -53,7 +52,7 @@ funnelRouter.patch('/diagram/:funnelId',
     verifyToken,
     lastActive,
     multerBackground.single('funnelBackground'),
-    funnelController.addFunnelDiagramAndBackground); 
+    funnelController.addFunnelDiagramAndBackground);
 funnelRouter.post('/template/:templateId',
     enshureToken,
     verifyToken,
@@ -69,7 +68,12 @@ funnelRouter.post('/diagram/screenshot',
     verifyToken,
     lastActive,
     multerImage.single('screenshot'),
-    funnelController.getScreenshot); 
+    funnelController.getScreenshot);
+
+funnelRouter.post('/get-signin-token',
+    funnelController.getSignInToken
+);
+
 
 funnelRouter.post('/node/createUrl',
     enshureToken,
@@ -78,13 +82,13 @@ funnelRouter.post('/node/createUrl',
     funnelController.createUrl
 );
 
-funnelRouter.get('/node/getStatus/:funnelId/:nodeId', 
+funnelRouter.get('/node/getStatus/:funnelId/:nodeId',
     // enshureToken,
     // verifyToken,
     funnelController.getNodeStatus
 )
 
-funnelRouter.patch('/node/status', 
+funnelRouter.patch('/node/status',
     // enshureToken,
     // verifyToken,
     funnelController.updateStatus
@@ -113,6 +117,7 @@ funnelRouter.delete('/node/delete/:nodeId/:funnelId',
 funnelRouter.get('/node/getallstatus/:funnelId',
     funnelController.getAllFunnelsNodeDevStatus
 );
+
 
 
 module.exports = funnelRouter;

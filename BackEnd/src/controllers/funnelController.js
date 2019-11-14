@@ -8,6 +8,7 @@ const Token = require('../models/colaboratetoken.js');
 const Template = require('../models/template.js');
 const NodeCounter = require('../models/nodes')
 const svgArray = require('../libs/svgArray.js');
+const Profile = require('../models/profile')
 
 const fetch = require('node-fetch');
 const FormData = require('form-data');
@@ -22,6 +23,11 @@ const {
 } = require('nodejs-base64');
 
 module.exports = {
+
+
+
+
+
     createFunnel: async function (req, res) {
         let savedFunnel, funnelCounter;
         Project.findOne({
@@ -229,7 +235,7 @@ module.exports = {
                     }
                     if (items) {
                         try {
-                             fs.unlinkSync(`${backgroundbufferDir}/${req.authData.profile._id}.jpg`)
+                            fs.unlinkSync(`${backgroundbufferDir}/${req.authData.profile._id}.jpg`)
                         } catch (error) {
                             console.log(error)
                         }
@@ -266,11 +272,11 @@ module.exports = {
     getScreenshot: async function (req, res) {
 
         const Url = process.env.NODE_ENV == 'dev' ? process.env.DEV_URL : process.env.PROD_URL;
-        const screenShotURL = `${process.env.SCREENSHOT_STORE}${req.file.originalname}`;
         const funnelColaborateData = {
             funnelsId: [req.body.funnelsId],
             permissions: req.body.permissions,
-            screenShotURL: screenShotURL
+            userId: req.authData.userId,
+            profileId: req.authData.profile._id
         };
 
         const collaborateToken = jwt.sign(funnelColaborateData, process.env.SECRET_COLLABORATOR);
@@ -281,12 +287,13 @@ module.exports = {
 
         let screenShotLink;
         fetch(`${process.env.FILE_SHARER}/screenshots`, {
-                method: 'POST', 
+                method: 'POST',
                 body: data
             })
             .then(result => result.json())
             .then(res => {
-                screenShotLink = res.link
+                screenShotLink = res.link;
+                funnelColaborateData.screenShotURL = screenShotLink
             })
             .then(() => {
                 return new Token({
@@ -317,6 +324,37 @@ module.exports = {
                 error: err.message
             }));
     },
+
+    getSignInToken: function (req, res) {
+        jwt.verify(req.body.token, process.env.SECRET_COLLABORATOR, (err, authData) => {
+            if (err) {
+                console.log(err)
+                return res.status(403).send("No authority");
+            }
+            Profile.findOne({
+                    _id: authData.profileId
+                }).exec()
+                .then(profile => {
+                    return jwt.sign({
+                        profile,
+                        userId: authData.userId
+                    }, process.env.SECRET, {
+                        expiresIn: process.env.TOKEN_EXPIRES
+                    });
+                })
+                .then((token) => {
+                    res
+                        .status(200)
+                        .json({
+                            message: token
+                        });
+                })
+                .catch(err => res.status(400).json({
+                    error: err.message
+                }));
+        });
+    },
+
     createFunnelTemplate: async function (req, res) {
         const templateId = req.params.templateId;
         let projectId;
