@@ -132,7 +132,7 @@ export default class BodyWidget extends React.Component {
 
         this.props.work.getConversionInfoForAllNodesForRecipiensCollaborator(
           this.props.work.funnelId, 
-          params.get('add-collaborators-image')
+          this.props.tokenCollaborator
         )
       }
       else{

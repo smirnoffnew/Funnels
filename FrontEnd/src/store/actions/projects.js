@@ -342,11 +342,11 @@ export function getConversionInfoForAllNodes(funnelId) {
 export function getConversionInfoForAllNodesForRecipiensCollaborator(funnelId ,token) {
   const axiosConfig = {
     headers: {
-      'authorization': "Bearer " + token
+      'authorization': token
     },
   };
   return function (dispatch) {
-    axios.get(`funnel/node/static/getCounter/${funnelId}`, axiosConfig)
+    axios.get(`${API_URL}/funnel/node/static/getCounter/${funnelId}`, axiosConfig)
       .then(response => {
         dispatch({
           type: 'CONVERSION_INFO',

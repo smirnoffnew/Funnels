@@ -47,6 +47,10 @@ class AddCollaboratorsImage extends React.Component {
       .then(response => {
         this.props.getDiagramForRecipiensCollaborator(params.get('funnelId'), "Bearer " + response.data.message);
         this.props.getSVGForRecipiensCollaborator("Bearer " + response.data.message);
+
+        this.setState({
+          token: "Bearer " + response.data.message
+        })
       })
       .catch(function (error) {
         if (error.response) {
@@ -103,7 +107,7 @@ class AddCollaboratorsImage extends React.Component {
     return (
       <div className='add-collaborators-img-body'>
 
-        <BodyWidget app={app} work={this.props} addCollaborators />
+        <BodyWidget app={app} work={this.props} addCollaborators tokenCollaborator={this.state.token} />
 
         {/* <img className='add-collaborators-img-image' src={'http://' + params.get('image')} alt='img' /> */}
 
