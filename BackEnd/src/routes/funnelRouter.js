@@ -71,7 +71,7 @@ funnelRouter.post('/diagram/screenshot',
     funnelController.getScreenshot);
 
 funnelRouter.post('/get-signin-token',
-    funnelController.getSignInToken
+    funnelController.getSignInToken 
 );
 
 
