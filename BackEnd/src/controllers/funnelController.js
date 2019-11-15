@@ -349,30 +349,28 @@ module.exports = {
             }));
     },
     getSignInToken: function (req, res) {
-        new Promise((res, rej) => {
-            jwt.verify(req.headers.authorization, process.env.SECRET_COLLABORATOR, (err, authData) => {
-                    rej(err);
-                    res(authData);
+        new Promise((resolve, reject) => {
+                console.log(req.headers.authorization)
+                jwt.verify(req.headers.authorization, process.env.SECRET_COLLABORATOR, (err, authData) => {
+                    err ? reject({ message: 'Invalid token' }) : resolve(authData);
                 })
-                .then(authData => {
-                    let token = jwt.sign({
-                        profileId: authData.profileId,
-                        userId: authData.userId
-                    }, process.env.SECRET, {
-                        expiresIn: process.env.TOKEN_EXPIRES
-                    });
-                    res
-                        .status(200)
-                        .json({
-                            message: token
-                        });
-                })
-                .catch(err => {
-                    res.status(400).json({
-                        error: err.message
-                    })
+            })
+            .then(authData => {
+                let token = jwt.sign({
+                    profileId: authData.profileId,
+                    userId: authData.userId
+                }, process.env.SECRET, {
+                    expiresIn: process.env.TOKEN_EXPIRES
                 });
-        })
+                res.status(200).json({
+                    message: token
+                });
+            })
+            .catch(err => {
+                res.status(400).json({
+                    error: err.message
+                })
+            });
     },
 
     createFunnelTemplate: async function (req, res) {
