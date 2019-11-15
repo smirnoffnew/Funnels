@@ -349,32 +349,30 @@ module.exports = {
             }));
     },
     getSignInToken: function (req, res) {
-        jwt.verify(req.headers.authorization, process.env.SECRET_COLLABORATOR, (err, authData) => {
-            if (err) {
-                console.log(err)
-                return res.status(403).send("No authority");
-            }
-            new Promise(function (resolve, reject) {
+        new Promise((res, rej) => {
+            jwt.verify(req.headers.authorization, process.env.SECRET_COLLABORATOR, (err, authData) => {
+                    rej(err);
+                    res(authData);
+                })
+                .then(authData => {
                     let token = jwt.sign({
                         profileId: authData.profileId,
                         userId: authData.userId
                     }, process.env.SECRET, {
                         expiresIn: process.env.TOKEN_EXPIRES
                     });
-                    resolve(token);
-                    reject(()=>{throw new Error('Error in Promise')})
-                })
-                .then((token) => {
                     res
                         .status(200)
                         .json({
                             message: token
                         });
                 })
-                .catch(err => res.status(400).json({
-                    error: err.message
-                }));
-        });
+                .catch(err => {
+                    res.status(400).json({
+                        error: err.message
+                    })
+                });
+        })
     },
 
     createFunnelTemplate: async function (req, res) {
