@@ -14,11 +14,10 @@ const avatarBufferDir = process.env.AVATARBUFFER_DIR;
 
 module.exports = {
     changeMyProfile: async (req, res) => {
-        //await req.body.email.toLowerCase();
         Promise
             .all([
                 Profile.findOneAndUpdate({
-                        _id: req.authData.profile._id
+                        _id: req.authData.profileId
                     },
                     req.objectForUpdate, {
                         new: true
@@ -46,10 +45,10 @@ module.exports = {
 
     },
     changeUsersAvatar: (req, res) => {
-        
+
         Profile
             .findOne({
-                _id: req.authData.profile._id
+                _id: req.authData.profileId
             })
             .exec()
             /**find profile in db */
@@ -57,17 +56,17 @@ module.exports = {
                 const data = new FormData();
                 let userId = profile._id.toString()
                 data.append('userName', userId);
-                data.append('img', fs.createReadStream(`${avatarBufferDir}/${req.authData.profile._id}${path.parse(req.file.originalname).ext}`));
+                data.append('img', fs.createReadStream(`${avatarBufferDir}/${req.authData.profileId}${path.parse(req.file.originalname).ext}`));
                 return fetch(`${process.env.FILE_SHARER}/avatars`, {
                     method: 'POST',
                     body: data
                 })
             })
-            .then(result =>result.json())
+            .then(result => result.json())
             .then((result) => {
                 return Profile
                     .findOneAndUpdate({
-                        _id: req.authData.profile._id
+                        _id: req.authData.profileId
                     }, {
                         photoUrl: result.link
                     }, {
@@ -77,12 +76,12 @@ module.exports = {
             })
             .then((result) => {
                 try {
-                    fs.unlinkSync(`${avatarBufferDir}/${req.authData.profile._id}${path.parse(req.file.originalname).ext}`)
+                    fs.unlinkSync(`${avatarBufferDir}/${req.authData.profileId}${path.parse(req.file.originalname).ext}`)
                 } catch (error) {
                     console.log(error)
                 }
                 res.status(200).json({
-                    link:result,
+                    link: result,
                     message: "Avatar updated succesfully...",
                 })
             })
@@ -94,9 +93,8 @@ module.exports = {
     },
 
     getAllPartners: async (req, res) => {
-
         Profile
-            .findById(req.authData.profile._id)
+            .findById(req.authData.profileId)
             .populate({
                 model: 'Profile',
                 path: 'myPartners.partnerProfile'
@@ -115,7 +113,7 @@ module.exports = {
     getSinglePartner: async (req, res) => {
 
         Profile
-            .findById(req.authData.profile._id)
+            .findById(req.authData.profileId)
             .populate({
                 model: 'Profile',
                 path: 'myPartners.partnerProfile'
@@ -136,9 +134,8 @@ module.exports = {
     },
 
     updatePartnersPermissions: async (req, res) => {
-
         Profile
-            .findById(req.authData.profile._id)
+            .findById(req.authData.profileId)
             .populate({
                 model: 'Profile',
                 path: 'myPartners.partnerProfile'
@@ -163,7 +160,7 @@ module.exports = {
     deleteSinglePartner: async (req, res) => {
 
         Profile
-            .findById(req.authData.profile._id)
+            .findById(req.authData.profileId)
             .populate({
                 model: 'Profile',
                 path: 'myPartners.partnerProfile'
@@ -186,7 +183,7 @@ module.exports = {
 
     createUrlForPartner: async (req, res) => {
 
-        const partnerProfileId = req.authData.profile._id;
+        const partnerProfileId = req.authData.profileId;
 
         new PartnerToken({
                 ownerToken: req.headers.authorization,
@@ -194,13 +191,22 @@ module.exports = {
                 ownerProfileId: partnerProfileId
             })
             .save()
-            .then(partnerToken => res
-                .status(200)
-                .json({
-                    data: Boolean(req.authData.profile.limited) === true ?
-                        `No authority to partner` : `${process.env.PROD_URL}/add-partner/${partnerToken._id}`
-                })
-            )
+            .then(partnerToken => {
+                return Profile
+                    .findOne({
+                        _id: req.authData.profileId
+                    })
+                    .exec()
+                    .then((profile) => {
+                        res
+                            .status(200)
+                            .json({
+                                data: Boolean(profile.limited) === true ?
+                                    `No authority to partner` : `${process.env.PROD_URL}/add-partner/${partnerToken._id}`
+                            })
+                    })
+
+            })
             .catch(err => {
                 res.status(400).json({
                     error: err.message
@@ -208,10 +214,9 @@ module.exports = {
             });
 
     },
-
+    
     createPartnerByLink: async function (req, res) {
-
-        const partnerProfileId = req.authData.profile._id;
+        const partnerProfileId = req.authData.profileId;
         const partnerTokenId = req.params.partnerTokenId;
         let existPartnerToken;
         let profile;
@@ -278,7 +283,7 @@ module.exports = {
     },
 
     getAllOwners: async function (req, res) {
-        const partnerProfileId = req.authData.profile._id;
+        const partnerProfileId = req.authData.profileId;
         Profile
             .find({
                 "myPartners": {

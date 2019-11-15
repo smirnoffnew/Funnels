@@ -47,7 +47,7 @@ module.exports = {
     },
     getAllOwnTemplates: async function (req, res) {
         Template
-            .find({templateAuthor: req.authData.profile._id})
+            .find({templateAuthor: req.authData.profileId})
             .exec()
             .then(templates =>{
                 res
