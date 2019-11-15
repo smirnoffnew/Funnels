@@ -356,7 +356,7 @@ module.exports = {
             }
             new Promise(function (resolve, reject) {
                     let token = jwt.sign({
-                        profile: authData.profileId,
+                        profileId: authData.profileId,
                         userId: authData.userId
                     }, process.env.SECRET, {
                         expiresIn: process.env.TOKEN_EXPIRES
