@@ -272,9 +272,12 @@ module.exports = {
                 });
 
             })
-            .catch(err => res.status(400).json({
+            .catch(err => {
+                console.log(err)
+                res.status(400).json({
+                
                 error: err.message
-            }));
+            })});
     },
     getFunnelById: async function (req, res) {
         Funnel
