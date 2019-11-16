@@ -6,6 +6,12 @@ import API_URL from '../../config'
 export function addCollaborator(tokenCollaborator) {
   const token = JSON.parse(localStorage.getItem('token'));
 
+  // console.log('token', token)
+
+  // console.log('tokenCollaborator', tokenCollaborator)
+
+  
+
   const postData = {
     // 'password': password
   };
@@ -20,6 +26,7 @@ export function addCollaborator(tokenCollaborator) {
   return function (dispatch) {
     axios.post(`${API_URL}/collaborator`, postData, axiosConfig)
       .then(response => {
+        // console.log('response', response)
         dispatch({ type: 'ADD_COLLABORATOR_RESET' });
         dispatch({
           type: 'ADD_COLLABORATOR',
@@ -63,7 +70,7 @@ export function getAllFunnelsCollaboration() {
 
 export function getAllCollaboratorsForFunnels(funnelsId) {
   return function (dispatch) {
-    API.post(`collaborator`, {
+    API.post(`collaborator/funnel`, {
       'funnelsId': funnelsId
     })
       .then(response => {

@@ -598,7 +598,7 @@ export function createNewProjectWithTemplate(templateId, projectName, funnelId) 
         }, 2000)
 
         setTimeout(() => {
-          dispatch(push(`/`));
+          dispatch(push('/projects'));
         }, 1000)
 
       })

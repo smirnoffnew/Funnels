@@ -297,7 +297,7 @@ class ProjectItem extends React.Component {
                           ) : (
                             <img
                               className="collaborator-photo"
-                              src={item.photoUrl}
+                              src={"http://" + item.photoUrl}
                               alt="Avatar"
                             />
                           )}
