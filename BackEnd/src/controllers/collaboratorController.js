@@ -109,7 +109,7 @@ module.exports = {
         const funnelsIdArray = decodedJwtCollaborate.payload.funnelsId;
 
         const collaboratorForFunnel = {
-            profileId: decodedJwtAuthorization.payload.profile._id,
+            profileId: decodedJwtAuthorization.payload.profileId,
             permissions: decodedJwtCollaborate.payload.permissions,
             funnelId: decodedJwtCollaborate.payload.funnelsId
         };
@@ -119,7 +119,7 @@ module.exports = {
             .all([
 
                 Profile.updateOne({
-                    _id: decodedJwtAuthorization.payload.profile._id
+                    _id: decodedJwtAuthorization.payload.profileId
                 }, {
                     $push: {
                         myCollaborations: funnelsIdArray.map(funnelId => {
@@ -144,7 +144,7 @@ module.exports = {
                                 return {
                                     permissions: decodedJwtCollaborate.payload.permissions,
                                     funnelId: funnelId,
-                                    profileId: decodedJwtAuthorization.payload.profile._id
+                                    profileId: decodedJwtAuthorization.payload.profileId
                                 }
                             })
                         }
