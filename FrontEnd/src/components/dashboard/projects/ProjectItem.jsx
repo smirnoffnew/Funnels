@@ -66,6 +66,7 @@ class ProjectItem extends React.Component {
       },
       () => {
         this.props.resetAllCollaboratorsForFunnels();
+        this.state.selectedFunnelsList.length > 0 &&
         this.props.getAllCollaboratorsForFunnels(
           this.state.selectedFunnelsList
         );
@@ -82,6 +83,7 @@ class ProjectItem extends React.Component {
       },
       () => {
         this.props.resetAllCollaboratorsForFunnels();
+        this.state.selectedFunnelsList.length > 0 &&
         this.props.getAllCollaboratorsForFunnels(
           this.state.selectedFunnelsList
         );
@@ -115,6 +117,7 @@ class ProjectItem extends React.Component {
 
     setTimeout(() => {
       this.props.resetAllCollaboratorsForFunnels();
+      this.state.selectedFunnelsList.length > 0 &&
       this.props.getAllCollaboratorsForFunnels(this.state.selectedFunnelsList);
     }, 1500);
   };
@@ -128,6 +131,7 @@ class ProjectItem extends React.Component {
 
     setTimeout(() => {
       this.props.resetAllCollaboratorsForFunnels();
+      this.state.selectedFunnelsList.length > 0 &&
       this.props.getAllCollaboratorsForFunnels(this.state.selectedFunnelsList);
     }, 1500);
   };
