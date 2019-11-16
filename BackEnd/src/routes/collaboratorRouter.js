@@ -11,7 +11,7 @@ const lastActive = require('../libs/lastActive');
 
 collaboratorRouter.post('/',
     enshureToken,
-    //enshureCollaborateToken,
+    enshureCollaborateToken,
     verifyToken,
     lastActive,
     collaboratorController.createCollaborator);
