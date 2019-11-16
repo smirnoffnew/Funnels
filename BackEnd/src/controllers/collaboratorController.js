@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const jwt = require('jsonwebtoken');
-const fs = require("fs");
+//const fs = require("fs");
 
 
 const Funnel = require('../models/funnel.js');
@@ -111,6 +111,7 @@ module.exports = {
 
                 Profile
                     .updateOne(
+
                         {_id: decodedJwtAuthorization.payload.profileId},
 
                         {
@@ -129,24 +130,23 @@ module.exports = {
 
 
                 Funnel
-                    .updateMany({
-                        '_id': {
-                            $in: funnelsIdArray
-                        }
-                    },
+                    .updateMany(
 
-                    {
-                        $push: {
-                            collaborators: funnelsIdArray.map(funnelId => {
-                                return {
-                                    permissions: decodedJwtCollaborate.payload.permissions,
-                                    funnelId: funnelId,
-                                    profileId: decodedJwtAuthorization.payload.profileId
-                                }
-                            })
+                        {'_id': {$in: funnelsIdArray}},
+
+                        {
+                            $push: {
+                                collaborators: funnelsIdArray.map(funnelId => {
+                                    return {
+                                        permissions: decodedJwtCollaborate.payload.permissions,
+                                        funnelId: funnelId,
+                                        profileId: decodedJwtAuthorization.payload.profileId
+                                    }
+                                })
+                            }
                         }
-                    }
-                ).exec(),
+                    )
+                .exec(),
 
                 Token.deleteOne({body: req.headers.collaborate_confirm}).exec()
 
