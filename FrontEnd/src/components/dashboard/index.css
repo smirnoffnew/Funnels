@@ -318,3 +318,9 @@
   font-weight: 300;
   font-size: 26px;
 }
+
+.btn-disabled{
+  background: #848f99;
+  /* color: #848f99; */
+  cursor: default;
+}

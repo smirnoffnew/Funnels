@@ -374,9 +374,15 @@ class ProjectItem extends React.Component {
               </>
             ) : (
               <button
-                className="btn btn-1 btn-delete-modal"
+                className={
+                  this.state.selectedFunnelsList.length === 0 ? 
+                  'btn btn-1 btn-delete-modal btn-disabled' 
+                  : 
+                  'btn btn-1 btn-delete-modal '
+                }
                 style={{ margin: "15px auto" }}
                 onClick={() => this.handleCreateLink()}
+                disabled={this.state.selectedFunnelsList.length === 0}
               >
                 Create Link
               </button>
