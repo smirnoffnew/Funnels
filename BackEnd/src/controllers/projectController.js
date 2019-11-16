@@ -21,8 +21,7 @@ module.exports = {
             })
             .then(result => {
                 if (result >= process.env.PROJECT_LIMIT && _profile.limited == true) {
-                    res.status(400)
-                        .json({
+                    res.status(400).json({
                             error: "Project creation limit is reached!"
                         });
                 } else {
@@ -36,8 +35,7 @@ module.exports = {
             })
             .then(project => {
                 const limit = _profile.limited == true ? ` ${process.env.PROJECT_LIMIT}` : null;
-                res.status(200)
-                    .json({
+                res.status(200).json({
                         message: "Project created successfully!",
                         data: project,
                         limit: limit
@@ -113,7 +111,9 @@ module.exports = {
         jwt.verify(req.token, process.env.SECRET, (err, authData) => {
             if (err) {
                 console.log(req.headers);
-                return res.status(403).send("No authority");
+                return res.status(401).json({
+                    message:"Not authorized"
+                });
             }
             const projectId = req.params.project_id;
             Profile
@@ -159,7 +159,7 @@ module.exports = {
                     }
                 })
                 .catch(err => {
-                    console.log(err)
+                    console.log(err);
                     res.status(400).json({
                         error: err.message
                     })
@@ -169,7 +169,9 @@ module.exports = {
     deleteCollaborator: async function (req, res) {
         jwt.verify(req.token, process.env.SECRET, (err, authData) => {
             if (err) {
-                return res.status(403).send("No authority");
+                return res.status(401).json({
+                    message:"not authorized"
+                });
             }
             const projectId = req.params.project_id;
             const collaboratorId = mongoose.Types.ObjectId(req.params.col_id);
