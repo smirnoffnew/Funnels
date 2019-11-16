@@ -101,6 +101,10 @@ module.exports = {
         const decodedJwtAuthorization = jwt.decode(req.token, {
             complete: true
         });
+
+        console.log('decodedJwtAuthorization.payload..........',decodedJwtAuthorization.payload)
+
+
         //res.json({colconfirm: decodedJwtCollaborate, url: `src/${decodedJwtCollaborate.payload.screenShotURL}`});
         const funnelsIdArray = decodedJwtCollaborate.payload.funnelsId;
 
