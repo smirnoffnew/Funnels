@@ -28,7 +28,7 @@ collaboratorRouter.delete('/:profileId/:funnelId',
     lastActive,
     collaboratorController.deleteCollaborator);
 
-collaboratorRouter.post('/',
+collaboratorRouter.get('/',
     enshureToken,
     verifyToken,
     lastActive,
