@@ -13,7 +13,7 @@ module.exports = {
                 _id: req.authData.profileId
             }).exec()
             .then(profile => {
-                _profile = profile
+                _profile = profile;
                 return Project.count({
                         projectAuthor: profile._id
                     })
@@ -21,8 +21,7 @@ module.exports = {
             })
             .then(result => {
                 if (result >= process.env.PROJECT_LIMIT && _profile.limited == true) {
-                    res
-                        .status(400)
+                    res.status(400)
                         .json({
                             error: "Project creation limit is reached!"
                         });
@@ -37,8 +36,7 @@ module.exports = {
             })
             .then(project => {
                 const limit = _profile.limited == true ? ` ${process.env.PROJECT_LIMIT}` : null;
-                res
-                    .status(200)
+                res.status(200)
                     .json({
                         message: "Project created successfully!",
                         data: project,
@@ -72,15 +70,12 @@ module.exports = {
                         .exec()
                     ])
                     .then(() => {
-
-                        res
-                            .status(200)
+                        res.status(200)
                             .json({
                                 message: "project deleted successfully!"
                             });
                     })
                     .catch(err => {
-
                         res.status(400).json({
                             error: err.message
                         })
@@ -94,7 +89,7 @@ module.exports = {
                 _id: req.authData.profileId
             }).exec()
             .then(profile => {
-                    _profile = profile
+                    _profile = profile;
                 return Project.find({
                         projectAuthor: profile._id
                     })
@@ -102,8 +97,7 @@ module.exports = {
             })
             .then(projects => {
                 const limit = _profile.limited == true ? ` ${process.env.PROJECT_LIMIT}` : null;
-                res
-                    .status(200)
+                res.status(200)
                     .json({
                         data: projects,
                         limit: limit
