@@ -12,7 +12,7 @@ module.exports = {
     changeCollaboratorPermissions: async function (req, res) {
         const profileId = req.params.profileId;
         const funnelId = req.params.funnelId;
-        const permissionToChange = req.body.permissions == "View Only" ? "Edit" : "View Only";
+        const permissionToChange = req.body.permissions === "View Only" ? "Edit" : "View Only";
         Promise
             .all([
                 Profile
@@ -41,7 +41,7 @@ module.exports = {
                 res
                     .status(200)
                     .json({
-                        message: "permissions changed successfully!"
+                        message: `permissions for funnel ${result.funnelName} changed successfully!`
                     });
             })
             .catch(err => {
@@ -104,12 +104,6 @@ module.exports = {
         //res.json({colconfirm: decodedJwtCollaborate, url: `src/${decodedJwtCollaborate.payload.screenShotURL}`});
         const funnelsIdArray = decodedJwtCollaborate.payload.funnelsId;
 
-        const collaboratorForFunnel = {
-            profileId: decodedJwtAuthorization.payload.profile._id,
-            permissions: decodedJwtCollaborate.payload.permissions,
-            funnelId: decodedJwtCollaborate.payload.funnelsId
-        };
-
 
         Promise
             .all([
@@ -153,7 +147,7 @@ module.exports = {
                 .exec()
 
             ])
-            .then(result => {
+            .then(() => {
                 fs.unlink(`src/${decodedJwtCollaborate.payload.screenShotURL}`, (err) => {
                     if (err) {
                         console.log(err);
