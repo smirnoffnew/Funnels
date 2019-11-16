@@ -4,6 +4,6 @@ module.exports = (req, res, next) => {
         req.collaborate_confirm = collaborateHeader;
         next();
     } else {
-        res.status(403).json({message: "invalid collaborate token", data: collaborateHeader});
+        res.status(400).json({message: "invalid collaborate token", data: collaborateHeader});
     }
 };

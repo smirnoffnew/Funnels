@@ -95,67 +95,71 @@ module.exports = {
             });
     },
     createCollaborator: async function (req, res) {
+
         const decodedJwtCollaborate = jwt.decode(req.collaborate_confirm, {
             complete: true
         });
+
         const decodedJwtAuthorization = jwt.decode(req.token, {
             complete: true
         });
-        //res.json({colconfirm: decodedJwtCollaborate, url: `src/${decodedJwtCollaborate.payload.screenShotURL}`});
-        const funnelsIdArray = decodedJwtCollaborate.payload.funnelsId;
 
+        const funnelsIdArray = decodedJwtCollaborate.payload.funnelsId;
 
         Promise
             .all([
 
-                Profile.updateOne({
-                    _id: decodedJwtAuthorization.payload.profile._id
-                }, {
-                    $push: {
-                        myCollaborations: funnelsIdArray.map(funnelId => {
-                            return {
-                                permissions: decodedJwtCollaborate.payload.permissions,
-                                funnelId: funnelId,
-                                funnel: mongoose.Types.ObjectId(funnelId)
-                            }
-                        })
-                    }
-                }).exec(),
+                Profile
+                    .updateOne(
+                        {_id: decodedJwtAuthorization.payload.profileId},
 
-                Funnel.updateMany({
+                        {
+                            $push: {
+                                myCollaborations: funnelsIdArray.map(funnelId => {
+                                    return {
+                                        permissions: decodedJwtCollaborate.payload.permissions,
+                                        funnelId: funnelId,
+                                        funnel: mongoose.Types.ObjectId(funnelId)
+                                    }
+                                })
+                            }
+                        }
+                    )
+                .exec(),
+
+
+                Funnel
+                    .updateMany({
                         '_id': {
-                            $in: decodedJwtCollaborate.payload.funnelsId
+                            $in: funnelsIdArray
                         }
                     },
-                    // {$push: {collaborators: collaboratorForFunnel}}
+
                     {
                         $push: {
                             collaborators: funnelsIdArray.map(funnelId => {
                                 return {
                                     permissions: decodedJwtCollaborate.payload.permissions,
                                     funnelId: funnelId,
-                                    profileId: decodedJwtAuthorization.payload.profile._id
+                                    profileId: decodedJwtAuthorization.payload.profileId
                                 }
                             })
                         }
                     }
-                )
-                .exec(),
-                Token.deleteOne({
-                    body: req.collaborate_confirm
-                })
-                .exec()
+                ).exec(),
+
+                Token.deleteOne({body: req.headers.collaborate_confirm}).exec()
 
             ])
             .then(() => {
-                fs.unlink(`src/${decodedJwtCollaborate.payload.screenShotURL}`, (err) => {
-                    if (err) {
-                        console.log(err);
-                    }
-                });
-                res
-                    .status(200)
-                    .json({
+
+                // fs.unlink(`src/${decodedJwtCollaborate.payload.screenShotURL}`, (err) => {
+                //     if (err) {
+                //         console.log(err);
+                //     }
+                // });
+
+                return res.status(200).json({
                         message: "collaborator added successfully!"
                     });
             })
