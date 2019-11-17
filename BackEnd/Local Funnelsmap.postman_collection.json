@@ -1094,6 +1094,127 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "collaboratorRoutes",
+			"item": [
+				{
+					"name": "changeCollaboratorPermissions",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlSWQiOiI1ZGNlYWM5NGUwNDIyYTI1ZDA3MzFjMzYiLCJ1c2VySWQiOiI1ZGNlYWM5NGUwNDIyYTI1ZDA3MzFjMzQiLCJpYXQiOjE1NzM4NDA5NTAsImV4cCI6MTU3NDEwMDE1MH0.SY8d3uKdLbf5jXnKeQ72wjey50fVN0slR-lunK-l0rk"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"funnelName\":\"Second test funnel\",\n\t\"funnelBody\":\"testFunnelBody\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9001/collaborator/5dceac94e0422a25d0731c36/5dceec9db5e5b7398cbb5e08",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"collaborator",
+								"5dceac94e0422a25d0731c36",
+								"5dceec9db5e5b7398cbb5e08"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCollaborator",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "authorization",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlSWQiOiI1ZGNlYWM5NGUwNDIyYTI1ZDA3MzFjMzYiLCJ1c2VySWQiOiI1ZGNlYWM5NGUwNDIyYTI1ZDA3MzFjMzQiLCJpYXQiOjE1NzM4NDA5NTAsImV4cCI6MTU3NDEwMDE1MH0.SY8d3uKdLbf5jXnKeQ72wjey50fVN0slR-lunK-l0rk"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"funnelName\":\"Second test funnel\",\n\t\"funnelBody\":\"testFunnelBody\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9001/collaborator/5dceac94e0422a25d0731c36/5dceec9db5e5b7398cbb5e08",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"collaborator",
+								"5dceac94e0422a25d0731c36",
+								"5dceec9db5e5b7398cbb5e08"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createCollaborator",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9maWxlSWQiOiI1ZGNlZTEyMjA5M2NjNjIyZmM1ODFlYTciLCJ1c2VySWQiOiI1ZGNlZTEyMjA5M2NjNjIyZmM1ODFlYTUiLCJpYXQiOjE1NzM5OTY3NTYsImV4cCI6MTU3NDI1NTk1Nn0.jdv5eYCJBmVOAg1cU7Y3LYouagX5n5OAo5fga7PcFac"
+							},
+							{
+								"key": "collaborate-confirm",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmdW5uZWxzSWQiOlsiNWRkMTQ4YjhmOTNmYTMwMDM3YjU2NTk4IiwiNWRkMTQ4YzJmOTNmYTMwMDM3YjU2NTljIiwiNWRkMTQ4YmZmOTNmYTMwMDM3YjU2NTlhIl0sInBlcm1pc3Npb25zIjoiRWRpdCIsImlhdCI6MTU3Mzk5Njc0OH0.hnfIYERnZ9bsgrbN1jEbEcuK1-GGDwvLTMgzJHPUgqs"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:9001/collaborator/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9001",
+							"path": [
+								"collaborator",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
