@@ -71,12 +71,8 @@ export const serializationInWidget = activeModel => {
 // }
 
 export const cloneSelected = (
-  funnelName,
-  funnelNotes,
   engine,
-  saveDiagramThenShowOrHideSettingsModal,
   funnelId,
-  node,
   updateModel
 ) => {
   try {
@@ -99,8 +95,6 @@ export const cloneSelected = (
       }
       newItem.selected = true;
     });
-    // document.getElementById("diagram-layer").click();
-
 
     setTimeout(() => {
       updateModel(
@@ -109,27 +103,6 @@ export const cloneSelected = (
       )
     })
 
-    // save for handle rename another item itself
-
-    // const name = randomString({ length: 10 });
-    // const file = new File(["test"], name, {
-    //   type: "image/png"
-    // });
-    // saveDiagramThenShowOrHideSettingsModal(
-    //   funnelId,
-    //   {
-    //     snackMsg: "next",
-    //     converted: serializationInWidget(engine.getDiagramModel()),
-    //     funnelName,
-    //     funnelNotes,
-    //   },
-    //   file,
-    //   false,
-    //   node,
-    //   engine.getDiagramModel()
-    // );
-
-
   }
   catch(e){
     console.log('error', e.message)
@@ -137,19 +110,23 @@ export const cloneSelected = (
 };
 
 export const showRightModal = (
+
+  node,
   funnelName,
   funnelNotes,
-  showRightModal,
+  saveDiagramThenShowOrHideModal,
   funnelId,
   engine,
-  node,
+  updateModel,
   typeOfNode,
+  
 ) => {
-  const name = randomString({ length: 10 });
-  const file = new File(["test"], name, {
-    type: "image/png"
-  });
-  showRightModal(
+  saveDiagramThenShowOrHideModal(
+    updateModel,
+
+    engine.getDiagramModel(),
+    node,
+    
     funnelId,
     {
       snackMsg: "next",
@@ -157,10 +134,8 @@ export const showRightModal = (
       funnelName,
       funnelNotes,
     },
-    file,
     true,
-    node,
-    engine.getDiagramModel(),
+    
     typeOfNode,
   );
 };

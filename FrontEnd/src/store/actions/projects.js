@@ -10,6 +10,7 @@ import {
 } from './types/index';
 import API_URL from '../../config'
 import { API, requestPromise } from './instance'
+import { serializationInWidget } from '../../components/diagram/storm/custom/funcsForCustomNodeWidget';
 
 
 export function getAllProjects() {
@@ -942,110 +943,74 @@ export const showSettingsModalOnlyBoolean = (boolean) => dispatch => {
   })
 }
 
-export const saveDiagramThenShowOrHideSettingsModal = (funnelId, diagramObj, image, boolean, model, engine, typeOfNode) => dispatch => {
-  const token = JSON.parse(localStorage.getItem('token'));
+export const saveDiagramThenShowOrHideSettingsModal = (
 
-  let bodyFormData = new FormData();
-  bodyFormData.append('funnelBackground', image);
-  bodyFormData.append('funnelBody', JSON.stringify(diagramObj));
+  updateModel,
+  
+  model,
+  node, 
 
-  axios({
-    method: 'patch',
-    url: `${API_URL}/funnel/diagram/${funnelId}`,
-    headers: {
-      'authorization': token,
-      'Content-Type': 'form-data'
-    },
-    data: bodyFormData
+  funnelId, 
+  diagramObj, 
+  boolean,
+  
+  
+  typeOfNode,
+
+) => dispatch => {
+
+
+  setTimeout(() => {
+    updateModel(
+      diagramObj.converted,
+      funnelId,
+    )
   })
-    .then(response => {
-   
-      let res1 = JSON.parse(response.data.data.funnelBody);
-      let res = {
-        converted: res1.converted,
-        snackMsg: 'next'
-      }
-      dispatch({
-        type: 'GET_DIAGRAM',
-        payload: {
-          funnelId,
-          res,
-        }
-      });
-      dispatch({
-        type: 'CHANGE_SHOW_SETTINGS_MODAL',
-        payload: {
-          boolean,
-          model,
-          engine,
-          typeOfNode,
-        }
-      })
-    })
-    .catch(function (error) {
-      if (error.response) {
-        console.log(error.response)
-        dispatch({
-          type: 'CREATE_DIAGRAM_FAILURE',
-          payload: error.response.data.error
-        });
-      }
-    });
+
+  dispatch({
+    type: 'CHANGE_SHOW_SETTINGS_MODAL',
+    payload: {
+      boolean,
+      typeOfNode,
+      engine: model,
+      model: node, 
+    }
+  })
+
+
 }
 
 
 
-export const saveDiagramThenShowOrHideNotesModal = (funnelId, diagramObj, image, boolean, model, engine) => dispatch => {
-  const token = JSON.parse(localStorage.getItem('token'));
-  const bodyFormData = new FormData();
-  bodyFormData.append('funnelBackground', image);
-  bodyFormData.append('funnelBody', JSON.stringify(diagramObj));
+export const saveDiagramThenShowOrHideNotesModal = (
 
-  axios({
-    method: 'patch',
-    url: `${API_URL}/funnel/diagram/${funnelId}`,
-    headers: {
-      'authorization': token,
-      'Content-Type': 'form-data'
-    },
-    data: bodyFormData
+  updateModel,
+  
+  model,
+  node, 
+
+  funnelId, 
+  diagramObj, 
+  boolean,
+  
+
+) => dispatch => {
+
+  setTimeout(() => {
+    updateModel(
+      diagramObj.converted,
+      funnelId,
+    )
   })
-    .then(response => {
 
-
-
-      // console.log('saveDiagramThenShowOrHideNotesModal response', JSON.parse(response.data.data.funnelBody))
-
-      let res1 = JSON.parse(response.data.data.funnelBody);
-      let res = {
-        converted: res1.converted,
-        snackMsg: 'next'
-      }
-      dispatch({
-        type: 'GET_DIAGRAM',
-        payload: {
-          funnelId,
-          res,
-        }
-      });
       dispatch({
         type: 'CHANGE_SHOW_NOTES_MODAL',
         payload: {
           boolean,
-          model,
-          engine,
+          engine: model,
+          model: node, 
         }
       })
-    })
-    .catch(function (error) {
-      if (error.response) {
-        console.log(error.response)
-        dispatch({
-          type: 'CREATE_DIAGRAM_FAILURE',
-          payload: error.response.data.error
-        });
-      }
-    });
 }
 
 export const showAnalyticsBoolean = boolean => dispatch => {

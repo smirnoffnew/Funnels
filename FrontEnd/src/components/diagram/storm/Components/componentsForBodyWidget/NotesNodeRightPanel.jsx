@@ -14,7 +14,7 @@ export default class NotesNodeRightPanel extends React.Component {
       note: e.target.value
     });
 
-  saveDiagramThenCloseSettingModal = file =>
+  saveDiagramThenCloseSettingModal = () =>
     this.setState(
       {
         snackMsg: "next",
@@ -27,13 +27,21 @@ export default class NotesNodeRightPanel extends React.Component {
       },
       () => {
         this.props.work.saveDiagramThenShowOrHideNotesModal(
+          this.props.work.updateModel,
+
+          null,
+          null,
+
           this.props.work.funnelId,
           this.state,
-          file,
-          false
+          false,
+
         );
 
-        document.location.reload(true)
+        this.setState({
+          note: ""
+        });
+
       }
     );
 
@@ -128,11 +136,7 @@ export default class NotesNodeRightPanel extends React.Component {
       <ModalNodeWidget
         show={this.props.work.showNotesWidgetBoolean}
         handleClose={() => {
-          const name = randomString({ length: 10 });
-          const file = new File(["test"], name, {
-            type: "image/png"
-          });
-          this.saveDiagramThenCloseSettingModal(file);
+          this.saveDiagramThenCloseSettingModal();
         }}
       >
         <label className="label-create-widget-settings">Notes</label>

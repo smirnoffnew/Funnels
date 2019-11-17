@@ -189,12 +189,13 @@ class SmallNodeWidget extends React.Component {
                     className="btn-select-widget"
                     onClick={() =>
                       showRightModal(
+                        this.props.node,
                         this.props.diagram.funnelName,
                         this.props.diagram.funnelNotes,
                         this.props.saveDiagramThenShowOrHideSettingsModal,
                         this.props.funnelId,
                         this.props.engine,
-                        this.props.node,
+                        this.props.updateModel,
                         "small"
                       )
                     }
@@ -217,12 +218,13 @@ class SmallNodeWidget extends React.Component {
                     }}
                     onClick={() =>
                       showRightModal(
+                        this.props.node,
                         this.props.diagram.funnelName,
                         this.props.diagram.funnelNotes,
                         this.props.saveDiagramThenShowOrHideNotesModal,
                         this.props.funnelId,
                         this.props.engine,
-                        this.props.node,
+                        this.props.updateModel,
                       )
                     }
                     title={"Notes"}
@@ -236,12 +238,8 @@ class SmallNodeWidget extends React.Component {
                     className="btn-select-widget"
                     onClick={() =>
                       cloneSelected(
-                        this.props.diagram.funnelName,
-                        this.props.diagram.funnelNotes,
                         this.props.engine,
-                        this.props.saveDiagramThenShowOrHideSettingsModal,
                         this.props.funnelId,
-                        this.props.node,
                         this.props.updateModel,
                       )
                     }

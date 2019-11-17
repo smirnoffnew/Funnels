@@ -650,6 +650,14 @@
   box-shadow: 0 0 28px rgba(253,143,33, 0.5)
 }
 
+.modal-node-widget-main::-webkit-scrollbar {
+  width: 4px;
+  background-color: #F5F5F5;
+} 
+.modal-node-widget-main::-webkit-scrollbar-thumb {
+  background-color: #ff9033;
+}
+
 
 
 

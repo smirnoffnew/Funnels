@@ -17,9 +17,10 @@ const TRACKING_SMALL_NODE_SECTION = "TRACKING_SMALL_NODE_SECTION";
 
 
 export default class SettingsNodeRightPanel extends React.Component {
+  
   state = {
-    labelNode: "",
-    script: "",
+    labelNode: '',
+    scriptD: "",
     toggleTriggerStyle: false,
     toggleGoalStyle: false,
     copied: false,
@@ -33,32 +34,10 @@ export default class SettingsNodeRightPanel extends React.Component {
     isUnderDevelopment: false,
     isFinished: false,
     sourceLinkNode: '',
-    price:''
+    price:'',
+    status: false,
 
   };
-
-
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.developmentStatus !== this.props.developmentStatus) {
-      if (this.props.developmentStatus.status === DEFAULT) {
-        this.setState({
-          isFinished: false,
-          isUnderDevelopment: false
-        })
-      } if (this.props.developmentStatus.status === UNDER_DEVELOPMENT) {
-        this.setState({
-          isFinished: false,
-          isUnderDevelopment: true
-        })
-      } if (this.props.developmentStatus.status === FINISHED) {
-        this.setState({
-          isFinished: true,
-          isUnderDevelopment: false
-        })
-      }
-    }
-  }
 
   saveDiagramHandle = file => {
     this.setState(
@@ -251,7 +230,8 @@ export default class SettingsNodeRightPanel extends React.Component {
     );
   }
 
-  saveDiagramThenCloseSettingModal = file => {
+  saveDiagramThenCloseSettingModal = () => {
+
     this.setState(
       {
         snackMsg: "next",
@@ -263,11 +243,19 @@ export default class SettingsNodeRightPanel extends React.Component {
       },
       () => {
         this.props.work.saveDiagramThenShowOrHideSettingsModal(
+
+          this.props.work.updateModel,
+
+          null,
+          null,
+
           this.props.work.funnelId,
           this.state,
-          file,
-          false
+          false,
+
+          null,
         );
+
         this.setState({
           labelNode: "",
           url: "",
@@ -276,8 +264,8 @@ export default class SettingsNodeRightPanel extends React.Component {
           copied: false,
           sourceLinkNode: '',
           price: '',
-        }, () => {
-          document.location.reload(true);
+          isUnderDevelopment: false,
+          isFinished: false,
         });
       }
     );
@@ -396,11 +384,7 @@ export default class SettingsNodeRightPanel extends React.Component {
         style={{height:'calc(100vh - 67px)', overflow: 'auto'}}
         show={this.props.work.showSettingsWidgetBoolean}
         handleClose={() => {
-          const name = randomString({ length: 10 });
-          const file = new File(["test"], name, {
-            type: "image/png"
-          });
-          this.saveDiagramThenCloseSettingModal(file);
+          this.saveDiagramThenCloseSettingModal();
         }}
         handleHideSection={() => this.changeViewSection(SETTINGS_SECTION)}
         isViewSettingsSection={settings}
@@ -427,19 +411,8 @@ export default class SettingsNodeRightPanel extends React.Component {
               placeholder="Label Name"
               type="text"
               value={
-                this.state.labelNode === '' ?
-
-                  this.props.work.showSettingsWidgetModel &&
-                    this.props.work.showSettingsWidgetModel.extras.named === undefined ?
-
-                    this.props.work.showSettingsWidgetModel &&
-                    // this.props.work.showSettingsWidgetModel.type :
-                    '' :
-
-                    this.props.work.showSettingsWidgetModel &&
-                    this.props.work.showSettingsWidgetModel.extras.named
-
-                  : this.state.labelNode
+                  (this.state.labelNode ? this.state.labelNode : this.props.work.showSettingsWidgetModel &&
+                    this.props.work.showSettingsWidgetModel.extras.named) || ""
               }
               onChange={this.handleChangeNode}
             />
@@ -452,19 +425,8 @@ export default class SettingsNodeRightPanel extends React.Component {
               id="Link"
               type="text"
               value={
-                this.state.sourceLinkNode === '' ?
-
-                  this.props.work.showSettingsWidgetModel &&
-                    this.props.work.showSettingsWidgetModel.extras.sourceLink === undefined ?
-
-                    this.props.work.showSettingsWidgetModel &&
-                    // this.props.work.showSettingsWidgetModel.type :
-                    '' :
-
-                    this.props.work.showSettingsWidgetModel &&
-                    this.props.work.showSettingsWidgetModel.extras.sourceLink
-
-                  : this.state.sourceLinkNode
+                  (this.state.sourceLinkNode ? this.state.sourceLinkNode : this.props.work.showSettingsWidgetModel &&
+                    this.props.work.showSettingsWidgetModel.extras.sourceLink) || ""
               }
               onChange={this.handleChangeNodeSourceLink}
             />
@@ -480,19 +442,8 @@ export default class SettingsNodeRightPanel extends React.Component {
                   id="Link"
                   type="text"
                   value={
-                    this.state.price === '' ?
-
-                      this.props.work.showSettingsWidgetModel &&
-                        this.props.work.showSettingsWidgetModel.extras.price === undefined ?
-
-                        this.props.work.showSettingsWidgetModel &&
-                        // this.props.work.showSettingsWidgetModel.type :
-                        '' :
-
-                        this.props.work.showSettingsWidgetModel &&
-                        this.props.work.showSettingsWidgetModel.extras.price
-
-                      : this.state.price
+                      (this.state.price ? this.state.price : this.props.work.showSettingsWidgetModel &&
+                        this.props.work.showSettingsWidgetModel.extras.price) || ""
                   }
                   onChange={this.handleChangeNodePrice}
                 />
@@ -508,8 +459,8 @@ export default class SettingsNodeRightPanel extends React.Component {
                   id='CheckBoxFinished'
                   type="radio"
                   checked={
-                    this.props.work.showSettingsWidgetModel &&
-                    this.props.work.showSettingsWidgetModel.extras.status === 'FINISHED'
+                    (this.state.status ? this.state.status : this.props.work.showSettingsWidgetModel &&
+                      this.props.work.showSettingsWidgetModel.extras.status === 'FINISHED') || false
                   }
                   onChange={() => null}
                   onClick={() => this.handleChangeStatusNodeOnFinished()}
@@ -525,8 +476,8 @@ export default class SettingsNodeRightPanel extends React.Component {
                   id='CheckBoxUnderDevelopment'
                   type="radio"
                   checked={
-                    this.props.work.showSettingsWidgetModel &&
-                    this.props.work.showSettingsWidgetModel.extras.status === 'UNDER DEVELOPMENT'
+                    (this.state.status ? this.state.status : this.props.work.showSettingsWidgetModel &&
+                      this.props.work.showSettingsWidgetModel.extras.status === 'UNDER DEVELOPMENT') || false
                   }
                   onChange={() => null}
                   onClick={() => this.handleChangeStatusNodeOnUnderDevelopment()}
@@ -566,17 +517,8 @@ export default class SettingsNodeRightPanel extends React.Component {
                       name="originalUrl"
                       placeholder="ex.: https://www.google.com/"
                       value={
-                        this.state.originalUrl === '' ?
-
-                          this.props.work.showSettingsWidgetModel &&
-                            this.props.work.showSettingsWidgetModel.extras.originalUrl === undefined ?
-
-                            '' :
-
-                            this.props.work.showSettingsWidgetModel &&
-                            this.props.work.showSettingsWidgetModel.extras.originalUrl
-
-                          : this.state.originalUrl
+                          (this.state.originalUrl ? this.state.originalUrl : this.props.work.showSettingsWidgetModel &&
+                            this.props.work.showSettingsWidgetModel.extras.originalUrl) || ""
                       }
                       onChange={this.handleScriptChange}
                     />
@@ -615,21 +557,6 @@ export default class SettingsNodeRightPanel extends React.Component {
                   </>
                 </div>
               }
-
-              {/* <button
-                className="btn-set-as-a-trigger"
-                onClick={this.handleToggleTriggerStyle}
-                style={{
-                  margin: "30px auto"
-                }}
-              >
-                {
-                  this.props.work.showSettingsWidgetModel &&
-                  this.props.work.showSettingsWidgetModel.extras.triggerd &&
-                  <SelectSVG />
-                }
-                Set as a trigger
-              </button> */}
             </>
           ) : (
             <>
@@ -655,20 +582,8 @@ export default class SettingsNodeRightPanel extends React.Component {
                       name="originalUrl"
                       placeholder="ex.: https://www.google.com/"
                       value={
-                        // this.state.originalUrl === '' ?
-
-                        //   this.props.work.showSettingsWidgetModel &&
-                        //     this.props.work.showSettingsWidgetModel.extras.originalUrl === undefined ?
-
-                        //     '' :
-
-                        //     this.props.work.showSettingsWidgetModel &&
-                        //     this.props.work.showSettingsWidgetModel.extras.originalUrl
-
-                        //   : this.state.originalUrl
                         (this.state.originalUrl ? this.state.originalUrl : this.props.work.showSettingsWidgetModel &&
                           this.props.work.showSettingsWidgetModel.extras.originalUrl) || ""
-                        //______________________________________________________________________________________________________________________________CHANGE___________________________________
                       }
                       onChange={this.handleScriptChange}
                     />
@@ -705,7 +620,7 @@ export default class SettingsNodeRightPanel extends React.Component {
                       onClick={() => this.handleCreateUTMLink()}
                     >
                       Generate
-                </button>
+                    </button>
                   </>
 
                 </div>
@@ -726,7 +641,7 @@ export default class SettingsNodeRightPanel extends React.Component {
                       type="text"
                       value={
                         this.state.scriptD ? this.state.scriptD : this.props.work.showSettingsWidgetModel ?
-                          this.props.work.showSettingsWidgetModel.extras.scriptd : " "
+                          this.props.work.showSettingsWidgetModel.extras.scriptd : ""
                       }
                       onChange={this.handleScriptChange}
                     />
@@ -792,17 +707,6 @@ export default class SettingsNodeRightPanel extends React.Component {
               }
 
               <div className="buttons-set-wrapper">
-                {/* <button
-                  className="btn-set-as-a-trigger"
-                  onClick={this.handleToggleTriggerStyle}
-                >
-                  {
-                    this.props.work.showSettingsWidgetModel &&
-                    this.props.work.showSettingsWidgetModel.extras.triggerd &&
-                    <SelectSVG />
-                  }
-                    Set as a trigger
-                </button> */}
                 <button
                   className="btn-set-as-a-goal"
                   onClick={this.handleToggleGoalStyle}
@@ -827,7 +731,6 @@ export default class SettingsNodeRightPanel extends React.Component {
               </div>
             </>
           )}
-
 
       </ModalNodeWidget>
     );

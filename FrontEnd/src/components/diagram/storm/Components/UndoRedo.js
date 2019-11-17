@@ -21,7 +21,6 @@ let UndoRedo = ({ canUndo, canRedo, onUndo, onRedo }) => (
           svg.setAttribute('style', 'width: 30px; height: 30px;')
         }}
       />
-      {/* <UndoSVG /> */}
     </button>
     <button
       className={canRedo ? 'btn btn-1' : 'btn btn-1 btn-disabled'}
@@ -38,13 +37,11 @@ let UndoRedo = ({ canUndo, canRedo, onUndo, onRedo }) => (
           svg.setAttribute('style', 'width: 30px; height: 30px;')
         }}
       />
-      {/* <RedoSVG /> */}
     </button>
   </div>
 )
 
 const mapStateToProps = state => {
-  // console.log(state)
   return {
     canUndo: state.history.past.length > 0,
     canRedo: state.history.future.length > 0

@@ -157,12 +157,8 @@ class TextNodeWidget extends React.Component {
             <button
               className="btn-select-widget"
               onClick={() => cloneSelected(
-                this.props.diagram.funnelName,
-                this.props.diagram.funnelNotes,
                 this.props.engine,
-                this.props.saveDiagramThenShowOrHideSettingsModal,
                 this.props.funnelId,
-                this.props.node,
                 this.props.updateModel
               )}
               title={"Copy"}

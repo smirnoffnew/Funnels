@@ -525,13 +525,14 @@ class BigNodeWidget extends React.Component {
                     className="btn-select-widget"
                     onClick={() =>
                       showRightModal(
+                        this.props.node,
                         this.props.diagram.funnelName,
                         this.props.diagram.funnelNotes,
                         this.props.saveDiagramThenShowOrHideSettingsModal,
                         this.props.funnelId,
                         this.props.engine,
-                        this.props.node,
-                        "big"
+                        this.props.updateModel,
+                        "big",
                       )
                     }
                     title={"Settings"}
@@ -547,12 +548,13 @@ class BigNodeWidget extends React.Component {
                     }}
                     onClick={() =>
                       showRightModal(
+                        this.props.node,
                         this.props.diagram.funnelName,
                         this.props.diagram.funnelNotes,
                         this.props.saveDiagramThenShowOrHideNotesModal,
                         this.props.funnelId,
                         this.props.engine,
-                        this.props.node
+                        this.props.updateModel,
                       )
                     }
                     title={"Notes"}
@@ -567,12 +569,8 @@ class BigNodeWidget extends React.Component {
                     className="btn-select-widget"
                     onClick={() =>
                       cloneSelected(
-                        this.props.diagram.funnelName,
-                        this.props.diagram.funnelNotes,
                         this.props.engine,
-                        this.props.saveDiagramThenShowOrHideSettingsModal,
                         this.props.funnelId,
-                        this.props.node,
                         this.props.updateModel,
                       )
                     }
@@ -730,41 +728,45 @@ const mapDispatchToProps = dispatch => {
     setConversionCompound: advancedConversion => dispatch(setConversionCompound(advancedConversion)),
     changeKeyDown: key => dispatch(changeKeyDown(key)),
     saveDiagramThenShowOrHideSettingsModal: (
-      id,
-      state,
-      file,
-      boolean,
+      updateModel,
       model,
-      engine,
-      typeOfNode
+      node, 
+      funnelId, 
+      diagramObj, 
+      boolean,
+      typeOfNode,
     ) =>
       dispatch(
         saveDiagramThenShowOrHideSettingsModal(
-          id,
-          state,
-          file,
-          boolean,
+          updateModel,
           model,
-          engine,
-          typeOfNode
+          node, 
+          funnelId, 
+          diagramObj, 
+          boolean,
+          typeOfNode,
         )
       ),
 
     saveDiagramThenShowOrHideNotesModal: (
-      id,
-      state,
-      file,
-      boolean,
-      model,
+      updateModel,
+
+      funnelId, 
+      diagramObj, 
+       
+      boolean, 
+      model, 
       engine
     ) =>
       dispatch(
         saveDiagramThenShowOrHideNotesModal(
-          id,
-          state,
-          file,
-          boolean,
-          model,
+          updateModel,
+
+          funnelId, 
+          diagramObj, 
+           
+          boolean, 
+          model, 
           engine
         )
       )

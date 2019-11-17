@@ -19,7 +19,7 @@ const initialState = {
 }
 
 export default function (state = initialState, action) {
-  // console.log(state.permissionForCollaborator)
+  // console.log(state.showSettingsWidgetModel)
   switch (action.type) {
     ///////////////////////////////////////////////////////////////////////////
     case 'RESET_ALL_PROJECTS':
@@ -238,9 +238,9 @@ export default function (state = initialState, action) {
       return {
         ...state,
         showSettingsWidgetBoolean: action.payload.boolean,
-        showSettingsWidgetModel: action.payload.model,
-        showSettingsWidgetEngine: action.payload.engine,
         showTypeOfNode: action.payload.typeOfNode,
+        showSettingsWidgetEngine: action.payload.engine,
+        showSettingsWidgetModel: action.payload.model,
       };
     /////////////////////////////////////////////////////////////////////////// 
 
@@ -249,8 +249,8 @@ export default function (state = initialState, action) {
       return {
         ...state,
         showNotesWidgetBoolean: action.payload.boolean,
-        showNotesWidgetModel: action.payload.model,
         showNotesWidgetEngine: action.payload.engine,
+        showNotesWidgetModel: action.payload.model,
       };
     /////////////////////////////////////////////////////////////////////////// 
 

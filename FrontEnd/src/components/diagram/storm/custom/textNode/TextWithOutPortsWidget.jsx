@@ -5,8 +5,7 @@ import ClickOutside from "../../../../common/ClickOutside";
 import { ReactComponent as CopySVG } from "../../../../../assets/selectForWidget/copy.svg";
 import { ReactComponent as DeleteSVG } from "../../../../../assets/selectForWidget/delete.svg";
 import {
-  saveDiagramThenShowOrHideSettingsModal,
-  saveDiagramThenShowOrHideNotesModal
+  saveDiagramThenShowOrHideSettingsModal
 } from "../../../../../store/actions/projects";
 import { cloneSelected, deleteNode } from "../funcsForCustomNodeWidget";
 import './TextWithOutPortsWidget.css'
@@ -155,12 +154,8 @@ class TextWithOutPortsWidget extends React.Component {
               <button
                 className="btn-select-widget"
                 onClick={() => cloneSelected(
-                  this.props.diagram.funnelName,
-                  this.props.diagram.funnelNotes,
                   this.props.engine,
-                  this.props.saveDiagramThenShowOrHideSettingsModal,
                   this.props.funnelId,
-                  this.props.node,
                   this.props.updateModel
                 )}
                 title={"Copy"}
@@ -234,25 +229,6 @@ const mapDispatchToProps = dispatch => {
           engine
         )
       ),
-
-    saveDiagramThenShowOrHideNotesModal: (
-      id,
-      state,
-      file,
-      boolean,
-      model,
-      engine
-    ) =>
-      dispatch(
-        saveDiagramThenShowOrHideNotesModal(
-          id,
-          state,
-          file,
-          boolean,
-          model,
-          engine
-        )
-      )
   };
 };
 

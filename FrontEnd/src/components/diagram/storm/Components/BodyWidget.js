@@ -549,12 +549,8 @@ export default class BodyWidget extends React.Component {
                       }}
                       onClick={() => {
                         cloneSelected(
-                          this.props.work.diagram.funnelName,
-                          this.props.work.diagram.funnelNotes,
                           this.props.app.getDiagramEngine(),
-                          this.props.work.saveDiagramThenShowOrHideSettingsModal,
                           this.props.work.funnelId,
-                          this.props.app.getDiagramEngine().getDiagramModel().nodes[0],
                           this.props.work.updateModel,
                         )
 
