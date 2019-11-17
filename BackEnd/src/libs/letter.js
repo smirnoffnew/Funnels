@@ -1,5 +1,5 @@
 module.exports = function (name, token) {
-    let Url = (process.env.NODE_ENV == 'dev' ? process.env.DEV_URL : process.env.PROD_URL);
+    let Url = (process.env.NODE_ENV === 'dev' ? process.env.DEV_URL : process.env.PROD_URL);
     return `
 <!DOCTYPE html>
 <html>

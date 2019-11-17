@@ -8,7 +8,7 @@ const lastModified = require('../libs/lastModified.js');
 const enshureCollaborateToken = require('../libs/enshureCollaborateToken.js');
 const lastActive = require('../libs/lastActive');
 
-
+ 
 collaboratorRouter.post('/',
     enshureToken,
     verifyToken,

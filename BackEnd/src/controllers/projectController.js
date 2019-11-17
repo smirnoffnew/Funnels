@@ -20,7 +20,7 @@ module.exports = {
                     .exec()
             })
             .then(result => {
-                if (result >= process.env.PROJECT_LIMIT && _profile.limited == true) {
+                if (result >= process.env.PROJECT_LIMIT && _profile.limited === true) {
                     res.status(400).json({
                             error: "Project creation limit is reached!"
                         });
@@ -34,7 +34,7 @@ module.exports = {
                 }
             })
             .then(project => {
-                const limit = _profile.limited == true ? ` ${process.env.PROJECT_LIMIT}` : null;
+                const limit = _profile.limited === true ? ` ${process.env.PROJECT_LIMIT}` : null;
                 res.status(200).json({
                         message: "Project created successfully!",
                         data: project,
@@ -94,7 +94,7 @@ module.exports = {
                     .exec()
             })
             .then(projects => {
-                const limit = _profile.limited == true ? ` ${process.env.PROJECT_LIMIT}` : null;
+                const limit = _profile.limited === true ? ` ${process.env.PROJECT_LIMIT}` : null;
                 res.status(200)
                     .json({
                         data: projects,

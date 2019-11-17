@@ -15,7 +15,7 @@ module.exports = {
         const permissionToChange = req.body.permissions === "View Only" ? "Edit" : "View Only";
         Promise
             .all([
-                Profile
+                Profile 
                 .findOneAndUpdate({
                     _id: profileId,
                     "myCollaborations.funnelId": funnelId
@@ -38,10 +38,11 @@ module.exports = {
 
             ])
             .then(result => {
+                console.log(result)
                 res
                     .status(200)
                     .json({
-                        message: `permissions for funnel ${result.funnelName} changed successfully!`
+                        message: `permissions for funnel ${result[1].funnelName} changed successfully!`
                     });
             })
             .catch(err => {
