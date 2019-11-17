@@ -324,3 +324,12 @@
   /* color: #848f99; */
   cursor: default;
 }
+
+.funnels-collaborators::-webkit-scrollbar {
+  width: 4px;
+  background-color: #F5F5F5;
+} 
+.funnels-collaborators::-webkit-scrollbar-thumb {
+  background-color: #ff9033;
+}
+

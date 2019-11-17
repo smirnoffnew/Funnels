@@ -44,7 +44,12 @@ class ProjectItem extends React.Component {
   };
 
   showModalCollaborate = () => {
-    this.setState({ showCollaborate: true, show: false });
+    this.props.resetAllCollaboratorsForFunnels();
+    this.setState({ 
+      showCollaborate: true, 
+      show: false,
+      selectedFunnelsList: [],
+    });
     this.props.getAllFunnels(this.props._id);
   };
 
