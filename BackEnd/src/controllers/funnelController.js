@@ -17,6 +17,7 @@ const FormData = require('form-data');
 
 const backgroundbufferDir = process.env.BACKGROUNDBUFFER_DIR;
 const screenShotBufferDir = process.env.SCREENSHOTBUFFER_DIR;
+const logoBufferDir = process.env.LOGOBUFFER_DIR;
 
 let _profile;
 
@@ -301,75 +302,67 @@ module.exports = {
     },
     getScreenshot: async function (req, res) {
 
-        const Url = process.env.NODE_ENV == 'dev' ? process.env.DEV_URL : process.env.PROD_URL;
+        const Url = process.env.NODE_ENV === 'dev' ? process.env.DEV_URL : process.env.PROD_URL;
 
-        let infoObj = new ColDataInfo({
-            logo: req.body.info.logo,
-            title: req.body.info.title,
-            text: req.body.info.text,
-            buttonText: req.body.info.buttonText,
-            buttonLink: req.body.info.buttonLink
-        });
+        let collaborateToken,
+            funnelCollaborateData,
+            infoObj = new ColDataInfo({
+                logo: req.uploadedFileName,
+                title: req.body.title,
+                text: req.body.text,
+                buttonText: req.body.buttonText,
+                buttonLink: req.body.buttonLink
+            });
 
-        let collaborateToken;
-        let screenShotLink;
-        let funnelColaborateData;
-
-        infoObj.validate()
+        infoObj
+            .validate()
             .then(() => {
-                return funnelColaborateData = {
+                return funnelCollaborateData = {
                     funnelsId: [req.body.funnelsId],
                     permissions: req.body.permissions,
-                    info: infoObj,
                     userId: req.authData.userId,
-                    profileId: req.authData.profileId
+                    profileId: req.authData.profileId,
+                    info: infoObj,
                 };
             })
-            .then(funnelColaborateData => {
-                collaborateToken = jwt.sign(funnelColaborateData, process.env.SECRET_COLLABORATOR);
+            .then(funnelCollaborateData => {
+                collaborateToken = jwt.sign(funnelCollaborateData, process.env.SECRET_COLLABORATOR);
                 const data = new FormData();
+
                 data.append('funnelsId', req.body.funnelsId);
-                data.append('img', fs.createReadStream(`${screenShotBufferDir}/${req.authData.profileId}.jpg`));
+                data.append('img', fs.createReadStream(`${process.cwd()}${logoBufferDir}/${req.uploadedFileName}`));
+
                 return fetch(`${process.env.FILE_SHARER}/screenshots`, {
                     method: 'POST',
                     body: data
                 })
             })
             .then(result => result.json())
-            .then(res => {
-                screenShotLink = res.link;
-                funnelColaborateData.screenShotURL = screenShotLink
-            })
-            .then(() => {
-                return new Token({
-                    body: collaborateToken
-                }).save()
-
-            })
+            .then(result => funnelCollaborateData.logoURL = result.link)
+            .then(() => new Token({body: collaborateToken}).save())
             .then((token) => {
-                res
-                    .status(200)
-                    .json({
-                        message: "Screenshot added succesfully...",
-                        link: `${Url}/add-collaborators-image?image=${screenShotLink}&add-collaborators-image=${token.body}&funnelId=${req.body.funnelsId}`,
+                res.status(200).json({
+                        message: "Logo added to storage successfully...",
+                        link: `${Url}/add-collaborators-image?image=${funnelCollaborateData.logoURL}&add-collaborators-image=${token.body}&funnelId=${req.body.funnelsId}`,
                         token: token.body,
                     });
             })
             .then(() => {
                 try {
-                    fs.unlinkSync(`${screenShotBufferDir}/${req.authData.profileId}.jpg`)
+                    fs.unlinkSync(`${process.cwd()}${logoBufferDir}/${req.uploadedFileName}`);
                 } catch (err) {
                     console.log(err)
                 }
             })
             .catch(err => {
                 try {
-                    fs.unlinkSync(`${screenShotBufferDir}/${req.authData.profileId}.jpg`)
+                    fs.unlinkSync(`${process.cwd()}${logoBufferDir}/${req.uploadedFileName}`);
+                } catch (err) {
+                    console.log(err);
+                } finally {
                     res.status(400).json({
                         error: err.message
                     })
-                } catch (err) {
-                    console.log(err)
                 }
             });
     },
@@ -551,7 +544,7 @@ module.exports = {
             //let url = `http://${req.hostname}:${process.env.PORT}/funnel/node/${random}`;
             let url = `http://${req.hostname}:9001/funnel/node/${random}`;
             // let url =`https://api.funnelsmap.com/funnel/node/${random}`;
-            let originalUrl = req.body.url
+            let originalUrl = req.body.url;
 
             let response = await NodeCounter.findOneAndUpdate({
                 funnelId: req.body.funnelId,
@@ -656,7 +649,7 @@ module.exports = {
 
             let funnel = await NodeCounter.findOne({
                 hash: req.params.hash
-            })
+            });
 
             if (funnel === null) {
                 return res.status(404).json({
@@ -671,7 +664,7 @@ module.exports = {
                 $inc: {
                     counterUrl: 1
                 }
-            })
+            });
 
             res.writeHead(301, {
                 Location: funnel.originalUrl,
@@ -697,7 +690,7 @@ module.exports = {
                 $inc: {
                     counterNode: 1
                 }
-            })
+            });
 
             if (response === null) {
                 await NodeCounter.create({
@@ -750,7 +743,7 @@ module.exports = {
             await NodeCounter.findOneAndRemove({
                 nodeId: req.params.nodeId,
                 funnelId: req.params.funnelId
-            })
+            });
 
             res.status(200).json({
                 message: "Success"
@@ -784,7 +777,7 @@ module.exports = {
             let response = await NodeCounter.find({
                     funnelId: req.params.funnelId
                 })
-                .select('nodeId status -_id')
+                .select('nodeId status -_id');
 
 
             res.status(200).json({

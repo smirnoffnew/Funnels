@@ -73,7 +73,7 @@ funnelRouter.post('/diagram/screenshot',
     enshureToken,
     verifyToken,
     lastActive,
-    multerImage.single('screenshot'),
+    multerImage.single('logo'),
     funnelController.getScreenshot);
 
 funnelRouter.post('/node/createUrl',
@@ -87,7 +87,7 @@ funnelRouter.get('/node/getStatus/:funnelId/:nodeId',
     // enshureToken,
     // verifyToken,
     funnelController.getNodeStatus
-)
+);
 
 funnelRouter.patch('/node/status',
     // enshureToken,
