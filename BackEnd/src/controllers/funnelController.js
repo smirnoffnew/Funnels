@@ -275,9 +275,10 @@ module.exports = {
             .catch(err => {
                 console.log(err)
                 res.status(400).json({
-                
-                error: err.message
-            })});
+
+                    error: err.message
+                })
+            });
     },
     getFunnelById: async function (req, res) {
         Funnel
@@ -299,15 +300,23 @@ module.exports = {
     getScreenshot: async function (req, res) {
 
         const Url = process.env.NODE_ENV == 'dev' ? process.env.DEV_URL : process.env.PROD_URL;
+
+        let infoObj = {};
         const funnelColaborateData = {
             funnelsId: [req.body.funnelsId],
             permissions: req.body.permissions,
+            info: {
+                logo: typeof req.body.info.logo === 'string' ? infoObj.logo = req.body.info.logo : 'default data',
+                title: typeof req.body.info.title === 'string' ? infoObj.title = req.body.info.title : 'default data',
+                text: typeof req.body.info.text === 'string' ? infoObj.text = req.body.info.text : 'default data',
+                buttonText: typeof req.body.info.buttonText === 'string' ? infoObj.buttonText = req.body.info.buttonText : 'default data',
+                buttonLink: typeof req.body.info.buttonLink === 'string' ? infoObj.buttonLink = req.body.info.buttonLink : 'default data'
+            },
             userId: req.authData.userId,
             profileId: req.authData.profileId
         };
 
         const collaborateToken = jwt.sign(funnelColaborateData, process.env.SECRET_COLLABORATOR);
-
         const data = new FormData();
         data.append('funnelsId', req.body.funnelsId);
         data.append('img', fs.createReadStream(`${screenShotBufferDir}/${req.authData.profileId}.jpg`));
@@ -355,7 +364,9 @@ module.exports = {
         new Promise((resolve, reject) => {
                 console.log(req.headers.authorization)
                 jwt.verify(req.headers.authorization, process.env.SECRET_COLLABORATOR, (err, authData) => {
-                    err ? reject({ message: 'Invalid token' }) : resolve(authData);
+                    err ? reject({
+                        message: 'Invalid token'
+                    }) : resolve(authData);
                 })
             })
             .then(authData => {
@@ -366,7 +377,8 @@ module.exports = {
                     expiresIn: process.env.TOKEN_EXPIRES
                 });
                 res.status(200).json({
-                    message: token
+                    message: token,
+                    info: authData.info
                 });
             })
             .catch(err => {
