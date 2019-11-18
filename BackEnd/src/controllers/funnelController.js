@@ -317,21 +317,19 @@ module.exports = {
 
         infoObj.validate()
             .then(() => {
-                funnelColaborateData = {
+                return funnelColaborateData = {
                     funnelsId: [req.body.funnelsId],
                     permissions: req.body.permissions,
                     info: infoObj,
                     userId: req.authData.userId,
                     profileId: req.authData.profileId
                 };
-
+            })
+            .then(funnelColaborateData => {
                 collaborateToken = jwt.sign(funnelColaborateData, process.env.SECRET_COLLABORATOR);
                 const data = new FormData();
                 data.append('funnelsId', req.body.funnelsId);
                 data.append('img', fs.createReadStream(`${screenShotBufferDir}/${req.authData.profileId}.jpg`));
-                return data
-            })
-            .then(data => {
                 return fetch(`${process.env.FILE_SHARER}/screenshots`, {
                     method: 'POST',
                     body: data
@@ -362,14 +360,18 @@ module.exports = {
                     fs.unlinkSync(`${screenShotBufferDir}/${req.authData.profileId}.jpg`)
                 } catch (err) {
                     console.log(err)
-                    // res.status(400).json({
-                    //     error: err.message
-                    // })
                 }
             })
-            .catch(err => res.status(400).json({
-                error: err.message
-            }));
+            .catch(err => {
+                try {
+                    fs.unlinkSync(`${screenShotBufferDir}/${req.authData.profileId}.jpg`)
+                    res.status(400).json({
+                        error: err.message
+                    })
+                } catch (err) {
+                    console.log(err)
+                }
+            });
     },
     getSignInToken: function (req, res) {
         new Promise((resolve, reject) => {
