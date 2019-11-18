@@ -548,7 +548,8 @@ module.exports = {
             let random = Math.random().toString(36).substring(2);
 
             // let url = `https://funnelsmapbackend.qbex.io/funnel/node/${random}`;
-            let url = `http://${req.hostname}:${process.env.PORT}/funnel/node/${random}`;
+            //let url = `http://${req.hostname}:${process.env.PORT}/funnel/node/${random}`;
+            let url = `http://${req.hostname}:9001/funnel/node/${random}`;
             // let url =`https://api.funnelsmap.com/funnel/node/${random}`;
             let originalUrl = req.body.url
 
