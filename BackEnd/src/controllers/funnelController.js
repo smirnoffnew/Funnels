@@ -8,7 +8,9 @@ const Token = require('../models/colaboratetoken.js');
 const Template = require('../models/template.js');
 const NodeCounter = require('../models/nodes')
 const svgArray = require('../libs/svgArray.js');
-const Profile = require('../models/profile')
+const Profile = require('../models/profile');
+
+const ColDataInfo = require('../models/col-data-info');
 
 const fetch = require('node-fetch');
 const FormData = require('form-data');
@@ -301,30 +303,39 @@ module.exports = {
 
         const Url = process.env.NODE_ENV == 'dev' ? process.env.DEV_URL : process.env.PROD_URL;
 
-        let infoObj = {};
-        const funnelColaborateData = {
-            funnelsId: [req.body.funnelsId],
-            permissions: req.body.permissions,
-            info: {
-                logo: typeof req.body.info.logo === 'string' ? infoObj.logo = req.body.info.logo : 'default data',
-                title: typeof req.body.info.title === 'string' ? infoObj.title = req.body.info.title : 'default data',
-                text: typeof req.body.info.text === 'string' ? infoObj.text = req.body.info.text : 'default data',
-                buttonText: typeof req.body.info.buttonText === 'string' ? infoObj.buttonText = req.body.info.buttonText : 'default data',
-                buttonLink: typeof req.body.info.buttonLink === 'string' ? infoObj.buttonLink = req.body.info.buttonLink : 'default data'
-            },
-            userId: req.authData.userId,
-            profileId: req.authData.profileId
-        };
+        let infoObj = new ColDataInfo({
+            logo: req.body.info.logo,
+            title: req.body.info.title,
+            text: req.body.info.text,
+            buttonText: req.body.info.buttonText,
+            buttonLink: req.body.info.buttonLink
+        });
 
-        const collaborateToken = jwt.sign(funnelColaborateData, process.env.SECRET_COLLABORATOR);
-        const data = new FormData();
-        data.append('funnelsId', req.body.funnelsId);
-        data.append('img', fs.createReadStream(`${screenShotBufferDir}/${req.authData.profileId}.jpg`));
-
+        let collaborateToken;
         let screenShotLink;
-        fetch(`${process.env.FILE_SHARER}/screenshots`, {
-                method: 'POST',
-                body: data
+        let funnelColaborateData;
+
+        infoObj.validate()
+            .then(() => {
+                funnelColaborateData = {
+                    funnelsId: [req.body.funnelsId],
+                    permissions: req.body.permissions,
+                    info: infoObj,
+                    userId: req.authData.userId,
+                    profileId: req.authData.profileId
+                };
+
+                collaborateToken = jwt.sign(funnelColaborateData, process.env.SECRET_COLLABORATOR);
+                const data = new FormData();
+                data.append('funnelsId', req.body.funnelsId);
+                data.append('img', fs.createReadStream(`${screenShotBufferDir}/${req.authData.profileId}.jpg`));
+                return data
+            })
+            .then(data => {
+                return fetch(`${process.env.FILE_SHARER}/screenshots`, {
+                    method: 'POST',
+                    body: data
+                })
             })
             .then(result => result.json())
             .then(res => {
