@@ -3,7 +3,7 @@ const maxSize = process.env.IMAGE_MAX_SIZE;
 const path = require('path');
 const storage = multer.diskStorage({
     destination: function (req, file, callback) {
-         callback(null, `${process.env.BACKGROUNDBUFFER_DIR}`);
+         callback(null, `${process.cwd()}${process.env.BACKGROUNDBUFFER_DIR}`);
     },
     filename: function (req, file, callback) {
         callback(null, `${req.authData.profileId}.jpg`);

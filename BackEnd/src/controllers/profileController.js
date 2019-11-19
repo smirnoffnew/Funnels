@@ -56,7 +56,7 @@ module.exports = {
                 const data = new FormData();
                 let userId = profile._id.toString()
                 data.append('userName', userId);
-                data.append('img', fs.createReadStream(`${avatarBufferDir}/${req.authData.profileId}${path.parse(req.file.originalname).ext}`));
+                data.append('img', fs.createReadStream(`${process.cwd()}${avatarBufferDir}/${req.authData.profileId}${path.parse(req.file.originalname).ext}`));
                 return fetch(`${process.env.FILE_SHARER}/avatars`, {
                     method: 'POST',
                     body: data
@@ -76,7 +76,7 @@ module.exports = {
             })
             .then((result) => {
                 try {
-                    fs.unlinkSync(`${avatarBufferDir}/${req.authData.profileId}${path.parse(req.file.originalname).ext}`)
+                    fs.unlinkSync(`${process.cwd()}${avatarBufferDir}/${req.authData.profileId}${path.parse(req.file.originalname).ext}`)
                 } catch (error) {
                     console.log(error)
                 }

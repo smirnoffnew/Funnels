@@ -236,7 +236,7 @@ module.exports = {
             .then((funnel) => {
                 const data = new FormData();
                 data.append('funnelId', funnel._id.toString());
-                data.append('img', fs.createReadStream(`${backgroundbufferDir}/${req.authData.profileId}.jpg`));
+                data.append('img', fs.createReadStream(`${process.cwd()}${backgroundbufferDir}/${req.authData.profileId}.jpg`));
                 return fetch(`${process.env.FILE_SHARER}/backgrounds`, {
                     method: 'POST',
                     body: data
@@ -256,13 +256,13 @@ module.exports = {
                     .exec()
             })
             .then((result) => {
-                fs.readdir(backgroundbufferDir, function (err, items) {
+                fs.readdir(`${process.cwd()}${backgroundbufferDir}`, function (err, items) {
                     if (err) {
                         throw new Error('can not read folder')
                     }
                     if (items) {
                         try {
-                            fs.unlinkSync(`${backgroundbufferDir}/${req.authData.profileId}.jpg`)
+                            fs.unlinkSync(`${process.cwd()}${backgroundbufferDir}/${req.authData.profileId}.jpg`)
                         } catch (error) {
                             console.log(error)
                         }
@@ -335,7 +335,7 @@ module.exports = {
                 })
             })
             .then(result => result.json())
-            .then(result => funnelCollaborateData.logoURL = result.link)
+            .then(result => funnelCollaborateData.info.logo = result.link)
 
             .then(()=>{
                 collaborateToken = jwt.sign(funnelCollaborateData, process.env.SECRET_COLLABORATOR);
