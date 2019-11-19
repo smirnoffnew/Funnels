@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const activeCampaignApi = require('activecampaign-api');
 const AC = require('activecampaign-rest');
 
 const User = require('../models/user.js');
@@ -19,8 +18,7 @@ let g_user;
 
 module.exports = {
     signUp: function (req, res) {
-        const os = req.body.os;
-        const browser = req.body.browser;
+
         const user = new User({
             _id: new mongoose.Types.ObjectId(),
             password: req.body.password,
@@ -44,7 +42,7 @@ module.exports = {
             })
             .then((profile) => {
                 const token = jwt.sign({
-                    profile,
+                    profileId: profile._id.toString(),
                     userId: user._id
                 }, process.env.SECRET, {
                     expiresIn: process.env.TOKEN_EXPIRES
@@ -53,20 +51,27 @@ module.exports = {
                 return profile
             })
             .then((profile) => {
-                g_profile = profile;
-                try {
-                    return new activeCampaignApi.ApiClient({
-                            accountName: process.env.CAMPAING_ACCOUNT_NAME,
-                            key: process.env.CAMPAING_ACCOUNT_KEY
-                        })
-                        .call('contact_add', {}, 'POST', {
-                            email: profile.email,
-                            first_name: profile.firstName,
-                            tags: profile.description,
-                            'device': (os && browser) ? deviceCheck(os, browser) : 'desktop',
-                            'p[15]': process.env.LISTID
-                        })
+                g_profile = profile; 
+                let contact = new AC.Contact({
+                    'url': 'https://vladhuntyk.activehosted.com',
+                    'token': process.env.CAMPAING_ACCOUNT_KEY
+                });
 
+                let payload = {
+                    'email': g_profile.email,
+                    'firstName': g_profile.firstName,
+                    'tags': g_profile.description,
+                    'p[15]': process.env.LISTID,
+                    'fields': [{
+                        'name': 'device',
+                        'value': deviceCheck(req)
+                    }]
+                };
+                
+                try {
+                    return new Promise((resolve, reject) => {
+                        contact.sync(payload, (err, res) => err ? reject(err) : resolve(res));
+                    })
                 } catch (err) {
                     console.log(err)
                     //throw new Error('Active Campaign Api broken')
@@ -88,6 +93,7 @@ module.exports = {
                 });
             })
             .catch(err => {
+                console.log(err)
                 res.status(400).json({
                     error: err.message
                 })
@@ -136,32 +142,32 @@ module.exports = {
                             'lastName': profile.lastName,
                             'phone': profile.phone,
                             'fields': [{
-                                'name': 'Last Active',
-                                'value': date,
-                            },
-                            {
-                                'name': 'device',
-                                'value' : deviceCheck(req) 
-                            } ]
+                                    'name': 'Last Active',
+                                    'value': date,
+                                },
+                                {
+                                    'name': 'device',
+                                    'value': deviceCheck(req)
+                                }
+                            ]
                         };
-                        console.log('profile..', profile);
+
                         const token = jwt.sign({
-                            profile,
+                            profileId: profile._id.toString(),
                             userId: g_user._id
                         }, process.env.SECRET, {
                             expiresIn: process.env.TOKEN_EXPIRES
                         });
-
                         _profile = profile;
                         _token = token;
                         try {
                             return new Promise((resolve, reject) => {
-                            contact.sync(payload, (err, res) => err ? reject(err) : resolve(res));
-                        })
+                                contact.sync(payload, (err, res) => err ? reject(err) : resolve(res));
+                            })
                         } catch (error) {
                             console.log(error)
                         }
-                        
+
 
                     } else {
                         throw 'error in profile'
@@ -301,7 +307,7 @@ module.exports = {
             secretKey: keygen(20),
             secretKeyEmail: keygen(20)
         });
-        
+
     },
 
 };

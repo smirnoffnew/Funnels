@@ -8,7 +8,7 @@ class CommentController {
         try {
 
             let comment = await Comments.create({
-                userId: req.authData.profile._id,
+                userId: req.authData.profileId,
                 funnelId: req.body.funnelId,
                 comment: req.body.comment,
                 itemId: req.body.itemId,

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const jwt = require('jsonwebtoken');
-const fs = require("fs");
+//const fs = require("fs");
 
 
 const Funnel = require('../models/funnel.js');
@@ -12,10 +12,10 @@ module.exports = {
     changeCollaboratorPermissions: async function (req, res) {
         const profileId = req.params.profileId;
         const funnelId = req.params.funnelId;
-        const permissionToChange = req.body.permissions == "View Only" ? "Edit" : "View Only";
+        const permissionToChange = req.body.permissions === "View Only" ? "Edit" : "View Only";
         Promise
             .all([
-                Profile
+                Profile 
                 .findOneAndUpdate({
                     _id: profileId,
                     "myCollaborations.funnelId": funnelId
@@ -38,10 +38,11 @@ module.exports = {
 
             ])
             .then(result => {
+                console.log(result)
                 res
                     .status(200)
                     .json({
-                        message: "permissions changed successfully!"
+                        message: `permissions for funnel ${result[1].funnelName} changed successfully!`
                     });
             })
             .catch(err => {
@@ -95,73 +96,71 @@ module.exports = {
             });
     },
     createCollaborator: async function (req, res) {
+
         const decodedJwtCollaborate = jwt.decode(req.collaborate_confirm, {
             complete: true
         });
+
         const decodedJwtAuthorization = jwt.decode(req.token, {
             complete: true
         });
-        //res.json({colconfirm: decodedJwtCollaborate, url: `src/${decodedJwtCollaborate.payload.screenShotURL}`});
+
         const funnelsIdArray = decodedJwtCollaborate.payload.funnelsId;
-
-        const collaboratorForFunnel = {
-            profileId: decodedJwtAuthorization.payload.profile._id,
-            permissions: decodedJwtCollaborate.payload.permissions,
-            funnelId: decodedJwtCollaborate.payload.funnelsId
-        };
-
 
         Promise
             .all([
 
-                Profile.updateOne({
-                    _id: decodedJwtAuthorization.payload.profile._id
-                }, {
-                    $push: {
-                        myCollaborations: funnelsIdArray.map(funnelId => {
-                            return {
-                                permissions: decodedJwtCollaborate.payload.permissions,
-                                funnelId: funnelId,
-                                funnel: mongoose.Types.ObjectId(funnelId)
-                            }
-                        })
-                    }
-                }).exec(),
+                Profile
+                    .updateOne(
 
-                Funnel.updateMany({
-                        '_id': {
-                            $in: decodedJwtCollaborate.payload.funnelsId
+                        {_id: decodedJwtAuthorization.payload.profileId},
+
+                        {
+                            $push: {
+                                myCollaborations: funnelsIdArray.map(funnelId => {
+                                    return {
+                                        permissions: decodedJwtCollaborate.payload.permissions,
+                                        funnelId: funnelId,
+                                        funnel: mongoose.Types.ObjectId(funnelId)
+                                    }
+                                })
+                            }
                         }
-                    },
-                    // {$push: {collaborators: collaboratorForFunnel}}
-                    {
-                        $push: {
-                            collaborators: funnelsIdArray.map(funnelId => {
-                                return {
-                                    permissions: decodedJwtCollaborate.payload.permissions,
-                                    funnelId: funnelId,
-                                    profileId: decodedJwtAuthorization.payload.profile._id
-                                }
-                            })
-                        }
-                    }
-                )
+                    )
                 .exec(),
-                Token.deleteOne({
-                    body: req.collaborate_confirm
-                })
-                .exec()
+
+
+                Funnel
+                    .updateMany(
+
+                        {'_id': {$in: funnelsIdArray}},
+
+                        {
+                            $push: {
+                                collaborators: funnelsIdArray.map(funnelId => {
+                                    return {
+                                        permissions: decodedJwtCollaborate.payload.permissions,
+                                        funnelId: funnelId,
+                                        profileId: decodedJwtAuthorization.payload.profileId
+                                    }
+                                })
+                            }
+                        }
+                    )
+                .exec(),
+
+                Token.deleteOne({body: req.headers.collaborate_confirm}).exec()
 
             ])
-            .then(result => {
-                fs.unlink(`src/${decodedJwtCollaborate.payload.screenShotURL}`, (err) => {
-                    if (err) {
-                        console.log(err);
-                    }
-                });
-                res
-                    .status(200)
-                    .json({
+            .then(() => {
+
+                // fs.unlink(`src/${decodedJwtCollaborate.payload.screenShotURL}`, (err) => {
+                //     if (err) {
+                //         console.log(err);
+                //     }
+                // });
+
+                return res.status(200).json({
                         message: "collaborator added successfully!"
                     });
             })

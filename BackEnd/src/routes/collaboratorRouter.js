@@ -8,11 +8,11 @@ const lastModified = require('../libs/lastModified.js');
 const enshureCollaborateToken = require('../libs/enshureCollaborateToken.js');
 const lastActive = require('../libs/lastActive');
 
-
+ 
 collaboratorRouter.post('/',
     enshureToken,
-    enshureCollaborateToken,
     verifyToken,
+    enshureCollaborateToken,
     lastActive,
     collaboratorController.createCollaborator);
 
@@ -28,7 +28,7 @@ collaboratorRouter.delete('/:profileId/:funnelId',
     lastActive,
     collaboratorController.deleteCollaborator);
 
-collaboratorRouter.post('/',
+collaboratorRouter.post('/funnel',
     enshureToken,
     verifyToken,
     lastActive,
