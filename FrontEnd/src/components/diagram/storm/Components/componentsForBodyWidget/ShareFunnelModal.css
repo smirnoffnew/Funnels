@@ -1,0 +1,229 @@
+.file-share-funnel {
+  position: relative;
+  display: flex;
+  justify-content: left;
+  margin-bottom: 20px;
+  margin-left: 30px;
+}
+
+.file-share-funnel label {
+  font-size: 14px;
+  font-weight: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.file-share-funnel input {
+  position: absolute;
+  display: inline-block;
+  left: 0;
+  top: 0;
+  opacity: 0.01;
+  cursor: pointer;
+}
+
+.file-name{
+  color: #848F99;
+  font-size: 13px;
+  align-items: center;
+  display: flex;
+  margin-left: 20px;
+}
+
+.btn-share-funnel-upload-logo{
+  width: 115px;
+  height: 43px;
+}
+
+
+
+
+
+
+
+
+.main-label-share-funnel{
+  color: #3B4049;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.second-label-share-funnel{
+  color: #848F99;
+  justify-content: center;
+  display: flex;
+  margin-bottom: 13px;
+  font-size: 15px;
+}
+
+.views-and-clicks-wrapper{
+  color: #3B4049;
+  display: flex;
+  justify-content: space-between;
+  width: 200px;
+  margin: auto;
+}
+
+
+
+.views-wrapper{
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.views-text-and-number-wrapper{
+
+}
+
+.views-text{
+  color: #848F99;
+  font-size: 14px;
+}
+
+.views-number{
+  color: #212939;
+  font-weight: 400;
+}
+
+
+
+.clicks-wrapper{
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.clicks-text-and-number-wrapper{
+
+}
+
+.clicks-text{
+  color: #848F99;
+  font-size: 14px;
+}
+
+.clicks-number{
+  color: #212939;
+  font-weight: 400;
+}
+
+.share-funnel-created-link-wrapper {
+  position: relative;
+}
+
+.share-funnel-created-link {
+  white-space: pre;
+  margin: 15px;
+  border: 1px solid;
+  padding: 15px;
+  border: 0px solid #BFCFE9;
+  color: #848F99;
+  font-size: 14px;
+  width: 100%;
+  border-radius: 5px;
+  width: 95%;
+  padding-left: 5%;
+  margin-bottom: 15px;
+  background: #ECF1F2;
+}
+
+.btn-share-funnel-copy-link{
+  position: absolute;
+  top: 4px;
+  right: 13px;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+}
+
+.share-funnel-label{
+  height: auto;
+  color: #848F99;
+  font-size: 12px;
+  font-weight: normal;
+  margin-bottom: 8px;
+}
+
+.share-funnel-text-panel{
+  width:  104%;
+  display: flex;
+  padding-bottom: 10px;
+  flex-direction: row;
+}
+
+.share-funnel-text-input{
+  width: 100%;
+  border: 1px solid #C1C7CC;
+  border-radius: 5px;
+  height: auto;
+  color: #212939;
+  width: 95% !important;
+}
+
+.btn-text-and-link-wrapper{
+  display: flex;
+  width: 99%;
+}
+
+.btn-text-wrapper{
+  width: 40%;
+  margin-right: 20px;
+}
+
+.btn-link-wrapper{
+  width: 100%;
+}
+
+.share-funnel-input{
+  padding-left: 10px !important;
+  border: 1px solid #C1C7CC !important;
+  width: 97% !important;
+  color: #212939 !important;
+}
+
+.share-funnel-input-link{
+  padding-left: 40px !important;
+  border: 1px solid #C1C7CC !important;
+  width: 90%;
+}
+
+.btn-share-funnel-save{
+  width: 160px;
+  border-radius: 5px;
+  height: 42px;
+  margin: auto;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.btn-share-funnel-save-disabled{
+  background: #848f99;
+  cursor: default;
+}
+
+
+
+.RichEditor-editor .public-DraftEditorPlaceholder-root, .RichEditor-editor .public-DraftEditor-content{
+  max-height: 140px;
+  overflow: auto;
+}
+
+.RichEditor-editor .public-DraftEditorPlaceholder-root, .RichEditor-editor .public-DraftEditor-content::-webkit-scrollbar {
+  width: 4px;
+  background-color: #F5F5F5;
+} 
+.RichEditor-editor .public-DraftEditorPlaceholder-root, .RichEditor-editor .public-DraftEditor-content::-webkit-scrollbar-thumb {
+  background-color: #ff9033;
+}
+
+.RichEditor-emoji-button .draftJsEmojiPlugin__emojiSelectPopover__1J1s0 {
+  position: absolute;
+  top: auto;
+  right: auto;
+  max-height: 150px;
+  overflow: hidden;
+}
+

@@ -844,10 +844,54 @@ export function removeCollaborator(funnelId, profileId) {
   }
 }
 
-export function sendImageToCollaborate(funnelId, image) {
+
+
+
+
+
+
+
+// export function sendImageToCollaborate(funnelId, info) {
+//   return function (dispatch) {
+//     API.post(`/funnel/diagram/screenshot`, {
+//       'info': {
+//         logo: info.imageBase64,
+//         title: info.tittle,
+//         text: info.text,
+//         buttonText: info.buttonText,
+//         buttonLink: info.buttonLink,
+//       },
+//       'funnelId': funnelId
+//     })
+//       .then(response => {
+//         dispatch({
+//           type: 'SEND_IMAGE_TO_COLLABORATE_LINK',
+//           payload: response.data.link
+//         });
+//       })
+//       .catch(function (error) {
+//         if (error.response) {
+//           console.log(error.response)
+//           dispatch({
+//             type: 'SEND_IMAGE_TO_COLLABORATE_LINK_FAILURE',
+//             payload: error.response.data.error
+//           });
+//         }
+//       });
+//   }
+// }
+
+export function sendImageToCollaborate(funnelId, info) {
   const token = JSON.parse(localStorage.getItem('token'));
   let bodyFormData = new FormData();
-  bodyFormData.append('screenshot', image);
+
+  bodyFormData.append('logo', info.file);
+  bodyFormData.append('title', info.tittle);
+  bodyFormData.append('text', info.text);
+  bodyFormData.append('buttonText', info.buttonText);
+  bodyFormData.append('buttonLink', info.buttonLink);
+
+
   bodyFormData.append('funnelsId', funnelId);
   bodyFormData.append('permissions', 'View Only');
   return function (dispatch) {

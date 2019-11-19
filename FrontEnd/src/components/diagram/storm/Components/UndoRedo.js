@@ -1,14 +1,18 @@
 import React from 'react'
 import { ActionCreators as UndoActionCreators } from 'redux-undo'
 import { connect } from 'react-redux'
-import UndoSVG from "../../../../assets/undo.svg";
-import RedoSVG from "../../../../assets/redo.svg";
+import UndoSVG from "../../../../assets/undo/undo.svg";
+import RedoSVG from "../../../../assets/undo/redo.svg";
+
+import UndoActiveSVG from "../../../../assets/undo/undoActive.svg";
+import RedoActiveSVG from "../../../../assets/undo/redoActive.svg";
+
 import ReactSVG from 'react-svg';
 
 let UndoRedo = ({ canUndo, canRedo, onUndo, onRedo }) => (
   <div className='undo-wrapper'>
     <button
-      className={canUndo ? 'btn btn-1' : 'btn btn-1 btn-disabled'}
+      className={canUndo ? 'btn-undo' : 'btn-undo btn-undo-disabled'}
       onClick={onUndo}
       disabled={!canUndo}
       style={{
@@ -16,14 +20,11 @@ let UndoRedo = ({ canUndo, canRedo, onUndo, onRedo }) => (
       }}
     >
       <ReactSVG
-        src={UndoSVG}
-        beforeInjection={svg => {
-          svg.setAttribute('style', 'width: 30px; height: 30px;')
-        }}
+        src={canUndo ? UndoActiveSVG : UndoSVG}
       />
     </button>
     <button
-      className={canRedo ? 'btn btn-1' : 'btn btn-1 btn-disabled'}
+      className={canRedo ? 'btn-undo' : 'btn-undo btn-undo-disabled'}
       onClick={onRedo}
       disabled={!canRedo}
       style={{
@@ -32,10 +33,7 @@ let UndoRedo = ({ canUndo, canRedo, onUndo, onRedo }) => (
       }}
     >
        <ReactSVG
-        src={RedoSVG}
-        beforeInjection={svg => {
-          svg.setAttribute('style', 'width: 30px; height: 30px;')
-        }}
+        src={canRedo ? RedoActiveSVG : RedoSVG}
       />
     </button>
   </div>

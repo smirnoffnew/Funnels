@@ -45,11 +45,20 @@ class AddCollaboratorsImage extends React.Component {
 
     axios.post(`${API_URL}/funnel/get-signin-token`, {}, axiosConfig)
       .then(response => {
+
+        console.log('get-signin-token response: ', response)
+
+
         this.props.getDiagramForRecipiensCollaborator(params.get('funnelId'), "Bearer " + response.data.message);
         this.props.getSVGForRecipiensCollaborator("Bearer " + response.data.message);
 
         this.setState({
-          token: "Bearer " + response.data.message
+          token: "Bearer " + response.data.message,
+          logo: response.data.info.logo,
+          tittle: response.data.info.title,
+          text: response.data.info.text,
+          buttonText: response.data.info.buttonText,
+          buttonLink: response.data.info.buttonLink,
         })
       })
       .catch(function (error) {
@@ -58,7 +67,7 @@ class AddCollaboratorsImage extends React.Component {
         }
       });
 
-      this.props.setPermission('View');
+    this.props.setPermission('View');
   }
 
   componentDidUpdate(prevProps) {
@@ -109,15 +118,29 @@ class AddCollaboratorsImage extends React.Component {
 
         <BodyWidget app={app} work={this.props} addCollaborators tokenCollaborator={this.state.token} />
 
-        {/* <img className='add-collaborators-img-image' src={'http://' + params.get('image')} alt='img' /> */}
-
         <div className='add-collaborators-img-right-panel-wrapper'>
           <div className='add-collaborators-img-right-panel'>
-            <img className='signin-logo' src={logo} alt='logo' />
-            <p className='add-collaborators-img-text-first'>The Following Funnel Has <br /> Been Shared with You</p>
-            <CollaborateSVG />
-            <p className='add-collaborators-img-text-second'>Click below to add to this funnel to <br /> your dashboard</p>
-            <button className="btn btn-1" onClick={() => this.redirectToAddCollaborators()}>Add to My Dashboard</button>
+            <img className='add-collaborators-img-logo' src={'http://' + this.state.logo} alt='logo' />
+
+            <p className='add-collaborators-img-text-first'>{this.state.tittle}</p>
+
+            <div
+              className='add-collaborators-img-text-second'
+              dangerouslySetInnerHTML={{ __html: this.state.text }}>
+            </div>
+
+
+            <div className='btn-add-collaborators-text-wrapper' >
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={this.state.buttonLink}
+                className="btn btn-1 btn-add-collaborators-text"
+              >
+                {this.state.buttonText}
+              </a>
+            </div>
+
           </div>
         </div>
 
@@ -164,7 +187,7 @@ const mapDispatchToProps = dispatch => {
     getSVGForRecipiensCollaborator: (token) => dispatch(getSVGForRecipiensCollaborator(token)),
     getDiagramForRecipiensCollaborator: (funnelId, token) => dispatch(getDiagramForRecipiensCollaborator(funnelId, token)),
     getConversionInfoForAllNodesForRecipiensCollaborator: (funnelId, token) => dispatch(getConversionInfoForAllNodesForRecipiensCollaborator(funnelId, token)),
-    
+
     showAnalyticsBoolean: boolean => dispatch(showAnalyticsBoolean(boolean)),
     changeKeyDown: key => dispatch(changeKeyDown(key)),
     setPermission: item1 => dispatch(setPermission(item1)),
