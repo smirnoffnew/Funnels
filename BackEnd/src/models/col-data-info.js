@@ -26,8 +26,7 @@ const colDataSchema = new Schema({
     buttonLink: {
         type: String,
         required: [true, 'field is required']
-    },
-    expire_at: {type: Date, default: Date.now, expires: 259200} 
+    }
 
 })
 module.exports = mongoose.model('ColDataInfo', colDataSchema);

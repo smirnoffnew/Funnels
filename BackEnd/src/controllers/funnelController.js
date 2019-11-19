@@ -402,11 +402,7 @@ module.exports = {
                     message: signInToken,
                     info
                 });
-                return info._id
             })
-            // .then(id=>{
-            //     ColDataInfo.find({_id:id}).remove().exec()
-            // })
             .catch(err => {
                 res.status(400).json({
                     error: err.message
