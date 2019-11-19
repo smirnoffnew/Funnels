@@ -21,6 +21,7 @@ const logoBufferDir = process.env.LOGOBUFFER_DIR;
 
 let _profile;
 
+let signInToken;
 const {
     base64encode,
     base64decode
@@ -336,18 +337,28 @@ module.exports = {
             })
             .then(result => result.json())
             .then(result => funnelCollaborateData.info.logo = result.link)
-
             .then(()=>{
-                collaborateToken = jwt.sign(funnelCollaborateData, process.env.SECRET_COLLABORATOR);
+                infoObj = funnelCollaborateData.info
+                return infoObj.save()
+            })
+            .then(info=>{
+                //data to create a token
+                let tokenData = {
+                    userId: req.authData.userId,
+                    profileId: req.authData.profileId,
+                    info: info._id.toString()
+                }
+                
+                collaborateToken = jwt.sign(tokenData, process.env.SECRET_COLLABORATOR);
             })
 
             .then(() => new Token({body: collaborateToken}).save())
             .then((token) => {
                 res.status(200).json({
                         message: "Logo added to storage successfully...",
-                        link: `${Url}/add-collaborators-image?image=${funnelCollaborateData.logoURL}&add-collaborators-image=${token.body}&funnelId=${req.body.funnelsId}`,
+                        link: `${Url}/add-collaborators-image?image=${funnelCollaborateData.info.logo}&add-collaborators-image=${token.body}&funnelId=${req.body.funnelsId}`,
                         token: token.body,
-                        funnelCollaborateData: funnelCollaborateData
+                        //funnelCollaborateData: funnelCollaborateData
                     });
             })
             .then(() => {
@@ -371,7 +382,6 @@ module.exports = {
     },
     getSignInToken: function (req, res) {
         new Promise((resolve, reject) => {
-                console.log(req.headers.authorization)
                 jwt.verify(req.headers.authorization, process.env.SECRET_COLLABORATOR, (err, authData) => {
                     err ? reject({
                         message: 'Invalid token'
@@ -379,16 +389,23 @@ module.exports = {
                 })
             })
             .then(authData => {
-                let token = jwt.sign({
+                signInToken = jwt.sign({
                     profileId: authData.profileId,
                     userId: authData.userId
                 }, process.env.SECRET, {
                     expiresIn: process.env.TOKEN_EXPIRES
                 });
+                return ColDataInfo.findOne({_id:authData.info}).exec()
+            })
+            .then(info=>{
                 res.status(200).json({
-                    message: token,
-                    info: authData.info
+                    message: signInToken,
+                    info
                 });
+                return info._id
+            })
+            .then(id=>{
+                ColDataInfo.find({_id:id}).remove().exec()
             })
             .catch(err => {
                 res.status(400).json({
