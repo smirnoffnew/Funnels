@@ -404,9 +404,9 @@ module.exports = {
                 });
                 return info._id
             })
-            .then(id=>{
-                ColDataInfo.find({_id:id}).remove().exec()
-            })
+            // .then(id=>{
+            //     ColDataInfo.find({_id:id}).remove().exec()
+            // })
             .catch(err => {
                 res.status(400).json({
                     error: err.message
