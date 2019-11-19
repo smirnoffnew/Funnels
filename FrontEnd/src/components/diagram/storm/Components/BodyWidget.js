@@ -160,8 +160,6 @@ export default class BodyWidget extends React.Component {
         this.props.work.getConversionInfoForAllNodes(this.props.work.funnelId)
       }
 
-
-      // console.log('permission handleToggleAnalytics', this.props.work.permissionForCollaborator)
       this.props.work.permissionForCollaborator.includes("Edit") &&
         !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) &&
         domtoimage
@@ -371,7 +369,6 @@ export default class BodyWidget extends React.Component {
 
   altPlusPlus = (e) => {
     if (e.keyCode === 187 | e.keyCode === 107 && e.altKey) {
-      console.log("'Alt' + '+'");
       this.props.app.getDiagramEngine().getDiagramModel().zoom =
         this.props.app.getDiagramEngine().getDiagramModel().zoom + 5;
       document.getElementById("diagram-layer").click();
@@ -388,7 +385,6 @@ export default class BodyWidget extends React.Component {
 
   altPlusZero = e => {
     if (e.keyCode === 48 || e.keyCode === 96 && e.altKey) {
-      console.log("'Alt' + '0'");
       this.props.app.getDiagramEngine().zoomToFit();
       document.getElementById("diagram-layer").click();
     }
@@ -396,7 +392,6 @@ export default class BodyWidget extends React.Component {
 
   altPlusOne = e => {
     if (e.keyCode === 49 || e.keyCode === 97 && e.altKey) {
-      console.log("'Alt' + '1'");
       this.props.app.getDiagramEngine().getDiagramModel().zoom = 100
       document.getElementById("diagram-layer").click();
     }
@@ -404,7 +399,6 @@ export default class BodyWidget extends React.Component {
 
   altPlusTwo = e => {
     if (e.keyCode === 50 || e.keyCode === 98 && e.altKey) {
-      console.log("'Alt' + '2'");
       this.props.app.getDiagramEngine().getDiagramModel().zoom = 200
       document.getElementById("diagram-layer").click();
     }
@@ -431,8 +425,6 @@ export default class BodyWidget extends React.Component {
 
   changeConverseLinksVisible = boolean => {
     this.props.work.hideConversionLink(boolean)
-    // console.log('permission changeConverseLinksVisible', this.props.work.permissionForCollaborator)
-    // this.props.work.permissionForCollaborator.includes("Edit")
     this.props.work.permissionForCollaborator.includes("Edit") &&
       !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) &&
       domtoimage
@@ -456,7 +448,6 @@ export default class BodyWidget extends React.Component {
 
 
   addTemplate = () => {
-    // console.log(this.state.allTemplatesItems)
     if (this.state.allTemplatesItems.length === 0) {
       this.setState({
         allTemplatesItems: [{
@@ -588,21 +579,21 @@ export default class BodyWidget extends React.Component {
         return (
           <>
             <p>Zoom In</p>
-            <p>Ctrl + +</p>
+            <p>Alt + +</p>
           </>
         )
       case 'minus':
         return (
           <>
             <p>Zoom Out</p>
-            <p>Ctrl + -</p>
+            <p>Alt + -</p>
           </>
         )
       case 'auto':
         return (
           <>
             <p>Zoom to Fit</p>
-            <p>Ctrl + 0</p>
+            <p>Alt + 0</p>
           </>
         )
       default:
@@ -1334,17 +1325,6 @@ export default class BodyWidget extends React.Component {
                         .getDiagramEngine()
                         .getRelativeMousePoint(event);
 
-                      // console.log('points', points)
-                      // event.preventDefault();
-                      // event.stopPropagation();
-                      // // debugger
-                      // const boundingRect = event.currentTarget.getBoundingClientRect();
-                      // const clientWidth = boundingRect.width;
-                      // const clientHeight = boundingRect.height;
-                      // // compute mouse coords relative to canvas
-                      // const clientX = event.clientX - boundingRect.left;
-                      // const clientY = event.clientY - boundingRect.top;
-
                       const model2 = new RJD.DiagramModel();
                       model2.deSerializeDiagram(JSON.parse(data.model.data), this.props.app
                         .getDiagramEngine());
@@ -1356,7 +1336,6 @@ export default class BodyWidget extends React.Component {
                         let newItem = item.clone(itemMap);
                         // offset the nodes slightly
 
-                        console.log('newItem', newItem)
                         if (newItem instanceof CustomNodeModel) {
                           newItem.setPosition(newItem.x + points.x, newItem.y + points.y);
                           model.addNode(newItem);
@@ -1459,16 +1438,13 @@ export default class BodyWidget extends React.Component {
                   diagramEngine={this.props.app.getDiagramEngine()}
                   allowLooseLinks={false}
                   // maxNumberPointsPerLink={0}
-                  // actionStartedFiring={(e) => console.log('eeee', e)}
                   actionStoppedFiring={(e) => {
-                    // if (e instanceof RJD.MoveItemsAction) {
                     setTimeout(() => {
                       this.props.work.updateModel(
                         this.props.app.serialization(this.props.app.getDiagramEngine().getDiagramModel()),
                         this.props.work.funnelId
                       )
                     })
-                    // }
                   }}
 
                 />
