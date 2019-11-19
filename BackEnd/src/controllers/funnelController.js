@@ -317,7 +317,7 @@ module.exports = {
         infoObj
             .validate()
             .then(() => {
-                return funnelCollaborateData = {
+                 funnelCollaborateData = {
                     funnelsId: [req.body.funnelsId],
                     permissions: req.body.permissions,
                     userId: req.authData.userId,
@@ -326,12 +326,9 @@ module.exports = {
                 };
             })
             .then(funnelCollaborateData => {
-                collaborateToken = jwt.sign(funnelCollaborateData, process.env.SECRET_COLLABORATOR);
                 const data = new FormData();
-
                 data.append('funnelsId', req.body.funnelsId);
                 data.append('img', fs.createReadStream(`${process.cwd()}${logoBufferDir}/${req.uploadedFileName}`));
-
                 return fetch(`${process.env.FILE_SHARER}/screenshots`, {
                     method: 'POST',
                     body: data
@@ -339,12 +336,18 @@ module.exports = {
             })
             .then(result => result.json())
             .then(result => funnelCollaborateData.logoURL = result.link)
+
+            .then(()=>{
+                collaborateToken = jwt.sign(funnelCollaborateData, process.env.SECRET_COLLABORATOR);
+            })
+
             .then(() => new Token({body: collaborateToken}).save())
             .then((token) => {
                 res.status(200).json({
                         message: "Logo added to storage successfully...",
                         link: `${Url}/add-collaborators-image?image=${funnelCollaborateData.logoURL}&add-collaborators-image=${token.body}&funnelId=${req.body.funnelsId}`,
                         token: token.body,
+                        funnelCollaborateData: funnelCollaborateData
                     });
             })
             .then(() => {
