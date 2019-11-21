@@ -30,17 +30,24 @@
 .add-collaborators-img-logo {
   display: flex;
   /* margin: auto; */
-  padding: 70px 0 70px 0;
-  max-width: 400px;
+  padding: 15px 0 50px 0;
+  max-width: 280px;
 }
 
 .btn-add-collaborators-text{
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
   border-radius: 5px;
+  background: #F15C22;
+  min-width: 150px;
+  max-width: 370px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  height: auto;
+  font-weight: lighter;
 }
 
 
@@ -48,22 +55,18 @@
   padding: 35px;
   max-height: calc(100vh - 100px);
   overflow: auto;
+  padding-left: 50px;
 }
 
 .add-collaborators-img-text-first{
   font-size: 22px;
   color: #ffffff;
-  font-family: "Roboto";
-  font-weight: 300;
-  padding-top: 50px;
   padding-bottom: 50px;
 }
 
 .add-collaborators-img-text-second{
   font-size: 17px;
   color: #ffffff;
-  font-family: "Roboto";
-  font-weight: 300;
-  padding-top: 20px;
   padding-bottom: 50px;
+  opacity: 80%;
 }

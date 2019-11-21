@@ -13,6 +13,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 5px;
+  background: #F15C22;
 }
 
 .file-share-funnel input {
@@ -132,11 +133,12 @@
 
 .btn-share-funnel-copy-link{
   position: absolute;
-  top: 4px;
-  right: 13px;
-  width: 30px;
-  height: 30px;
+  top: 3px;
+  right: 12px;
+  width: 46px;
+  height: 46px;
   border-radius: 5px;
+  background: #F15C22;
 }
 
 .share-funnel-label{
@@ -197,6 +199,7 @@
   margin: auto;
   display: block;
   margin-bottom: 10px;
+  background: #F15C22;
 }
 
 .btn-share-funnel-save-disabled{

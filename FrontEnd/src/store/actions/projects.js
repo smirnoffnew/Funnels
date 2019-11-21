@@ -654,10 +654,6 @@ export function getDiagram(funnelId) {
 
 export function getDiagramForRecipiensCollaborator(funnelId, tokenCollaborator) {
 
-  console.log('getDiagramForRecipiensCollaborator')
-
-  // console.log(tokenCollaborator)
-
   const axiosConfig = {
     headers: {
       // 'collaborate-confirm': tokenCollaborator,
@@ -672,9 +668,6 @@ export function getDiagramForRecipiensCollaborator(funnelId, tokenCollaborator) 
    
 
       .then(response => {
-
-        // console.log('response', response)
-
 
         let res = {}
         if (response.data.data.funnelBody) {
