@@ -16,7 +16,6 @@ const headers = {
     "Api-Token": process.env.CAMPAING_ACCOUNT_KEY
 };
 const method = 'POST';
-let userAC;
 let today = new Date();
 let date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullYear();
 
@@ -29,7 +28,6 @@ let g_user;
 
 module.exports = {
     signUp: function (req, res) {
-
         const user = new User({
             _id: new mongoose.Types.ObjectId(),
             password: req.body.password,
@@ -52,48 +50,16 @@ module.exports = {
                 g_profile = profile;
                 return profile
             })
-            .then((profile) => {
+            .then(profile => {
                 const token = jwt.sign({
                     profileId: profile._id.toString(),
                     userId: user._id
                 }, process.env.SECRET, {
                     expiresIn: process.env.TOKEN_EXPIRES
                 });
-                g_token = token;
-                return profile
+                return token;
             })
-            .then((profile) => {
-                return rp({
-                    method,
-                    headers,
-                    url: `${url}contacts`,
-                    json: true,
-                    body: {
-                        "contact": {
-                            "email": profile.email,
-                            "firstName": profile.firstName,
-                            'tags': profile.description,
-                            'p[15]': process.env.LISTID,
-                        }
-                    }
-                })
-
-            })
-            .then(body => {
-                return rp({
-                    method,
-                    headers,
-                    url: `${url}fieldValues`,
-                    body: JSON.stringify({
-                        fieldValue: {
-                            contact: body.contact.id,
-                            field: 6,
-                            value: deviceCheck(req)
-                        }
-                    })
-                })
-            })
-            .then((response) => {
+            .then(token => {
                 res.status(200).json({
                     data: {
                         _id: g_profile._id,
@@ -104,12 +70,50 @@ module.exports = {
                         photoUrl: g_profile.photoUrl,
                         accountName: g_profile.accountName
                     },
-                    token: `Bearer ${g_token}`,
+                    token: `Bearer ${token}`,
                     responseApi: 'Registered successfully',
                 });
             })
+            .then(() => {
+                try {
+                    return rp({
+                        method,
+                        headers,
+                        url: `${url}contacts`,
+                        json: true,
+                        body: {
+                            "contact": {
+                                "email": g_profile.email,
+                                "firstName": g_profile.firstName,
+                                'tags': g_profile.description,
+                                'p[15]': process.env.LISTID,
+                            }
+                        }
+                    })
+                } catch (error) {
+                    throw new Error('Active campaign registration error')
+                }
+            })
+            .then(body => {
+                try {
+                    rp({
+                        method,
+                        headers,
+                        url: `${url}fieldValues`,
+                        body: JSON.stringify({
+                            fieldValue: {
+                                contact: body.contact.id,
+                                field: 6,
+                                value: deviceCheck(req)
+                            }
+                        })
+                    })
+                } catch (error) {
+                    throw new Error('Active campaign device verification error')
+                }
+            })
             .catch(err => {
-                console.log(err)
+                console.log(err.message)
                 res.status(400).json({
                     error: err.message
                 })
@@ -148,49 +152,9 @@ module.exports = {
                         expiresIn: process.env.TOKEN_EXPIRES
                     });
                     _profile = profile;
-                    let options = {
-                        headers,
-                        url: `${url}contact/sync`,
-                        method,
-                        body: JSON.stringify({
-                            "contact": {
-                                "email": profile.email,
-                            }
-                        })
-                    };
-                    return rp(options)
+                    return profile
                 })
-                .then(body => {
-                    userAC = JSON.parse(body).contact.id
-                    rp({
-                        method,
-                        headers,
-                        url: `${url}fieldValues`,
-                        body: JSON.stringify({
-                            fieldValue: {
-                                contact: userAC,
-                                field: 6,
-                                value: deviceCheck(req)
-                            }
-                        })
-                    })
-                })
-                .then(() => {
-                    rp({
-                        method,
-                        headers,
-                        url: `${url}fieldValues`,
-                        body: JSON.stringify({
-                            fieldValue: {
-                                contact: userAC,
-                                field: 4,
-                                value: date
-                            }
-                        })
-                    })
-                })
-                .then(() => {
-                    let profile = _profile;
+                .then(profile => {
                     let token = _token;
                     res.status(200).json({
                         data: {
@@ -204,8 +168,63 @@ module.exports = {
                         token: `Bearer ${token}`,
                     })
                 })
+                .then(() => {
+                    try {
+                        let options = {
+                            headers,
+                            url: `${url}contact/sync`,
+                            method,
+                            body: JSON.stringify({
+                                "contact": {
+                                    "email": _profile.email,
+                                }
+                            })
+                        };
+                        return rp(options)
+                    } catch (error) {
+                        console.log(error)
+                    }
+                })
+                .then(body => {
+                    try {
+                        let userAC = JSON.parse(body).contact.id
+                        rp({
+                            method,
+                            headers,
+                            url: `${url}fieldValues`,
+                            body: JSON.stringify({
+                                fieldValue: {
+                                    contact: userAC,
+                                    field: 6,
+                                    value: deviceCheck(req)
+                                }
+                            })
+                        })
+                        return userAC
+                    } catch (error) {
+                        console.log(error)
+                    }
+                })
+                .then(userAC => {
+                    try {
+                        rp({
+                            method,
+                            headers,
+                            url: `${url}fieldValues`,
+                            body: JSON.stringify({
+                                fieldValue: {
+                                    contact: userAC,
+                                    field: 4,
+                                    value: date
+                                }
+                            })
+                        })
+                    } catch (error) {
+                        console.log(error)
+                    }
+                })
                 .catch(err => {
-                    console.log(err)
+                    console.log(err.message)
                     res.status(400).json({
                         error: err.message
                     })
