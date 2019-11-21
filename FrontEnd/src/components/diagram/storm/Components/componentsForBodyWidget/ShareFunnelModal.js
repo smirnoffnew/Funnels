@@ -7,6 +7,8 @@ import { sendImageToCollaborate, resetSendImageToCollaborateLink } from "../../.
 import RichEditor from "../../../../common/Comments/CommentPannel/CommentPanel";
 import { API } from "../../../../../store/actions/instance";
 
+import logo from '../../../../../assets/Logo_invert.png'
+
 
 import Clicks from "../../../../../assets/shareFunnel/clicks.svg";
 import Views from "../../../../../assets/shareFunnel/views.svg";
@@ -23,10 +25,10 @@ class ShareFunnelModal extends React.Component {
   state = {
     shareFunnel: false,
     file: '',
-    tittle: '',
+    tittle: 'The Following Funnel Has Been Shared with You',
     text: '',
-    buttonText: '',
-    buttonLink: '',
+    buttonText: 'Click Here',
+    buttonLink: '#',
     fileName: '',
     sum: {},
     showFillAllData: false,
@@ -54,14 +56,11 @@ class ShareFunnelModal extends React.Component {
   })
   hideShareFunnel = () => this.setState({
     shareFunnel: false,
-    file: '',
-    tittle: '',
-    text: '',
-    buttonText: '',
-    buttonLink: '',
-    fileName: '',
+    tittle: 'The Following Funnel Has Been Shared with You',
+    buttonText: 'Click Here',
+    buttonLink: '#',
     sum: {},
-    showFillAllData: true,
+    showFillAllData: false,
 
     clearRichPanel: true
   })
@@ -70,7 +69,22 @@ class ShareFunnelModal extends React.Component {
   showFillAllData = () => this.setState({ showFillAllData: true })
   hideFillAllData = () => this.setState({ showFillAllData: false })
 
-
+  componentDidMount = () => {
+    let blob = null;
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", logo);
+    xhr.responseType = "blob";
+    xhr.send()
+    xhr.onload = () => {
+      blob = xhr.response;
+      const file = new File([blob], 'logo.png', { type: 'image/png', lastModified: Date.now() });
+      console.log(file)
+      this.setState({
+        file,
+        fileName: 'the default logo is already selected',
+      })
+    }
+  }
 
   handleImageChange = e => {
     e.preventDefault()
@@ -79,17 +93,13 @@ class ShareFunnelModal extends React.Component {
       let reader = new FileReader();
       let file = e.target.files[0];
 
-      this.setState({
-        file: {}
-      }, () => console.log('length: ', this.state.file.length))
-
-
       if (file.type.includes('image')) {
         reader.onloadend = () => {
           this.setState({
             file,
             fileName: file.name,
           }, () => {
+            console.log(file)
             this.hideFillAllData()
             this.props.resetSendImageToCollaborateLink()
           });
@@ -192,7 +202,7 @@ class ShareFunnelModal extends React.Component {
             null
         }
 
-        <Modal show={this.state.shareFunnel} handleClose={this.hideShareFunnel} width={666} padding={0}>
+        <Modal show={this.state.shareFunnel} handleClose={this.hideShareFunnel} width={666} padding={0} borderRadius={13}>
 
           <label
             className='main-label-share-funnel'
@@ -317,8 +327,6 @@ class ShareFunnelModal extends React.Component {
               name="tittle"
               value={this.state.tittle}
               onChange={this.handleChange}
-              size="30"
-              maxLength="30"
               className='share-funnel-input'
             />
           </div>
@@ -333,6 +341,7 @@ class ShareFunnelModal extends React.Component {
                   handleUpdateText={this.handleUpdateText}
                   clearRichPanel={this.state.clearRichPanel}
                   clearRichPanelFalse={this.clearRichPanelFalse}
+                  defaultText={'Click below'}
                 />
               </div>
             </div>
@@ -343,15 +352,13 @@ class ShareFunnelModal extends React.Component {
               <div className='btn-text-wrapper'>
                 <label className='share-funnel-label'>
                   Button Text
-              </label>
+                </label>
                 <input
                   type="text"
                   placeholder="Button Text"
                   name="buttonText"
                   value={this.state.buttonText}
                   onChange={this.handleChange}
-                  size="30"
-                  maxLength="30"
                   className='share-funnel-input'
                 />
               </div>
@@ -377,7 +384,7 @@ class ShareFunnelModal extends React.Component {
 
           <div style={{
             borderTop: '1px solid #C1C7CC',
-            paddingTop: 18
+            paddingTop: 25
           }}>
             <button
               className={
@@ -442,8 +449,9 @@ class ShareFunnelModal extends React.Component {
                     width: 15px;
                     height: 15px;
                     position: absolute;
-                    top: 12px;
+                    top: 19px;
                     left: 20px;
+                    
                   `
                     );
                   }}
@@ -454,6 +462,8 @@ class ShareFunnelModal extends React.Component {
                   style={{
                     margin: 0,
                     padding: 10,
+                    paddingTop: 17,
+                    paddingBottom: 17,
                   }}
                   ref={ref => this.link = ref}
                   value={this.props.link}
@@ -470,8 +480,9 @@ class ShareFunnelModal extends React.Component {
                       svg.setAttribute(
                         "style",
                         `
-                          width: 14px;
-                          height: 14px; 
+                        width: 18px;
+                        height: 21px;
+                        padding-top: 5px;
                         `
                       );
                     }}

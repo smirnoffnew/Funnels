@@ -33,17 +33,20 @@
 
 .close-modal{
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 14px;
+  right: 17px;
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
   padding: 0;
   border: none;
   font: inherit;
-  color: #707070;
+  /* color: inherit; */
   background-color: transparent;
   cursor: pointer;
+  -webkit-transform: scale(1.4,1);
   transform: scale(1.4,1);
-  font-weight: 300;
+  font-weight: 100;
+  font-size: 15px;
+  color: #707070;
 }

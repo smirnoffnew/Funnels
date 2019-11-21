@@ -39,6 +39,8 @@ input[type=text], input[type=password] {
   width: 95%;
   padding-left: 5%;
   margin-bottom: 15px;
+  font-family: 'Roboto', serif;
+  font-weight: lighter;
 }
 
 input[type=text]:focus, input[type=password]:focus {

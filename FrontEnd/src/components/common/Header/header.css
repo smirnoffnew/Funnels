@@ -78,23 +78,6 @@ header nav ul li a {
   display: none;
 }
 
-.close-modal{
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content;
-  padding: 0;
-  border: none;
-  font: inherit;
-  /* color: inherit; */
-  background-color: transparent;
-  cursor: pointer;
-  transform: scale(1.4,1);
-  font-weight: 300;
-}
-
 .create-project-input{
   display: flex;
   flex-direction: column;

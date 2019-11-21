@@ -34,7 +34,7 @@ class AddCollaboratorsImage extends React.Component {
     snackMsg: 'prev',
   };
 
-  componentDidMount() {
+  componentDidMount = () => {
     let params = new URLSearchParams(window.location.search);
 
     const axiosConfig = {
@@ -45,9 +45,6 @@ class AddCollaboratorsImage extends React.Component {
 
     axios.post(`${API_URL}/funnel/get-signin-token`, {}, axiosConfig)
       .then(response => {
-
-        console.log('get-signin-token response: ', response)
-
 
         this.props.getDiagramForRecipiensCollaborator(params.get('funnelId'), "Bearer " + response.data.message);
         this.props.getSVGForRecipiensCollaborator("Bearer " + response.data.message);
@@ -68,18 +65,6 @@ class AddCollaboratorsImage extends React.Component {
       });
 
     this.props.setPermission('View');
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.diagram) {
-      if (
-        prevProps.diagram.snackMsg !== this.state.snackMsg &&
-        prevProps.diagram.snackMsg !== undefined
-      ) {
-        this.props.getDiagramForRecipiensCollaborator(this.props.funnelId);
-      }
-    }
-    else return null
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {

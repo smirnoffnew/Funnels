@@ -2,7 +2,7 @@
 import React from 'react'
 import "./CommentPanel.css";
 import { UserIcon } from '../../UserIcon/UserIcon';
-import { EditorState, RichUtils, convertToRaw, } from 'draft-js';
+import { EditorState, ContentState, RichUtils, convertToRaw, } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
@@ -41,7 +41,9 @@ export const CommentPanel = ({ sendComment, userName, userAvatarUrl }) => {
 export default class RichEditor extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { editorState: EditorState.createEmpty() };
+        this.state = { 
+            editorState: this.props.defaultText ? EditorState.createWithContent(ContentState.createFromText(this.props.defaultText))
+            : EditorState.createEmpty() };
 
         this.focus = () => this.refs.editor.focus();
         this.onChange = (editorState) => {
@@ -115,8 +117,11 @@ export default class RichEditor extends React.Component {
         }
 
         if(this.props.clearRichPanel){
-            this.handleClickComment(editorState)
-            this.props.clearRichPanelFalse()
+            this.setState({ 
+                editorState: EditorState.createWithContent(ContentState.createFromText(this.props.defaultText))
+            }, () =>  {
+                this.props.clearRichPanelFalse()
+            })
         }
 
         return (
