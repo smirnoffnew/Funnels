@@ -196,14 +196,20 @@ class TextWithOutPortsWidget extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    diagram: state.projects[`diagram${state.router.location.pathname.substring(9)}`],
+    diagram: state.router.location.pathname.includes('template') ?
+      state.projects[`diagram${state.router.location.pathname.substring(10)}`] :
+      state.projects[`diagram${state.router.location.pathname.substring(9)}`],
+
     showSettingsWidgetBoolean: state.projects.showSettingsWidgetBoolean,
     showSettingsWidgetModel: state.projects.showSettingsWidgetModel,
 
     showNotesWidgetBoolean: state.projects.showNotesWidgetBoolean,
     showNotesWidgetModel: state.projects.showNotesWidgetModel,
 
-    funnelId: state.router.location.pathname.substring(9),
+    funnelId: state.router.location.pathname.includes('template') ?
+      state.router.location.pathname.substring(10) :
+      state.router.location.pathname.substring(9),
+
     svgList: state.projects.svgList
   };
 };

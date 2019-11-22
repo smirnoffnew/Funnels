@@ -180,9 +180,7 @@ class BigNodeWidget extends React.Component {
 
   render() {
 
-    // console.log( 
-    //   this.props.diagram && JSON.parse(this.props.diagram.converted).nodes
-    // )
+   
 
     return (
       <>
@@ -699,7 +697,8 @@ class BigNodeWidget extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    diagram:
+    diagram: state.router.location.pathname.includes('template') ?
+      state.projects[`diagram${state.router.location.pathname.substring(10)}`] :
       state.projects[`diagram${state.router.location.pathname.substring(9)}`],
 
     showSettingsWidgetBoolean: state.projects.showSettingsWidgetBoolean,
@@ -708,7 +707,10 @@ const mapStateToProps = state => {
     showNotesWidgetBoolean: state.projects.showNotesWidgetBoolean,
     showNotesWidgetModel: state.projects.showNotesWidgetModel,
 
-    funnelId: state.router.location.pathname.substring(9),
+    funnelId: state.router.location.pathname.includes('template') ?
+      state.router.location.pathname.substring(10) :
+      state.router.location.pathname.substring(9),
+
     svgList: state.projects.svgList,
 
     showAnalyticsBoolean: state.projects.showAnalyticsBoolean,
