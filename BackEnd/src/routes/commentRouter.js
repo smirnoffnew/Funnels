@@ -1,12 +1,9 @@
 const express = require('express');
 const commentRouter = express.Router();
-// const CommentController = require('../controllers/commentController');
-import CommentController from '../controllers/commentController'; 
+const commentController = require('../controllers/commentController.js'); 
 const enshureToken = require('../libs/enshureToken.js');
 const verifyToken = require('../libs/verifyToken.js');
 
-commentRouter.post('/', enshureToken, verifyToken, CommentController.createComment);
-commentRouter.get('/:funnelId', enshureToken, verifyToken, CommentController.getAllCommentsFunnel)
-commentRouter.get('/node', enshureToken, verifyToken, CommentController.getAllCommentsNodeOfFunnel)
-
+commentRouter.post('/', enshureToken, verifyToken, commentController.createComment);
+commentRouter.get('/:funnelId', enshureToken, verifyToken, commentController.getAllCommentsFunnel);
 module.exports = commentRouter;

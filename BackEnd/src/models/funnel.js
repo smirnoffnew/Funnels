@@ -36,7 +36,12 @@ const funnelScheme = new Schema({
     funnelNotes: {
         type:String,
         required: false
-    }
+    },
+    funnelComments:{
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Comments',
+        default:[]
+    },
 
 }, { versionKey: false });
 funnelScheme.plugin(uniqueValidator);

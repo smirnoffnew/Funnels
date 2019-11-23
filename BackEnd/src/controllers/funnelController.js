@@ -9,6 +9,7 @@ const Template = require('../models/template.js');
 const NodeCounter = require('../models/nodes')
 const svgArray = require('../libs/svgArray.js');
 const Profile = require('../models/profile');
+const Comments = require('../models/comments.js')
 
 const ColDataInfo = require('../models/col-data-info');
 
@@ -30,8 +31,6 @@ const {
 module.exports = {
 
     createFunnel: async function (req, res) {
-        let savedFunnel, funnelCounter;
-
         Profile
             .findOne({
                 _id: req.authData.profileId
@@ -39,77 +38,45 @@ module.exports = {
             .exec()
             .then(profile => {
                 _profile = profile
-                Project.findOne({
-                        _id: req.params.projectId
-                    })
-                    .exec()
-                    .then(result => {
-                        if (result.projectFunnels.length >= process.env.FUNNEL_LIMIT && _profile.limited == true) {
-                            res
-                                .status(400)
-                                .json({
-                                    error: "Funnel creation limit is reached!"
-                                })
-                        } else {
-                            new Funnel({
-                                    _id: new mongoose.Types.ObjectId(),
-                                    funnelAuthor: _profile._id,
-                                    funnelProject: req.params.projectId,
-                                    funnelName: req.body.funnelName,
-                                    funnelBody: req.body.funnelBody
-                                })
-                                .save()
-                                .then(funnel => {
-                                    savedFunnel = funnel;
-                                    Project
-                                        .findOneAndUpdate({
-                                            _id: req.params.projectId
-                                        }, {
-                                            $push: {
-                                                projectFunnels: funnel._id
-                                            }
-                                        }, {
-                                            new: true
-                                        })
-                                        .exec()
-                                        .then((result) => {
-                                            funnelCounter = result.projectFunnels.length;
-                                        })
-                                })
-                                .then(() => {
-                                    const limit = _profile.limited == true ? ` ${process.env.FUNNEL_LIMIT}` : null;
-                                    res
-                                        .status(200)
-                                        .json({
-                                            message: "Funnel added successfully!",
-                                            data: savedFunnel,
-                                            limit: limit
-                                        })
-                                        .catch(err => {
-                                            res
-                                                .status(400)
-                                                .json({
-                                                    error: err.message
-                                                });
-                                        });
-                                })
-                                .catch(err => res.status(400).json({
-                                    error: err.message
-                                }));
-                        }
-                    })
+                return Project.findOne({
+                    _id: req.params.projectId
+                }).exec()
             })
-
-
-            .catch(err => {
-                res
-                    .status(400)
-                    .json({
-                        error: err.message
-                    });
-            });
-
-
+            .then(result => {
+                if (result.projectFunnels.length >= process.env.FUNNEL_LIMIT && _profile.limited === true) {
+                    throw new Error("Funnel creation limit is reached!")
+                } else {
+                    return Funnel.create({
+                        funnelAuthor: _profile._id,
+                        funnelProject: req.params.projectId,
+                        funnelName: req.body.funnelName,
+                        funnelBody: req.body.funnelBody
+                    })
+                }
+            })
+            .then(funnel => {
+                Project.findOneAndUpdate({
+                    _id: req.params.projectId
+                }, {
+                    $push: {
+                        projectFunnels: funnel._id
+                    }
+                }, {
+                    new: true
+                }).exec()
+                return funnel;
+            })
+            .then(funnel => {
+                const limit = _profile.limited == true ? ` ${process.env.FUNNEL_LIMIT}` : null;
+                res.status(200).json({
+                    message: "Funnel added successfully!",
+                    data: funnel,
+                    limit: limit
+                })
+            })
+            .catch(err => res.status(400).json({
+                error: err.message
+            }))
     },
     getAllFunnelsInProject: async function (req, res) {
         Profile
@@ -161,13 +128,31 @@ module.exports = {
                     }
                 })
                 .exec()
-
             ])
-            .then(() => {
+            .then(result => {
+
+                Comments.deleteMany({
+                    funnelId: mongoose.Types.ObjectId(req.params.funnelId)
+                }).exec()
+
+
+                return fetch(`${process.env.FILE_SHARER}/background`, {
+                    method: 'post',
+                    body: JSON.stringify({
+                        folder: [result[0]._id.toString()]
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+            })
+            .then(result => result.json())
+            .then(result => {
                 res
                     .status(200)
                     .json({
-                        message: "Funnel deleted successfully!"
+                        message: "Funnel deleted successfully!",
+                        result
                     });
             })
             .catch(err => res.status(400).json({
@@ -318,7 +303,7 @@ module.exports = {
         infoObj
             .validate()
             .then(() => {
-                 funnelCollaborateData = {
+                funnelCollaborateData = {
                     funnelsId: [req.body.funnelsId],
                     permissions: req.body.permissions,
                     userId: req.authData.userId,
@@ -337,29 +322,31 @@ module.exports = {
             })
             .then(result => result.json())
             .then(result => funnelCollaborateData.info.logo = result.link)
-            .then(()=>{
+            .then(() => {
                 infoObj = funnelCollaborateData.info
                 return infoObj.save()
             })
-            .then(info=>{
+            .then(info => {
                 //data to create a token
                 let tokenData = {
                     userId: req.authData.userId,
                     profileId: req.authData.profileId,
                     info: info._id.toString()
                 }
-                
+
                 collaborateToken = jwt.sign(tokenData, process.env.SECRET_COLLABORATOR);
             })
 
-            .then(() => new Token({body: collaborateToken}).save())
+            .then(() => new Token({
+                body: collaborateToken
+            }).save())
             .then((token) => {
                 res.status(200).json({
-                        message: "Logo added to storage successfully...",
-                        link: `${Url}/add-collaborators-image?image=${funnelCollaborateData.info.logo}&add-collaborators-image=${token.body}&funnelId=${req.body.funnelsId}`,
-                        token: token.body,
-                        //funnelCollaborateData: funnelCollaborateData
-                    });
+                    message: "Logo added to storage successfully...",
+                    link: `${Url}/add-collaborators-image?image=${funnelCollaborateData.info.logo}&add-collaborators-image=${token.body}&funnelId=${req.body.funnelsId}`,
+                    token: token.body,
+                    //funnelCollaborateData: funnelCollaborateData
+                });
             })
             .then(() => {
                 try {
@@ -395,9 +382,11 @@ module.exports = {
                 }, process.env.SECRET, {
                     expiresIn: process.env.TOKEN_EXPIRES
                 });
-                return ColDataInfo.findOne({_id:authData.info}).exec()
+                return ColDataInfo.findOne({
+                    _id: authData.info
+                }).exec()
             })
-            .then(info=>{
+            .then(info => {
                 res.status(200).json({
                     message: signInToken,
                     info
