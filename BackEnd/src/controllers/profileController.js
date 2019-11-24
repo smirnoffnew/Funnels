@@ -182,13 +182,10 @@ module.exports = {
     },
 
     createUrlForPartner: async (req, res) => {
-
-        const partnerProfileId = req.authData.profileId;
-
         new PartnerToken({
                 ownerToken: req.headers.authorization,
                 permissions: req.body.permissions,
-                ownerProfileId: partnerProfileId
+                ownerProfileId: req.authData.profileId
             })
             .save()
             .then(partnerToken => {
@@ -214,25 +211,33 @@ module.exports = {
             });
 
     },
-    
+
     createPartnerByLink: async function (req, res) {
         const partnerProfileId = req.authData.profileId;
         const partnerTokenId = req.params.partnerTokenId;
         let existPartnerToken;
         let profile;
+        PartnerToken.findOne({
+                _id: mongoose.Types.ObjectId(partnerTokenId)
+            })
+            .then(partnerToken => {
+                if (partnerProfileId === partnerToken.ownerProfileId) {
+                    throw new Error('You can not add new user yourself.')
+                }
+            })
+            .then(() => {
+                return Profile
+                    .findById(partnerProfileId)
 
-        Profile
-            .findById(partnerProfileId)
+                    .orFail(() => new Error('error, Your profile not found'))
 
-            .orFail(() => new Error('error, Your profile not found'))
-
-            .then(() => PartnerToken
-                .findOne({
-                    _id: mongoose.Types.ObjectId(partnerTokenId)
-                })
-                .orFail(() => new Error('error, Partner token not found'))
-            )
-
+                    .then(() => PartnerToken
+                        .findOne({
+                            _id: mongoose.Types.ObjectId(partnerTokenId)
+                        })
+                        .orFail(() => new Error('error, Partner token not found'))
+                    )
+            })
             .then(partnerToken => {
                 existPartnerToken = partnerToken;
                 return Profile
@@ -241,24 +246,19 @@ module.exports = {
                     })
                     .orFail(() => new Error('error, Owner profile not found'))
             })
-
             .then(ownerProfile => {
-
                 const newPartner = new Partner({
                     token: existPartnerToken.ownerToken,
                     permissions: existPartnerToken.permissions,
                     partnerProfile: mongoose.Types.ObjectId(partnerProfileId)
                 });
-
                 const isThisPartnerExist = ownerProfile.myPartners.findIndex(item => item.partnerProfile.toString() === partnerProfileId);
-
                 if (isThisPartnerExist === -1) {
                     ownerProfile.myPartners = ownerProfile.myPartners ? ownerProfile.myPartners : [];
                     ownerProfile.myPartners.push(newPartner);
                 } else {
                     throw new Error('error, you are already added like a partner')
                 }
-
                 return ownerProfile.save()
             })
 

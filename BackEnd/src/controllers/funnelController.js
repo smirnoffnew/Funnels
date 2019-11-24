@@ -160,7 +160,7 @@ module.exports = {
             }));
     },
     createUrlForCollaborate: async function (req, res) {
-        Profile
+        Profile 
             .findOne({
                 _id: req.authData.profileId
             })
@@ -169,7 +169,8 @@ module.exports = {
                 _profile = profile;
                 const funnelColaborateData = {
                     funnelsId: req.body.funnelsId,
-                    permissions: req.body.permissions
+                    permissions: req.body.permissions,
+                    ownerProfileId: profile._id
                 };
                 const collaborateToken = jwt.sign(funnelColaborateData, process.env.SECRET_COLLABORATOR);
                 return new Token({
