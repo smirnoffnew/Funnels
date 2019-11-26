@@ -5,7 +5,6 @@ const Profile = require('../models/profile.js');
 const User = require('../models/user.js');
 const Partner = require('../models/partner.js');
 const PartnerToken = require('../models/partnerToken.js');
-const activeCampaignApi = require('activecampaign-api');
 
 
 const fetch = require('node-fetch');
