@@ -151,7 +151,7 @@ module.exports = {
                     });
                     return profile
                     } else {
-                        throw new Error('Profile does not exist')
+                        throw new Error('profile not found or password is wrong')
                     }
                 })
                 .then(profile => {
