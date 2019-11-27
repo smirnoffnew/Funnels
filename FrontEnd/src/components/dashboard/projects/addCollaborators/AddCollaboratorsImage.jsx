@@ -98,6 +98,33 @@ class AddCollaboratorsImage extends React.Component {
     const { referrer } = this.state;
     if (referrer) return <Redirect to={referrer} />;
 
+
+    if (this.state.tittle === 'The Following Funnel Has Been Shared with You') {
+      return (
+        <div className='add-collaborators-img-body'>
+
+          <BodyWidget app={app} work={this.props} addCollaborators tokenCollaborator={this.state.token} />
+
+          <div className='add-collaborators-img-right-panel-wrapper'>
+            <div className='add-collaborators-img-right-panel'>
+              <img className='signin-logo' style={{marginLeft: 0}} src={logo} alt='logo' />
+              <p className='add-collaborators-img-text-first'>The Following Funnel Has <br /> Been Shared with You</p>
+              <CollaborateSVG />
+              <p className='add-collaborators-img-text-second'
+                style={{
+                  paddingTop: 50,
+                  opacity: '100%'
+                }}
+              >Click below to add to this funnel to <br /> your dashboard</p>
+              <button className="btn btn-1" style={{
+                width: 220
+              }} onClick={() => this.redirectToAddCollaborators()}>Add to My Dashboard</button>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
     return (
       <div className='add-collaborators-img-body'>
 
