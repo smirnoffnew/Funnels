@@ -21,7 +21,7 @@ let date = (today.getMonth() + 1) + '/' + today.getDate() + '/' + today.getFullY
 
 
 /**signup variables */
-let g_profile, g_token;
+let g_profile;
 
 /**signin variables */
 let g_user;
@@ -122,10 +122,7 @@ module.exports = {
     signIn: function (req, res) {
         const emailFromUser = req.body.email.toLowerCase()
         const checkEmailFromUser = validateEmail(emailFromUser);
-
         let _token;
-        let _profile;
-
         if (checkEmailFromUser) {
             User.findOne({
                     email: emailFromUser
@@ -145,14 +142,17 @@ module.exports = {
                     }).exec()
                 })
                 .then(profile => {
+                    if (profile) {
                     _token = jwt.sign({
                         profileId: profile._id.toString(),
                         userId: g_user._id
                     }, process.env.SECRET, {
                         expiresIn: process.env.TOKEN_EXPIRES
                     });
-                    _profile = profile;
                     return profile
+                    } else {
+                        throw new Error('Profile does not exist')
+                    }
                 })
                 .then(profile => {
                     let token = _token;
@@ -167,8 +167,9 @@ module.exports = {
                         },
                         token: `Bearer ${token}`,
                     })
+                    return profile
                 })
-                .then(() => {
+                .then(profile => {
                     try {
                         let options = {
                             headers,
@@ -176,7 +177,7 @@ module.exports = {
                             method,
                             body: JSON.stringify({
                                 "contact": {
-                                    "email": _profile.email,
+                                    "email": profile.email,
                                 }
                             })
                         };
