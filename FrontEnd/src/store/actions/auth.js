@@ -203,7 +203,9 @@ export function validationUser(email) {
     API.post(`email-validation`, {
       'email': email,
     })
-      .then(res => res.json())
+      .then(res => {
+        dispatch(emailValidError(res.data.message))
+      })
       .catch(function (error) {
         if (error.response) {
           dispatch(emailValidError(error.response.data.error))
