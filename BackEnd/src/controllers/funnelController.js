@@ -332,6 +332,7 @@ module.exports = {
                 let tokenData = {
                     userId: req.authData.userId,
                     profileId: req.authData.profileId,
+                    ownerProfileId: req.authData.profileId,
                     funnelsId: [req.body.funnelsId],
                     permissions: req.body.permissions,
                     info: info._id.toString()
