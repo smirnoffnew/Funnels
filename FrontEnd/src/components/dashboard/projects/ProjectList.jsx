@@ -10,7 +10,7 @@ import '../index.css'
 import uuid from 'uuid'
 
 class ProjectList extends React.Component {
-  componentDidMount() {
+  componentDidMount = () => {
     this.props.getAllProjects();
 
     if (process.env.REACT_APP_BUILD === 'prod') {

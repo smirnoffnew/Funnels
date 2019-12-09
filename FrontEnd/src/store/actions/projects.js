@@ -10,7 +10,7 @@ import {
 } from './types/index';
 import API_URL from '../../config'
 import { API, requestPromise } from './instance'
-import { serializationInWidget } from '../../components/diagram/storm/custom/funcsForCustomNodeWidget';
+import uuid from 'uuid'
 
 
 export function getAllProjects() {
@@ -31,7 +31,6 @@ export function getAllProjects() {
       })
       .catch(function (error) {
         if (error.response) {
-          console.log(error.response)
           if (error.response.status === 403) {
             localStorage.clear();
             dispatch({ type: 'UN_AUTH_USER' });
@@ -75,19 +74,32 @@ export function getAllTemplates() {
 export function deleteProjectByUserId(id) {
   return function (dispatch) {
     API.delete(`project/${id}`)
-      .then(() => {
+      .then((response) => {
         dispatch({
           type: DELETE_PROJECT,
           payload: id
         });
         dispatch({ type: DELETE_PROJECT_SUCCESS });
+        dispatch({
+          type: "CREATE_TOSTER",
+          payload: {
+            data: response.data.message,
+            id: uuid(),
+          }
+        });
       })
       .catch(function (error) {
         if (error.response) {
-          console.log(error.response)
           dispatch({
             type: DELETE_PROJECT_FAILURE,
             payload: error.response.data.error
+          });
+          dispatch({
+            type: "CREATE_TOSTER",
+            payload: {
+              data: error.response.data.error,
+              id: uuid(),
+            }
           });
         }
       });
@@ -160,7 +172,7 @@ export function getAllFunnels(projectId) {
 export function deleteFunnel(project_id, funnel_id) {
   return function (dispatch) {
     API.delete(`funnel/${project_id}/${funnel_id}`)
-      .then(() => {
+      .then((response) => {
         dispatch({
           type: 'DELETE_FUNNEL',
           payload: {
@@ -169,14 +181,26 @@ export function deleteFunnel(project_id, funnel_id) {
           }
         });
         dispatch({ type: 'DELETE_FUNNEL_SUCCESS' });
+        dispatch({
+          type: "CREATE_TOSTER",
+          payload: {
+            data: response.data.message,
+            id: uuid(),
+          }
+        });
       })
       .catch(function (error) {
         if (error.response) {
-          console.log(error.response)
-          alert(error.response.data.error)
           dispatch({
             type: 'DELETE_FUNNEL_FAILURE',
             payload: error.response.data.error
+          });
+          dispatch({
+            type: "CREATE_TOSTER",
+            payload: {
+              data: error.response.data.error,
+              id: uuid(),
+            }
           });
         }
       });
@@ -186,20 +210,32 @@ export function deleteFunnel(project_id, funnel_id) {
 export function deleteTemplate(template_id) {
   return function (dispatch) {
     API.delete(`template/${template_id}`)
-      .then(() => {
+      .then((response) => {
         dispatch({
           type: 'DELETE_TEMPLATE',
           payload: template_id,
         });
         dispatch({ type: 'DELETE_TEMPLATE_SUCCESS' });
+        dispatch({
+          type: "CREATE_TOSTER",
+          payload: {
+            data: response.data.message,
+            id: uuid(),
+          }
+        });
       })
       .catch(function (error) {
         if (error.response) {
-          console.log(error.response)
-          alert(error.response.data.error)
           dispatch({
             type: 'DELETE_TEMPLATE_FAILURE',
             payload: error.response.data.error
+          });
+          dispatch({
+            type: "CREATE_TOSTER",
+            payload: {
+              data: error.response.data.error,
+              id: uuid(),
+            }
           });
         }
       });
@@ -217,13 +253,17 @@ export function createLink(funnelsId, permissions) {
           type: 'CREATE_LINK',
           payload: response.data.data
         })
-        console.log("response", response.data.data)
-          ;
         dispatch({ type: 'CREATE_LINK_SUCCESS' });
+        dispatch({
+          type: "CREATE_TOSTER",
+          payload: {
+            data: response.data.message,
+            id: uuid(),
+          }
+        });
       })
       .catch(function (error) {
         if (error.response) {
-          console.log(error.response)
           dispatch({
             type: 'CREATE_LINK_FAILURE',
             payload: error.response.data.error

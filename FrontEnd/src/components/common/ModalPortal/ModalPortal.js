@@ -14,6 +14,7 @@ class ModalPortal extends React.Component {
     this.el.style.flexDirection = 'column-reverse';
     this.el.style.bottom = '3%';
     this.el.style.right = '3%';
+    this.el.style.alignItems = 'flex-end';
 
     this.portal = document.getElementById('app');
   }

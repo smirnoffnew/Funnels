@@ -6,6 +6,7 @@ import API_URL from "../../../../../config";
 import { ReactComponent as ArrowSelectSVG } from "../../../../../assets/arrow-up.svg";
 import "./SettingsNodeRightPannel.css"
 import get from 'lodash/get'
+import uuid from 'uuid'
 
 const FINISHED = "FINISHED";
 const UNDER_DEVELOPMENT = "UNDER DEVELOPMENT";
@@ -312,6 +313,13 @@ export default class SettingsNodeRightPanel extends React.Component {
         this.props.work.dispatch({
           type: 'CREATE_UTM_LINK_MESSAGE',
           payload: response.message
+        });
+        this.props.work.dispatch({
+          type: "CREATE_TOSTER",
+          payload: {
+            data: response.message,
+            id: uuid(),
+          }
         });
         this.setState({
           url: response.url,

@@ -89,7 +89,8 @@ class Header extends Component {
         });
         this.props.dispatch({ type: "CLEAR_CREATE_PROJECT_ERROR" });
         this.hideModal();
-        this.props.dispatch(push("/projects"));
+
+        this.props.pathname !== '/projects' && this.props.dispatch(push("/projects"));
 
         this.props.dispatch({
           type: "CREATE_TOSTER",
@@ -134,23 +135,29 @@ class Header extends Component {
         });
         this.props.dispatch({ type: "CLEAR_CREATE_FUNNEL_ERROR" });
         this.hideModalFunnel();
+
+        this.props.dispatch({
+          type: "CREATE_TOSTER",
+          payload: {
+            data: response.message,
+            id: uuid(),
+          }
+        });
       })
       .catch(error => {
         this.props.dispatch({
           type: "CREATE_FUNNEL_FAILURE",
           payload: error
         });
+        this.props.dispatch({
+          type: "CREATE_TOSTER",
+          payload: {
+            data: error,
+            id: uuid(),
+          }
+        });
       });
   };
-
-  static getDerivedStateFromProps(nextProps) {
-    // console.log(nextProps)
-    if (nextProps.projects)
-      return {
-        projectsFromNextProps: nextProps.projects
-      };
-    else return null;
-  }
 
   filterList = e => {
     this.setState(
@@ -159,8 +166,8 @@ class Header extends Component {
       },
       () => {
         let updatedList =
-          this.state.projectsFromNextProps &&
-          this.state.projectsFromNextProps.filter(item => {
+          this.props.projects &&
+          this.props.projects.filter(item => {
             return (
               item.projectName
                 .toLowerCase()
