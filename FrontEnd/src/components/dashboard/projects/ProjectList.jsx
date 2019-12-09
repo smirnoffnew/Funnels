@@ -7,6 +7,7 @@ import { createProjectWithPromisefication } from "../../../store/actions/project
 import Modal from "../../common/Modal/Modal";
 import { ReactComponent as CreateProjectSVG } from "../../../assets/new_project.svg";
 import '../index.css'
+import uuid from 'uuid'
 
 class ProjectList extends React.Component {
   componentDidMount() {
@@ -18,7 +19,6 @@ class ProjectList extends React.Component {
       script.async = true;
       document.body.appendChild(script);
     }
-
   }
 
   state = {
@@ -49,11 +49,26 @@ class ProjectList extends React.Component {
         });
         this.props.dispatch({ type: 'CLEAR_CREATE_PROJECT_ERROR' });
         this.hideModal();
+
+        this.props.dispatch({
+          type: "CREATE_TOSTER",
+          payload: {
+            data: response.message,
+            id: uuid(),
+          }
+        });
       })
       .catch(error => {
         this.props.dispatch({
           type: 'CREATE_PROJECT_FAILURE',
           payload: error
+        });
+        this.props.dispatch({
+          type: "CREATE_TOSTER",
+          payload: {
+            data: error,
+            id: uuid(),
+          }
         });
       });
   };

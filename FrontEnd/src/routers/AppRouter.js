@@ -21,6 +21,7 @@ import Diagram from '../components/diagram/storm';
 import { PrivateRouteAddPartner } from '../components/PrivateRouteAddPartner';
 import AddPartner from '../components/dashboard/projects/addCollaborators/AddPartner';
 import NotFound from './NotFound'
+import ModalPortal from '../components/common/ModalPortal/ModalPortal';
 
 
 const AppRouter = () => {
@@ -55,9 +56,13 @@ const AppRouter = () => {
         }} />
       }
 
+      <ModalPortal />
+
       {
         !localStorage.getItem('token2') ?
           <>
+
+
             <Switch>
               <Route path="/sign-in" component={Signin} />
               <Route path="/sign-up" component={Signup} />

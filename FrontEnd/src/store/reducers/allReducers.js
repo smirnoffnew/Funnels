@@ -6,6 +6,7 @@ import commentsReducer from './commentsReducer';
 import conversionReducer from './conversionReducer';
 import usersReducer from './usersReducer'
 import undoable, { includeAction } from 'redux-undo';
+import tosterReducer from './tosterReducer';
 
 const allReducers = ({
     auth: authReducer,
@@ -22,6 +23,7 @@ const allReducers = ({
     comments: commentsReducer,
     conversion: conversionReducer,
     users: usersReducer,
+    toster: tosterReducer,
 });
 
 export default allReducers

@@ -16,6 +16,7 @@ import { ReactComponent as QuestionSVG } from "../../../assets/question-mark.svg
 import "./header.css";
 import { getAllOwners } from "../../../store/actions/users";
 import HeaderNavigationBox from "./HeaderNavigationBox";
+import uuid from 'uuid'
 
 class Header extends Component {
   state = {
@@ -37,7 +38,10 @@ class Header extends Component {
   };
 
   hideModal = () => {
-    this.setState({ show: false, projectName: "" });
+    this.setState({
+      show: false,
+      projectName: ""
+    });
     this.props.dispatch({ type: "CLEAR_CREATE_PROJECT_ERROR" });
   };
 
@@ -86,11 +90,26 @@ class Header extends Component {
         this.props.dispatch({ type: "CLEAR_CREATE_PROJECT_ERROR" });
         this.hideModal();
         this.props.dispatch(push("/projects"));
+
+        this.props.dispatch({
+          type: "CREATE_TOSTER",
+          payload: {
+            data: response.message,
+            id: uuid(),
+          }
+        });
       })
       .catch(error => {
         this.props.dispatch({
           type: "CREATE_PROJECT_FAILURE",
           payload: error
+        });
+        this.props.dispatch({
+          type: "CREATE_TOSTER",
+          payload: {
+            data: error,
+            id: uuid(),
+          }
         });
       });
   };
@@ -219,7 +238,7 @@ class Header extends Component {
                 type="checkbox"
                 checked={this.state.showHeaderNavigationBox}
                 onClick={this.changeHeaderNavigationBox}
-                onChange={() => {}}
+                onChange={() => { }}
               />
               <label htmlFor="burger-check" className="burger" />
               <nav id="navigation1" className="navigation">
@@ -227,7 +246,6 @@ class Header extends Component {
               </nav>
             </div>
           </ClickOutside>
-
 
           <div className="logo">{this.props.title}</div>
           <nav>

@@ -10,6 +10,7 @@ import FunnelItemContainer from './FunnelItemContainer.jsx'
 import Modal from '../../common/Modal/Modal'
 import { ReactComponent as CreateFunnelSVG } from '../../../assets/new_funnel.svg';
 import '../index.css'
+import uuid from 'uuid'
 
 class FunnelList extends React.Component {
   componentDidMount() {
@@ -48,11 +49,25 @@ class FunnelList extends React.Component {
         });
         this.props.dispatch({ type: 'CLEAR_CREATE_FUNNEL_ERROR' });
         this.hideModal();
+        this.props.dispatch({
+          type: "CREATE_TOSTER",
+          payload: {
+            data: response.message,
+            id: uuid(),
+          }
+        });
       })
       .catch(error => {
         this.props.dispatch({
           type: 'CREATE_FUNNEL_FAILURE',
           payload: error
+        });
+        this.props.dispatch({
+          type: "CREATE_TOSTER",
+          payload: {
+            data: error,
+            id: uuid(),
+          }
         });
       });
   }
