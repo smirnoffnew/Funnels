@@ -61,6 +61,14 @@
   box-shadow: 0 0 28px rgba(0,0,0,0.05);
   background-color: #ffffff;
   padding: 8px;
+
+  animation: spin-tray-wrapper 0.5s;
+  overflow-x: hidden;
+}
+
+@keyframes spin-tray-wrapper {
+  0% { width: 0px; opacity: 0; }
+  100% { width: 270px; opacity: 1; }
 }
 
 .body .content #tray {
@@ -68,10 +76,7 @@
   flex-grow: 0;
   flex-shrink: 0;
   height: 337px;
-  /* position: absolute; */
-  /* top: 65px; */
   z-index: 100;
-  /* left: 45px; */
   padding: 0px;
   display: flex;
   flex-wrap: wrap;
@@ -82,7 +87,6 @@
   border-top: 1px solid #dce5ec;
   padding-top: 10px;
   align-content: flex-start;
-  /* justify-content: center; */
 }
 
 .body .content #tray::-webkit-scrollbar {

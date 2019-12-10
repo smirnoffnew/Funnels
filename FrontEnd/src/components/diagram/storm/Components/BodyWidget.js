@@ -698,9 +698,9 @@ export default class BodyWidget extends React.Component {
         <SettingsNodeRightPanel work={this.props.work} app={this.props.app} />
         <NotesNodeRightPanel work={this.props.work} app={this.props.app} />
 
-        <div className="message-diagram">
+        {/* <div className="message-diagram">
           {this.props.work.message && this.props.work.message}
-        </div>
+        </div> */}
         <div className="body">
           <div className="header">
             <SaveBeforeExitModal work={this.props.work} app={this.props.app} />

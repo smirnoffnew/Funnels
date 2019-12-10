@@ -21,7 +21,16 @@
   flex-direction: column;
   box-shadow: -1.873px 4.636px 7px rgba(0,0,0,0.1);
   background-color: #ffffff;
+
+  animation: spin-modal-node-widget-main 0.5s;
+  overflow-x: hidden;
 }
+
+@keyframes spin-modal-node-widget-main {
+  0% { width: 0px; opacity: 0; }
+  100% { width: 380px; opacity: 1; }
+}
+
 
 .test-modal{
   width: 100% - 300px;

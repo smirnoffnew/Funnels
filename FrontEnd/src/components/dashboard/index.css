@@ -214,12 +214,13 @@
   border-radius: 5px;
   margin: 20px;
   border: 1px solid #BFCFE9;
+  animation: spin-project-wrapper 0.4s;
+}
 
-  /* opacity: 0; */
-  /* transform: scale(.8); */
-  /* transition-property: opacity,transform,-webkit-transform; */
-  transition-duration: .5s;
-  transition-timing-function: ease;
+
+@keyframes spin-project-wrapper {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 .options-project{

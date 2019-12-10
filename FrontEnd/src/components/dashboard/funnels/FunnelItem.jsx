@@ -3,8 +3,6 @@ import { NavLink } from "react-router-dom";
 import ClickOutside from '../../common/ClickOutside'
 import Modal from '../../common/Modal/Modal'
 import '../index.css'
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 
 
 class FunnelItem extends React.Component {
@@ -36,12 +34,6 @@ class FunnelItem extends React.Component {
     this.hideModal()
   }
 
-  componentDidMount = () => {
-    AOS.init({
-      duration : 150
-    })
-  }
-
   render() {
     const {
       _id,
@@ -60,8 +52,6 @@ class FunnelItem extends React.Component {
               background: backgroundImg && backgroundImg.length > 0 ? `url(${'http://' + backgroundImg}) no-repeat center` : '#212939',
               backgroundSize: '220px 130px'
             }}
-
-            data-aos='fade-up'
           >
             <NavLink
               className='view-funnels'
@@ -74,10 +64,10 @@ class FunnelItem extends React.Component {
             </NavLink>
           </div>
 
-          <div className='project' data-aos='fade-up'>
-            <p className="project-name" data-aos='fade-up'>{funnelName}</p>
-            {/* <br /> */}
-            {/* {funnels} funnels */}
+          <div className='project' 
+          >
+            <p className="project-name" 
+            >{funnelName}</p>
           </div>
 
 

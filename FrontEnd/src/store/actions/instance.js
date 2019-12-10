@@ -29,6 +29,47 @@ API.interceptors.request.use(
   }
 );
 
+API.interceptors.response.use(
+  response => successHandler(response),
+  error => errorHandler(error)
+)
+
+const isHandlerEnabled = (config={}) => {
+  return config.hasOwnProperty('handlerEnabled') && !config.handlerEnabled ? 
+    false : true
+}
+
+
+const errorHandler = (error) => {
+  if (isHandlerEnabled(error.config)) {
+    // Handle errors
+  }
+  return Promise.reject({ ...error })
+}
+
+const successHandler = (response) => {
+  if (isHandlerEnabled(response.config)) {
+
+    if(response.data.message) {
+      console.log(response.data.message)
+    }
+  }
+  return response
+}
+
+
+
+
+// this.props.dispatch({
+//           type: "CREATE_TOSTER",
+//           payload: {
+//             data: response.message,
+//             id: uuid(),
+//           }
+//         });
+
+
+
 export const requestPromise = req => dispatch => (
   new Promise((resolve, reject) => {
     req.then(response => {

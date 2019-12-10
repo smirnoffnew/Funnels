@@ -192,7 +192,7 @@ class Header extends Component {
     this.searchRef.style.animation = "widthAnimationLeave 0.7s";
     setTimeout(() => {
       this.searchRef.style.display = "none";
-    }, 700);
+    }, 500);
   };
 
   changeHeaderNavigationBox = () => {

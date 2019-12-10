@@ -244,6 +244,10 @@ export function deleteTemplate(template_id) {
 
 export function createLink(funnelsId, permissions) {
   return function (dispatch) {
+    dispatch({
+      type: 'CREATE_LINK_FATCHING',
+      payload: true
+    })
     API.post(`funnel/url`, {
       'funnelsId': funnelsId,
       'permissions': permissions,
@@ -253,11 +257,15 @@ export function createLink(funnelsId, permissions) {
           type: 'CREATE_LINK',
           payload: response.data.data
         })
+        dispatch({
+          type: 'CREATE_LINK_FATCHING',
+          payload: false
+        })
         dispatch({ type: 'CREATE_LINK_SUCCESS' });
         dispatch({
           type: "CREATE_TOSTER",
           payload: {
-            data: response.data.message,
+            data: 'Successful link creation...',
             id: uuid(),
           }
         });
@@ -267,6 +275,13 @@ export function createLink(funnelsId, permissions) {
           dispatch({
             type: 'CREATE_LINK_FAILURE',
             payload: error.response.data.error
+          });
+          dispatch({
+            type: "CREATE_TOSTER",
+            payload: {
+              data: 'Link creation failed...',
+              id: uuid(),
+            }
           });
         }
       });
@@ -412,6 +427,13 @@ export function saveDiagramThenCreateTemplate(funnelId, diagramObj, image, templ
   bodyFormData.append('funnelBody', JSON.stringify(diagramObj));
 
   return function (dispatch) {
+    dispatch({
+      type: "CREATE_TOSTER",
+      payload: {
+        data: 'Start saving funnel...',
+        id: uuid(),
+      }
+    });
     axios({
       method: 'patch',
       url: `${API_URL}/funnel/diagram/${funnelId}`,
@@ -436,35 +458,59 @@ export function saveDiagramThenCreateTemplate(funnelId, diagramObj, image, templ
             res,
           }
         });
+
         dispatch({
-          type: 'SAVE_DIAGRAM_SUCCESS',
-          payload: response.data.message
+          type: "CREATE_TOSTER",
+          payload: {
+            data: response.data.message,
+            id: uuid(),
+          }
         });
 
-        setTimeout(() => {
-          dispatch({ type: 'SAVE_DIAGRAM_SUCCESS_RESET' });
-        }, 50)
+        // dispatch({
+        //   type: 'SAVE_DIAGRAM_SUCCESS',
+        //   payload: response.data.message
+        // });
+
+        // setTimeout(() => {
+        //   dispatch({ type: 'SAVE_DIAGRAM_SUCCESS_RESET' });
+        // }, 50)
 
         return API.post(`template/${funnelId}`, { 'templateName': templateName })
       })
 
       .then(response => {
         // console.log('createTemplate: ', response.data)
+        // dispatch({
+        //   type: 'CREATE_TEMPLATE_SUCCESS',
+        //   payload: response.data.message
+        // });
+
         dispatch({
-          type: 'CREATE_TEMPLATE_SUCCESS',
-          payload: response.data.message
+          type: "CREATE_TOSTER",
+          payload: {
+            data: response.data.message,
+            id: uuid(),
+          }
         });
 
-        setTimeout(() => {
-          dispatch({ type: 'CREATE_TEMPLATE_RESET' });
-        }, 2000)
+        // setTimeout(() => {
+        //   dispatch({ type: 'CREATE_TEMPLATE_RESET' });
+        // }, 2000)
       })
       .catch(function (error) {
         if (error.response) {
-          console.log(error.response)
+          // console.log(error.response)
           dispatch({
             type: 'CREATE_DIAGRAM_FAILURE',
             payload: error.response.data.error
+          });
+          dispatch({
+            type: "CREATE_TOSTER",
+            payload: {
+              data: error.response.data.error,
+              id: uuid(),
+            }
           });
         }
       });
@@ -476,6 +522,13 @@ export const saveDiagramThenExit = (funnelId, diagramObj, image) => dispatch => 
   let bodyFormData = new FormData();
   bodyFormData.append('funnelBackground', image);
   bodyFormData.append('funnelBody', JSON.stringify(diagramObj));
+    dispatch({
+      type: "CREATE_TOSTER",
+      payload: {
+        data: 'Start saving funnel...',
+        id: uuid(),
+      }
+    });
   axios({
     method: 'patch',
     url: `${API_URL}/funnel/diagram/${funnelId}`,
@@ -500,13 +553,22 @@ export const saveDiagramThenExit = (funnelId, diagramObj, image) => dispatch => 
           res,
         }
       });
-      dispatch({
-        type: 'SAVE_DIAGRAM_SUCCESS',
-        payload: response.data.message
-      });
-      setTimeout(() => {
-        dispatch({ type: 'SAVE_DIAGRAM_SUCCESS_RESET' });
-      }, 50)
+
+       dispatch({
+          type: "CREATE_TOSTER",
+          payload: {
+            data: response.data.message,
+            id: uuid(),
+          }
+        });
+
+      // dispatch({
+      //   type: 'SAVE_DIAGRAM_SUCCESS',
+      //   payload: response.data.message
+      // });
+      // setTimeout(() => {
+      //   dispatch({ type: 'SAVE_DIAGRAM_SUCCESS_RESET' });
+      // }, 50)
       setTimeout(() => {
         dispatch(push('/projects'));
       }, 1000)
@@ -514,10 +576,17 @@ export const saveDiagramThenExit = (funnelId, diagramObj, image) => dispatch => 
     })
     .catch(function (error) {
       if (error.response) {
-        console.log(error.response)
+        // console.log(error.response)
         dispatch({
           type: 'CREATE_DIAGRAM_FAILURE',
           payload: error.response.data.error
+        });
+         dispatch({
+          type: "CREATE_TOSTER",
+          payload: {
+            data: error.response.data.error,
+            id: uuid(),
+          }
         });
       }
     });
@@ -526,11 +595,22 @@ export const saveDiagramThenExit = (funnelId, diagramObj, image) => dispatch => 
 
 
 export function saveDiagram(funnelId, diagramObj, image) {
+
+
+
   const token = JSON.parse(localStorage.getItem('token'));
   let bodyFormData = new FormData();
   bodyFormData.append('funnelBackground', image);
   bodyFormData.append('funnelBody', JSON.stringify(diagramObj));
   return function (dispatch) {
+    dispatch({
+      type: "CREATE_TOSTER",
+      payload: {
+        data: 'Start saving funnel...',
+        id: uuid(),
+      }
+    });
+
     axios({
       method: 'patch',
       url: `${API_URL}/funnel/diagram/${funnelId}`,
@@ -554,21 +634,36 @@ export function saveDiagram(funnelId, diagramObj, image) {
             res,
           }
         });
+        // dispatch({
+        //   type: 'SAVE_DIAGRAM_SUCCESS',
+        //   payload: response.data.message
+        // });
+        // setTimeout(() => {
+        //   dispatch({ type: 'SAVE_DIAGRAM_SUCCESS_RESET' });
+        // }, 50)
+
         dispatch({
-          type: 'SAVE_DIAGRAM_SUCCESS',
-          payload: response.data.message
+          type: "CREATE_TOSTER",
+          payload: {
+            data: response.data.message,
+            id: uuid(),
+          }
         });
-        setTimeout(() => {
-          dispatch({ type: 'SAVE_DIAGRAM_SUCCESS_RESET' });
-        }, 50)
       })
       .catch(function (error) {
         if (error.response) {
-          console.log(error.response)
+          // console.log(error.response)
           dispatch({
             type: 'CREATE_DIAGRAM_FAILURE',
             payload: error.response.data.error
           });
+        dispatch({
+          type: "CREATE_TOSTER",
+          payload: {
+            data: error.response.data.error,
+            id: uuid(),
+          }
+        });
         }
       });
   }
@@ -597,14 +692,19 @@ export function saveTemplate(funnelId, diagramObj) {
           }
         });
         /************************************/
-        dispatch({
-          type: 'SAVE_DIAGRAM_SUCCESS',
-          payload: response.data.message
-        });
+        // dispatch({
+        //   type: 'SAVE_DIAGRAM_SUCCESS',
+        //   payload: response.data.message
+        // });
 
-        setTimeout(() => {
-          dispatch({ type: 'SAVE_DIAGRAM_SUCCESS_RESET' });
-        }, 50)
+        // setTimeout(() => {
+        //   dispatch({ type: 'SAVE_DIAGRAM_SUCCESS_RESET' });
+        // }, 50)
+
+         dispatch({
+            type: 'CREATE_DIAGRAM_FAILURE',
+            payload: response.data.message
+          });
 
       })
       .catch(function (error) {
@@ -877,43 +977,6 @@ export function removeCollaborator(funnelId, profileId) {
   }
 }
 
-
-
-
-
-
-
-
-// export function sendImageToCollaborate(funnelId, info) {
-//   return function (dispatch) {
-//     API.post(`/funnel/diagram/screenshot`, {
-//       'info': {
-//         logo: info.imageBase64,
-//         title: info.tittle,
-//         text: info.text,
-//         buttonText: info.buttonText,
-//         buttonLink: info.buttonLink,
-//       },
-//       'funnelId': funnelId
-//     })
-//       .then(response => {
-//         dispatch({
-//           type: 'SEND_IMAGE_TO_COLLABORATE_LINK',
-//           payload: response.data.link
-//         });
-//       })
-//       .catch(function (error) {
-//         if (error.response) {
-//           console.log(error.response)
-//           dispatch({
-//             type: 'SEND_IMAGE_TO_COLLABORATE_LINK_FAILURE',
-//             payload: error.response.data.error
-//           });
-//         }
-//       });
-//   }
-// }
-
 export function sendImageToCollaborate(funnelId, info) {
   const token = JSON.parse(localStorage.getItem('token'));
   let bodyFormData = new FormData();
@@ -928,6 +991,10 @@ export function sendImageToCollaborate(funnelId, info) {
   bodyFormData.append('funnelsId', funnelId);
   bodyFormData.append('permissions', 'View Only');
   return function (dispatch) {
+    dispatch({
+      type: 'SEND_IMAGE_TO_COLLABORATE_LINK_FATCHING',
+      payload: true
+    });
     axios({
       method: 'post',
       url: `${API_URL}/funnel/diagram/screenshot`,
@@ -942,6 +1009,17 @@ export function sendImageToCollaborate(funnelId, info) {
           dispatch({
             type: 'SEND_IMAGE_TO_COLLABORATE_LINK',
             payload: response.data.link
+          });
+          dispatch({
+            type: 'SEND_IMAGE_TO_COLLABORATE_LINK_FATCHING',
+            payload: false
+          });
+          dispatch({
+            type: "CREATE_TOSTER",
+            payload: {
+              data: 'Successful link creation...',
+              id: uuid(),
+            }
           });
         }
       })

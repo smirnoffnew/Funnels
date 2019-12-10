@@ -16,8 +16,6 @@ import {
   resetAllCollaboratorsForFunnels
 } from "../../../store/actions/collaborations";
 import "../index.css";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 
 class ProjectItem extends React.Component {
   state = {
@@ -26,7 +24,8 @@ class ProjectItem extends React.Component {
     showCollaborate: false,
     projectName: "",
     selectedFunnelsList: [],
-    permission: "View Only"
+    permission: "View Only",
+    createLinkDisabled: false,
   };
 
   showModal = () => {
@@ -143,12 +142,6 @@ class ProjectItem extends React.Component {
     }, 1500);
   };
 
-  componentDidMount = () => {
-    AOS.init({
-      duration : 150
-    })
-  }
-
   render() {
     const {
       _id,
@@ -160,14 +153,17 @@ class ProjectItem extends React.Component {
     return (
       <>
         <div className="project-wrapper">
-          <div className="project-image" data-aos='fade-up'>
+          <div className="project-image" 
+          >
             <NavLink className="view-funnels" to={"/funnels/" + _id}>
               View Funnels
             </NavLink>
           </div>
 
-          <div className="project" data-aos='fade-up'>
-            <p className="project-name" data-aos='fade-up'>{projectName}</p>
+          <div className="project" 
+          >
+            <p className="project-name" 
+            >{projectName}</p>
             {funnelsLength} funnels
           </div>
 
@@ -387,16 +383,20 @@ class ProjectItem extends React.Component {
             ) : (
               <button
                 className={
-                  this.state.selectedFunnelsList.length === 0 ? 
+                  this.state.selectedFunnelsList.length === 0 || this.props.islinkFatching ? 
                   'btn btn-1 btn-delete-modal btn-disabled' 
                   : 
                   'btn btn-1 btn-delete-modal '
                 }
                 style={{ margin: "15px auto" }}
                 onClick={() => this.handleCreateLink()}
-                disabled={this.state.selectedFunnelsList.length === 0}
+                disabled={this.state.selectedFunnelsList.length === 0 || this.props.islinkFatching}
               >
-                Create Link
+                {
+                  this.props.islinkFatching ? 
+                    <span className='loader-spinner'/> 
+                    : 'Create Link'
+                }
               </button>
             )}
           </Modal>
@@ -410,6 +410,7 @@ function mapStateToProps(state, ownProps) {
   return {
     funnels: state.projects[`funnelsList${ownProps._id}`],
     link: state.projects.createLink,
+    islinkFatching: state.projects.islinkFatching,
     collaborators: state.collaborations.allCollaboratorsForFunnels,
     collaboratorsModalMessage: state.projects.collaboratorsModalMessage
   };

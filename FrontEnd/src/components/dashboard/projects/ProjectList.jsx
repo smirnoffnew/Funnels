@@ -11,6 +11,7 @@ import uuid from 'uuid'
 
 class ProjectList extends React.Component {
   componentDidMount = () => {
+    console.log(this.props.projects)
     this.props.getAllProjects();
 
     if (process.env.REACT_APP_BUILD === 'prod') {
@@ -181,7 +182,6 @@ class ProjectList extends React.Component {
 }
 
 function mapStateToProps(state) {
-  // console.log(state.projects.projectsListLimit)
   return {
     projects: state.projects.projectsList,
     projectsLimit: state.projects.projectsListLimit,

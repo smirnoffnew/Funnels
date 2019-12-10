@@ -6,6 +6,7 @@ import ClickOutside from "../../../../common/ClickOutside";
 import { ReactComponent as FunnelNotesSVG } from "../../../../../assets/FunnelNotes.svg";
 import { NotesStatusIcon } from "../../../../common/NotesStatus/NotesStatus";
 
+
 export default class FunnelNotesRightPanel extends React.Component {
   state = {
     showNotes: false,
@@ -69,6 +70,8 @@ export default class FunnelNotesRightPanel extends React.Component {
       });
   }
 
+
+
   render() {
     return (
       <>
@@ -106,6 +109,9 @@ export default class FunnelNotesRightPanel extends React.Component {
             this.setState({ showNotes: false });
           }}
         >
+
+
+
           <ModalFunnelWidget
             show={this.state.showNotes}
             handleClose={this.hideNotes}
@@ -242,6 +248,7 @@ export default class FunnelNotesRightPanel extends React.Component {
               </div>
             </div>
           </ModalFunnelWidget>
+         
         </ClickOutside>
       </>
     );

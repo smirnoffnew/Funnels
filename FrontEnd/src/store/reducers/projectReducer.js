@@ -16,6 +16,7 @@ const initialState = {
   createProjectError: '',
   permissionForCollaborator: "Edit,Create",
   keyDown: "",
+  islinkFatching: false
 }
 
 export default function (state = initialState, action) {
@@ -118,6 +119,10 @@ export default function (state = initialState, action) {
     case 'CREATE_FUNNEL_FAILURE':
       return { ...state, createFunnelError: action.payload };
     ///////////////////////////////////////////////////////////////////////////
+
+    
+    case 'CREATE_LINK_FATCHING':
+      return { ...state, islinkFatching: action.payload };
     case 'CREATE_LINK':
       return { ...state, createLink: action.payload };
     case 'CREATE_LINK_RESET':
@@ -151,6 +156,8 @@ export default function (state = initialState, action) {
 
 
     ///////////////////////////////////////////////////////////////////////////
+    case 'SEND_IMAGE_TO_COLLABORATE_LINK_FATCHING':
+      return { ...state, isSendImageToCollaborateLinkFatching: action.payload }
     case 'SEND_IMAGE_TO_COLLABORATE_LINK':
       return { ...state, sendImageToCollaborateLink: action.payload }
     case 'SEND_IMAGE_TO_COLLABORATE_LINK_RESET':

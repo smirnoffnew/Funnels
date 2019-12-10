@@ -78,7 +78,6 @@ class ShareFunnelModal extends React.Component {
     xhr.onload = () => {
       blob = xhr.response;
       const file = new File([blob], 'logo.png', { type: 'image/png', lastModified: Date.now() });
-      console.log(file)
       this.setState({
         file,
         fileName: 'the default logo is already selected',
@@ -390,12 +389,12 @@ class ShareFunnelModal extends React.Component {
               className={
                 `btn btn-1 btn-share-funnel-save 
                 ${
-                !!this.props.link === true && 'btn-share-funnel-save-disabled'
+                this.props.isSendImageToCollaborateLinkFatching && ' btn-share-funnel-save-disabled' || !!this.props.link === true && ' btn-share-funnel-save-disabled'
                 } 
                 `
               }
               disabled={
-                !!this.props.link === true
+                !!this.props.link === true || this.props.isSendImageToCollaborateLinkFatching
               }
               onClick={() => {
                 this.state.file.length !== 0 &&
@@ -411,7 +410,11 @@ class ShareFunnelModal extends React.Component {
                   : this.showFillAllData()
               }}
             >
-              Save
+              {
+                this.props.isSendImageToCollaborateLinkFatching ? 
+                  <span className='loader-spinner'/> 
+                  : 'Save'
+              }
             </button>
           </div>
 
@@ -504,6 +507,7 @@ const mapStateToProps = (state, ownProps) => {
     model: state.history.present[`model${ownProps.work.match.params.funnelId}`],
     funnelId: ownProps.work.match.params.funnelId,
     link: state.projects.sendImageToCollaborateLink,
+    isSendImageToCollaborateLinkFatching: state.projects.isSendImageToCollaborateLinkFatching,
     sendImageToCollaborateMessage: state.projects.sendImageToCollaborateMessage,
   }
 }

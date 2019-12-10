@@ -21,6 +21,15 @@
   padding: 15px;
   display: flex;
   flex-direction: column;
+
+  animation: spin-modal-main 0.4s;
+  overflow-x: hidden;
+}
+
+
+@keyframes spin-modal-main {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 .display-block {

@@ -40,3 +40,23 @@ p{
 .display-none {
   display: none;
 }
+
+
+.loader-spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  -webkit-animation: spin-loader-spinner 2s linear infinite;
+  animation: spin-loader-spinner 2s linear infinite;
+  width: 20px;
+  height: 20px;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  display: flex;
+  margin: auto;
+}
+
+@keyframes spin-loader-spinner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

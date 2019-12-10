@@ -12,16 +12,21 @@
   border-radius: 5px;
   padding: 10px 40px 10px 10px;
   margin-top: 5px;
-  -webkit-transform: translate3d(100px,0,0) scale(.6);
-  transform: translate3d(100px,0,0) scale(.6);
-  opacity: 0;
-  transition-property: opacity,transform,-webkit-transform;
   -webkit-transition-duration: .5s;
   transition-duration: .5s;
   -webkit-transition-timing-function: ease;
   transition-timing-function: ease;
   border: 1px solid #F15C22;
+
+  animation: spin-toster-main 0.5s;
+  overflow-x: hidden;
 }
+
+@keyframes spin-toster-main {
+  0% { transform: scale(.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 
 .display-block {
   display: block;
