@@ -26,6 +26,10 @@ const colDataSchema = new Schema({
     buttonLink: {
         type: String,
         required: [true, 'field is required']
+    },
+    defaultLink: {
+        type: Boolean,
+        required: [true, 'field is required']
     }
 
 })
