@@ -298,7 +298,8 @@ module.exports = {
                 title: req.body.title,
                 text: req.body.text,
                 buttonText: req.body.buttonText,
-                buttonLink: req.body.buttonLink
+                buttonLink: req.body.buttonLink,
+                defaultLink: req.body.defaultLink
             });
 
         infoObj
@@ -324,7 +325,7 @@ module.exports = {
             .then(result => result.json())
             .then(result => funnelCollaborateData.info.logo = result.link)
             .then(() => {
-                infoObj = funnelCollaborateData.info
+                infoObj = funnelCollaborateData.info;
                 return infoObj.save()
             })
             .then(info => {
@@ -336,7 +337,7 @@ module.exports = {
                     funnelsId: [req.body.funnelsId],
                     permissions: req.body.permissions,
                     info: info._id.toString()
-                }
+                };
 
                 collaborateToken = jwt.sign(tokenData, process.env.SECRET_COLLABORATOR);
             })
