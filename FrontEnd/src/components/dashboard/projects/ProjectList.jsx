@@ -42,6 +42,10 @@ class ProjectList extends React.Component {
     }, () => this.props.dispatch({ type: 'CLEAR_CREATE_PROJECT_ERROR' }));
 
   handleCreateProject = () => {
+     this.props.dispatch({
+      type: 'CREATE_PROJECT_FATCHING',
+      payload: true
+    });
      this.props.createProjectWithPromisefication(this.state.projectName)
       .then(response => {
         this.props.dispatch({
@@ -57,6 +61,11 @@ class ProjectList extends React.Component {
             data: response.message,
             id: uuid(),
           }
+        });
+
+        this.props.dispatch({
+          type: 'CREATE_PROJECT_FATCHING',
+          payload: false
         });
       })
       .catch(error => {
@@ -166,14 +175,26 @@ class ProjectList extends React.Component {
             value={this.state.projectName}
             onChange={this.handleChange}
           />
-          {this.props.error && this.props.error.length > 0 && (
+          {/* {this.props.error && this.props.error.length > 0 && (
             <div className={`input-group`}>{this.props.error}</div>
-          )}
+          )} */}
+
           <button
-            className="btn btn-1 create-project-button-in-modal"
+            className={
+              this.props.isCreateProjectFatching ? 
+              "btn btn-1 create-project-button-in-modal btn-disabled"
+              : 
+              "btn btn-1 create-project-button-in-modal"
+            }
+
+            disabled={this.props.isCreateProjectFatching}
             onClick={() => this.handleCreateProject()}
           >
-            Create Project
+            {
+              this.props.isCreateProjectFatching ? 
+                <span className='loader-spinner'/> 
+                : 'Create Project'
+            }
           </button>
         </Modal>
       </Layout>
@@ -183,6 +204,7 @@ class ProjectList extends React.Component {
 
 function mapStateToProps(state) {
   return {
+    isCreateProjectFatching: state.projects.isCreateProjectFatching,
     projects: state.projects.projectsList,
     projectsLimit: state.projects.projectsListLimit,
     error: state.projects.createProjectError,

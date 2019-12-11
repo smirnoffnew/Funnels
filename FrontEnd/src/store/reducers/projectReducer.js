@@ -53,6 +53,13 @@ export default function (state = initialState, action) {
     ///////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////////////
+
+    case 'CREATE_PROJECT_FATCHING':
+      return {
+        ...state,
+        isCreateProjectFatching: action.payload
+      };
+
     case CREATE_PROJECT:
       return {
         ...state,
@@ -107,6 +114,12 @@ export default function (state = initialState, action) {
         [`funnelsList${action.payload.project_id}`]: funnelsList,
       };
     ///////////////////////////////////////////////////////////////////////////
+    case 'CREATE_FUNNEL_FATCHING':
+      return {
+        ...state,
+        isCreateFunnelFatching: action.payload
+      };
+
     case 'CREATE_FUNNEL':
       return {
         ...state,

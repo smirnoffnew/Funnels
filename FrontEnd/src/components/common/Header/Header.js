@@ -80,6 +80,11 @@ class Header extends Component {
     );
 
   handleCreateProject = () => {
+    this.props.dispatch({
+      type: 'CREATE_PROJECT_FATCHING',
+      payload: true
+    });
+
     this.props
       .createProjectWithPromisefication(this.state.projectName)
       .then(response => {
@@ -99,6 +104,11 @@ class Header extends Component {
             id: uuid(),
           }
         });
+
+        this.props.dispatch({
+          type: 'CREATE_PROJECT_FATCHING',
+          payload: false
+        });
       })
       .catch(error => {
         this.props.dispatch({
@@ -116,7 +126,10 @@ class Header extends Component {
   };
 
   handleCreateFunnel = () => {
-    // debugger
+    this.props.dispatch({
+      type: 'CREATE_FUNNEL_FATCHING',
+      payload: true
+    });
     this.props
       .createFunnelWithPromisefication(
         this.state.funnelName,
@@ -132,6 +145,10 @@ class Header extends Component {
             projectId,
             res
           }
+        });
+        this.props.dispatch({
+          type: 'CREATE_FUNNEL_FATCHING',
+          payload: false
         });
         this.props.dispatch({ type: "CLEAR_CREATE_FUNNEL_ERROR" });
         this.hideModalFunnel();
@@ -347,15 +364,26 @@ class Header extends Component {
             value={this.state.projectName}
             onChange={this.handleChange}
           />
-          {this.props.error && this.props.error.length > 0 && (
+          {/* {this.props.error && this.props.error.length > 0 && (
             <div className={`input-group`}>{this.props.error}</div>
-          )}
+          )} */}
 
           <button
-            className="btn btn-1 create-project-button-in-modal"
+            className={
+              this.props.isCreateProjectFatching ? 
+              "btn btn-1 create-project-button-in-modal btn-disabled"
+              : 
+              "btn btn-1 create-project-button-in-modal"
+            }
+
+            disabled={this.props.isCreateProjectFatching}
             onClick={() => this.handleCreateProject()}
           >
-            Create Project
+            {
+              this.props.isCreateProjectFatching ? 
+                <span className='loader-spinner'/> 
+                : 'Create Project'
+            }
           </button>
         </Modal>
 
@@ -373,15 +401,26 @@ class Header extends Component {
             value={this.state.funnelName}
             onChange={this.handleChange}
           />
-          {this.props.errorFunnel && this.props.errorFunnel.length > 0 && (
+          {/* {this.props.errorFunnel && this.props.errorFunnel.length > 0 && (
             <div className={`input-group`}>{this.props.errorFunnel}</div>
-          )}
+          )} */}
 
-          <button
-            className="btn btn-1 create-project-button-in-modal"
+           <button
+            className={
+              this.props.isCreateFunnelFatching ? 
+              "btn btn-1 create-project-button-in-modal btn-disabled"
+              : 
+              "btn btn-1 create-project-button-in-modal"
+            }
+
+            disabled={this.props.isCreateFunnelFatching}
             onClick={() => this.handleCreateFunnel()}
           >
-            Create Funnel
+            {
+              this.props.isCreateFunnelFatching ? 
+                <span className='loader-spinner'/> 
+                : 'Create Funnel'
+            }
           </button>
         </Modal>
 
@@ -485,6 +524,9 @@ class Header extends Component {
 
 function mapStateToProps(state) {
   return {
+    isCreateProjectFatching: state.projects.isCreateProjectFatching,
+    isCreateFunnelFatching: state.projects.isCreateFunnelFatching,
+
     authenticated: state.auth.authenticated,
     error: state.projects.createProjectError,
     errorFunnel: state.projects.createFunnelError,

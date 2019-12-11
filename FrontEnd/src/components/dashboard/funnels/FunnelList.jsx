@@ -36,6 +36,10 @@ class FunnelList extends React.Component {
   }, () => this.props.dispatch({ type: 'CLEAR_CREATE_FUNNEL_ERROR' }));
 
   handleCreateFunnel = () => {
+     this.props.dispatch({
+      type: 'CREATE_FUNNEL_FATCHING',
+      payload: true
+    });
     this.props.createFunnelWithPromisefication(this.state.funnelName, this.props.projectId)
       .then(response => {
         let res = response.data
@@ -55,6 +59,10 @@ class FunnelList extends React.Component {
             data: response.message,
             id: uuid(),
           }
+        });
+        this.props.dispatch({
+          type: 'CREATE_FUNNEL_FATCHING',
+          payload: false
         });
       })
       .catch(error => {
@@ -156,10 +164,23 @@ class FunnelList extends React.Component {
             value={this.state.funnelName}
             onChange={this.handleChange}
           />
-          {this.props.error && this.props.error.length > 0 && (
-            <div className={`input-group`}>{this.props.error}</div>
-          )}
-          <button className='btn btn-1 create-project-button-in-modal' onClick={() => this.handleCreateFunnel()}>Create Funnel</button>
+         <button
+            className={
+              this.props.isCreateFunnelFatching ? 
+              "btn btn-1 create-project-button-in-modal btn-disabled"
+              : 
+              "btn btn-1 create-project-button-in-modal"
+            }
+
+            disabled={this.props.isCreateFunnelFatching}
+            onClick={() => this.handleCreateFunnel()}
+          >
+            {
+              this.props.isCreateFunnelFatching ? 
+                <span className='loader-spinner'/> 
+                : 'Create Funnel'
+            }
+          </button>
         </Modal>
       </>
     )
@@ -168,6 +189,7 @@ class FunnelList extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
+    isCreateFunnelFatching: state.projects.isCreateFunnelFatching,
     funnels: state.projects[`funnelsList${ownProps.match.params.projectId}`],
     funnelsLimit: state.projects[`funnelsListLimit${ownProps.match.params.projectId}`],
     projectId: ownProps.match.params.projectId,
