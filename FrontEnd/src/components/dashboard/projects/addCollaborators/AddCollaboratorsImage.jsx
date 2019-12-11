@@ -46,6 +46,8 @@ class AddCollaboratorsImage extends React.Component {
     axios.post(`${API_URL}/funnel/get-signin-token`, {}, axiosConfig)
       .then(response => {
 
+        console.log('response', response)
+
         this.props.getDiagramForRecipiensCollaborator(params.get('funnelId'), "Bearer " + response.data.message);
         this.props.getSVGForRecipiensCollaborator("Bearer " + response.data.message);
 
@@ -56,6 +58,7 @@ class AddCollaboratorsImage extends React.Component {
           text: response.data.info.text,
           buttonText: response.data.info.buttonText,
           buttonLink: response.data.info.buttonLink,
+          defaultLink: response.data.info.defaultLink,  
         })
       })
       .catch(function (error) {
@@ -99,7 +102,7 @@ class AddCollaboratorsImage extends React.Component {
     if (referrer) return <Redirect to={referrer} />;
 
 
-    if (this.state.tittle === 'The Following Funnel Has Been Shared with You') {
+    if (this.state.defaultLink === true) {
       return (
         <div className='add-collaborators-img-body'>
 

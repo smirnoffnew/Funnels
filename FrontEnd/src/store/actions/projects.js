@@ -977,6 +977,76 @@ export function removeCollaborator(funnelId, profileId) {
   }
 }
 
+
+
+
+
+export function getLinkByDefaultCollaborate(funnelId, info) {
+  const token = JSON.parse(localStorage.getItem('token'));
+  let bodyFormData = new FormData();
+
+  bodyFormData.append('logo', info.file);
+  bodyFormData.append('title', info.tittle);
+  bodyFormData.append('text', info.text);
+  bodyFormData.append('buttonText', info.buttonText);
+  bodyFormData.append('buttonLink', info.buttonLink);
+  bodyFormData.append('defaultLink', true);
+
+
+  bodyFormData.append('funnelsId', funnelId);
+  bodyFormData.append('permissions', 'View Only');
+  return function (dispatch) {
+    dispatch({
+      type: 'GET_DEFAULT_COLLABORATE_LINK_FATCHING',
+      payload: true
+    });
+    axios({
+      method: 'post',
+      url: `${API_URL}/funnel/diagram/screenshot`,
+      headers: {
+        'authorization': token,
+        'Content-Type': 'form-data'
+      },
+      data: bodyFormData
+    })
+      .then(response => {
+        if (response.data) {
+          dispatch({
+            type: 'GET_DEFAULT_COLLABORATE_LINK',
+            payload: response.data.link
+          });
+          dispatch({
+            type: 'GET_DEFAULT_COLLABORATE_LINK_FATCHING',
+            payload: false
+          });
+          // dispatch({
+          //   type: "CREATE_TOSTER",
+          //   payload: {
+          //     data: 'Successful link creation...',
+          //     id: uuid(),
+          //   }
+          // });
+        }
+      })
+      .catch(function (error) {
+        if (error.response) {
+          dispatch({
+            type: "CREATE_TOSTER",
+            payload: {
+              data: error.response.data.error,
+              id: uuid(),
+            }
+          });
+        }
+      });
+  }
+}
+
+export const resetGetLinkByDefaultCollaborate = () => dispatch => {
+  dispatch({ type: 'GET_DEFAULT_COLLABORATE_LINK_RESET' });
+}
+
+
 export function sendImageToCollaborate(funnelId, info) {
   const token = JSON.parse(localStorage.getItem('token'));
   let bodyFormData = new FormData();
@@ -986,6 +1056,7 @@ export function sendImageToCollaborate(funnelId, info) {
   bodyFormData.append('text', info.text);
   bodyFormData.append('buttonText', info.buttonText);
   bodyFormData.append('buttonLink', info.buttonLink);
+  bodyFormData.append('defaultLink', false);
 
 
   bodyFormData.append('funnelsId', funnelId);
@@ -1070,7 +1141,6 @@ export function getSVGForRecipiensCollaborator(token) {
   return function (dispatch) {
     axios.get(`${API_URL}/funnel/svg`, axiosConfig)
       .then(response => {
-        console.log('response', response.data)
         dispatch({
           type: 'GET_ALL_SVG',
           payload: response.data.response,

@@ -183,6 +183,16 @@ export default function (state = initialState, action) {
 
 
     ///////////////////////////////////////////////////////////////////////////
+    case 'GET_DEFAULT_COLLABORATE_LINK_FATCHING':
+      return { ...state, islinkByDefaultCollaborateFatching: action.payload }
+    case 'GET_DEFAULT_COLLABORATE_LINK':
+      return { ...state, linkByDefaultCollaborate: action.payload }
+    case 'GET_DEFAULT_COLLABORATE_LINK_RESET':
+      return { ...state, linkByDefaultCollaborate: null }
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    ///////////////////////////////////////////////////////////////////////////
     case 'SAVE_DIAGRAM_SUCCESS_RESET':
       return { ...state, saveDiagramMessage: null }
     case 'SAVE_DIAGRAM_SUCCESS':

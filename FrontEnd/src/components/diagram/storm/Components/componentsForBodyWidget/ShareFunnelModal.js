@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import ReactSVG from "react-svg";
 import { ReactComponent as ShareFunnelSVG } from "../../../../../assets/instructions.svg";
 import Modal from '../../../../common/Modal/Modal'
-import { sendImageToCollaborate, resetSendImageToCollaborateLink } from "../../../../../store/actions/projects";
+import { sendImageToCollaborate, resetSendImageToCollaborateLink, getLinkByDefaultCollaborate, resetGetLinkByDefaultCollaborate } from "../../../../../store/actions/projects";
 import RichEditor from "../../../../common/Comments/CommentPannel/CommentPanel";
 import { API } from "../../../../../store/actions/instance";
 
@@ -37,22 +37,29 @@ class ShareFunnelModal extends React.Component {
 
   showShareFunnel = () => this.setState({ shareFunnel: true, clearRichPanel: false }, () => {
     this.props.resetSendImageToCollaborateLink();
-    API.get(`funnel/node/static/getCounter/${this.props.funnelId}`)
-      .then(response => {
-        const sum = this.handleGetConversionInfoForAllNodes(response.data.response)
+    this.props.resetGetLinkByDefaultCollaborate();
+    // API.get(`funnel/node/static/getCounter/${this.props.funnelId}`)
+    //   .then(response => {
+    //     const sum = this.handleGetConversionInfoForAllNodes(response.data.response)
 
-        this.setState({
-          sum
-        }, () => {
-          this.hideFillAllData()
-          this.props.resetSendImageToCollaborateLink()
-        })
-      })
-      .catch(function (error) {
-        if (error.response) {
-          console.log(error.response)
-        }
-      });
+    //     this.setState({
+    //       sum
+    //     }, () => {
+    //       this.hideFillAllData()
+    //       this.props.resetSendImageToCollaborateLink()
+    //     })
+    //   })
+    //   .catch(function (error) {
+    //     if (error.response) {
+    //       console.log(error.response)
+    //     }
+    //   });
+
+     this.props.getLinkByDefaultCollaborate(
+      this.props.funnelId,
+      this.state
+    )
+
   })
   hideShareFunnel = () => this.setState({
     shareFunnel: false,
@@ -81,8 +88,17 @@ class ShareFunnelModal extends React.Component {
       this.setState({
         file,
         fileName: 'the default logo is already selected',
+      }, () => {
+        // this.props.sendImageToCollaborate(
+        //   this.props.funnelId,
+        //   this.state
+        // )
+        // console.log('ff')
       })
     }
+
+
+
   }
 
   handleImageChange = e => {
@@ -178,6 +194,12 @@ class ShareFunnelModal extends React.Component {
     e.target.focus();
   };
 
+  copyToClipboardLinkByDefaultCollaborate = e => {
+    this.linkByDefaultCollaborate.select();
+    document.execCommand("copy");
+    e.target.focus();
+  };
+
   clearRichPanelFalse = () => {
     this.setState({
       clearRichPanel: false
@@ -230,7 +252,73 @@ class ShareFunnelModal extends React.Component {
             Share Funnel with Your team
             </label>
 
-          <div className='views-and-clicks-wrapper'>
+
+            {this.props.linkByDefaultCollaborate ?
+            <div style={{ marginLeft: 30, marginRight: 30, marginBottom: 20 }}>
+              <div className='share-funnel-created-link-wrapper'>
+
+                <ReactSVG
+                  src={Link}
+                  alt="Link"
+                  beforeInjection={svg => {
+                    svg.setAttribute(
+                      "style",
+                      `
+                    width: 15px;
+                    height: 15px;
+                    position: absolute;
+                    top: 19px;
+                    left: 20px;
+                    
+                  `
+                    );
+                  }}
+                />
+
+                <input
+                  className="share-funnel-created-link share-funnel-input-link"
+                  style={{
+                    margin: 0,
+                    padding: 10,
+                    paddingTop: 17,
+                    paddingBottom: 17,
+                  }}
+                  ref={ref => this.linkByDefaultCollaborate = ref}
+                  value={this.props.linkByDefaultCollaborate}
+                  onChange={() => { }}
+                />
+                <button
+                  className="btn btn-1 btn-share-funnel-copy-link"
+                  onClick={this.copyToClipboardLinkByDefaultCollaborate}
+                >
+                  <ReactSVG
+                    src={Copy}
+                    alt="Copy Link"
+                    beforeInjection={svg => {
+                      svg.setAttribute(
+                        "style",
+                        `
+                        width: 18px;
+                        height: 21px;
+                        padding-top: 5px;
+                        `
+                      );
+                    }}
+                  />
+                </button>
+              </div>
+            </div>
+            : 
+            <div className='second-label-share-funnel'>
+              <div style={{display: 'flex', alignItems: 'center'}}>
+                <span className='loader-spinner'/>
+                <p style={{marginLeft: 10}}>getting the default link...</p>
+              </div>
+            </div>
+            }
+
+
+          {/* <div className='views-and-clicks-wrapper'>
 
             <div className='views-wrapper'>
               <ReactSVG
@@ -267,7 +355,7 @@ class ShareFunnelModal extends React.Component {
               </div>
             </div>
 
-          </div>
+          </div> */}
 
           <label className='main-label-share-funnel' style={{
             borderTop: '1px solid #C1C7CC',
@@ -506,7 +594,11 @@ const mapStateToProps = (state, ownProps) => {
     diagram: state.projects[`diagram${ownProps.work.match.params.funnelId}`],
     model: state.history.present[`model${ownProps.work.match.params.funnelId}`],
     funnelId: ownProps.work.match.params.funnelId,
+
     link: state.projects.sendImageToCollaborateLink,
+    linkByDefaultCollaborate: state.projects.linkByDefaultCollaborate,
+    isSendImageToCollaborateLinkFatching: state.projects.isSendImageToCollaborateLinkFatching,
+
     isSendImageToCollaborateLinkFatching: state.projects.isSendImageToCollaborateLinkFatching,
     sendImageToCollaborateMessage: state.projects.sendImageToCollaborateMessage,
   }
@@ -515,7 +607,9 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => {
   return {
     sendImageToCollaborate: (funnelId, info) => dispatch(sendImageToCollaborate(funnelId, info)),
+    getLinkByDefaultCollaborate: (funnelId, info) => dispatch(getLinkByDefaultCollaborate(funnelId, info)),
     resetSendImageToCollaborateLink: () => dispatch(resetSendImageToCollaborateLink()),
+    resetGetLinkByDefaultCollaborate: () => dispatch(resetGetLinkByDefaultCollaborate()),
   }
 }
 
