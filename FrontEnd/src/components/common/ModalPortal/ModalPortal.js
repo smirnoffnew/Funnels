@@ -15,6 +15,8 @@ class ModalPortal extends React.Component {
     this.el.style.bottom = '3%';
     this.el.style.right = '3%';
     this.el.style.alignItems = 'flex-end';
+    this.el.style.height = '190px';
+    this.el.style.overflow = 'hidden';
 
     this.portal = document.getElementById('app');
   }

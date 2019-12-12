@@ -9,7 +9,18 @@ class ModalPortalBody extends React.Component {
           id: this.props.id
         }
       })
-    }, 4000);
+    }, 2000);
+  }
+
+  componentDidUpdate = () => {
+    setTimeout(() => {
+      this.props.dispatch({
+        type: "DELETE_TOSTER",
+        payload: {
+          id: this.props.id
+        }
+      })
+    }, 2000);
   }
 
   render() {

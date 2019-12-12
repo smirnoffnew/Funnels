@@ -143,11 +143,25 @@ class AdvancedLinkSegment extends React.Component {
     // console.log('newPath', newPath)
     //----------------------------------------
 
+    // console.log('this.props.hideConversionLinkBoolean', this.props.hideConversionLinkBoolean)
+    // console.log(' this.props.model.targetPort.position',  this.props.model.targetPort &&
+    // this.props.model.targetPort.position && this.props.model.targetPort.position)
+
     if (this.props.hideConversionLinkBoolean) {
       if (
         (this.props.model.targetPort &&
           this.props.model.targetPort.position &&
-          this.props.model.targetPort.position.includes('conversion'))
+          this.props.model.targetPort.position.includes('conversion')
+          ||
+          this.props.model.targetPort &&
+          this.props.model.targetPort.position &&
+          this.props.model.targetPort.position.includes('activeOnPage')
+          ||
+          this.props.model.targetPort &&
+          this.props.model.targetPort.position &&
+          this.props.model.targetPort.position.includes('clickOnLink')
+
+        )
       ) {
         this.props.model.width = 2
       }
@@ -160,6 +174,15 @@ class AdvancedLinkSegment extends React.Component {
         (this.props.model.targetPort &&
           this.props.model.targetPort.position &&
           this.props.model.targetPort.position.includes('conversion'))
+          ||
+          this.props.model.targetPort &&
+          this.props.model.targetPort.position &&
+          this.props.model.targetPort.position.includes('activeOnPage')
+          ||
+          this.props.model.targetPort &&
+          this.props.model.targetPort.position &&
+          this.props.model.targetPort.position.includes('clickOnLink')
+
       ) {
         this.props.model.width = 0
       }
@@ -179,7 +202,14 @@ class AdvancedLinkSegment extends React.Component {
             this.props.hideConversionLinkBoolean ?
               this.props.model.targetPort &&
                 this.props.model.targetPort.position &&
-                this.props.model.targetPort.position.includes('conversion') ?
+                this.props.model.targetPort.position.includes('conversion') ||
+                this.props.model.targetPort &&
+          this.props.model.targetPort.position &&
+                this.props.model.targetPort.position.includes('activeOnPage')
+                ||
+                this.props.model.targetPort &&
+          this.props.model.targetPort.position &&
+                this.props.model.targetPort.position.includes('clickOnLink')?
                 'blue' :
                 'rgba(97, 102, 110, 0.2)'
               : 'rgba(97, 102, 110, 0.7)'
@@ -216,7 +246,14 @@ class AdvancedLinkSegment extends React.Component {
             this.props.hideConversionLinkBoolean ?
               this.props.model.targetPort &&
                 this.props.model.targetPort.position &&
-                this.props.model.targetPort.position.includes('conversion') ?
+                this.props.model.targetPort.position.includes('conversion') ||
+                this.props.model.targetPort &&
+          this.props.model.targetPort.position &&
+                this.props.model.targetPort.position.includes('activeOnPage')
+                ||
+                this.props.model.targetPort &&
+          this.props.model.targetPort.position &&
+                this.props.model.targetPort.position.includes('clickOnLink')?
                 'blue' :
                 '#fd8f21'
               :
@@ -297,14 +334,24 @@ class AdvancedLinkSegment extends React.Component {
               (this.props.model.sourcePort &&
                 this.props.model.sourcePort.position &&
                 this.props.model.sourcePort.position.includes('clickOnLink')) ||
-                this.props.model.sourcePort.position.includes('activeOnPage') ?
+                this.props.model.sourcePort &&
+                this.props.model.sourcePort.position &&
+                this.props.model.sourcePort.position.includes('activeOnPage') ||
+                this.props.model.sourcePort &&
+                this.props.model.sourcePort.position &&
+                this.props.model.sourcePort.position.includes('conversion') ?
                 'blue' :
                 '#fd8f21'
               :
               (this.props.model.sourcePort &&
                 this.props.model.sourcePort.position &&
                 this.props.model.sourcePort.position.includes('clickOnLink')) ||
-                this.props.model.sourcePort.position.includes('activeOnPage') ?
+                this.props.model.sourcePort &&
+                this.props.model.sourcePort.position &&
+                this.props.model.sourcePort.position.includes('activeOnPage') ||
+                this.props.model.sourcePort &&
+                this.props.model.sourcePort.position &&
+                this.props.model.sourcePort.position.includes('conversion') ?
                 '#F6F7F8' :
                 '#fd8f21'
           }
@@ -317,13 +364,25 @@ class AdvancedLinkSegment extends React.Component {
             this.props.hideConversionLinkBoolean ?
               this.props.model.targetPort &&
                 this.props.model.targetPort.position &&
-                this.props.model.targetPort.position.includes('conversion') ?
+                this.props.model.targetPort.position.includes('conversion')||
+                this.props.model.targetPort &&
+                this.props.model.targetPort.position &&
+                this.props.model.targetPort.position.includes('activeOnPage') ||
+                this.props.model.targetPort &&
+                this.props.model.targetPort.position &&
+                this.props.model.targetPort.position.includes('clickOnLink') ?
                 'blue' :
                 '#fd8f21'
               :
               this.props.model.targetPort &&
                 this.props.model.targetPort.position &&
-                this.props.model.targetPort.position.includes('conversion') ?
+                this.props.model.targetPort.position.includes('conversion')||
+                this.props.model.targetPort &&
+                this.props.model.targetPort.position &&
+                this.props.model.targetPort.position.includes('activeOnPage') ||
+                this.props.model.targetPort &&
+                this.props.model.targetPort.position &&
+                this.props.model.targetPort.position.includes('clickOnLink') ?
                 '#F6F7F8' :
                 '#fd8f21'
           }
@@ -335,13 +394,25 @@ class AdvancedLinkSegment extends React.Component {
             this.props.hideConversionLinkBoolean ?
               this.props.model.targetPort &&
                 this.props.model.targetPort.position &&
-                this.props.model.targetPort.position.includes('conversion') ?
+                this.props.model.targetPort.position.includes('conversion')||
+                this.props.model.targetPort &&
+                this.props.model.targetPort.position &&
+                this.props.model.targetPort.position.includes('activeOnPage') ||
+                this.props.model.targetPort &&
+                this.props.model.targetPort.position &&
+                this.props.model.targetPort.position.includes('clickOnLink') ?
                 '#fff' :
                 '#fff'
               :
               this.props.model.targetPort &&
                 this.props.model.targetPort.position &&
-                this.props.model.targetPort.position.includes('conversion') ?
+                this.props.model.targetPort.position.includes('conversion')||
+                this.props.model.targetPort &&
+                this.props.model.targetPort.position &&
+                this.props.model.targetPort.position.includes('activeOnPage') ||
+                this.props.model.targetPort &&
+                this.props.model.targetPort.position &&
+                this.props.model.targetPort.position.includes('clickOnLink') ?
                 '#F6F7F8' :
                 '#fff'
           }
